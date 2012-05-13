@@ -3,6 +3,7 @@ package eventos;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
 import vista.paneles.AreaDeDibujo;
@@ -10,11 +11,12 @@ import vista.paneles.AreaDeDibujo;
 public class SeguirMouseEvent implements MouseInputListener {
 
 	private AreaDeDibujo areaDeDibujo;
-	private JLabel labelAMover;
-	public SeguirMouseEvent(AreaDeDibujo area, JLabel label) {
+	private JPanel panelAMover;
+
+	public SeguirMouseEvent(AreaDeDibujo area, JPanel panel) {
 		this.areaDeDibujo = area;
-		this.labelAMover = label;
-		this.areaDeDibujo.add(labelAMover);
+		this.panelAMover = panel;
+		this.areaDeDibujo.add(panelAMover);
 		System.out.println("Contructor Anclar mouse event");
 		
 	}
@@ -32,7 +34,7 @@ public class SeguirMouseEvent implements MouseInputListener {
 		System.out.println(e.getX());
 		System.out.println(e.getY());
 		
-		this.labelAMover.setLocation(e.getPoint());
+		this.panelAMover.setLocation(e.getPoint());
 		
 	}
 	

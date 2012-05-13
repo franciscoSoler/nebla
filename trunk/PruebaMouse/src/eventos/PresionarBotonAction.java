@@ -1,11 +1,14 @@
 package eventos;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
+
+import modelo.entidadGraficable.EntidadGraficable;
 
 import actions.EscPressedAction;
 
@@ -23,15 +26,15 @@ public class PresionarBotonAction implements ActionListener {
 	public void actionPerformed(ActionEvent a) {
 		System.out.println("Action performed");
 				
-		JLabel label = new JLabel("Prueba 1");
-		label.setBounds(0, 0, 75, 75);
-
 		int x = areaDeDibujo.getX() + areaDeDibujo.getWidth()/2;
 		int y = areaDeDibujo.getY() + areaDeDibujo.getHeight()/2;
 		System.out.println("X: "+x);
 		System.out.println("Y: "+y);
 		
-		SeguirMouseEvent newEvent = new SeguirMouseEvent(this.areaDeDibujo,label);
+		EntidadGraficable entidad = new EntidadGraficable(new Rectangle(15,15, 150, 150));
+		
+		
+		SeguirMouseEvent newEvent = new SeguirMouseEvent(this.areaDeDibujo,entidad);
 		this.areaDeDibujo.addMouseListener(newEvent);
 		this.areaDeDibujo.addMouseMotionListener(newEvent);
 		
