@@ -48,7 +48,7 @@ public class VentanaPrincipal extends JFrame {
 		panelContenedor.add(label);
 
 		areaDeDibujo = new AreaDeDibujo();
-		areaDeDibujo.setBounds(10, 100 , 630, 540);
+		areaDeDibujo.setBounds(10, 100 , 630, 500);
 		areaDeDibujo.setBorder(BorderFactory.createLineBorder(Color.black));
 		areaDeDibujo.setLayout(null);
 		areaDeDibujo.setBackground(Color.green);

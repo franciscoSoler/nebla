@@ -1,6 +1,7 @@
 package modelo.atributoGraficable;
 
 import java.awt.Point;
+import java.awt.geom.Line2D;
 
 import javax.swing.JPanel;
 
@@ -15,7 +16,7 @@ public class AtributoGraficable extends JPanel {
 		this.inicio = puntoInicio;
 		this.fin = puntoFin;
 		
-		
+		Line2D line = new Line2D.Float();
 	}
 	
 }
