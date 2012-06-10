@@ -33,7 +33,6 @@ public class PresionarBotonAction implements ActionListener {
 		
 		EntidadGraficable entidad = new EntidadGraficable(new Rectangle(15,15, 150, 150));
 		
-		
 		SeguirMouseEvent newEvent = new SeguirMouseEvent(this.areaDeDibujo,entidad);
 		this.areaDeDibujo.addMouseListener(newEvent);
 		this.areaDeDibujo.addMouseMotionListener(newEvent);
