@@ -18,8 +18,12 @@ public class Elipse {
 	public Elipse (int altura, int cantidad) {
 		this.alturaRenglon = altura;
 		this.cantidadPuntos = cantidad;
+		
 		this.anguloMinimo = 2*Math.PI/this.cantidadPuntos;
-		b = (this.alturaRenglon/2.0 + this.alturaRenglon*Math.ceil((this.cantidadPuntos - 4.0)/4));
+		
+		int cantidadRenglones = (int) Math.max(Math.ceil((this.cantidadPuntos - 4.0)/4),1);
+		
+		b = (this.alturaRenglon/2.0 + this.alturaRenglon*cantidadRenglones);
 		a = 2*b;
 		
 		System.out.println("B: "+b);
