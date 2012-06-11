@@ -41,18 +41,24 @@ public class VentanaPrincipal extends JFrame {
 		panelContenedor.setLayout(null);
 		setContentPane(panelContenedor);
 		
-		JLabel label = new JLabel("Prueba 1");
-		label.setBounds(10, 10, 630,75);
-		label.setBackground(Color.blue);
-		label.setOpaque(true);
-		panelContenedor.add(label);
-
 		areaDeDibujo = new AreaDeDibujo();
 		areaDeDibujo.setBounds(10, 100 , 630, 500);
 		areaDeDibujo.setBorder(BorderFactory.createLineBorder(Color.black));
 		areaDeDibujo.setLayout(null);
 		areaDeDibujo.setBackground(Color.green);
 		panelContenedor.add(areaDeDibujo);
+		
+		JLabel label = new JLabel("Prueba 1");
+		label.setBounds(10, 10, 130, 75);
+		label.setBackground(Color.blue);
+		label.setOpaque(true);
+		
+		JButton button = new JButton("Boton START");
+		button.setBounds(100, 10, 250, 75);
+		button.addActionListener(new PresionarBotonAction(this.areaDeDibujo));
+		this.add(button);
+		
+		panelContenedor.add(label);
 		
 		panelContenedor.updateUI();
 		
