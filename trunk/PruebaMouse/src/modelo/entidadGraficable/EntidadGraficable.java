@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 public class EntidadGraficable extends JPanel {
 
+	Point centroActual;// = new Point(this.getWidth()/2,this.getHeight()/2);
 
 	private String nombreentidad; 
 	
@@ -105,17 +106,19 @@ public class EntidadGraficable extends JPanel {
 		
 		this.setSize(xMax+Math.abs(xMin), this.getSize().height);
 		
+		this.centroActual = new Point(centro.x+Math.abs(xMin),centro.y);
+		
 		iteratorLabel = labelAtributos.iterator();
-		Point centroNuevo = new Point(this.getSize().width/2, this.getSize().height/2);
+		//Point centroNuevo = new Point(this.getSize().width/2, this.getSize().height/2);
 		while (iteratorLabel.hasNext()) {
-			int diff = centroNuevo.x - centro.x; 
+			//int diff = centroNuevo.x - centro.x; 
 			JLabel labelAtributo = iteratorLabel.next();
-			labelAtributo.setLocation(labelAtributo.getLocation().x+diff, labelAtributo.getLocation().y);
+			labelAtributo.setLocation(labelAtributo.getLocation().x+Math.abs(xMin), labelAtributo.getLocation().y);
 		}
 		
 		JLabel labelNombre = new JLabel(this.nombreentidad);
 		labelNombre.setSize(labelNombre.getMinimumSize());
-		labelNombre.setLocation(this.getSize().width/2 - labelNombre.getSize().width/2, this.getSize().height/2 - labelNombre.getSize().height/2);
+		labelNombre.setLocation(this.centroActual.x - labelNombre.getSize().width/2, this.centroActual.y - labelNombre.getSize().height/2);
 		this.add(labelNombre);
 		
 		this.areaDeDibujo.add(this);
@@ -129,14 +132,12 @@ public class EntidadGraficable extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		Point centro = new Point(this.getWidth()/2,this.getHeight()/2);
-
 		Iterator<JLabel> iterator = labelAtributos.iterator();
 		int i = 0;
 		while (iterator.hasNext()) {
-			Point punto = elipse.getPunto(centro, i++);
+			Point punto = elipse.getPunto(this.centroActual, i++);
 			g.fillOval(punto.x-radioCirculo/2, punto.y-radioCirculo/2, radioCirculo, radioCirculo);
-			g.drawLine(centro.x, centro.y, punto.x, punto.y);
+			g.drawLine(this.centroActual.x, this.centroActual.y, punto.x, punto.y);
 			iterator.next();
 		}
 	}
