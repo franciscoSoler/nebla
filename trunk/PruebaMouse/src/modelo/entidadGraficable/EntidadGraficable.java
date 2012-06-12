@@ -39,30 +39,79 @@ public class EntidadGraficable extends JPanel {
 		labelAtributos = new LinkedList<JLabel>();
 		atributos = new LinkedList<String>();
 		
-		atributos.add("Atributo0");
-		atributos.add("Atributo1");
-		/*atributos.add("Atributo2");
-		atributos.add("Atributo3");
-		atributos.add("Atributo4");
-		atributos.add("Atributo5");
-		atributos.add("Atributo6");
-		atributos.add("Atributo7");*/
+		atributos.add("Atributo 0");
+		atributos.add("Atributo numero 1");
+		atributos.add("Atributo 2");
+		atributos.add("Atributo 3");
+		atributos.add("Atributo 4");
+		atributos.add("Atributo 5");
+		atributos.add("Atributo 6");
+		atributos.add("Atributo 7");
 		
-		Iterator<String> iterator = atributos.iterator();
-		int i = 1;
-		while (iterator.hasNext()) {
-			JLabel labelAAgregar = new JLabel(iterator.next());
-			labelAAgregar.setSize(labelAAgregar.getMinimumSize());
-			//labelAAgregar.setVerticalTextPosition(JLabel.CENTER);
+		Iterator<String> iteratorNombre = atributos.iterator();
+		
+		while (iteratorNombre.hasNext()) {
+			JLabel labelAAgregar = new JLabel(iteratorNombre.next());
+			labelAAgregar.setSize(labelAAgregar.getMinimumSize().width,this.alturaLabel);
 			labelAtributos.add(labelAAgregar);
-			this.add(labelAAgregar);
-			System.out.println("Cantidad: "+i++);
 		}
-	
+		
 		elipse = new Elipse(this.alturaLabel, atributos.size());
 		int a = (int)elipse.getA();
 		int b = (int)elipse.getB();
 		this.setBounds(origin.x, origin.y, 2*a+radioCirculo, 2*b+radioCirculo + 2*this.alturaLabel);
+		Point centro = new Point(this.getWidth()/2,this.getHeight()/2);
+		
+		int i = 0;
+		Iterator<JLabel> iteratorLabel = labelAtributos.iterator();
+		
+		int xMax = 0;
+		int xMin = 0;	
+		while (iteratorLabel.hasNext()) {
+			Point punto = elipse.getPunto(centro, i++);
+			JLabel labelAtributo = iteratorLabel.next();
+			
+			int y = punto.y - this.alturaLabel/2;
+			labelAtributo.setVerticalAlignment(JLabel.CENTER);
+			
+			if (punto.x > centro.x) {
+				labelAtributo.setLocation(punto.x + this.radioCirculo/2, y);
+				int ancho = labelAtributo.getSize().width + labelAtributo.getLocation().x;
+				if (ancho > xMax) {
+					xMax = ancho;
+					System.out.println("Nombre: "+labelAtributo.getText() +"xMax: "+xMax);
+				}
+				
+			}
+			else if (punto.x < centro.x) {
+				labelAtributo.setLocation(punto.x - this.radioCirculo/2 - labelAtributo.getSize().width, y);
+				if (labelAtributo.getLocation().x < xMin) {
+					xMin = labelAtributo.getLocation().x;
+				}
+			}
+			else {
+				if (punto.y < centro.y) {
+					labelAtributo.setVerticalAlignment(JLabel.BOTTOM);
+					labelAtributo.setLocation(punto.x - labelAtributo.getSize().width/2, punto.y - this.radioCirculo/2 - this.alturaLabel);
+				}
+				else {
+					labelAtributo.setVerticalAlignment(JLabel.TOP);
+					labelAtributo.setLocation(punto.x - labelAtributo.getSize().width/2, punto.y + this.radioCirculo/2 );					
+				}
+			}
+			
+			this.add(labelAtributo);
+		}
+		
+		this.setSize(xMax+Math.abs(xMin), this.getSize().height);
+		
+		iteratorLabel = labelAtributos.iterator();
+		Point centroNuevo = new Point(this.getSize().width/2, this.getSize().height/2);
+		while (iteratorLabel.hasNext()) {
+			int diff = centroNuevo.x - centro.x; 
+			JLabel labelAtributo = iteratorLabel.next();
+			labelAtributo.setLocation(labelAtributo.getLocation().x+diff, labelAtributo.getLocation().y);
+		}
 		
 		JLabel labelNombre = new JLabel(this.nombreentidad);
 		labelNombre.setSize(labelNombre.getMinimumSize());
@@ -88,39 +137,7 @@ public class EntidadGraficable extends JPanel {
 			Point punto = elipse.getPunto(centro, i++);
 			g.fillOval(punto.x-radioCirculo/2, punto.y-radioCirculo/2, radioCirculo, radioCirculo);
 			g.drawLine(centro.x, centro.y, punto.x, punto.y);
-
-			JLabel labelAtributo = iterator.next();
-			
-			if (punto.x > centro.x) {
-				if (punto.y <= centro.y) {
-					// Primer cuadrante: 0 <= angulo <= 90
-					
-				}
-				else {
-					// Segundo cuadrante: 90 < angulo <= 180
-					
-				}
-			}
-			else if (punto.x < centro.x) {
-				if (punto.y >= centro.y) {
-					// Tercer cuadrante: 180 < angulo <= 270
-					
-				}
-				else {
-					// Cuarto cuadrante: 270 < angulo < 360
-					
-				}
-			}
-			else {
-				if (punto.y < centro.y) {
-					System.out.println("Entro aca 1");
-					labelAtributo.setLocation(punto.x - labelAtributo.getSize().width/2, punto.y - this.radioCirculo/2 - this.alturaLabel);
-				}
-				else {
-					System.out.println("Entro aca 2");
-					labelAtributo.setLocation(punto.x - labelAtributo.getSize().width/2, punto.y + this.radioCirculo/2 + this.alturaLabel);
-				}
-			}
+			iterator.next();
 		}
 	}
 }
