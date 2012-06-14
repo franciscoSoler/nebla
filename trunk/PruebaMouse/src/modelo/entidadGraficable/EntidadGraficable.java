@@ -129,8 +129,10 @@ public class EntidadGraficable extends JPanel {
 	}
 	
 	public void mover(Point origin) {
-		System.out.println("Se deberia estar moviendo");
-		this.setLocation(origin);
+		if ((origin.x > 0) && (origin.y > 0) && (origin.x+this.getSize().width < this.areaDeDibujo.getSize().width) && (origin.y+this.getSize().height < this.areaDeDibujo.getSize().height)) {
+			System.out.println("Se deberia estar moviendo");
+			this.setLocation(origin);
+		}
 	}
 	
 	public void paint(Graphics g) {
