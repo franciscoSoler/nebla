@@ -29,6 +29,8 @@ public class EntidadGraficable extends JPanel {
 	
 	private Elipse elipse;
 	
+	private Point posicionActual;
+	
 	private static final long serialVersionUID = 1L;
 	
 	public EntidadGraficable (String nombre, JPanel areaDeDibujo, Point origin){	
@@ -61,6 +63,7 @@ public class EntidadGraficable extends JPanel {
 		int a = (int)elipse.getA();
 		int b = (int)elipse.getB();
 		this.setBounds(origin.x, origin.y, 2*a+radioCirculo, 2*b+radioCirculo + 2*this.alturaLabel);
+		this.posicionActual = new Point(origin);
 		Point centro = new Point(this.getWidth()/2,this.getHeight()/2);
 		
 		int i = 0;
@@ -126,6 +129,7 @@ public class EntidadGraficable extends JPanel {
 	}
 	
 	public void mover(Point origin) {
+		System.out.println("Se deberia estar moviendo");
 		this.setLocation(origin);
 	}
 	

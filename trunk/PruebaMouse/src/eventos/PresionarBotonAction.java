@@ -29,6 +29,10 @@ public class PresionarBotonAction implements ActionListener {
 		String nombre = "Entidad " + this.cantidad++;
 		EntidadGraficable entidad = new EntidadGraficable(nombre,this.areaDeDibujo, new Point(15,15));
 		
+		DragAndDropEvent dragAndDrop = new DragAndDropEvent(entidad);
+		entidad.addMouseMotionListener(dragAndDrop);
+		entidad.addMouseListener(dragAndDrop);
+
 		//SeguirMouseEvent newEvent = new SeguirMouseEvent(entidad);
 		//this.areaDeDibujo.addMouseListener(newEvent);
 		//this.areaDeDibujo.addMouseMotionListener(newEvent);
