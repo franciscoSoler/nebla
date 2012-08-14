@@ -8,9 +8,12 @@ import java.awt.Point;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import util.Util;
+import vista.paneles.AreaDeDibujo;
 
 
 public class EntidadGraficable extends JPanel {
@@ -22,7 +25,7 @@ public class EntidadGraficable extends JPanel {
 	private int radioCirculo = 10;
 	private int alturaLabel = 25;
 		
-	private JPanel areaDeDibujo;
+	private AreaDeDibujo areaDeDibujo;
 	
 	private LinkedList<String> atributos;
 	private LinkedList<JLabel> labelAtributos;
@@ -33,7 +36,7 @@ public class EntidadGraficable extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public EntidadGraficable (String nombre, JPanel areaDeDibujo, Point origin){	
+	public EntidadGraficable (String nombre, AreaDeDibujo areaDeDibujo, Point origin){	
 		this.nombreentidad = nombre;
 		this.setLayout(null);
 		this.areaDeDibujo = areaDeDibujo;
@@ -42,6 +45,11 @@ public class EntidadGraficable extends JPanel {
 		labelAtributos = new LinkedList<JLabel>();
 		atributos = new LinkedList<String>();
 		
+		atributos.add("0");
+		atributos.add("1");
+		atributos.add("2");
+		
+		/*
 		atributos.add("Atributo 0");
 		atributos.add("Atributo numero 1");
 		atributos.add("Atributo 2");
@@ -50,6 +58,12 @@ public class EntidadGraficable extends JPanel {
 		atributos.add("Atributo 5");
 		atributos.add("Atributo 6");
 		atributos.add("Atributo 7");
+		atributos.add("Atributo 5");
+		atributos.add("Atributo 6");
+		atributos.add("Atributo 7");
+		atributos.add("Atributo 5");
+		atributos.add("Atributo 6");
+		atributos.add("Atributo 7");*/
 		
 		Iterator<String> iteratorNombre = atributos.iterator();
 		
@@ -125,13 +139,34 @@ public class EntidadGraficable extends JPanel {
 		this.add(labelNombre);
 		
 		this.areaDeDibujo.add(this);
+		this.areaDeDibujo.agregarComopnente(this);
 		this.areaDeDibujo.updateUI();
 	}
 	
 	public void mover(Point origin) {
 		if ((origin.x > 0) && (origin.y > 0) && (origin.x+this.getSize().width < this.areaDeDibujo.getSize().width) && (origin.y+this.getSize().height < this.areaDeDibujo.getSize().height)) {
-			System.out.println("Se deberia estar moviendo");
+			//System.out.println("Se deberia estar moviendo");
 			this.setLocation(origin);
+			Util util = new Util();
+			Iterator<JComponent> iter = this.areaDeDibujo.obtenerComponentes().iterator();
+			boolean seSuperponen = false;
+			while(iter.hasNext()){	
+				
+				JComponent componente = iter.next();
+				if (componente != this) {
+					
+					if (util.seSuperponen(componente, this)) {
+						seSuperponen = true;	
+					}
+					else {
+						componente.setBackground(Color.red);
+					}
+				}
+			}
+			if (seSuperponen) this.setBackground(Color.blue);
+			else this.setBackground(Color.red);
+			
+			
 		}
 	}
 	

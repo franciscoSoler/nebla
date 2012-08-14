@@ -26,6 +26,8 @@ public class SeguirMouseEvent implements MouseInputListener {
 		areaDeDibujo.removeMouseListener(this);
 		areaDeDibujo.removeMouseMotionListener(this);
 		
+		areaDeDibujo.agregarComopnente(entidadAMover);
+		
 	}
 	
 	public void mouseMoved(MouseEvent e) {
