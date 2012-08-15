@@ -143,30 +143,37 @@ public class EntidadGraficable extends JPanel {
 		this.areaDeDibujo.updateUI();
 	}
 	
+	private boolean seSuperpone (JComponent componente, LinkedList<JComponent> lista )
+	{
+		Iterator<JComponent> iter = lista.iterator();
+		boolean seSuperponen = false;
+		Util util = new Util();
+		while(iter.hasNext()){	
+			JComponent otroComponente = iter.next();
+			if (componente != otroComponente) {		
+				if (util.seSuperponen(componente, otroComponente)) {
+					seSuperponen = true;	
+				}
+			}
+		}
+		return seSuperponen; 
+	}
+	
 	public void mover(Point origin) {
 		if ((origin.x > 0) && (origin.y > 0) && (origin.x+this.getSize().width < this.areaDeDibujo.getSize().width) && (origin.y+this.getSize().height < this.areaDeDibujo.getSize().height)) {
 			//System.out.println("Se deberia estar moviendo");
 			this.setLocation(origin);
-			Util util = new Util();
+			
 			Iterator<JComponent> iter = this.areaDeDibujo.obtenerComponentes().iterator();
-			boolean seSuperponen = false;
+			
 			while(iter.hasNext()){	
-				
 				JComponent componente = iter.next();
-				if (componente != this) {
-					
-					if (util.seSuperponen(componente, this)) {
-						seSuperponen = true;	
-					}
-					else {
-						componente.setBackground(Color.red);
-					}
+				if (this.seSuperpone(componente, this.areaDeDibujo.obtenerComponentes())) {
+					componente.setBackground(Color.blue);
 				}
+				else componente.setBackground(Color.red);
 			}
-			if (seSuperponen) this.setBackground(Color.blue);
-			else this.setBackground(Color.red);
-			
-			
+
 		}
 	}
 	
