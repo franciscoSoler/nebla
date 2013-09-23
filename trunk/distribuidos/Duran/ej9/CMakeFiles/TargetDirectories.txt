@@ -1,3 +1,0 @@
-/home/distribuidos/Distribuidos/Duran/2c2013/ej9/CMakeFiles/src/launcher.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej9/CMakeFiles/src/procesador.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej9/CMakeFiles/src/terminator.dir
