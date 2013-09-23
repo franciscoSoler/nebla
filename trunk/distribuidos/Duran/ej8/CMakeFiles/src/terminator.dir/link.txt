@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/src/terminator.dir/src/Terminator.cpp.o CMakeFiles/src/terminator.dir/src/IPC/IPCException.cpp.o CMakeFiles/src/terminator.dir/src/IPC/Semaphore/Semaphore.cpp.o  -o src/terminator -rdynamic 

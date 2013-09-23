@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/src/tapadora.dir/src/Tapadora.cpp.o CMakeFiles/src/tapadora.dir/src/IPC/IPCException.cpp.o CMakeFiles/src/tapadora.dir/src/IPC/Semaphore/Semaphore.cpp.o  -o src/tapadora -rdynamic 

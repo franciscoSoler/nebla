@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/src/almacenadora.dir/src/Almacenadora.cpp.o CMakeFiles/src/almacenadora.dir/src/IPC/IPCException.cpp.o CMakeFiles/src/almacenadora.dir/src/IPC/Semaphore/Semaphore.cpp.o  -o src/almacenadora -rdynamic 
