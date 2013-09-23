@@ -1,4 +1,0 @@
-/home/distribuidos/Distribuidos/Duran/2c2013/ej7/CMakeFiles/src/analizador.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej7/CMakeFiles/src/launcher.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej7/CMakeFiles/src/productor.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej7/CMakeFiles/src/terminator.dir

@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/src/etiquetadora.dir/src/Etiquetadora.cpp.o CMakeFiles/src/etiquetadora.dir/src/IPC/IPCException.cpp.o CMakeFiles/src/etiquetadora.dir/src/IPC/Semaphore/Semaphore.cpp.o  -o src/etiquetadora -rdynamic 

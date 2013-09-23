@@ -1,6 +1,0 @@
-/home/distribuidos/Distribuidos/Duran/2c2013/ej8/CMakeFiles/src/almacenadora.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej8/CMakeFiles/src/embotelladora.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej8/CMakeFiles/src/etiquetadora.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej8/CMakeFiles/src/launcher.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej8/CMakeFiles/src/tapadora.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej8/CMakeFiles/src/terminator.dir

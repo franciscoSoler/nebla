@@ -1,5 +1,0 @@
-/home/distribuidos/Distribuidos/Duran/2c2013/ej5/CMakeFiles/src/bus.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej5/CMakeFiles/src/launcher.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej5/CMakeFiles/src/productor.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej5/CMakeFiles/src/puerta.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej5/CMakeFiles/src/terminator.dir

@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/src/launcher.dir/src/Launcher.cpp.o CMakeFiles/src/launcher.dir/src/IPC/IPCException.cpp.o CMakeFiles/src/launcher.dir/src/IPC/Semaphore/Semaphore.cpp.o CMakeFiles/src/launcher.dir/src/IPC/SharedMemory/MuestrasSharedMemory.cpp.o CMakeFiles/src/launcher.dir/src/IPC/SharedMemory/AbstractSharedMemory.cpp.o  -o src/launcher -rdynamic 
