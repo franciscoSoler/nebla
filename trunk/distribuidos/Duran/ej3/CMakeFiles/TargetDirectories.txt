@@ -1,7 +1,0 @@
-/home/distribuidos/Distribuidos/Duran/2c2013/ej3/CMakeFiles/src/estacionCheckIn.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej3/CMakeFiles/src/estacionSospechosos.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej3/CMakeFiles/src/estacionVerificacion.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej3/CMakeFiles/src/launcher.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej3/CMakeFiles/src/persona.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej3/CMakeFiles/src/robot.dir
-/home/distribuidos/Distribuidos/Duran/2c2013/ej3/CMakeFiles/src/terminator.dir
