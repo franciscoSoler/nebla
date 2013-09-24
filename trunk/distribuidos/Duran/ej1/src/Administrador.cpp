@@ -28,7 +28,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "ControladorAdministrador.h"
+#include "./Controladores/ControladorAdministrador.h"
 
 int main(int argc, char **argv)
 {

@@ -7,10 +7,10 @@
 
 #define TAM_BUFFER 255
 
-// Path utilizado para inicializar los semáforos a través de la función ftok()
-#define DIRECTORY "/home/distribuidos/Distribuidos/Duran"
+// Path utilizado para inicializar los IPC a través de la función ftok()
+#define DIRECTORY "/home/Duran"
 
-// Ids de los IPCs (Creo que esto está mal)
+// Ids de los IPCs
 #define ID_SEM_EMBOTELLADORA	1
 #define ID_SEM_ETIQUETADORA	2
 #define ID_SEM_TAPADORA		3

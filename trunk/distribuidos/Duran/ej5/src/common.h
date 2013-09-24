@@ -1,20 +1,16 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-#include <string.h>
-#include <stdio.h>
-#include <errno.h>
-
 #define TAM_BUFFER 255
 
 #define TAM_SALA 5
 #define MAX_BUSES 10
 #define CAPACIDAD_BUS 6
 
-// Path utilizado para inicializar los semáforos a través de la función ftok()
-#define DIRECTORY "/home/distribuidos/Distribuidos/Duran"
+// Path utilizado para inicializar los IPC a través de la función ftok()
+#define DIRECTORY "/home/Duran"
 
-// Ids de los IPCs (Creo que esto está mal)
+// Ids de los IPC
 #define ID_SEM_CONTROL_SALA	1
 #define ID_SEM_BUSES		2
 #define ID_SEM_PUERTA		3
