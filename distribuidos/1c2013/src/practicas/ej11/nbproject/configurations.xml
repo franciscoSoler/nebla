@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="88">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="ejercicicio1-11">
+      <df name="IPC">
+        <in>AbstractSharedMemory.cpp</in>
+        <in>AbstractSharedMemory.h</in>
+        <in>Semaphore.cpp</in>
+        <in>Semaphore.h</in>
+        <in>SharedMemoryCantidadHidrogenos.cpp</in>
+        <in>SharedMemoryCantidadHidrogenos.h</in>
+        <in>SharedMemoryCantidadOxigenos.cpp</in>
+        <in>SharedMemoryCantidadOxigenos.h</in>
+        <in>SharedMemoryH1Activo.cpp</in>
+        <in>SharedMemoryH1Activo.h</in>
+      </df>
+      <in>Hidrogeno.cpp</in>
+      <in>Hidrogeno.h</in>
+      <in>Identificadores.h</in>
+      <in>Logger.cpp</in>
+      <in>Logger.h</in>
+      <in>Oxigeno.cpp</in>
+      <in>Oxigeno.h</in>
+      <in>ProcesoHidrogeno.cpp</in>
+      <in>ProcesoLauncher.cpp</in>
+      <in>ProcesoOxigeno.cpp</in>
+      <in>ProcesoTerminator.cpp</in>
+      <in>SharedMemoryH1Activo.h</in>
+      <in>SorteadorEntero.cpp</in>
+      <in>SorteadorEntero.h</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f makefile</buildCommand>
+          <cleanCommand>${MAKE} -f makefile clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="Hidrogeno.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Hidrogeno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="IPC/AbstractSharedMemory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="IPC/AbstractSharedMemory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="IPC/Semaphore.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="IPC/Semaphore.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="IPC/SharedMemoryCantidadHidrogenos.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="IPC/SharedMemoryCantidadHidrogenos.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="IPC/SharedMemoryCantidadOxigenos.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="IPC/SharedMemoryCantidadOxigenos.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="IPC/SharedMemoryH1Activo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="IPC/SharedMemoryH1Activo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Identificadores.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Oxigeno.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Oxigeno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ProcesoHidrogeno.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ProcesoLauncher.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ProcesoOxigeno.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ProcesoTerminator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SharedMemoryH1Activo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SorteadorEntero.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SorteadorEntero.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

@@ -1,0 +1,108 @@
+15/04/2013 17:08:56 - [Lanzador:4028] - Comenzando con Hidrogenos: 9, Oxigenos: 4 .
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semComienzoHidrogeno
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semComienzoOxigeno
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semFinH1
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semFinH2
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semH1Activo
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semCantHidrogenos
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semCantOxigenos
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando semaforo semH1Generado
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando memoria compartida smH1Activo
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando memoria compartida smCantHidrogenos
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando memoria compartida smCantOxigenos
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando procesos hidrogeno.
+15/04/2013 17:08:56 - [Lanzador:4028] - Procesos hidrogeno creados.
+15/04/2013 17:08:56 - [Lanzador:4028] - Creando procesos oxigeno.
+15/04/2013 17:08:56 - [Lanzador:4028] - Procesos oxigeno creados.
+15/04/2013 17:08:56 - [Lanzador:4028] - Despertando primer hidrogeno.
+15/04/2013 17:08:56 - [Lanzador:4028] - Termino.
+15/04/2013 17:08:56 - [Oxigeno 2:4039] - Esperando comienzo.
+15/04/2013 17:08:57 - [Hidrogeno 6:4034] - Hidrogeno generado.
+15/04/2013 17:09:00 - [Hidrogeno 5:4033] - Hidrogeno generado.
+15/04/2013 17:09:00 - [Hidrogeno 5:4033] - Esperando fin.
+15/04/2013 17:09:00 - [Hidrogeno 6:4034] - Despertando a un proceso oxigeno.
+15/04/2013 17:09:00 - [Hidrogeno 6:4034] - Esperando fin.
+15/04/2013 17:09:00 - [Oxigeno 4:4041] - Generando oxigeno ( 2.8 seg ).
+15/04/2013 17:09:02 - [Oxigeno 4:4041] - Oxigeno generado.
+15/04/2013 17:09:03 - [Oxigeno 4:4041] - Decrementando 2 hidrogenos y 1 oxigeno.
+15/04/2013 17:09:03 - [Oxigeno 4:4041] - Molecula de agua generada.
+15/04/2013 17:09:03 - [Oxigeno 4:4041] - Terminando primer hidrogeno.
+15/04/2013 17:09:03 - [Oxigeno 4:4041] - Terminando segundo hidrogeno.
+15/04/2013 17:09:03 - [Oxigeno 4:4041] - Despertando a un nuevo proceso hidrogeno.
+15/04/2013 17:09:03 - [Oxigeno 4:4041] - Termino.
+15/04/2013 17:09:03 - [Hidrogeno 5:4033] - Termino.
+15/04/2013 17:09:03 - [Hidrogeno 6:4034] - Termino.
+15/04/2013 17:09:03 - [Hidrogeno 4:4032] - Comenzando.
+15/04/2013 17:09:03 - [Hidrogeno 4:4032] - Hay atomos suficientes ( H = 7 , O = 3 ).
+15/04/2013 17:09:03 - [Hidrogeno 4:4032] - Soy el primer hidrogeno de la molecula.
+15/04/2013 17:09:03 - [Hidrogeno 4:4032] - Despertando segundo hidrogeno.
+15/04/2013 17:09:03 - [Hidrogeno 4:4032] - Generando hidrogeno ( 1.7 seg ).
+15/04/2013 17:09:03 - [Hidrogeno 9:4037] - Comenzando.
+15/04/2013 17:09:03 - [Hidrogeno 9:4037] - Hay atomos suficientes ( H = 7 , O = 3 ).
+15/04/2013 17:09:03 - [Hidrogeno 9:4037] - Soy el segundo hidrogeno de la molecula.
+15/04/2013 17:09:03 - [Hidrogeno 9:4037] - Generando hidrogeno ( 3.6 seg ).
+15/04/2013 17:09:04 - [Hidrogeno 4:4032] - Hidrogeno generado.
+15/04/2013 17:09:04 - [Hidrogeno 4:4032] - Esperando fin.
+15/04/2013 17:09:06 - [Hidrogeno 9:4037] - Hidrogeno generado.
+15/04/2013 17:09:06 - [Hidrogeno 9:4037] - Despertando a un proceso oxigeno.
+15/04/2013 17:09:06 - [Hidrogeno 9:4037] - Esperando fin.
+15/04/2013 17:09:06 - [Oxigeno 1:4038] - Generando oxigeno ( 3.3 seg ).
+15/04/2013 17:09:09 - [Oxigeno 1:4038] - Oxigeno generado.
+15/04/2013 17:09:09 - [Oxigeno 1:4038] - Decrementando 2 hidrogenos y 1 oxigeno.
+15/04/2013 17:09:09 - [Oxigeno 1:4038] - Molecula de agua generada.
+15/04/2013 17:09:09 - [Oxigeno 1:4038] - Terminando primer hidrogeno.
+15/04/2013 17:09:09 - [Oxigeno 1:4038] - Terminando segundo hidrogeno.
+15/04/2013 17:09:09 - [Oxigeno 1:4038] - Despertando a un nuevo proceso hidrogeno.
+15/04/2013 17:09:09 - [Oxigeno 1:4038] - Termino.
+15/04/2013 17:09:09 - [Hidrogeno 4:4032] - Termino.
+15/04/2013 17:09:09 - [Hidrogeno 9:4037] - Termino.
+15/04/2013 17:09:09 - [Hidrogeno 3:4031] - Comenzando.
+15/04/2013 17:09:09 - [Hidrogeno 3:4031] - Hay atomos suficientes ( H = 5 , O = 2 ).
+15/04/2013 17:09:09 - [Hidrogeno 3:4031] - Soy el primer hidrogeno de la molecula.
+15/04/2013 17:09:09 - [Hidrogeno 3:4031] - Despertando segundo hidrogeno.
+15/04/2013 17:09:09 - [Hidrogeno 3:4031] - Generando hidrogeno ( 2.9 seg ).
+15/04/2013 17:09:09 - [Hidrogeno 8:4036] - Comenzando.
+15/04/2013 17:09:09 - [Hidrogeno 8:4036] - Hay atomos suficientes ( H = 5 , O = 2 ).
+15/04/2013 17:09:09 - [Hidrogeno 8:4036] - Soy el segundo hidrogeno de la molecula.
+15/04/2013 17:09:09 - [Hidrogeno 8:4036] - Generando hidrogeno ( 1.6 seg ).
+15/04/2013 17:09:10 - [Hidrogeno 8:4036] - Hidrogeno generado.
+15/04/2013 17:09:11 - [Hidrogeno 3:4031] - Hidrogeno generado.
+15/04/2013 17:09:11 - [Hidrogeno 3:4031] - Esperando fin.
+15/04/2013 17:09:11 - [Hidrogeno 8:4036] - Despertando a un proceso oxigeno.
+15/04/2013 17:09:11 - [Hidrogeno 8:4036] - Esperando fin.
+15/04/2013 17:09:11 - [Oxigeno 3:4040] - Generando oxigeno ( 3.5 seg ).
+15/04/2013 17:09:14 - [Oxigeno 3:4040] - Oxigeno generado.
+15/04/2013 17:09:14 - [Oxigeno 3:4040] - Decrementando 2 hidrogenos y 1 oxigeno.
+15/04/2013 17:09:14 - [Oxigeno 3:4040] - Molecula de agua generada.
+15/04/2013 17:09:14 - [Oxigeno 3:4040] - Terminando primer hidrogeno.
+15/04/2013 17:09:14 - [Oxigeno 3:4040] - Terminando segundo hidrogeno.
+15/04/2013 17:09:14 - [Oxigeno 3:4040] - Despertando a un nuevo proceso hidrogeno.
+15/04/2013 17:09:14 - [Oxigeno 3:4040] - Termino.
+15/04/2013 17:09:14 - [Hidrogeno 7:4035] - Comenzando.
+15/04/2013 17:09:14 - [Hidrogeno 7:4035] - Hay atomos suficientes ( H = 3 , O = 1 ).
+15/04/2013 17:09:14 - [Hidrogeno 7:4035] - Soy el primer hidrogeno de la molecula.
+15/04/2013 17:09:14 - [Hidrogeno 7:4035] - Despertando segundo hidrogeno.
+15/04/2013 17:09:14 - [Hidrogeno 7:4035] - Generando hidrogeno ( 1.6 seg ).
+15/04/2013 17:09:14 - [Hidrogeno 2:4030] - Comenzando.
+15/04/2013 17:09:14 - [Hidrogeno 2:4030] - Hay atomos suficientes ( H = 3 , O = 1 ).
+15/04/2013 17:09:14 - [Hidrogeno 2:4030] - Soy el segundo hidrogeno de la molecula.
+15/04/2013 17:09:14 - [Hidrogeno 2:4030] - Generando hidrogeno ( 3.8 seg ).
+15/04/2013 17:09:15 - [Hidrogeno 7:4035] - Hidrogeno generado.
+15/04/2013 17:09:15 - [Hidrogeno 7:4035] - Esperando fin.
+15/04/2013 17:09:17 - [Hidrogeno 2:4030] - Hidrogeno generado.
+15/04/2013 17:09:17 - [Hidrogeno 2:4030] - Despertando a un proceso oxigeno.
+15/04/2013 17:09:17 - [Hidrogeno 2:4030] - Esperando fin.
+15/04/2013 17:09:17 - [Oxigeno 2:4039] - Generando oxigeno ( 4.9 seg ).
+15/04/2013 17:09:21 - [Oxigeno 2:4039] - Oxigeno generado.
+15/04/2013 17:09:21 - [Oxigeno 2:4039] - Decrementando 2 hidrogenos y 1 oxigeno.
+15/04/2013 17:09:21 - [Oxigeno 2:4039] - Molecula de agua generada.
+15/04/2013 17:09:21 - [Oxigeno 2:4039] - Terminando primer hidrogeno.
+15/04/2013 17:09:21 - [Oxigeno 2:4039] - Terminando segundo hidrogeno.
+15/04/2013 17:09:21 - [Oxigeno 2:4039] - Despertando a un nuevo proceso hidrogeno.
+15/04/2013 17:09:21 - [Oxigeno 2:4039] - Termino.
+15/04/2013 17:09:21 - [Hidrogeno 7:4035] - Termino.
+15/04/2013 17:09:21 - [Hidrogeno 2:4030] - Termino.
+15/04/2013 17:09:21 - [Hidrogeno 1:4029] - Comenzando.
+15/04/2013 17:09:21 - [Hidrogeno 1:4029] - No hay atomos suficientes ( H = 1 , O = 0 ).
+15/04/2013 17:09:21 - [Hidrogeno 1:4029] - Esperando comienzo.
+15/04/2013 17:10:06 - [Hidrogeno 1:4029] - Termino por falta de IPC.

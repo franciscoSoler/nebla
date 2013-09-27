@@ -1,0 +1,44 @@
+#
+# Makefile para la prueba de RPC  con envio y devolucion de mensajes
+#  (ida y vuelta)
+#
+CC = gcc  
+BIN = printmsg_iv  remprint_iv msg_iv_svc
+GEN = msg_iv_clnt.c msg_iv_svc.c msg_iv.h msg_iv_xdr.c
+LIB =
+CFLAGS = -ggdb
+LDFLAGS=
+RPCCOM = rpcgen 
+
+
+all: $(BIN)
+
+#
+#   Esta es la version solo local del programa
+# 
+printmsg_iv: printmsg_iv.o
+	$(CC) $(LDFLAGS) -o $@ printmsg_iv.o
+
+#
+#
+$(GEN): msg_iv.x
+	$(RPCCOM) msg_iv.x
+
+msg_iv_svc: msg_iv_proc.o msg_iv_svc.o msg_iv_xdr.o
+	$(CC) $(LDFLAGS) -o $@ msg_iv_proc.o msg_iv_svc.o msg_iv_xdr.o  $(LIB)
+
+remprint_iv: remprint_iv.o msg_iv_clnt.o msg_iv_xdr.o
+	$(CC) $(LDFLAGS) -o $@ remprint_iv.o msg_iv_clnt.o msg_iv_xdr.o $(LIB)
+
+msg_iv_xdr.o: msg_iv_xdr.c
+
+remprint_iv.o: remprint_iv.c msg_iv.h
+
+msg_iv_proc.o: msg_iv_proc.c msg_iv.h
+
+clean:
+	rm -f $(GEN) *.o
+
+clobber: clean
+	rm -f $(BIN)
+
