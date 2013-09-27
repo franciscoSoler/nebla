@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="88">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="ejercicicio1-11">
+      <df name="IPC">
+        <in>AbstractSharedMemory.cpp</in>
+        <in>AbstractSharedMemory.h</in>
+        <in>Semaphore.cpp</in>
+        <in>Semaphore.h</in>
+        <in>SharedMemoryCantidadHidrogenos.cpp</in>
+        <in>SharedMemoryCantidadHidrogenos.h</in>
+        <in>SharedMemoryCantidadOxigenos.cpp</in>
+        <in>SharedMemoryCantidadOxigenos.h</in>
+        <in>SharedMemoryH1Activo.cpp</in>
+        <in>SharedMemoryH1Activo.h</in>
+      </df>
+      <in>Hidrogeno.cpp</in>
+      <in>Hidrogeno.h</in>
+      <in>Identificadores.h</in>
+      <in>Logger.cpp</in>
+      <in>Logger.h</in>
+      <in>Oxigeno.cpp</in>
+      <in>Oxigeno.h</in>
+      <in>ProcesoHidrogeno.cpp</in>
+      <in>ProcesoLauncher.cpp</in>
+      <in>ProcesoOxigeno.cpp</in>
+      <in>ProcesoTerminator.cpp</in>
+      <in>SharedMemoryH1Activo.h</in>
+      <in>SorteadorEntero.cpp</in>
+      <in>SorteadorEntero.h</in>
+    </df>
+  </logicalFolder>
+  <projectmakefile>makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>

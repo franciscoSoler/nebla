@@ -1,0 +1,524 @@
+Launcher: Vendedores: 5 Clientes: 50
+Launcher: Durmiendo durante 4
+Vendedor: 4 Iniciando
+Cliente: 1 Iniciando
+Vendedor: 1 Iniciando
+Vendedor: 3 Iniciando
+Vendedor: 5 Iniciando
+Vendedor: 4 le llego el cliente numero: 1
+Cliente: 1 Me toco el vendedor numero: 4
+Cliente: 1 Desea comprar: 3 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 1
+Cliente: 1 con error: Monto insuficinete
+Cliente: 1 Terminado 
+Vendedor: 2 Iniciando
+Launcher: Durmiendo durante 4
+Cliente: 2 Iniciando
+Vendedor: 1 le llego el cliente numero: 2
+Cliente: 2 Me toco el vendedor numero: 1
+Cliente: 2 Desea comprar: 4 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 2
+Cliente: 2 con error: Monto insuficinete
+Cliente: 2 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 3 Iniciando
+Vendedor: 3 le llego el cliente numero: 3
+Cliente: 3 Me toco el vendedor numero: 3
+Cliente: 3 Desea comprar: 3 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 3
+Cliente: 3 con error: Monto insuficinete
+Cliente: 3 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 4 Iniciando
+Vendedor: 5 le llego el cliente numero: 4
+Cliente: 4 Me toco el vendedor numero: 5
+Cliente: 4 Desea comprar: 3 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 4
+Cliente: 4 con error: Monto insuficinete
+Cliente: 4 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 5 Iniciando
+Vendedor: 4 le llego el cliente numero: 5
+Cliente: 5 Me toco el vendedor numero: 4
+Cliente: 5 Desea comprar: 2 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 5
+Cliente: 5 con error: Monto insuficinete
+Cliente: 5 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 6 Iniciando
+Vendedor: 2 le llego el cliente numero: 6
+Cliente: 6 Me toco el vendedor numero: 2
+Cliente: 6 Desea comprar: 3 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 6
+Cliente: 6 con error: Monto insuficinete
+Cliente: 6 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 7 Iniciando
+Vendedor: 1 le llego el cliente numero: 7
+Cliente: 7 Me toco el vendedor numero: 1
+Cliente: 7 Desea comprar: 2 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 7
+Cliente: 7 con error: Monto insuficinete
+Cliente: 7 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 8 Iniciando
+Vendedor: 3 le llego el cliente numero: 8
+Cliente: 8 Me toco el vendedor numero: 3
+Cliente: 8 Desea comprar: 3 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 8
+Cliente: 8 con error: Monto insuficinete
+Cliente: 8 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 9 Iniciando
+Vendedor: 5 le llego el cliente numero: 9
+Cliente: 9 Me toco el vendedor numero: 5
+Cliente: 9 Desea comprar: 3 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 9
+Cliente: 9 con error: Monto insuficinete
+Cliente: 9 Terminado 
+Launcher: Durmiendo durante 5
+Cliente: 10 Iniciando
+Vendedor: 4 le llego el cliente numero: 10
+Cliente: 10 Me toco el vendedor numero: 4
+Cliente: 10 Desea comprar: 4 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 10
+Cliente: 10 obtuvo el ticket: 50
+Cliente: 10 obtuvo vuelto: 0
+Vendedor: 4 Cantidad requerida: 1 Dinero: 10
+Cliente: 10 obtuvo el ticket: 49
+Cliente: 10 obtuvo vuelto: 0
+Vendedor: 4 Cantidad requerida: 1 Dinero: 10
+Cliente: 10 obtuvo el ticket: 48
+Cliente: 10 obtuvo vuelto: 0
+Vendedor: 4 Cantidad requerida: 1 Dinero: 10
+Cliente: 10 obtuvo el ticket: 47
+Cliente: 10 obtuvo vuelto: 0
+Cliente: 10 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 11 Iniciando
+Vendedor: 2 le llego el cliente numero: 11
+Cliente: 11 Me toco el vendedor numero: 2
+Cliente: 11 Desea comprar: 2 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 11
+Cliente: 11 obtuvo el ticket: 46
+Cliente: 11 obtuvo vuelto: 1
+Vendedor: 2 Cantidad requerida: 1 Dinero: 11
+Cliente: 11 obtuvo el ticket: 45
+Cliente: 11 obtuvo vuelto: 1
+Cliente: 11 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 12 Iniciando
+Vendedor: 1 le llego el cliente numero: 12
+Cliente: 12 Me toco el vendedor numero: 1
+Cliente: 12 Desea comprar: 2 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 12
+Cliente: 12 obtuvo el ticket: 44
+Cliente: 12 obtuvo vuelto: 2
+Vendedor: 1 Cantidad requerida: 1 Dinero: 12
+Cliente: 12 obtuvo el ticket: 43
+Cliente: 12 obtuvo vuelto: 2
+Cliente: 12 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 13 Iniciando
+Vendedor: 3 le llego el cliente numero: 13
+Cliente: 13 Me toco el vendedor numero: 3
+Cliente: 13 Desea comprar: 4 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 13
+Cliente: 13 obtuvo el ticket: 42
+Cliente: 13 obtuvo vuelto: 3
+Vendedor: 3 Cantidad requerida: 1 Dinero: 13
+Cliente: 13 obtuvo el ticket: 41
+Cliente: 13 obtuvo vuelto: 3
+Vendedor: 3 Cantidad requerida: 1 Dinero: 13
+Cliente: 13 obtuvo el ticket: 40
+Cliente: 13 obtuvo vuelto: 3
+Vendedor: 3 Cantidad requerida: 1 Dinero: 13
+Cliente: 13 obtuvo el ticket: 39
+Cliente: 13 obtuvo vuelto: 3
+Cliente: 13 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 14 Iniciando
+Vendedor: 5 le llego el cliente numero: 14
+Cliente: 14 Me toco el vendedor numero: 5
+Cliente: 14 Desea comprar: 2 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 14
+Cliente: 14 obtuvo el ticket: 38
+Cliente: 14 obtuvo vuelto: 4
+Vendedor: 5 Cantidad requerida: 1 Dinero: 14
+Cliente: 14 obtuvo el ticket: 37
+Cliente: 14 obtuvo vuelto: 4
+Cliente: 14 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 15 Iniciando
+Vendedor: 4 le llego el cliente numero: 15
+Cliente: 15 Me toco el vendedor numero: 4
+Cliente: 15 Desea comprar: 2 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 15
+Cliente: 15 obtuvo el ticket: 36
+Cliente: 15 obtuvo vuelto: 5
+Vendedor: 4 Cantidad requerida: 1 Dinero: 15
+Cliente: 15 obtuvo el ticket: 35
+Cliente: 15 obtuvo vuelto: 5
+Cliente: 15 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 16 Iniciando
+Vendedor: 2 le llego el cliente numero: 16
+Cliente: 16 Me toco el vendedor numero: 2
+Cliente: 16 Desea comprar: 1 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 16
+Cliente: 16 obtuvo el ticket: 34
+Cliente: 16 obtuvo vuelto: 6
+Cliente: 16 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 17 Iniciando
+Vendedor: 1 le llego el cliente numero: 17
+Cliente: 17 Me toco el vendedor numero: 1
+Cliente: 17 Desea comprar: 4 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 17
+Cliente: 17 obtuvo el ticket: 33
+Cliente: 17 obtuvo vuelto: 7
+Vendedor: 1 Cantidad requerida: 1 Dinero: 17
+Cliente: 17 obtuvo el ticket: 32
+Cliente: 17 obtuvo vuelto: 7
+Vendedor: 1 Cantidad requerida: 1 Dinero: 17
+Cliente: 17 obtuvo el ticket: 31
+Cliente: 17 obtuvo vuelto: 7
+Vendedor: 1 Cantidad requerida: 1 Dinero: 17
+Cliente: 17 obtuvo el ticket: 30
+Cliente: 17 obtuvo vuelto: 7
+Cliente: 17 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 18 Iniciando
+Vendedor: 3 le llego el cliente numero: 18
+Cliente: 18 Me toco el vendedor numero: 3
+Cliente: 18 Desea comprar: 3 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 18
+Cliente: 18 obtuvo el ticket: 29
+Cliente: 18 obtuvo vuelto: 8
+Vendedor: 3 Cantidad requerida: 1 Dinero: 18
+Cliente: 18 obtuvo el ticket: 28
+Cliente: 18 obtuvo vuelto: 8
+Vendedor: 3 Cantidad requerida: 1 Dinero: 18
+Cliente: 18 obtuvo el ticket: 27
+Cliente: 18 obtuvo vuelto: 8
+Cliente: 18 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 19 Iniciando
+Vendedor: 5 le llego el cliente numero: 19
+Cliente: 19 Me toco el vendedor numero: 5
+Cliente: 19 Desea comprar: 2 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 19
+Cliente: 19 obtuvo el ticket: 26
+Cliente: 19 obtuvo vuelto: 9
+Vendedor: 5 Cantidad requerida: 1 Dinero: 19
+Cliente: 19 obtuvo el ticket: 25
+Cliente: 19 obtuvo vuelto: 9
+Cliente: 19 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 20 Iniciando
+Vendedor: 4 le llego el cliente numero: 20
+Cliente: 20 Me toco el vendedor numero: 4
+Cliente: 20 Desea comprar: 3 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 20
+Cliente: 20 obtuvo el ticket: 24
+Cliente: 20 obtuvo vuelto: 10
+Vendedor: 4 Cantidad requerida: 1 Dinero: 20
+Cliente: 20 obtuvo el ticket: 23
+Cliente: 20 obtuvo vuelto: 10
+Vendedor: 4 Cantidad requerida: 1 Dinero: 20
+Cliente: 20 obtuvo el ticket: 22
+Cliente: 20 obtuvo vuelto: 10
+Cliente: 20 Terminado 
+Launcher: Durmiendo durante 5
+Cliente: 21 Iniciando
+Vendedor: 2 le llego el cliente numero: 21
+Cliente: 21 Me toco el vendedor numero: 2
+Cliente: 21 Desea comprar: 2 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 21
+Cliente: 21 obtuvo el ticket: 21
+Cliente: 21 obtuvo vuelto: 11
+Vendedor: 2 Cantidad requerida: 1 Dinero: 21
+Cliente: 21 obtuvo el ticket: 20
+Cliente: 21 obtuvo vuelto: 11
+Cliente: 21 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 22 Iniciando
+Vendedor: 1 le llego el cliente numero: 22
+Cliente: 22 Me toco el vendedor numero: 1
+Cliente: 22 Desea comprar: 3 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 22
+Cliente: 22 obtuvo el ticket: 19
+Cliente: 22 obtuvo vuelto: 12
+Vendedor: 1 Cantidad requerida: 1 Dinero: 22
+Cliente: 22 obtuvo el ticket: 18
+Cliente: 22 obtuvo vuelto: 12
+Vendedor: 1 Cantidad requerida: 1 Dinero: 22
+Cliente: 22 obtuvo el ticket: 17
+Cliente: 22 obtuvo vuelto: 12
+Cliente: 22 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 23 Iniciando
+Vendedor: 3 le llego el cliente numero: 23
+Cliente: 23 Me toco el vendedor numero: 3
+Cliente: 23 Desea comprar: 2 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 23
+Cliente: 23 obtuvo el ticket: 16
+Cliente: 23 obtuvo vuelto: 13
+Vendedor: 3 Cantidad requerida: 1 Dinero: 23
+Cliente: 23 obtuvo el ticket: 15
+Cliente: 23 obtuvo vuelto: 13
+Cliente: 23 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 24 Iniciando
+Vendedor: 5 le llego el cliente numero: 24
+Cliente: 24 Me toco el vendedor numero: 5
+Cliente: 24 Desea comprar: 1 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 24
+Cliente: 24 obtuvo el ticket: 14
+Cliente: 24 obtuvo vuelto: 14
+Cliente: 24 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 25 Iniciando
+Vendedor: 4 le llego el cliente numero: 25
+Cliente: 25 Me toco el vendedor numero: 4
+Cliente: 25 Desea comprar: 3 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 25
+Cliente: 25 obtuvo el ticket: 13
+Cliente: 25 obtuvo vuelto: 15
+Vendedor: 4 Cantidad requerida: 1 Dinero: 25
+Cliente: 25 obtuvo el ticket: 12
+Cliente: 25 obtuvo vuelto: 15
+Vendedor: 4 Cantidad requerida: 1 Dinero: 25
+Cliente: 25 obtuvo el ticket: 11
+Cliente: 25 obtuvo vuelto: 15
+Cliente: 25 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 26 Iniciando
+Vendedor: 2 le llego el cliente numero: 26
+Cliente: 26 Me toco el vendedor numero: 2
+Cliente: 26 Desea comprar: 3 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 26
+Cliente: 26 obtuvo el ticket: 10
+Cliente: 26 obtuvo vuelto: 16
+Vendedor: 2 Cantidad requerida: 1 Dinero: 26
+Cliente: 26 obtuvo el ticket: 9
+Cliente: 26 obtuvo vuelto: 16
+Vendedor: 2 Cantidad requerida: 1 Dinero: 26
+Cliente: 26 obtuvo el ticket: 8
+Cliente: 26 obtuvo vuelto: 16
+Cliente: 26 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 27 Iniciando
+Vendedor: 1 le llego el cliente numero: 27
+Cliente: 27 Me toco el vendedor numero: 1
+Cliente: 27 Desea comprar: 4 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 27
+Cliente: 27 obtuvo el ticket: 7
+Cliente: 27 obtuvo vuelto: 17
+Vendedor: 1 Cantidad requerida: 1 Dinero: 27
+Cliente: 27 obtuvo el ticket: 6
+Cliente: 27 obtuvo vuelto: 17
+Vendedor: 1 Cantidad requerida: 1 Dinero: 27
+Cliente: 27 obtuvo el ticket: 5
+Cliente: 27 obtuvo vuelto: 17
+Vendedor: 1 Cantidad requerida: 1 Dinero: 27
+Cliente: 27 obtuvo el ticket: 4
+Cliente: 27 obtuvo vuelto: 17
+Cliente: 27 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 28 Iniciando
+Vendedor: 3 le llego el cliente numero: 28
+Cliente: 28 Me toco el vendedor numero: 3
+Cliente: 28 Desea comprar: 2 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 28
+Cliente: 28 obtuvo el ticket: 3
+Cliente: 28 obtuvo vuelto: 18
+Vendedor: 3 Cantidad requerida: 1 Dinero: 28
+Cliente: 28 obtuvo el ticket: 2
+Cliente: 28 obtuvo vuelto: 18
+Cliente: 28 Terminado 
+Launcher: Durmiendo durante 5
+Cliente: 29 Iniciando
+Vendedor: 5 le llego el cliente numero: 29
+Cliente: 29 Me toco el vendedor numero: 5
+Cliente: 29 Desea comprar: 3 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 29
+Cliente: 29 obtuvo el ticket: 1
+Cliente: 29 obtuvo vuelto: 19
+Vendedor: 5 Cantidad requerida: 1 Dinero: 29
+Cliente: 29 con error: No hay tickets suficientes
+Cliente: 29 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 30 Iniciando
+Vendedor: 4 le llego el cliente numero: 30
+Cliente: 30 Me toco el vendedor numero: 4
+Cliente: 30 Desea comprar: 3 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 30
+Cliente: 30 con error: No hay tickets suficientes
+Cliente: 30 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 31 Iniciando
+Vendedor: 2 le llego el cliente numero: 31
+Cliente: 31 Me toco el vendedor numero: 2
+Cliente: 31 Desea comprar: 3 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 31
+Cliente: 31 con error: No hay tickets suficientes
+Cliente: 31 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 32 Iniciando
+Vendedor: 1 le llego el cliente numero: 32
+Cliente: 32 Me toco el vendedor numero: 1
+Cliente: 32 Desea comprar: 1 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 32
+Cliente: 32 con error: No hay tickets suficientes
+Cliente: 32 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 33 Iniciando
+Vendedor: 3 le llego el cliente numero: 33
+Cliente: 33 Me toco el vendedor numero: 3
+Cliente: 33 Desea comprar: 1 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 33
+Cliente: 33 con error: No hay tickets suficientes
+Cliente: 33 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 34 Iniciando
+Vendedor: 5 le llego el cliente numero: 34
+Cliente: 34 Me toco el vendedor numero: 5
+Cliente: 34 Desea comprar: 1 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 34
+Cliente: 34 con error: No hay tickets suficientes
+Cliente: 34 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 35 Iniciando
+Vendedor: 4 le llego el cliente numero: 35
+Cliente: 35 Me toco el vendedor numero: 4
+Cliente: 35 Desea comprar: 3 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 35
+Cliente: 35 con error: No hay tickets suficientes
+Cliente: 35 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 36 Iniciando
+Vendedor: 2 le llego el cliente numero: 36
+Cliente: 36 Me toco el vendedor numero: 2
+Cliente: 36 Desea comprar: 3 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 36
+Cliente: 36 con error: No hay tickets suficientes
+Cliente: 36 Terminado 
+Launcher: Durmiendo durante 5
+Cliente: 37 Iniciando
+Vendedor: 1 le llego el cliente numero: 37
+Cliente: 37 Me toco el vendedor numero: 1
+Cliente: 37 Desea comprar: 2 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 37
+Cliente: 37 con error: No hay tickets suficientes
+Cliente: 37 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 38 Iniciando
+Vendedor: 3 le llego el cliente numero: 38
+Cliente: 38 Me toco el vendedor numero: 3
+Cliente: 38 Desea comprar: 4 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 38
+Cliente: 38 con error: No hay tickets suficientes
+Cliente: 38 Terminado 
+Launcher: Durmiendo durante 3
+Cliente: 39 Iniciando
+Vendedor: 5 le llego el cliente numero: 39
+Cliente: 39 Me toco el vendedor numero: 5
+Cliente: 39 Desea comprar: 1 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 39
+Cliente: 39 con error: No hay tickets suficientes
+Cliente: 39 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 40 Iniciando
+Vendedor: 4 le llego el cliente numero: 40
+Cliente: 40 Me toco el vendedor numero: 4
+Cliente: 40 Desea comprar: 3 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 40
+Cliente: 40 con error: No hay tickets suficientes
+Cliente: 40 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 41 Iniciando
+Vendedor: 2 le llego el cliente numero: 41
+Cliente: 41 Me toco el vendedor numero: 2
+Cliente: 41 Desea comprar: 4 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 41
+Cliente: 41 con error: No hay tickets suficientes
+Cliente: 41 Terminado 
+Launcher: Durmiendo durante 4
+Cliente: 42 Iniciando
+Vendedor: 1 le llego el cliente numero: 42
+Cliente: 42 Me toco el vendedor numero: 1
+Cliente: 42 Desea comprar: 3 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 42
+Cliente: 42 con error: No hay tickets suficientes
+Cliente: 42 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 43 Iniciando
+Vendedor: 3 le llego el cliente numero: 43
+Cliente: 43 Me toco el vendedor numero: 3
+Cliente: 43 Desea comprar: 1 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 43
+Cliente: 43 con error: No hay tickets suficientes
+Cliente: 43 Terminado 
+Launcher: Durmiendo durante 5
+Cliente: 44 Iniciando
+Vendedor: 5 le llego el cliente numero: 44
+Cliente: 44 Me toco el vendedor numero: 5
+Cliente: 44 Desea comprar: 1 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 44
+Cliente: 44 con error: No hay tickets suficientes
+Cliente: 44 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 45 Iniciando
+Vendedor: 4 le llego el cliente numero: 45
+Cliente: 45 Me toco el vendedor numero: 4
+Cliente: 45 Desea comprar: 3 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 45
+Cliente: 45 con error: No hay tickets suficientes
+Cliente: 45 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 46 Iniciando
+Vendedor: 2 le llego el cliente numero: 46
+Cliente: 46 Me toco el vendedor numero: 2
+Cliente: 46 Desea comprar: 1 tickets
+Vendedor: 2 Cantidad requerida: 1 Dinero: 46
+Cliente: 46 con error: No hay tickets suficientes
+Cliente: 46 Terminado 
+Launcher: Durmiendo durante 5
+Cliente: 47 Iniciando
+Vendedor: 1 le llego el cliente numero: 47
+Cliente: 47 Me toco el vendedor numero: 1
+Cliente: 47 Desea comprar: 4 tickets
+Vendedor: 1 Cantidad requerida: 1 Dinero: 47
+Cliente: 47 con error: No hay tickets suficientes
+Cliente: 47 Terminado 
+Launcher: Durmiendo durante 1
+Cliente: 48 Iniciando
+Vendedor: 3 le llego el cliente numero: 48
+Cliente: 48 Me toco el vendedor numero: 3
+Cliente: 48 Desea comprar: 3 tickets
+Vendedor: 3 Cantidad requerida: 1 Dinero: 48
+Cliente: 48 con error: No hay tickets suficientes
+Cliente: 48 Terminado 
+Launcher: Durmiendo durante 2
+Cliente: 49 Iniciando
+Vendedor: 5 le llego el cliente numero: 49
+Cliente: 49 Me toco el vendedor numero: 5
+Cliente: 49 Desea comprar: 3 tickets
+Vendedor: 5 Cantidad requerida: 1 Dinero: 49
+Cliente: 49 con error: No hay tickets suficientes
+Cliente: 49 Terminado 
+Launcher: Durmiendo durante 5
+Cliente: 50 Iniciando
+Vendedor: 4 le llego el cliente numero: 50
+Cliente: 50 Me toco el vendedor numero: 4
+Cliente: 50 Desea comprar: 4 tickets
+Vendedor: 4 Cantidad requerida: 1 Dinero: 50
+Cliente: 50 con error: No hay tickets suficientes
+Cliente: 50 Terminado 
+Launcher: Terminado 
+Vendedor: 2 Terminado 
+Vendedor: 1 Terminado 
+Vendedor: 3 Terminado 
+Vendedor: 5 Terminado 
+Vendedor: 4 Terminado 
