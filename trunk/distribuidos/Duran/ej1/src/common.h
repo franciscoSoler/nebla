@@ -7,7 +7,7 @@
 
 #define TAM_BUFFER 255
 
-#define DIRECTORY "/home/distribuidos/Duran"
+#define DIRECTORY "/home/Duran"
 
 #define ID_SEMCONTROL		1
 #define ID_SHMEM		2
