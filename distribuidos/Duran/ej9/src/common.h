@@ -9,7 +9,7 @@
 #define TOTAL 100
 #define MAX_PROCESADORES 50
 
-#define DIRECTORY "/home/distribuidos/Duran"
+#define DIRECTORY "/home/Duran"
 
 #define ID_SHMEM_BUFFER		1
 #define ID_SEM_CONTROL_BUFFER	2

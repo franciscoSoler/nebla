@@ -9,7 +9,7 @@
 #define CANT_ANALIZADORES 6
 #define CANT_MUESTRAS 5
 
-#define DIRECTORY "/home/distribuidos/Duran"
+#define DIRECTORY "/home/Duran"
 
 #define ID_SHMEM_MUESTRAS	1
 #define ID_SEM_CONTROL		2

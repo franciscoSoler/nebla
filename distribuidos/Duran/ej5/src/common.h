@@ -11,7 +11,7 @@
 #define MAX_BUSES 10
 #define CAPACIDAD_BUS 6
 
-#define DIRECTORY "/home/distribuidos/Duran"
+#define DIRECTORY "/home/Duran"
 
 #define ID_SEM_CONTROL_SALA	1
 #define ID_SEM_BUSES		2
