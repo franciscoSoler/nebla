@@ -67,7 +67,6 @@ void ControladorRobot5Agv::iniciarControlador() {
     semaforoAgvAux = Semaphore();
     semaforoAgvAux.getSemaphore(DIRECTORY, ID_SEM_AGV_3, 1);
     semaforoAgv[2] = &semaforoAgvAux;
- 
 }
 
 PedidoCanasto ControladorRobot5Agv::obtenerPedido() {
@@ -100,6 +99,4 @@ void ControladorRobot5Agv::resolverPedido(Canasto canasto, IDAgv idDestino) {
     
     /* Indico que dejo de trabajar */
     semaforoSincronizacionRobot5.signal();
-
-    
 }

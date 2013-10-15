@@ -26,10 +26,13 @@
 #define ID_SEM_AGV_2 10
 #define ID_SEM_AGV_3 11
 
-/* Tipos utilizados como identificadores de las colas */
+/* Tipos utilizados como identificadores de los mensajes de las colas */
 
-#define TIPO_PEDIDO_CANASTO 1
+#define TIPO_PEDIDO_PRODUCTO 1
+#define TIPO_PEDIDO_CANASTO 2
 
+/* Estructuras utilizadas para la comunicacion entre los AGV y el robot 5.
+ */
 
 typedef int IDAgv;
 
@@ -53,5 +56,40 @@ typedef struct {
 	long mtype; // tipo = PEDIDO
 	PedidoCanasto pedidoCanasto;
 } PedidoAgv;
+
+/* Estructuras utilizadas para la comunicacion entre los robots 5 y 11.
+ */
+
+typedef enum {
+    GABINETE_1 = 0,
+    GABINETE_2 = 1,
+    GABINETE_3
+} TipoGabinete;
+
+typedef enum {
+    PRODUCTO_1 = 0,
+    PRODUCTO_2 = 1,
+    PRODUCTO_3
+} TipoProducto;
+
+typedef struct {
+    int nroOrdenCompra;
+    TipoProducto tipo; // Nº de producto
+    int cantidad;
+    int diferenciaMinima;
+} PedidoProducto;
+
+typedef struct {
+    TipoGabinete gabinete;  
+    int nroOrdenCompra;
+} ProductoEnProduccion;
+
+/* Cinta transportadora */
+
+typedef struct {
+    ProductoEnProduccion gabinetes[5];
+    bool lugarVacion[5];
+    int posicionActual;
+} CintaTransportadora_6;
 
 #endif
