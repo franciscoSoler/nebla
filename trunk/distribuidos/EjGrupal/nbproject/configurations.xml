@@ -27,6 +27,7 @@
           <in>IPCException.h</in>
         </df>
         <in>Robot5AGV.cpp</in>
+        <in>Robot5Cinta.cpp</in>
         <in>common.h</in>
       </df>
     </df>
@@ -137,6 +138,8 @@
       <item path="src/Robot5AGV.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
         </ccTool>
+      </item>
+      <item path="src/Robot5Cinta.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/common.h" ex="false" tool="3" flavor2="0">
       </item>

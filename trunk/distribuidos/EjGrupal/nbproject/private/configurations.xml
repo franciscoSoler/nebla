@@ -55,6 +55,7 @@
           <in>IPCException.h</in>
         </df>
         <in>Robot5AGV.cpp</in>
+        <in>Robot5Cinta.cpp</in>
         <in>common.h</in>
       </df>
     </df>
