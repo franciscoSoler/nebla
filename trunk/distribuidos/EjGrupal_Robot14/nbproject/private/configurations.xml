@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="89">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="ConAPI">
+      <df name="CMakeFiles">
+        <df name="CMakeTmp">
+        </df>
+        <df name="CompilerIdC">
+          <in>CMakeCCompilerId.c</in>
+        </df>
+        <df name="CompilerIdCXX">
+          <in>CMakeCXXCompilerId.cpp</in>
+        </df>
+        <df name="out">
+          <df name="Launcher.dir">
+            <df name="src">
+              <df name="API">
+                <df name="Robot11">
+                </df>
+                <df name="Robot14">
+                  <df name="State">
+                  </df>
+                </df>
+                <df name="Robot16">
+                  <df name="State">
+                  </df>
+                </df>
+              </df>
+              <df name="CSO">
+                <df name="ConfigFileParser">
+                </df>
+                <df name="Exceptions">
+                </df>
+                <df name="IPCs">
+                </df>
+                <df name="Logger">
+                </df>
+              </df>
+              <df name="Objects">
+              </df>
+            </df>
+          </df>
+          <df name="Robot11.dir">
+            <df name="src">
+              <df name="API">
+                <df name="Robot11">
+                </df>
+                <df name="Robot14">
+                  <df name="State">
+                  </df>
+                </df>
+                <df name="Robot16">
+                  <df name="State">
+                  </df>
+                </df>
+              </df>
+              <df name="CSO">
+                <df name="ConfigFileParser">
+                </df>
+                <df name="Exceptions">
+                </df>
+                <df name="IPCs">
+                </df>
+                <df name="Logger">
+                </df>
+              </df>
+              <df name="Objects">
+              </df>
+            </df>
+          </df>
+          <df name="Robot14.dir">
+            <df name="src">
+              <df name="API">
+                <df name="Robot11">
+                </df>
+                <df name="Robot14">
+                  <df name="State">
+                  </df>
+                </df>
+                <df name="Robot16">
+                  <df name="State">
+                  </df>
+                </df>
+              </df>
+              <df name="CSO">
+                <df name="ConfigFileParser">
+                </df>
+                <df name="Exceptions">
+                </df>
+                <df name="IPCs">
+                </df>
+                <df name="Logger">
+                </df>
+              </df>
+              <df name="Objects">
+              </df>
+            </df>
+          </df>
+          <df name="Robot16.dir">
+            <df name="src">
+              <df name="API">
+                <df name="Robot11">
+                </df>
+                <df name="Robot14">
+                  <df name="State">
+                  </df>
+                </df>
+                <df name="Robot16">
+                  <df name="State">
+                  </df>
+                </df>
+              </df>
+              <df name="CSO">
+                <df name="ConfigFileParser">
+                </df>
+                <df name="Exceptions">
+                </df>
+                <df name="IPCs">
+                </df>
+                <df name="Logger">
+                </df>
+              </df>
+              <df name="Objects">
+              </df>
+            </df>
+          </df>
+          <df name="Terminator.dir">
+            <df name="src">
+              <df name="API">
+                <df name="Robot11">
+                </df>
+                <df name="Robot14">
+                  <df name="State">
+                  </df>
+                </df>
+                <df name="Robot16">
+                  <df name="State">
+                  </df>
+                </df>
+              </df>
+              <df name="CSO">
+                <df name="ConfigFileParser">
+                </df>
+                <df name="Exceptions">
+                </df>
+                <df name="IPCs">
+                </df>
+                <df name="Logger">
+                </df>
+              </df>
+              <df name="Objects">
+              </df>
+            </df>
+          </df>
+        </df>
+      </df>
+      <df name="out">
+      </df>
+      <df name="src">
+        <df name="API">
+          <df name="Robot11">
+            <in>ControllerRobot11.cpp</in>
+            <in>ControllerRobot11.h</in>
+            <in>IControllerRobot11.h</in>
+          </df>
+          <df name="Robot14">
+            <df name="State">
+              <in>IStateR14.h</in>
+              <in>StateR14_ConCarga.cpp</in>
+              <in>StateR14_ConCarga.h</in>
+              <in>StateR14_Durmiendo.cpp</in>
+              <in>StateR14_Durmiendo.h</in>
+              <in>StateR14_Trabajando.cpp</in>
+              <in>StateR14_Trabajando.h</in>
+            </df>
+            <in>ControllerRobot14.cpp</in>
+            <in>ControllerRobot14.h</in>
+            <in>IControllerRobot14.h</in>
+          </df>
+          <df name="Robot16">
+            <df name="State">
+              <in>IStateR16.h</in>
+              <in>StateR16_ConCarga.cpp</in>
+              <in>StateR16_ConCarga.h</in>
+              <in>StateR16_Durmiendo.cpp</in>
+              <in>StateR16_Durmiendo.h</in>
+              <in>StateR16_Trabajando.cpp</in>
+              <in>StateR16_Trabajando.h</in>
+            </df>
+            <in>ControllerRobot16.cpp</in>
+            <in>ControllerRobot16.h</in>
+            <in>IControllerRobot16.h</in>
+          </df>
+        </df>
+        <df name="CSO">
+          <df name="ConfigFileParser">
+            <in>ConfigFileParser.cpp</in>
+            <in>ConfigFileParser.h</in>
+            <in>EqualLineProcessor.cpp</in>
+            <in>EqualLineProcessor.h</in>
+            <in>IConfigFileParser.h</in>
+            <in>ILineProcessor.h</in>
+          </df>
+          <df name="Exceptions">
+            <in>Exception.cpp</in>
+            <in>Exception.h</in>
+          </df>
+          <df name="IPCs">
+            <in>IPCObject.cpp</in>
+            <in>IPCObject.h</in>
+            <in>Semaphore.cpp</in>
+            <in>Semaphore.h</in>
+            <in>SharedMemory.h</in>
+          </df>
+          <df name="Logger">
+            <in>LockFile.cpp</in>
+            <in>LockFile.h</in>
+            <in>Logger.cpp</in>
+            <in>Logger.h</in>
+          </df>
+        </df>
+        <df name="Objects">
+          <in>Cinta.h</in>
+          <in>DataSM_R11_R14.cpp</in>
+          <in>DataSM_R11_R14.h</in>
+          <in>DataSM_R14_R16.cpp</in>
+          <in>DataSM_R14_R16.h</in>
+          <in>Util.cpp</in>
+          <in>Util.h</in>
+        </df>
+        <in>Launcher.cpp</in>
+        <in>Robot11.cpp</in>
+        <in>Robot14.cpp</in>
+        <in>Robot16.cpp</in>
+        <in>Terminator.cpp</in>
+        <in>common.h</in>
+        <in>definedTypes.h</in>
+      </df>
+    </df>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>

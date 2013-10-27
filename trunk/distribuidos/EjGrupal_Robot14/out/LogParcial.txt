@@ -1,0 +1,861 @@
+LogFile created succesfully
+
+[1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|o|o|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 despertado para trabajar en cinta[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Elige Cinta N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|o|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|o|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|o|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|o|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|o|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|o|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|o|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|o|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|o|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|o|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |1|1|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|o|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|o|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|1|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |x|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Cinta llena. Robot se bloquea.[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|x| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|1|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|1|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|3|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|x| - Cantidad: |3|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Cinta llena. Robot se bloquea.[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |x|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |x|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|1|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|1|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|1|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|1|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|1|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|1|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|o|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|o|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |x|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Cinta llena. Robot se bloquea.[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |x|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Robot14 trabajando en la cinta. Robot se bloquea[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Cinta llena. Robot se bloquea.[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |x|o| - Cantidad: |2|3|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°1 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Cinta llena. Robot se bloquea.[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|x| - Cantidad: |2|3|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°2 - R11: |o|x| - Cantidad: |2|2|[1;0m
+[1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve cinta[1;0m
+[1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta N°1: |x|x|x|[1;0m
+[1;0m[1;35mRobot14 - moverCinta: Cinta N°2 es movida. |o|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Se despierta al Robot11 de la cinta N°2[1;0m
+[1;0m[1;0mRobot11 - CintaN°2: Es liberado.[1;0m
+[1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta N°2: |x|x|x|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°2 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |3|2|[1;0m
+[1;0m[1;0mRobot14 - moverCinta: Cinta N°1 no pudo ser movida.[1;0m
+[1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[1;0m[1;37mRobot14 - depositarCaja: Se tira Caja hasta implementación del Robot 16[1;0m
+[1;0m[1;35mRobot14 - depositarCaja: Elige Cinta N°1 - R11: |o|o| - Cantidad: |2|2|[1;0m
+[1;43m[1;31mTerminator: IPC shMem_R11_R14 destruido[1;0m
+[1;43m[1;31mTerminator: IPC shMem_R14_R16 destruido[1;0m
+[1;43m[1;31mTerminator: IPC semMutex_shMem_R11_R14 destruido[1;0m
+[1;43m[1;31mTerminator: IPC semMutex_shMem_R14_R16 destruido[1;0m
+[1;43m[1;31mTerminator: IPC semR11_Cinta13 destruido[1;0m
+[1;43m[1;31mTerminator: IPC semR14 destruido[1;0m
+[1;43m[1;31mRobot14 - moverCinta: Semaphore semMutex_shMem_R11_R14 Error - wait: Invalid argument[1;0m
