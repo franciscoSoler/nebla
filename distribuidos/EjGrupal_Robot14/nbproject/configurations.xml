@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="89">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="ConAPI">
+      <df name="src">
+        <df name="API">
+          <df name="Robot11">
+            <in>ControllerRobot11.cpp</in>
+            <in>ControllerRobot11.h</in>
+            <in>IControllerRobot11.h</in>
+          </df>
+          <df name="Robot14">
+            <df name="State">
+              <in>IStateR14.h</in>
+              <in>StateR14_ConCarga.cpp</in>
+              <in>StateR14_ConCarga.h</in>
+              <in>StateR14_Durmiendo.cpp</in>
+              <in>StateR14_Durmiendo.h</in>
+              <in>StateR14_Trabajando.cpp</in>
+              <in>StateR14_Trabajando.h</in>
+            </df>
+            <in>ControllerRobot14.cpp</in>
+            <in>ControllerRobot14.h</in>
+            <in>IControllerRobot14.h</in>
+          </df>
+          <df name="Robot16">
+            <df name="State">
+              <in>IStateR16.h</in>
+              <in>StateR16_ConCarga.cpp</in>
+              <in>StateR16_ConCarga.h</in>
+              <in>StateR16_Durmiendo.cpp</in>
+              <in>StateR16_Durmiendo.h</in>
+              <in>StateR16_Trabajando.cpp</in>
+              <in>StateR16_Trabajando.h</in>
+            </df>
+            <in>ControllerRobot16.cpp</in>
+            <in>ControllerRobot16.h</in>
+            <in>IControllerRobot16.h</in>
+          </df>
+        </df>
+        <df name="CSO">
+          <df name="ConfigFileParser">
+            <in>ConfigFileParser.cpp</in>
+            <in>ConfigFileParser.h</in>
+            <in>EqualLineProcessor.cpp</in>
+            <in>EqualLineProcessor.h</in>
+            <in>IConfigFileParser.h</in>
+            <in>ILineProcessor.h</in>
+          </df>
+          <df name="Exceptions">
+            <in>Exception.cpp</in>
+            <in>Exception.h</in>
+          </df>
+          <df name="IPCs">
+            <in>IPCObject.cpp</in>
+            <in>IPCObject.h</in>
+            <in>Semaphore.cpp</in>
+            <in>Semaphore.h</in>
+            <in>SharedMemory.h</in>
+          </df>
+          <df name="Logger">
+            <in>LockFile.cpp</in>
+            <in>LockFile.h</in>
+            <in>Logger.cpp</in>
+            <in>Logger.h</in>
+          </df>
+        </df>
+        <df name="Objects">
+          <in>Cinta.h</in>
+          <in>DataSM_R11_R14.cpp</in>
+          <in>DataSM_R11_R14.h</in>
+          <in>DataSM_R14_R16.cpp</in>
+          <in>DataSM_R14_R16.h</in>
+          <in>Util.cpp</in>
+          <in>Util.h</in>
+        </df>
+        <in>Launcher.cpp</in>
+        <in>Robot11.cpp</in>
+        <in>Robot14.cpp</in>
+        <in>Robot16.cpp</in>
+        <in>Terminator.cpp</in>
+        <in>common.h</in>
+        <in>definedTypes.h</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>CMakeLists.txt</itemPath>
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>src</pElem>
+              <pElem>src/CSO</pElem>
+              <pElem>src/CSO/IPCs</pElem>
+              <pElem>src/CSO/Logger</pElem>
+              <pElem>src/Objects</pElem>
+              <pElem>src/CSO/ConfigFileParser</pElem>
+              <pElem>src/CSO/Exceptions</pElem>
+              <pElem>src/API</pElem>
+              <pElem>src/API/Robot11</pElem>
+              <pElem>src/API/Robot14</pElem>
+              <pElem>src/API/Robot14/State</pElem>
+              <pElem>src/API/Robot16</pElem>
+              <pElem>src/API/Robot16/State</pElem>
+              <pElem>.</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="src/API/Robot11/ControllerRobot11.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot11/ControllerRobot11.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot11/IControllerRobot11.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot14/ControllerRobot14.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot14/ControllerRobot14.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot14/IControllerRobot14.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot14/State/IStateR14.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/API/Robot14/State/StateR14_ConCarga.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot14/State/StateR14_ConCarga.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot14/State/StateR14_Durmiendo.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot14/State/StateR14_Durmiendo.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot14/State/StateR14_Trabajando.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot14/State/StateR14_Trabajando.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot16/ControllerRobot16.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot16/ControllerRobot16.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot16/IControllerRobot16.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot16/State/IStateR16.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/API/Robot16/State/StateR16_ConCarga.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot16/State/StateR16_ConCarga.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot16/State/StateR16_Durmiendo.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot16/State/StateR16_Durmiendo.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot16/State/StateR16_Trabajando.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/API/Robot16/State/StateR16_Trabajando.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/CSO/ConfigFileParser/ConfigFileParser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/CSO/ConfigFileParser/ConfigFileParser.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/CSO/ConfigFileParser/EqualLineProcessor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/CSO/ConfigFileParser/EqualLineProcessor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/CSO/ConfigFileParser/IConfigFileParser.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/CSO/ConfigFileParser/ILineProcessor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/CSO/Exceptions/Exception.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/CSO/Exceptions/Exception.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/CSO/IPCs/IPCObject.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/CSO/IPCs/IPCObject.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/CSO/IPCs/Semaphore.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/CSO/IPCs/Semaphore.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/CSO/IPCs/SharedMemory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/CSO/Logger/LockFile.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/CSO/Logger/LockFile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/CSO/Logger/Logger.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/CSO/Logger/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Launcher.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Objects/Cinta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Objects/DataSM_R11_R14.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Objects/DataSM_R11_R14.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Objects/DataSM_R14_R16.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Objects/DataSM_R14_R16.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Objects/Util.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Objects/Util.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Robot11.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Robot14.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Robot16.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Terminator.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/common.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/definedTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

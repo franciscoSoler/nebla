@@ -1,0 +1,415 @@
+LogFile created succesfully
+
+[2013-10-27]-[16:58:51] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[16:58:51] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[16:58:57] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[16:58:57] - [1;0m[1;0mRobot11 - CintaN°1: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:58:57] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[16:58:57] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[16:58:57] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:58:58] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:00] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:00] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[16:59:02] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:02] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:02] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[16:59:02] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:03] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:04] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[16:59:04] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:04] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[16:59:04] - [1;0m[1;0mRobot11 - CintaN°2: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:04] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[16:59:04] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[16:59:04] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:05] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:05] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:06] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:06] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[16:59:07] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[16:59:07] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:07] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[16:59:08] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[16:59:08] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:08] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:08] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[16:59:08] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:09] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[16:59:09] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:10] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:11] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:12] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:12] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[16:59:13] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[16:59:13] - [1;0m[1;0mRobot11 - CintaN°1: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:13] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[16:59:13] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[16:59:13] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:13] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[16:59:13] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[16:59:14] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:14] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[16:59:16] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:16] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[16:59:17] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:17] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:17] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[16:59:17] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[16:59:17] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:18] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:19] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:19] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:20] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:20] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:21] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:21] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[16:59:22] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:22] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[16:59:22] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[16:59:23] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[16:59:24] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:24] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:24] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[16:59:24] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:25] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[16:59:25] - [1;0m[1;0mRobot11 - CintaN°1: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:25] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[16:59:25] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[16:59:25] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[16:59:25] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:25] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:26] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:26] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:26] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[16:59:27] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:27] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:27] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[16:59:28] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:28] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:28] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[16:59:28] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[16:59:29] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[16:59:30] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:30] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[16:59:31] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:32] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:32] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[16:59:33] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:33] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:33] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[16:59:33] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:34] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[16:59:34] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:35] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[16:59:35] - [1;0m[1;0mRobot11 - CintaN°2: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:35] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[16:59:35] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[16:59:35] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:35] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:36] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[16:59:36] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:37] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:37] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:37] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[16:59:38] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[16:59:39] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:39] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[16:59:39] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[16:59:41] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:41] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:41] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[16:59:41] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[16:59:41] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:42] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:43] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:43] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:44] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:44] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:45] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:45] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[16:59:45] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:45] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[16:59:46] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:46] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[16:59:47] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:48] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[16:59:48] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:49] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:50] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:51] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[16:59:51] - [1;0m[1;0mRobot11 - CintaN°2: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:51] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[16:59:51] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[16:59:51] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:51] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:51] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[16:59:52] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[16:59:52] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[16:59:53] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:53] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[16:59:54] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:54] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[16:59:55] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[16:59:55] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[16:59:55] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[16:59:55] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[16:59:55] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[16:59:56] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[16:59:56] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[16:59:57] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[16:59:58] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[16:59:58] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[16:59:59] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:59] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[16:59:59] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[16:59:59] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:00] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:01] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:01] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:01] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[17:00:01] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[17:00:01] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:02] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:03] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[17:00:03] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:04] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:05] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:05] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:06] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:07] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[17:00:10] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[17:00:10] - [1;0m[1;0mRobot11 - CintaN°2: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:10] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[17:00:10] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[17:00:10] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:00:11] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[17:00:12] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:00:13] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:13] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[17:00:14] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:14] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:14] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[17:00:14] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[17:00:14] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:15] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:00:15] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:16] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:17] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:00:17] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:18] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:18] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:00:18] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:18] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:19] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[17:00:19] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:19] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:19] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[17:00:20] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[17:00:20] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:21] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:00:21] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:22] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:23] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:00:23] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:24] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:24] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:25] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:25] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[17:00:25] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:26] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:26] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:26] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[17:00:26] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[17:00:26] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[17:00:26] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:27] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:28] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:00:28] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:29] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:30] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:00:30] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:30] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:31] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:31] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:00:31] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:32] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[17:00:33] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:33] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:33] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[17:00:33] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:34] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[17:00:34] - [1;0m[1;0mRobot11 - CintaN°2: Robot14 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:34] - [1;0m[1;0mRobot14 - moverCinta: Se bloquea esperando que un Robot11 coloque cajas[1;0m
+[2013-10-27]-[17:00:34] - [1;0m[1;0mRobot14 - moverCinta: Es desbloqueado[1;0m
+[2013-10-27]-[17:00:34] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:34] - [1;0m[1;35mRobot14 - moverCinta: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[17:00:34] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:00:35] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[17:00:35] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:35] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:00:36] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:37] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:37] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:37] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:37] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[17:00:38] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:39] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:39] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:39] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[17:00:39] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[17:00:39] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:39] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[17:00:40] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:40] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:00:41] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:41] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:00:42] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[17:00:42] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:43] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|x|[1;0m
+[2013-10-27]-[17:00:43] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:43] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:43] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:43] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:00:44] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:45] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[17:00:45] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:45] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:45] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|1|[1;0m
+[2013-10-27]-[17:00:45] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[17:00:45] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:46] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:47] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:00:47] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:48] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:49] - [1;0m[1;0mRobot11 - CintaN°2: Primer lugar ocupado. Mueve Cinta13[1;0m
+[2013-10-27]-[17:00:49] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|x|o|[1;0m
+[2013-10-27]-[17:00:49] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:00:49] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:49] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:50] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|x|[1;0m
+[2013-10-27]-[17:00:50] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:51] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:51] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:00:51] - [1;0m[1;0mRobot16 - moverCinta: Se bloquea esperando que un Robot14 coloque cajas[1;0m
+[2013-10-27]-[17:00:53] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:53] - [1;0m[1;0mRobot14 - depositarCaja: Robot16 despertado para trabajar en cinta[1;0m
+[2013-10-27]-[17:00:53] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |1|2|[1;0m
+[2013-10-27]-[17:00:53] - [1;0m[1;0mRobot16 - moverCinta: Es liberado[1;0m
+[2013-10-27]-[17:00:53] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:00:54] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:00:55] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|x|[1;0m
+[2013-10-27]-[17:00:55] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:00:56] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:00:57] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:57] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[17:00:57] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:00:57] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:00:58] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:00:58] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |1|1|[1;0m
+[2013-10-27]-[17:00:58] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:00:59] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:01:00] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:01:00] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:01] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:01] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[17:01:01] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:01:02] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[17:01:02] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:03] - [1;0m[1;0mRobot11 - CintaN°1: Primer lugar ocupado. Mueve Cinta13[1;0m
+[2013-10-27]-[17:01:03] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|x|o|[1;0m
+[2013-10-27]-[17:01:03] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:03] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |2|1|[1;0m
+[2013-10-27]-[17:01:03] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:03] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:01:04] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:01:05] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|x|[1;0m
+[2013-10-27]-[17:01:05] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:01:06] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:07] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:07] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:01:07] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:01:08] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:09] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:09] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|1|[1;0m
+[2013-10-27]-[17:01:09] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:09] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:01:10] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:01:10] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:01:11] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:01:12] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:12] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:01:12] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:13] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:13] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[17:01:13] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|x|o|[1;0m
+[2013-10-27]-[17:01:14] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:01:14] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|x|[1;0m
+[2013-10-27]-[17:01:15] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:01:15] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:15] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:01:16] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|x|[1;0m
+[2013-10-27]-[17:01:16] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:01:17] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[17:01:17] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:17] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[17:01:17] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:01:18] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:19] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:19] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |1|1|[1;0m
+[2013-10-27]-[17:01:19] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:19] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:01:20] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:01:20] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:01:21] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:01:21] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:01:22] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°2 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:22] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°2[1;0m
+[2013-10-27]-[17:01:22] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:23] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:01:24] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|x|o|[1;0m
+[2013-10-27]-[17:01:24] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|0|[1;0m
+[2013-10-27]-[17:01:24] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|x|[1;0m
+[2013-10-27]-[17:01:25] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:01:25] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:25] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:01:26] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:01:27] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:01:27] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:28] - [1;0m[1;35mRobot11 - CintaN°2: Caja depositada. Cinta13 N°2: |x|o|o|[1;0m
+[2013-10-27]-[17:01:28] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:28] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:01:28] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:01:29] - [1;0m[1;35mRobot11 - CintaN°1: Caja depositada. Cinta13 N°1: |x|o|o|[1;0m
+[2013-10-27]-[17:01:29] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:30] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:30] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°1 - R11: |o|o| - Cantidad: |1|1|[1;0m
+[2013-10-27]-[17:01:30] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:30] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:01:31] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:01:32] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:01:32] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:01:33] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:34] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°1 es movida. |o|o|x|[1;0m
+[2013-10-27]-[17:01:34] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|x|o|[1;0m
+[2013-10-27]-[17:01:35] - [1;0m[1;0mRobot14 - moverCinta: Cinta13 N°1 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:35] - [1;0m[1;0mRobot14 - tomarCaja: Retira caja de la cinta N°1[1;0m
+[2013-10-27]-[17:01:35] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|o|o|x|[1;0m
+[2013-10-27]-[17:01:36] - [1;0m[1;0mRobot16 - moverCinta: Cinta15 no pudo ser movida.[1;0m
+[2013-10-27]-[17:01:36] - [1;0m[1;0mRobot16 - tomarCaja: Retira caja de la Cinta15[1;0m
+[2013-10-27]-[17:01:37] - [1;0m[1;35mRobot14 - depositarCaja: Caja depositada. Cinta15: |x|o|o|o|o|[1;0m
+[2013-10-27]-[17:01:37] - [1;0m[1;35mRobot14 - depositarCaja: Elige Cinta13 N°2 - R11: |o|o| - Cantidad: |0|1|[1;0m
+[2013-10-27]-[17:01:37] - [1;0m[1;37mRobot16 - depositarCaja: Se tira Caja hasta implementación del Despacho y APT[1;0m
+[2013-10-27]-[17:01:38] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|x|o|o|o|[1;0m
+[2013-10-27]-[17:01:39] - [1;0m[1;35mRobot14 - moverCinta: Cinta13 N°2 es movida. |o|x|o|[1;0m
+[2013-10-27]-[17:01:39] - [1;0m[1;35mRobot16 - moverCinta: Cinta15 es movida. |o|o|x|o|o|[1;0m
+[2013-10-27]-[17:01:40] - [1;0m[1;37mTerminator: IPC shMem_R11_R14 destruido[1;0m
+[2013-10-27]-[17:01:40] - [1;0m[1;37mTerminator: IPC shMem_R14_R16 destruido[1;0m
+[2013-10-27]-[17:01:40] - [1;0m[1;37mTerminator: IPC semMutex_shMem_R11_R14 destruido[1;0m
+[2013-10-27]-[17:01:40] - [1;0m[1;37mTerminator: IPC semMutex_shMem_R14_R16 destruido[1;0m
+[2013-10-27]-[17:01:40] - [1;0m[1;37mTerminator: IPC semR11_Cinta13 destruido[1;0m
+[2013-10-27]-[17:01:40] - [1;0m[1;37mTerminator: IPC semR14 destruido[1;0m
+[2013-10-27]-[17:01:40] - [1;0m[1;37mTerminator: IPC semR16 destruido[1;0m
+[2013-10-27]-[17:01:40] - [1;43m[1;31mRobot16 - moverCinta: Semaphore semMutex_shMem_R14_R16 Error - wait: Invalid argument[1;0m
+[2013-10-27]-[17:01:41] - [1;43m[1;31mRobot14 - moverCinta: Semaphore semMutex_shMem_R11_R14 Error - wait: Invalid argument[1;0m
+[2013-10-27]-[17:01:44] - [1;43m[1;31mRobot11 - CintaN°2: Semaphore semMutex_shMem_R11_R14 Error - wait: Invalid argument[1;0m
+[2013-10-27]-[17:01:45] - [1;43m[1;31mRobot11 - CintaN°1: Semaphore semMutex_shMem_R11_R14 Error - wait: Invalid argument[1;0m
