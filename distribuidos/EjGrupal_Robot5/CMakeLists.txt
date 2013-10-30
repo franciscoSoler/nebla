@@ -22,4 +22,4 @@ aux_source_directory ("${SRC_DIR}IPC/SharedMemory" 	COMMON_SRC)
 aux_source_directory ("${SRC_DIR}Controladores" 	COMMON_SRC)
 
 add_executable(${OUT_DIR}robot5                   ${SRC_DIR}Robot5.cpp                  ${COMMON_SRC})
-add_executable(${OUT_DIR}controladorRobot5Agv     ${SRC_DIR}ControladorRobot5Agv.cpp	${COMMON_SRC})
+add_executable(${OUT_DIR}controladorRobot5Agv     ${SRC_DIR}/Controladores/ControladorRobot5Agv.cpp	${COMMON_SRC})

@@ -14,9 +14,9 @@ class ComunicacionRobot5MessageQueue : public AbstractMessageQueue
 {
 public:
 
-    PedidosAgvMessageQueue() : AbstractMessageQueue() {}
+    ComunicacionRobot5MessageQueue() : AbstractMessageQueue() {}
 
-    virtual ~PedidosAgvMessageQueue() {}
+    virtual ~ComunicacionRobot5MessageQueue() {}
 
     int enviarPedidoRobot5(MensajePedidoRobot5 dato) {
         return this->enviar ((const void *) &dato, sizeof (MensajePedidoRobot5) - sizeof (long)); 

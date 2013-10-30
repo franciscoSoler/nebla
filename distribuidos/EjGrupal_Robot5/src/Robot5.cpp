@@ -6,19 +6,21 @@
  */
 
 #include <cstdlib>
+#include <iostream>
+#include <exception>
 
 #include "Controladores/ControladorRobot5.h"
 
 #define MAX_DEMORA 15 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
                        
-Canasto resolverPedidoCanasto(ControladorAlamacenPiezas controladorAlmacen, PedidoCanasto pedido) {
+Canasto resolverPedidoCanasto(ControladorRobot5 &controladorRobot5, PedidoCanasto pedido) {
     // El robot va a buscar el canasto al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
     sprintf(buffer, "Robot5: Buscando durante %d segundos\n", buscando);
     write(fileno(stdout), buffer, strlen(buffer));
     usleep(buscando * 1000 * 1000);    
-    Canasto canasto = controladorAlmacen.obtenerCanasto(pedido.tipoPieza);
+    Canasto canasto = controladorRobot5.obtenerCanasto(pedido.tipoPieza);
 
     int volviendo = rand() % MAX_DEMORA + 1;
     sprintf(buffer, "Robot5: Volviendo durante %d segundos\n", volviendo);
@@ -28,7 +30,7 @@ Canasto resolverPedidoCanasto(ControladorAlamacenPiezas controladorAlmacen, Pedi
     return canasto;
 }
 
-Canasto resolverPedidoGabinete(ControladorAlamacenPiezas controladorAlmacen, TipoProducto tipoPorudcto) {
+Gabinete resolverPedidoGabinete(ControladorRobot5 &controladorRobot5, TipoProducto tipoPorudcto) {
     // El robot va a buscar el gabinete al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
@@ -36,7 +38,7 @@ Canasto resolverPedidoGabinete(ControladorAlamacenPiezas controladorAlmacen, Tip
     write(fileno(stdout), buffer, strlen(buffer));
     usleep(buscando * 1000 * 1000);    
     
-    Gabinete gabinete = controladorAlmacen.obtenerGabinete(tipoPorudcto);
+    Gabinete gabinete = controladorRobot5.obtenerGabinete(tipoPorudcto);
 
     int volviendo = rand() % MAX_DEMORA + 1;
     sprintf(buffer, "Robot5: Volviendo durante %d segundos\n", volviendo);
@@ -51,8 +53,8 @@ int main(int argc, char **argv) {
     sprintf(buffer, "Iniciando robot 5.\n");
     write(fileno(stdout), buffer, strlen(buffer));
 
-    ControladorRobot5 controladorRobot;
-    ControladorAlamacenPiezas controladorAlmacen;
+    ControladorRobot5 controladorRobot5;
+    //ControladorAlamacenPiezas controladorAlmacen;
     
     bool deboSeguir = true;
     
@@ -68,7 +70,7 @@ int main(int argc, char **argv) {
              * un pedido de un canasto de un agv, un pedido por un 
              * gabinete o un pedido de producción de un producto.
              */
-            PedidoRobot5 pedido = controlador.obtenerPedido();
+            PedidoRobot5 pedido = controladorRobot5.obtenerPedido();
 
             switch (pedido.tipo) {
                 case PEDIDO_PRODUCCION:
@@ -83,10 +85,10 @@ int main(int argc, char **argv) {
                     break;
                 case PEDIDO_GABINETE:
                     if (productoAProducir.cantidad > 0) {
-                        Gabinete gebinete = resolverPedidoGabinete(controladorAlmacen, productoAProducir.tipo);
+                        Gabinete gabinete = resolverPedidoGabinete(controladorRobot5, productoAProducir.tipo);
                         productoAProducir.cantidad--;
                         bool ultimo = (productoAProducir.cantidad == 0);
-                        constroladorRobot5.resolverPedido(gabinete, ultimo);
+                        controladorRobot5.resolverPedido(gabinete, ultimo);
                     } else {
                         /* ERROR: Se recibio un pedido para un gabinete, cuando
                          * ya se deberían haber fabricado todos lo de la orden
@@ -95,9 +97,11 @@ int main(int argc, char **argv) {
                     }
                     break;
                 case PEDIDO_CANASTO:
-                    Canasto canasto = resolverPedidoCanasto(controladorAlmacen, pedido.pedidoCanasto);
-                    constroladorRobot5.resolverPedido(canasto, pedido.pedidoCanasto.idAgv);
+                    Canasto canasto;
+                    canasto = resolverPedidoCanasto(controladorRobot5, pedido.pedidoCanasto);
+                    controladorRobot5.resolverPedido(canasto, pedido.pedidoCanasto.idAgv);
                     break;
+                    
                 default:
                     break;
             }

@@ -35,6 +35,8 @@
 #define TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5 2
 #define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 3
 
+#define TIPO_PEDIDO_CANASTO 4
+
 /* Estructuras utilizadas para la comunicacion entre los AGV y el robot 5.
  */
 
@@ -45,6 +47,34 @@ typedef enum {
     PIEZA_2 = 1,
     PIEZA_3
 } TipoPieza;
+
+typedef enum {
+    GABINETE_1 = 0,
+    GABINETE_2 = 1,
+    GABINETE_3
+} TipoGabinete;
+
+typedef enum {
+    PRODUCTO_1 = 0,
+    PRODUCTO_2 = 1,
+    PRODUCTO_3
+} TipoProducto;
+
+typedef enum {
+    PEDIDO_PRODUCCION = 0,
+    PEDIDO_GABINETE = 1,
+    PEDIDO_CANASTO
+} TipoPedidoRobot5;
+
+typedef struct {
+    TipoProducto tipo;
+    int cantidad;
+} PedidoProduccion;
+
+typedef struct {
+    TipoPieza tipoPieza;
+    IDAgv idAgv;
+} PedidoCanasto;
 
 typedef struct {
     TipoPieza tipoPieza;
@@ -63,12 +93,6 @@ typedef struct {
 /* Estructuras exclusivas utilizadas por el robot 5 
  */
 
-typedef enum {
-    PEDIDO_PRODUCCION = 0,
-    PEDIDO_GABINETE = 1,
-    PEDIDO_CANASTO
-} TipoPedidoRobot5;
-
 typedef struct {
     TipoPedidoRobot5 tipo;
     PedidoProduccion pedidoProduccion;
@@ -79,16 +103,6 @@ typedef struct {
     long mtype;
     PedidoRobot5 pedidoRobot5;
 } MensajePedidoRobot5;
-
-typedef struct {
-    TipoProducto tipo;
-    int cantidad;
-} PedidoProduccion;
-
-typedef struct {
-    TipoPieza tipoPieza;
-    IDAgv idAgv;
-} PedidoCanasto;
 
 typedef struct {
     long mtype; // tipo = respuesta de canasto
@@ -106,17 +120,6 @@ typedef struct {
 /* Estructuras utilizadas para la comunicacion entre los robots 5 y 11.
  */
 
-typedef enum {
-    GABINETE_1 = 0,
-    GABINETE_2 = 1,
-    GABINETE_3
-} TipoGabinete;
-
-typedef enum {
-    PRODUCTO_1 = 0,
-    PRODUCTO_2 = 1,
-    PRODUCTO_3
-} TipoProducto;
 
 typedef struct {
     int nroOrdenCompra;
