@@ -13,7 +13,7 @@ ControladorRobot5::ControladorRobot5() {
 ControladorRobot5::~ControladorRobot5() {
 }
 
-void ControladorRobot5Agv::iniciarControlador() {
+void ControladorRobot5::iniciarControlador() {
     /* Obtengo la cola de pedidos */
     comunicacionMsgQueue = ComunicacionRobot5MessageQueue();
     comunicacionMsgQueue.getMessageQueue(DIRECTORY,ID_COLA_API_ROBOT_5);
@@ -28,8 +28,8 @@ PedidoRobot5 ControladorRobot5::obtenerPedido() {
 void ControladorRobot5::resolverPedido(Canasto canasto, IDAgv idDestino) {
     MensajeRespuestaCanasto mensajeRespuesta;
     mensajeRespuesta.idAgv = idDestino;
-    mensajeRespuesta.cansto = canasto;
-    mensaje.mtype = TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5;
+    mensajeRespuesta.canasto = canasto;
+    mensajeRespuesta.mtype = TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5;
     comunicacionMsgQueue.enviarCanasto(mensajeRespuesta);
 }
 
@@ -37,6 +37,18 @@ void ControladorRobot5::resolverPedido(Gabinete gabinete, bool ultimo) {
     MensajeRespuestaGabinete mensajeRespuesta;
     mensajeRespuesta.gabinete = gabinete;
     mensajeRespuesta.ultimo = ultimo;
-    mensaje.mtype = TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5;
+    mensajeRespuesta.mtype = TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5;
     comunicacionMsgQueue.enviarGabinete(mensajeRespuesta);
+}
+
+Canasto ControladorRobot5::obtenerCanasto(TipoPieza tipoPieza) {
+    Canasto canasto;
+    canasto.tipoPieza = tipoPieza;
+    canasto.cantidadPiezas = 10;
+    return canasto;
+}
+
+Gabinete ControladorRobot5::obtenerGabinete(TipoProducto tipoPorudcto) {
+    Gabinete gabinete;
+    return gabinete;
 }

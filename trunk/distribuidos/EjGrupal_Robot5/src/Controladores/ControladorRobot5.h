@@ -22,6 +22,9 @@ public:
     void resolverPedido(Canasto canasto, IDAgv idDestino);
     void resolverPedido(Gabinete gabinete, bool ultimo);
     
+     Canasto obtenerCanasto(TipoPieza tipoPieza);
+     Gabinete obtenerGabinete(TipoProducto tipoPorudcto);
+
 private:
     ComunicacionRobot5MessageQueue comunicacionMsgQueue;
 };
