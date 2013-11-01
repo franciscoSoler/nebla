@@ -9,6 +9,8 @@
           <df name="controladorRobot5Agv.dir">
             <df name="src">
               <df name="Controladores">
+                <df name="ProcesosControladorRobot5">
+                </df>
               </df>
               <df name="IPC">
                 <df name="MessageQueue">
@@ -17,12 +19,16 @@
                 </df>
                 <df name="SharedMemory">
                 </df>
+              </df>
+              <df name="ProcesosControladorRobot5">
               </df>
             </df>
           </df>
           <df name="controladorRobot5Cinta.dir">
             <df name="src">
               <df name="Controladores">
+                <df name="ProcesosControladorRobot5">
+                </df>
               </df>
               <df name="IPC">
                 <df name="MessageQueue">
@@ -31,6 +37,8 @@
                 </df>
                 <df name="SharedMemory">
                 </df>
+              </df>
+              <df name="ProcesosControladorRobot5">
               </df>
             </df>
           </df>
@@ -93,6 +101,10 @@
           </df>
           <in>IPCException.cpp</in>
           <in>IPCException.h</in>
+        </df>
+        <df name="ProcesosControladorRobot5">
+          <in>ControladorRobot5Agv.cpp</in>
+          <in>ControladorRobot5Cinta.cpp</in>
         </df>
         <in>CintaTransportadoraInicial.cpp</in>
         <in>CintaTransportadoraInicial.h</in>
