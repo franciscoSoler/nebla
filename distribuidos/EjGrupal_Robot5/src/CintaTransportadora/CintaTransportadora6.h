@@ -1,12 +1,12 @@
 /* 
- * File:   CintaTransportadoraInicial.h
+ * File:   CintaTransportadora6.h
  * Author: knoppix
  *
  * Created on October 31, 2013, 9:48 PM
  */
 
-#ifndef CINTATRANSPORTADORAINICIAL_H
-#define	CINTATRANSPORTADORAINICIAL_H
+#ifndef CINTATRANSPORTADORA6_H
+#define	CINTATRANSPORTADORA6_H
 
 #include "IPC/SharedMemory/CintaTransportadoraSharedMemory.h"
 #include "IPC/Semaphore/Semaphore.h"
@@ -17,19 +17,19 @@ typedef struct {
     int cantOcupados;
 } EstadoCinta;
 
-class CintaTransportadoraInicial {
+class CintaTransportadora6 {
 public:
     
-    CintaTransportadoraInicial();
-    CintaTransportadoraInicial(int idCinta);
-    virtual ~CintaTransportadoraInicial();
+    CintaTransportadora6();
+    CintaTransportadora6(int idCinta);
+    virtual ~CintaTransportadora6();
     
     void iniciarCinta(int idClaveMemoria, int idClaveSemaforo);
     void depositarProductoEnProduccion(ProductoEnProduccion producto);
     EstadoCinta obtenerEstadoCinta();
         
 private:
-    CintaTransportadoraInicial(const CintaTransportadoraInicial& orig);
+    CintaTransportadora6(const CintaTransportadora6& orig);
     
     int idCinta;  
     Semaphore semaforoAcceso;

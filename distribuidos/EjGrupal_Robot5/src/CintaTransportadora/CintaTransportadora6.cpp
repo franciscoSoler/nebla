@@ -5,22 +5,22 @@
  * Created on October 31, 2013, 9:48 PM
  */
 
-#include "CintaTransportadoraInicial.h"
+#include "CintaTransportadora6.h"
 
-CintaTransportadoraInicial::CintaTransportadoraInicial(int idCinta) {
+CintaTransportadora6::CintaTransportadora6(int idCinta) {
     this->idCinta = idCinta;
 }
 
-CintaTransportadoraInicial::CintaTransportadoraInicial() {
+CintaTransportadora6::CintaTransportadora6() {
 }
 
-CintaTransportadoraInicial::CintaTransportadoraInicial(const CintaTransportadoraInicial& orig) {
+CintaTransportadora6::CintaTransportadora6(const CintaTransportadora6& orig) {
 }
 
-CintaTransportadoraInicial::~CintaTransportadoraInicial() {
+CintaTransportadora6::~CintaTransportadora6() {
 }
 
-void CintaTransportadoraInicial::iniciarCinta(int idClaveMemoria, int idClaveSemaforo) {
+void CintaTransportadora6::iniciarCinta(int idClaveMemoria, int idClaveSemaforo) {
     
     semaforoAcceso = Semaphore();
     semaforoAcceso.getSemaphore(DIRECTORY, idClaveSemaforo, 1);
@@ -30,7 +30,7 @@ void CintaTransportadoraInicial::iniciarCinta(int idClaveMemoria, int idClaveSem
 
 }
 
-void CintaTransportadoraInicial::depositarProductoEnProduccion(ProductoEnProduccion producto) {
+void CintaTransportadora6::depositarProductoEnProduccion(ProductoEnProduccion producto) {
     /* Tomo la memoria compartida de la cinta.
      */
     semaforoAcceso.wait();
@@ -53,7 +53,7 @@ void CintaTransportadoraInicial::depositarProductoEnProduccion(ProductoEnProducc
     semaforoAcceso.signal();
 }
 
-EstadoCinta CintaTransportadoraInicial::obtenerEstadoCinta() {
+EstadoCinta CintaTransportadora6::obtenerEstadoCinta() {
     EstadoCinta estado;
     estado.cantOcupados = 0;
     
@@ -75,7 +75,7 @@ EstadoCinta CintaTransportadoraInicial::obtenerEstadoCinta() {
     return estado;
 }
 
-void CintaTransportadoraInicial::mostrarEstadoCinta(CintaTransportadora_6 cintaTransportadora) {
+void CintaTransportadora6::mostrarEstadoCinta(CintaTransportadora_6 cintaTransportadora) {
     char buffer[TAM_BUFFER];
     sprintf(buffer, "Estado cinta %d: ", this->idCinta);
     for (int i = 0; i < TAM_CINTA_INICIAL; ++i) {
