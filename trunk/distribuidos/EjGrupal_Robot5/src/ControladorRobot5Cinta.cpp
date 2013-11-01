@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <exception>
 
-#include "../CintaTransportadoraInicial.h"
+#include "../CintaTransportadora/CintaTransportadora6.h"
 
 #include "../IPC/SharedMemory/EstadoRobot5SharedMemory.h"
 #include "../IPC/SharedMemory/EstadoRobot11SharedMemory.h"
@@ -20,7 +20,7 @@
 
 void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         PedidosProduccionMessageQueue &colaPedidos, 
-        CintaTransportadoraInicial *cintaTransportadora,
+        CintaTransportadora6 *cintaTransportadora,
         
         EstadoRobot5SharedMemory &estadoRobot5,
         Semaphore &semaforoAccesoEstadoRobot5,
@@ -37,10 +37,10 @@ void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
     colaPedidos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_PRODUCCION);
               
     /* Obtengo las cintas transportadoras */    
-    cintaTransportadora[0] = CintaTransportadoraInicial(0);
+    cintaTransportadora[0] = CintaTransportadora6(0);
     cintaTransportadora[0].iniciarCinta(ID_MEM_CINTA_6_0, ID_SEM_ACCESO_CINTA_6_0);
     
-    cintaTransportadora[1] = CintaTransportadoraInicial(1);
+    cintaTransportadora[1] = CintaTransportadora6(1);
     cintaTransportadora[1].iniciarCinta(ID_MEM_CINTA_6_1, ID_SEM_ACCESO_CINTA_6_1);
 
     /* Obtengo la memoria compartida del estado del robot 5 y su semaforo de acceso */
@@ -56,7 +56,7 @@ void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
     
 }
 
-void leerEstadoCintas (CintaTransportadoraInicial *cintaTransportadora,
+void leerEstadoCintas (CintaTransportadora6 *cintaTransportadora,
                         EstadoCinta &estadoCinta0,
                         EstadoCinta &estadoCinta1) {
     
@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
       */
     ComunicacionRobot5MessageQueue colaComunicacionRobot5 = ComunicacionRobot5MessageQueue();
     
-    CintaTransportadoraInicial cintasTransportadoras[2];
+    CintaTransportadora6 cintasTransportadoras[2];
     PedidosProduccionMessageQueue colaPedidosProduccion = PedidosProduccionMessageQueue();    
     
     EstadoRobot5SharedMemory estadoRobot5 = EstadoRobot5SharedMemory();
