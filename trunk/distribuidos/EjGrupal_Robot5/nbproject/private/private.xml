@@ -10,14 +10,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/IPCException.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/EstadoRobot5SharedMemory.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/MessageQueue/AbstractMessageQueue.h</file>
             <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/Controladores/ControladorRobot5.cpp</file>
             <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/CMakeLists.txt</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/AbstractSharedMemory.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/BufferCanastoSharedMemory.h</file>
             <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/MessageQueue/ComunicacionRobot5MessageQueue.h</file>
-            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/Controladores/ControladorRobot5.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/CintaTransportadoraInicial.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/CintaTransportadoraInicial.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/EstadoRobot11SharedMemory.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/MessageQueue/AbstractMessageQueue.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/MessageQueue/PedidosProduccionMessageQueue.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/CintaTransportadoraSharedMemory.h</file>
             <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/Robot5.cpp</file>
-            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/MessageQueue/PedidosAgvMessageQueue.h</file>
             <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/common.h</file>
-            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/Controladores/ControladorRobot5Agv.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/CintaTransportadoraSharedMemory.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/BufferCanastoSharedMemory.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/AbstractSharedMemory.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/EstadoRobot11SharedMemory.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/SharedMemory/EstadoRobot5SharedMemory.cpp</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/Controladores/ControladorRobot5.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/IPCException.h</file>
+            <file>file:/home/knoppix/nebla/distribuidos/EjGrupal_Robot5/src/IPC/MessageQueue/PedidosAgvMessageQueue.h</file>
         </group>
     </open-files>
 </project-private>
