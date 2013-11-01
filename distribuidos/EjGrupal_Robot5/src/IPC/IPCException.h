@@ -1,14 +1,24 @@
-#ifndef IPC_EXCEPTION_H_
-#define IPC_EXCEPTION_H_
+/* 
+ * File:   IPCException.h
+ * Author: knoppix
+ *
+ * Created on October 31, 2013, 9:43 PM
+ */
 
-class IPCException {
+#ifndef IPCEXCEPTION_H
+#define	IPCEXCEPTION_H
+
+#include <exception>
+
+class IPCException : public std::exception {
 private:
 	char description[255];
 
 public:
-	IPCException(char *className, char *error);
-	virtual ~IPCException();
-	char* getDescription();
+	IPCException(const char *className, const char *error);
+
+        const char* what() const throw();
 };
 
-#endif /* IPC_EXCEPTION_H_ */
+#endif	/* IPCEXCEPTION_H */
+

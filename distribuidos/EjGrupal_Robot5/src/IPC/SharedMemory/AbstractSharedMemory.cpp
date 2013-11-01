@@ -43,7 +43,7 @@ int AbstractSharedMemory::attachMemory() {
 		sprintf(error, "Fallo la operacion shmat: %s", strerror(errno));
 		char className[255];
 		strcpy(className, "AbstractSharedMemory");
-		throw IPCException(className, error);
+		throw IPCException((const char*)className, error);
 	}
 	data = shmaddr;
 	return 0;
@@ -56,7 +56,7 @@ int AbstractSharedMemory::getId(const char *fileName, int id, int flags) {
 		sprintf(error, "Fallo la operacion ftok: %s", strerror(errno));
 		char className[255];
 		strcpy(className, "AbstractSharedMemory");
-		throw IPCException(className, error);
+		throw IPCException((const char*)className, error);
 	}
 
 	this->id = shmget( clave, this->getMemorySize() , flags);
@@ -65,7 +65,7 @@ int AbstractSharedMemory::getId(const char *fileName, int id, int flags) {
 		sprintf(error, "Fallo la operacion shmget: %s", strerror(errno));
 		char className[255];
 		strcpy(className, "AbstractSharedMemory");	
-		throw IPCException(className, error);
+		throw IPCException((const char*)className, error);
 	}
 	return 0;
 }

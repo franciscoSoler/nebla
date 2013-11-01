@@ -1,5 +1,5 @@
-#ifndef PEDIDOSAGV_MESSAGEQUEUE_H_
-#define PEDIDOSAGV_MESSAGEQUEUE_H_
+#ifndef PEDIDOS_AGV_MESSAGEQUEUE_H_
+#define PEDIDOS_AGV_MESSAGEQUEUE_H_
 
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -20,31 +20,14 @@ public:
 	virtual ~PedidosAgvMessageQueue() {}
 
 	int enviarPedidoAgv (PedidoAgv dato) {
-		int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(PedidoAgv)-sizeof(long),0 );
-		if (resultado == -1) {
-			char error[255];
-			sprintf(error, "Fallo la operacion send: %s", strerror(errno));
-			char className[255];
-			strcpy(className, "PedidosAgvMessageQueue");
-			throw IPCException(className, error);
-		}
-		return resultado;
+            return this->enviar("PedidosAgvMessageQueue", (const void *)&dato,sizeof(PedidoAgv)-sizeof(long));
 	}
 	
 	int recibirPedidoAgv ( int tipo, PedidoAgv* buffer ) {
-		int resultado = msgrcv ( this->id,(void *)buffer,sizeof(PedidoAgv)-sizeof(long),tipo,0 );
-		if (resultado == -1) {
-			char error[255];
-			sprintf(error, "Fallo la operacion recv: %s", strerror(errno));
-			char className[255];
-			strcpy(className, "PedidosAgvMessageQueue");
-			throw IPCException(className, error);
-
-		}
-		return resultado;
+            return this->recibir("PedidosAgvMessageQueue", tipo, (void *)buffer, sizeof(PedidoAgv)-sizeof(long));
 	}
 
 };
 
-#endif // PEDIDOSAGV_MESSAGEQUEUE_H_
+#endif // PEDIDOS_AGV_MESSAGEQUEUE_H_
 

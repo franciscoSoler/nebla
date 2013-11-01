@@ -15,6 +15,7 @@ include_directories("${SRC_DIR}IPC/SharedMemory")
 include_directories("${SRC_DIR}IPC/MessageQueue")
 include_directories("${SRC_DIR}Controladores")
 
+aux_source_directory ("${SRC_DIR}"               	COMMON_SRC)
 aux_source_directory ("${SRC_DIR}IPC/"		 	COMMON_SRC)
 aux_source_directory ("${SRC_DIR}IPC/Semaphore" 	COMMON_SRC)
 aux_source_directory ("${SRC_DIR}IPC/MessageQueue" 	COMMON_SRC)
@@ -23,3 +24,4 @@ aux_source_directory ("${SRC_DIR}Controladores" 	COMMON_SRC)
 
 add_executable(${OUT_DIR}robot5                   ${SRC_DIR}Robot5.cpp                  ${COMMON_SRC})
 add_executable(${OUT_DIR}controladorRobot5Agv     ${SRC_DIR}/Controladores/ControladorRobot5Agv.cpp	${COMMON_SRC})
+add_executable(${OUT_DIR}controladorRobot5Cinta   ${SRC_DIR}/Controladores/ControladorRobot5Cinta.cpp	${COMMON_SRC})

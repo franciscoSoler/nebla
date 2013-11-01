@@ -6,6 +6,7 @@
         <df name="Controladores">
           <in>ControladorRobot5.cpp</in>
           <in>ControladorRobot5Agv.cpp</in>
+          <in>ControladorRobot5Cinta.cpp</in>
         </df>
         <df name="IPC">
           <df name="MessageQueue">
@@ -17,9 +18,13 @@
           <df name="SharedMemory">
             <in>AbstractSharedMemory.cpp</in>
             <in>BufferCanastoSharedMemory.cpp</in>
+            <in>CintaTransportadoraSharedMemory.cpp</in>
+            <in>EstadoRobot11SharedMemory.cpp</in>
+            <in>EstadoRobot5SharedMemory.cpp</in>
           </df>
           <in>IPCException.cpp</in>
         </df>
+        <in>CintaTransportadoraInicial.cpp</in>
         <in>Robot5.cpp</in>
       </df>
     </df>
@@ -63,12 +68,25 @@
           </ccTool>
         </makeTool>
       </makefileType>
+      <item path="src/CintaTransportadoraInicial.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
       <item path="src/Controladores/ControladorRobot5.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="4">
+        <ccTool>
+        </ccTool>
       </item>
       <item path="src/Controladores/ControladorRobot5Agv.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/Controladores/ControladorRobot5Cinta.cpp"
             ex="false"
             tool="1"
             flavor2="4">
@@ -100,9 +118,30 @@
       <item path="src/IPC/SharedMemory/BufferCanastoSharedMemory.cpp"
             ex="false"
             tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/IPC/SharedMemory/CintaTransportadoraSharedMemory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/IPC/SharedMemory/EstadoRobot11SharedMemory.cpp"
+            ex="false"
+            tool="1"
             flavor2="0">
       </item>
-      <item path="src/Robot5.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/IPC/SharedMemory/EstadoRobot5SharedMemory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Robot5.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
       </item>
     </conf>
   </confs>

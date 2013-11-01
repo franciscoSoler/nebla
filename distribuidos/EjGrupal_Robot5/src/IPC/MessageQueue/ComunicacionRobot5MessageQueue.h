@@ -19,53 +19,27 @@ public:
     virtual ~ComunicacionRobot5MessageQueue() {}
 
     int enviarPedidoRobot5(MensajePedidoRobot5 dato) {
-        return this->enviar ((const void *) &dato, sizeof (MensajePedidoRobot5) - sizeof (long)); 
+        return this->enviar ("ComunicacionRobot5MessageQueue", (const void *) &dato, sizeof (MensajePedidoRobot5) - sizeof (long)); 
     }
 
     int recibirPedidoRobot5(int tipo, MensajePedidoRobot5* buffer) {
-        return this->recibir(tipo, (void *)buffer, sizeof (MensajePedidoRobot5) - sizeof (long));
+        return this->recibir("ComunicacionRobot5MessageQueue", tipo, (void *)buffer, sizeof (MensajePedidoRobot5) - sizeof (long));
     }
 
     int enviarCanasto(MensajeRespuestaCanasto dato) {
-        return this->enviar((const void *) &dato, sizeof (MensajeRespuestaCanasto) - sizeof (long)); 
+        return this->enviar("ComunicacionRobot5MessageQueue", (const void *) &dato, sizeof (MensajeRespuestaCanasto) - sizeof (long)); 
     }
 
     int recibirCanasto(int tipo, MensajeRespuestaCanasto* buffer) {
-        return this->recibir(tipo, (void *)buffer, sizeof (MensajeRespuestaCanasto) - sizeof (long));
+        return this->recibir("ComunicacionRobot5MessageQueue", tipo, (void *)buffer, sizeof (MensajeRespuestaCanasto) - sizeof (long));
     }
     
     int enviarGabinete(MensajeRespuestaGabinete dato) {
-        return this->enviar ((const void *) &dato, sizeof (MensajeRespuestaGabinete) - sizeof (long)); 
+        return this->enviar ("ComunicacionRobot5MessageQueue", (const void *) &dato, sizeof (MensajeRespuestaGabinete) - sizeof (long)); 
     }
 
     int recibirGabinete(int tipo, MensajeRespuestaGabinete* buffer) {
-        return this->recibir(tipo, (void *)buffer, sizeof (MensajeRespuestaGabinete) - sizeof (long));
-    }
-    
-private:
-    
-    int enviar(const void *dato, size_t size) {
-        int resultado = msgsnd(this->id, dato, size, 0);
-        if (resultado == -1) {
-            char error[255];
-            sprintf(error, "Fallo la operacion send: %s", strerror(errno));
-            char className[255];
-            strcpy(className, "ComunicacionRobot5MessageQueue");
-            throw IPCException(className, error);
-        }
-        return resultado;
-    }
-    
-    int recibir(int tipo, void *buffer, size_t size) {
-        int resultado = msgrcv(this->id, buffer, size, tipo, 0);
-        if (resultado == -1) {
-            char error[255];
-            sprintf(error, "Fallo la operacion recv: %s", strerror(errno));
-            char className[255];
-            strcpy(className, "ComunicacionRobot5MessageQueue");
-            throw IPCException(className, error);
-        }
-        return resultado;
+        return this->recibir("ComunicacionRobot5MessageQueue", tipo, (void *)buffer, sizeof (MensajeRespuestaGabinete) - sizeof (long));
     }
 };
 
