@@ -33,10 +33,11 @@ void ControladorRobot5::resolverPedido(Canasto canasto, IDAgv idDestino) {
     comunicacionMsgQueue.enviarCanasto(mensajeRespuesta);
 }
 
-void ControladorRobot5::resolverPedido(Gabinete gabinete, bool ultimo) {
+void ControladorRobot5::resolverPedido(Gabinete gabinete, bool ultimo, int ordenCompra) {
     MensajeRespuestaGabinete mensajeRespuesta;
     mensajeRespuesta.gabinete = gabinete;
     mensajeRespuesta.ultimo = ultimo;
+    mensajeRespuesta.ordenDeCompra = ordenCompra;
     mensajeRespuesta.mtype = TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5;
     comunicacionMsgQueue.enviarGabinete(mensajeRespuesta);
 }

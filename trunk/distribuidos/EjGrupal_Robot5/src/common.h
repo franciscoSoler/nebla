@@ -10,6 +10,7 @@
 #define DIRECTORY "/home/Duran"
 
 /* Id de los IPC utilizados */
+
 #define ID_COLA_API_ROBOT_5 1
 
 #define ID_COLA_PEDIDOS_AGV_5 2
@@ -26,7 +27,23 @@
 #define ID_SEM_AGV_2 10
 #define ID_SEM_AGV_3 11
 
+#define ID_COLA_PEDIDOS_PRODUCCION 12
 
+#define ID_MEM_CINTA_6_0 13
+#define ID_MEM_CINTA_6_1 14
+
+#define ID_SEM_ACCESO_CINTA_6_0 15
+#define ID_SEM_ACCESO_CINTA_6_1 16
+
+#define ID_SEM_BLOQUEO_ROBOT_5 17
+#define ID_SEM_ACCESO_ESTADO_ROBOT_5 18
+#define ID_MEM_ESTADO_ROBOT_5 19
+
+#define ID_SEM_BLOQUEO_ROBOT_11 20
+#define ID_SEM_ACCESO_ESTADO_ROBOT_11 21
+
+#define ID_MEM_ESTADO_ROBOT_11_0 22
+#define ID_MEM_ESTADO_ROBOT_11_1 23
 
 /* Tipos utilizados como identificadores de los mensajes de las colas */
 
@@ -35,7 +52,10 @@
 #define TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5 2
 #define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 3
 
-#define TIPO_PEDIDO_CANASTO 4
+#define TIPO_PEDIDO_CANASTO 1
+#define TIPO_PEDIDO_PRODUCCION 1
+
+#define TAM_CINTA_INICIAL 5
 
 /* Estructuras utilizadas para la comunicacion entre los AGV y el robot 5.
  */
@@ -67,9 +87,16 @@ typedef enum {
 } TipoPedidoRobot5;
 
 typedef struct {
-    TipoProducto tipo;
+    int nroOrdenCompra;
+    TipoProducto tipo; // Nº de producto
     int cantidad;
+    int diferenciaMinima;
 } PedidoProduccion;
+
+typedef struct {
+    long mtype; // Tipo pedido de produccion
+    PedidoProduccion pedidoProduccion;    
+} MensajePedidoProduccion;
 
 typedef struct {
     TipoPieza tipoPieza;
@@ -113,6 +140,7 @@ typedef struct {
 typedef struct {
     long mtype; // tipo = respuesta de gabinete
     bool ultimo;
+    int ordenDeCompra;
     Gabinete gabinete;
 } MensajeRespuestaGabinete;
 
@@ -120,24 +148,17 @@ typedef struct {
 /* Estructuras utilizadas para la comunicacion entre los robots 5 y 11.
  */
 
-
-typedef struct {
-    int nroOrdenCompra;
-    TipoProducto tipo; // Nº de producto
-    int cantidad;
-    int diferenciaMinima;
-} PedidoProducto;
-
 typedef struct {
     Gabinete gabinete;  
     int nroOrdenCompra;
+    bool falla;
 } ProductoEnProduccion;
 
 /* Cinta transportadora */
 
 typedef struct {
-    ProductoEnProduccion gabinetes[5];
-    bool lugarVacion[5];
+    ProductoEnProduccion productoProduccion[TAM_CINTA_INICIAL];
+    bool lugarVacio[TAM_CINTA_INICIAL];
     int posicionActual;
 } CintaTransportadora_6;
 

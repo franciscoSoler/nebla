@@ -86,9 +86,10 @@ int main(int argc, char **argv) {
                 case PEDIDO_GABINETE:
                     if (productoAProducir.cantidad > 0) {
                         Gabinete gabinete = resolverPedidoGabinete(controladorRobot5, productoAProducir.tipo);
+                        int ordenDeCompra = (productoAProducir.cantidad <= productoAProducir.cantidad) ? 0 : productoAProducir.nroOrdenCompra;
                         productoAProducir.cantidad--;
                         bool ultimo = (productoAProducir.cantidad == 0);
-                        controladorRobot5.resolverPedido(gabinete, ultimo);
+                        controladorRobot5.resolverPedido(gabinete, ultimo, ordenDeCompra);
                     } else {
                         /* ERROR: Se recibio un pedido para un gabinete, cuando
                          * ya se deberían haber fabricado todos lo de la orden

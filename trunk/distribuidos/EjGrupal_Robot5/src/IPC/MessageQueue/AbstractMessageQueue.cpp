@@ -44,3 +44,23 @@ int AbstractMessageQueue::getId(const char *fileName, int id, int flags) {
 	}
 	return 0;
 }
+
+int AbstractMessageQueue::enviar(const char *className, const void *dato, size_t size) {
+    int resultado = msgsnd(this->id, dato, size, 0);
+    if (resultado == -1) {
+        char error[255];
+        sprintf(error, "Fallo la operacion send: %s", strerror(errno));
+        throw IPCException(className, error);
+    }
+    return resultado;
+}
+
+int AbstractMessageQueue::recibir(const char *className, int tipo, void *buffer, size_t size) {
+    int resultado = msgrcv(this->id, buffer, size, tipo, 0);
+    if (resultado == -1) {
+        char error[255];
+        sprintf(error, "Fallo la operacion recv: %s", strerror(errno));
+        throw IPCException(className, error);
+    }
+    return resultado;
+}

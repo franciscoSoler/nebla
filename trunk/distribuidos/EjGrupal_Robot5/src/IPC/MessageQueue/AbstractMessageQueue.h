@@ -19,7 +19,10 @@ private:
 	int getId(const char *fileName, int id, int flags);
 
 protected:
-	int id;
+    int id;
+        
+    int enviar(const char *className, const void *dato, size_t size);
+    int recibir(const char *className, int tipo, void *buffer, size_t size);
 
 public:
 	/* Pre: -
