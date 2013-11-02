@@ -8,14 +8,14 @@
 #include "Common.h"
 #include "Exceptions/Exception.h"
 #include "Logger/Logger.h"
-#include "IPC/Semaphore/Semaphore.h"
-#include "IPC/MessageQueue/Barrera1112MessageQueue.h"
-#include "IPC/MessageQueue/PedidosAGVMessageQueue.h"
-#include "IPC/MessageQueue/PedidosCanastosMessageQueue.h"
-#include "IPC/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
-#include "IPC/SharedMemory/BufferCanastoSharedMemory.h"
-#include "IPC/SharedMemory/Cinta6SharedMemory.h"
-#include "IPC/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "IPCs/Semaphore/Semaphore.h"
+#include "IPCs/Soler/MessageQueue/Barrera1112MessageQueue.h"
+#include "IPCs/Soler/MessageQueue/PedidosAGVMessageQueue.h"
+#include "IPCs/Soler/MessageQueue/PedidosCanastosMessageQueue.h"
+#include "IPCs/Soler/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
+#include "IPCs/Soler/SharedMemory/BufferCanastoSharedMemory.h"
+#include "IPCs/Soler/SharedMemory/Cinta6SharedMemory.h"
+#include "IPCs/Soler/SharedMemory/EstadoRobot5SharedMemory.h"
 
 static char buffer[255];
 static char param1[20];
@@ -48,9 +48,9 @@ void createIPCs() {
     Logger::getInstance().setProcessInformation("Launcher:");
     
     //Robot 5 - AGV
-    BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV1;
-    BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV2;
-    BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV3;
+    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV1;
+    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV2;
+    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV3;
     shMemPasajeCanastoEntre5yAGV1.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
     shMemPasajeCanastoEntre5yAGV2.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
     shMemPasajeCanastoEntre5yAGV3.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
@@ -67,13 +67,13 @@ void createIPCs() {
     }
     
     // Do the same with the queues
-    PedidosAGVMessageQueue colaPedidosAGV_5;
+    IPC::PedidosAGVMessageQueue colaPedidosAGV_5;
     colaPedidosAGV_5.create(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
     
     //exclusivo Robot 5
     /* Creo la cola de comunicacion con el robot 5 con los dos procesos del controlador */
-    ComunicacionRobot5MessageQueue colaComunicacionRobot5 = ComunicacionRobot5MessageQueue();
-    colaComunicacionRobot5.createMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_API_ROBOT_5);
+    IPC::ComunicacionRobot5MessageQueue colaComunicacionRobot5 = IPC::ComunicacionRobot5MessageQueue("colaComunicacionRobot5");
+    colaComunicacionRobot5.create(DIRECTORY_ROBOT_5, ID_COLA_API_ROBOT_5);
     
 }
 

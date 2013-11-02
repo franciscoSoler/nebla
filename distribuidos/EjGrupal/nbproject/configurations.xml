@@ -51,6 +51,8 @@
             <itemPath>src/IPCs/Duran/MessageQueue/PedidosAgvMessageQueue.h</itemPath>
             <itemPath>src/IPCs/Duran/MessageQueue/PedidosProduccionMessageQueue.h</itemPath>
           </logicalFolder>
+          <logicalFolder name="Semaphore" displayName="Semaphore" projectFiles="true">
+          </logicalFolder>
           <logicalFolder name="SharedMemory"
                          displayName="SharedMemory"
                          projectFiles="true">
