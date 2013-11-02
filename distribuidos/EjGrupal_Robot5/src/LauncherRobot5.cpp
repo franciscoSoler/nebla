@@ -22,7 +22,7 @@ void createIpc() {
 
     /* Creo la cola de comunicacion con el robot 5 con los dos procesos del controlador */
     ComunicacionRobot5MessageQueue colaComunicacionRobot5 = ComunicacionRobot5MessageQueue();
-    colaComunicacionRobot5.createMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
+    colaComunicacionRobot5.createMessageQueue(DIRECTORY,ID_COLA_API_ROBOT_5);
 
     /* Creo la cola de pedidos del robot 5 */
     PedidosProduccionMessageQueue colaPedidos = PedidosProduccionMessageQueue();
@@ -41,14 +41,20 @@ void createIpc() {
     /* Creo los semaforos de acceso a los buffer de los canastos */    
     Semaphore semaforoAccesoBufferAgv[3];
     semaforoAccesoBufferAgv[0].createSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_0, 1);
+    semaforoAccesoBufferAgv[0].initializeSemaphore(0,1);
     semaforoAccesoBufferAgv[1].createSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_1, 1);
+    semaforoAccesoBufferAgv[1].initializeSemaphore(0,1);
     semaforoAccesoBufferAgv[2].createSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_2, 1);
+    semaforoAccesoBufferAgv[2].initializeSemaphore(0,1);
     
     /* Creo los semaforos de bloqueo de los Agv */
     Semaphore semaforoAgv[3];
     semaforoAgv[0].createSemaphore(DIRECTORY, ID_SEM_AGV_1, 1);
+    semaforoAgv[0].initializeSemaphore(0,0);
     semaforoAgv[1].createSemaphore(DIRECTORY, ID_SEM_AGV_2, 1);
+    semaforoAgv[1].initializeSemaphore(0,0);
     semaforoAgv[2].createSemaphore(DIRECTORY, ID_SEM_AGV_3, 1);
+    semaforoAgv[2].initializeSemaphore(0,0);
 
     /* Creo la cola de pedidos de los AGV */    
     PedidosAgvMessageQueue colaPedidosAgv; 
@@ -61,23 +67,27 @@ void createIpc() {
     /* Creo las memorias compartidas y los semaforos de las cintas transportadoras */
     Semaphore semCinta0 = Semaphore();
     semCinta0.createSemaphore(DIRECTORY, ID_CINTA_6_0, 1);
+    semCinta0.initializeSemaphore(0,1);
     CintaTransportadoraSharedMemory memCinta0 = CintaTransportadoraSharedMemory();
     memCinta0.createSharedMemory(DIRECTORY, ID_CINTA_6_0);
     
     Semaphore semCinta1 = Semaphore();
     semCinta1.createSemaphore(DIRECTORY, ID_CINTA_6_1, 1);
+    semCinta1.initializeSemaphore(0,1);
     CintaTransportadoraSharedMemory memCinta1 = CintaTransportadoraSharedMemory();
     memCinta1.createSharedMemory(DIRECTORY, ID_CINTA_6_1);
 
     /* Creo el semaforo de bloqueo del robot 5 */
     Semaphore semBloqueo5 = Semaphore();
     semBloqueo5.createSemaphore(DIRECTORY, ID_SEM_BLOQUEO_ROBOT_5, 1);
+    semBloqueo5.initializeSemaphore(0,0);
     
     /* Creo la memoria de estado del robot 5 y el semaforo de acceso */
     EstadoRobot5SharedMemory estadoRobot5 = EstadoRobot5SharedMemory();
     estadoRobot5.createSharedMemory(DIRECTORY, ID_MEM_ESTADO_ROBOT_5);
     Semaphore semaforoAccesoEstadoRobot5 = Semaphore();
     semaforoAccesoEstadoRobot5.createSemaphore(DIRECTORY, ID_SEM_ACCESO_ESTADO_ROBOT_5, 1);
+    semaforoAccesoEstadoRobot5.initializeSemaphore(0,1);
     
     /* Creo la memoria de estado de los robot 11 y los semaforos de acceso */
     EstadoRobot11SharedMemory estadoRobot11[2];
@@ -86,10 +96,14 @@ void createIpc() {
     
     Semaphore semaforoAccesoEstadoRobot11 = Semaphore();
     semaforoAccesoEstadoRobot11.createSemaphore(DIRECTORY, ID_SEM_ACCESO_ESTADO_ROBOT_11, 2);
+    semaforoAccesoEstadoRobot11.initializeSemaphore(0,1);
+    semaforoAccesoEstadoRobot11.initializeSemaphore(1,1);
     
     /* Creo los semaforos de bloqueo del robot 11 */
     Semaphore semaforoBloqueoRobot11 = Semaphore();
     semaforoBloqueoRobot11.createSemaphore(DIRECTORY, ID_SEM_BLOQUEO_ROBOT_11, 2);
+    semaforoBloqueoRobot11.initializeSemaphore(0,0);
+    semaforoBloqueoRobot11.initializeSemaphore(1,0);
 }
 
 int main(int argc, char** argv) {
@@ -122,5 +136,8 @@ int main(int argc, char** argv) {
 	write(fileno(stdout), buffer, strlen(buffer));
     }
     
+    sprintf(buffer, "Launcher Robot 5: Terminado\n");
+    write(fileno(stdout), buffer, strlen(buffer));
+        
     return 0;
 }

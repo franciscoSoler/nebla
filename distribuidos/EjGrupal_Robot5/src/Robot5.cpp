@@ -11,19 +11,19 @@
 
 #include "Controladores/ControladorRobot5.h"
 
-#define MAX_DEMORA 15 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
+#define MAX_DEMORA 10 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
                        
 Canasto resolverPedidoCanasto(ControladorRobot5 &controladorRobot5, PedidoCanasto pedido) {
     // El robot va a buscar el canasto al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot5: Buscando durante %d segundos\n", buscando);
+    sprintf(buffer, "Robot 5: Buscando durante %d segundos\n", buscando);
     write(fileno(stdout), buffer, strlen(buffer));
     usleep(buscando * 1000 * 1000);    
     Canasto canasto = controladorRobot5.obtenerCanasto(pedido.tipoPieza);
 
     int volviendo = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot5: Volviendo durante %d segundos\n", volviendo);
+    sprintf(buffer, "Robot 5: Volviendo durante %d segundos\n", volviendo);
     write(fileno(stdout), buffer, strlen(buffer));
     usleep(volviendo * 1000 * 1000);
     
@@ -34,14 +34,14 @@ Gabinete resolverPedidoGabinete(ControladorRobot5 &controladorRobot5, TipoProduc
     // El robot va a buscar el gabinete al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot5: Buscando durante %d segundos\n", buscando);
+    sprintf(buffer, "Robot 5: Buscando durante %d segundos\n", buscando);
     write(fileno(stdout), buffer, strlen(buffer));
     usleep(buscando * 1000 * 1000);    
     
     Gabinete gabinete = controladorRobot5.obtenerGabinete(tipoPorudcto);
 
     int volviendo = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot5: Volviendo durante %d segundos\n", volviendo);
+    sprintf(buffer, "Robot 5: Volviendo durante %d segundos\n", volviendo);
     write(fileno(stdout), buffer, strlen(buffer));
     usleep(volviendo * 1000 * 1000);
     
@@ -50,11 +50,18 @@ Gabinete resolverPedidoGabinete(ControladorRobot5 &controladorRobot5, TipoProduc
 
 int main(int argc, char **argv) {
     char buffer[TAM_BUFFER];
-    sprintf(buffer, "Iniciando robot 5.\n");
+    sprintf(buffer, "Iniciando Robot 5.\n");
     write(fileno(stdout), buffer, strlen(buffer));
 
     ControladorRobot5 controladorRobot5;
-    //ControladorAlamacenPiezas controladorAlmacen;
+    try {
+        controladorRobot5.iniciarControlador();
+    }
+    catch (std::exception ex) {
+        sprintf(buffer, "Robot 5: Error al iniciar el controlador: %s\n", ex.what());
+        write(fileno(stderr), buffer, strlen(buffer));
+        exit(-1);
+    }
     
     bool deboSeguir = true;
     
