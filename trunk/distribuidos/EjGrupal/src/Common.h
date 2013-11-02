@@ -9,6 +9,7 @@
 #define DIRECTORY_AGV 		"./AGV"
 #define DIRECTORY_ROBOT_5 	"./Robot5"
 #define DIRECTORY_ROBOT_11 	"./Robot11"
+#define DIRECTORY_ROBOT_12 	"./Robot12"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
@@ -18,8 +19,13 @@
 #define ID_BUFFER_AGV_5_2		5
 #define ID_COLA_PEDIDOS_AGV_5           6
 
-// ipcs entre AGV y robot 11 (usar DIRECTORY_AGV)
+// ipcs entre AGV, robot 11 y robot 12 (usar DIRECTORY_AGV)
 #define ID_SEM_BUFFER_CANASTOS          7
+#define ID_COLA_PEDIDOS_ROBOTS_AGV      8
+#define ID_BUFFER_CANASTOS_0            9
+#define ID_BUFFER_CANASTOS_1            10
+#define ID_BUFFER_CANASTOS_2            11
+
 
 //ipcs del Robot5 (usar DIRECTORY_ROBOT_5)
 #define ID_COLA_API_ROBOT_5 		1
@@ -35,9 +41,12 @@
 #define ID_SEM_CINTA_6                  1
 #define ID_CINTA_6_0                    2
 #define ID_CINTA_6_1                    3
+
+// ipcs entre robot 5, robot 11 y AGV (usar DIRECTORY_ROBOT_11)
 #define ID_SEM_BLOQUEO_ROBOT_11         4
 
-
+// ipcs entre robot 11 y AGV (usar DIRECTORY_ROBOT_12)
+#define ID_SEM_BLOQUEO_ROBOT_12         1
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
@@ -124,7 +133,7 @@ typedef struct {
 } CintaTransportadora_6;
 
 typedef struct {
-    bool estadoRobot5;
+    bool robot5Bloqueado;
 }EstadoRobot5;
 
 /*

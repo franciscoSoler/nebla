@@ -42,9 +42,9 @@ private:
     IPC::Semaphore semBloqueoAGV;
 
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
-    IPC::PedidosAgvMessageQueue colaPedidosAGV;
-    IPC::BufferCanastosSharedMemory shMemCanastos;
-    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV;
+    IPC::PedidosAgvMessageQueue colaPedidosAGV_5;
+    IPC::BufferCanastosSharedMemory shMemBufferCanastos;
+    IPC::BufferCanastoEntre5yAGVSharedMemory shMemBuffer5yAGV;
     IPC::EstadoRobot5SharedMemory shMemEstadoRobot5;
 };
 

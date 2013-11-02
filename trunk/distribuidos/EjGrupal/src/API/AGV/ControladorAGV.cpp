@@ -41,29 +41,29 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->shMemEstadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
-        this->colaPedidosCanastos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_A_AGV);
+        this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
-        this->colaPedidosAGV = IPC::PedidosAgvMessageQueue("colaPedidosAGV");
-        this->colaPedidosAGV.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
+        this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5");
+        this->colaPedidosAGV_5.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
         this->semRobotCinta = IPC::Semaphore("semRobotCinta");
-        this->shMemCanastos = IPC::BufferCanastosSharedMemory("shMemCanastos");
-        this->shMemPasajeCanastoEntre5yAGV = IPC::BufferCanastoEntre5yAGVSharedMemory("shMemPasajeCanastoEntre5yAGV");
+        this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
+        this->shMemBuffer5yAGV = IPC::BufferCanastoEntre5yAGVSharedMemory("shMemBuffer5yAGV");
         switch (id_AGV) {
             case 0 : 
-                this->semRobotCinta.getSemaphore(DIRECTORY, ID_SEM_ROBOT_11, 2);
-                this->shMemCanastos.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTOS_1);
-                this->shMemPasajeCanastoEntre5yAGV.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTO_AGV_5_1);
+                this->semRobotCinta.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
+                this->shMemBufferCanastos.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+                this->shMemBuffer5yAGV.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
                 break;
             case 1 :
-                this->semRobotCinta.getSemaphore(DIRECTORY, ID_SEM_ROBOT_12, 2);
-                this->shMemCanastos.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTOS_2);
-                this->shMemPasajeCanastoEntre5yAGV.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTO_AGV_5_2);
+                this->semRobotCinta.getSemaphore(DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
+                this->shMemBufferCanastos.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+                this->shMemBuffer5yAGV.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
                 break;
             case 2 :
-                this->semRobotCinta.getSemaphore(DIRECTORY, ID_SEM_ROBOT_11, 2);
-                this->shMemCanastos.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTOS_3);
-                this->shMemPasajeCanastoEntre5yAGV.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTO_AGV_5_3);
+                this->semRobotCinta.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
+                this->shMemBufferCanastos.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+                this->shMemBuffer5yAGV.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
                 break;
         }
     }
@@ -78,13 +78,13 @@ TipoPieza ControladorAGV::atenderPedidos() {
         sprintf(this->buffer, "AGV-%u - atenderPedidos:", id_AGV + 1);
         Logger::setProcessInformation(this->buffer);
         
-        PedidoCanasto pedidoCanasto;
+        MensajePedidoRobotCinta_6 pedidoCanasto;
         Logger::logMessage(Logger::TRACE, "recibo pedidos canastos de la cola");
 
         this->colaPedidosCanastos.recibirPedidoCanasto(this->id_AGV + 1, &pedidoCanasto);
-        this->posicionCanasto = pedidoCanasto.lugar;
+        this->posicionCanasto = pedidoCanasto.pedidoCanastoAgv.lugar;
         //this->pedidoDeDeposito = pedidoCanasto.pedidoEsDeDeposito;
-        return pedidoCanasto.tipoPieza;
+        return pedidoCanasto.pedidoCanastoAgv.tipoPieza;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -103,17 +103,17 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
         
         MensajePedidoAgv_5 pedidoCanastoAGV;
         pedidoCanastoAGV.mtype = 1;
-        pedidoCanastoAGV.idAgv = this->id_AGV;
-        pedidoCanastoAGV.tipo = tipoPieza;
-        this->colaPedidosAGV.enviarPedidoAGV(pedidoCanastoAGV);
+        pedidoCanastoAGV.pedidoCanastoAgv.idAgv = this->id_AGV;
+        pedidoCanastoAGV.pedidoCanastoAgv.tipoPieza = tipoPieza;
+        this->colaPedidosAGV_5.enviarPedidoAgv(pedidoCanastoAGV);
 
         // despierto robot 5 si esta durmiendo
         Logger::logMessage(Logger::TRACE, "veo si robot 5 esta durmiendo");
         this->semMemEstadoRobot5.wait();
         this->shMemEstadoRobot5.readInfo(&estadoRobot5);
-        if (estadoRobot5.robot5Durmiendo) {
+        if (estadoRobot5.robot5Bloqueado) {
             Logger::logMessage(Logger::TRACE, "robot 5 esta durmiendo, lo despierto");
-            estadoRobot5.robot5Durmiendo = false;
+            estadoRobot5.robot5Bloqueado = false;
             this->shMemEstadoRobot5.writeInfo(&estadoRobot5);
             this->semBloqueoRobot5.signal();
         }
@@ -124,7 +124,7 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
 
         Logger::logMessage(Logger::TRACE, "busco el canasto traido por robot 5");
         this->semBufferAGV_5.wait(this->id_AGV);
-        this->shMemPasajeCanastoEntre5yAGV.readInfo(&canasto);
+        this->shMemBuffer5yAGV.readInfo(&canasto);
         this->semBufferAGV_5.signal(this->id_AGV);
 
         return canasto;
@@ -145,7 +145,7 @@ void ControladorAGV::reponerCanasto(Canasto canasto) {
         this->semMemCanastos.wait(this->id_AGV);
         Logger::logMessage(Logger::TRACE, "obtengo memoria de los canastos");
         
-        this->shMemCanastos.readInfo(&canastos);
+        this->shMemBufferCanastos.readInfo(&canastos);
 
         canastos.canastos[this->posicionCanasto] = canasto;
 
@@ -169,7 +169,7 @@ void ControladorAGV::reponerCanasto(Canasto canasto) {
             this->semRobotCinta.signal(1);
         }
 
-        this->shMemCanastos.writeInfo(&canastos);
+        this->shMemBufferCanastos.writeInfo(&canastos);
         this->semMemCanastos.signal(this->id_AGV);
         return;
     }
