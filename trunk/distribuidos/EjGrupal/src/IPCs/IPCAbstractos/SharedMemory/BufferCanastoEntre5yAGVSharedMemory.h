@@ -8,12 +8,14 @@
 #ifndef BUFFERCANASTOENTRE5YAGVSHAREDMEMORY_H
 #define	BUFFERCANASTOENTRE5YAGVSHAREDMEMORY_H
 
-#include "../../Common.h"
-#include "AbstractSharedMemory.h"
+#include "../../../Common.h"
+#include "../AbstractSharedMemory/AbstractSharedMemory.h"
+
+namespace IPC {
 
 class BufferCanastoEntre5yAGVSharedMemory : public AbstractSharedMemory {
 public:
-    BufferCanastoEntre5yAGVSharedMemory() {}
+    BufferCanastoEntre5yAGVSharedMemory(std::string IPCName = "") : AbstractSharedMemory(IPCName) {}
     virtual ~BufferCanastoEntre5yAGVSharedMemory() {}
     
     void readInfo (Canasto* dato);
@@ -21,6 +23,8 @@ public:
 private:
     size_t getMemorySize();
 };
+
+}
 
 #endif	/* BUFFERCANASTOENTRE5YAGVSHAREDMEMORY_H */
 

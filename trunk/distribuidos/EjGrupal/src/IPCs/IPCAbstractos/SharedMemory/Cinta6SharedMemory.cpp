@@ -7,6 +7,8 @@
 
 #include "Cinta6SharedMemory.h"
 
+namespace IPC {
+
 //-----------------------------------------------------------------------------
 size_t Cinta6SharedMemory::getMemorySize() {
 	return sizeof(CintaTransportadora_6);
@@ -22,3 +24,4 @@ void Cinta6SharedMemory::writeInfo ( CintaTransportadora_6 *dato ) {
     memcpy(this->data, dato, getMemorySize());
 }
 
+}
