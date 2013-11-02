@@ -1,5 +1,7 @@
 #include "EstadoRobot5SharedMemory.h"
 
+namespace IPC {
+    
 //-----------------------------------------------------------------------------
 size_t EstadoRobot5SharedMemory::getMemorySize() {
     return sizeof(bool);
@@ -13,4 +15,5 @@ bool* EstadoRobot5SharedMemory::readInfo () {
 //-----------------------------------------------------------------------------
 void EstadoRobot5SharedMemory::writeInfo ( bool *dato ) {
     memcpy(this->data, dato, sizeof(bool));
+}
 }

@@ -1,13 +1,15 @@
 #ifndef BUFFER_CANASTO_SHARED_MEMORY
 #define BUFFER_CANASTO_SHARED_MEMORY
 
-#include "../../common.h"
-#include "AbstractSharedMemory.h"
+#include "../../../Common.h"
+#include "../../AbstractSharedMemory/AbstractSharedMemory.h"
+
+namespace IPC {
 
 class BufferCanastoSharedMemory : public AbstractSharedMemory {
 
 public:
-	BufferCanastoSharedMemory() : AbstractSharedMemory () {}
+	BufferCanastoSharedMemory(std::string IPCName = "") : AbstractSharedMemory (IPCName) {}
 	virtual ~BufferCanastoSharedMemory() {}
 
 	Canasto* readInfo ();
@@ -17,4 +19,5 @@ protected:
 	size_t getMemorySize();
 
 };
+}
 #endif // BUFFER_CANASTO_SHARED_MEMORY

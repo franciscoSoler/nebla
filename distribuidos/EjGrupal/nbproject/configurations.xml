@@ -3,12 +3,44 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="src" displayName="src" projectFiles="true">
       <logicalFolder name="API" displayName="API" projectFiles="true">
+        <logicalFolder name="AGV" displayName="AGV" projectFiles="true">
+          <itemPath>src/API/AGV/ControladorAGV.cpp</itemPath>
+          <itemPath>src/API/AGV/ControladorAGV.h</itemPath>
+          <itemPath>src/API/AGV/IControladorAGV.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Robot11" displayName="Robot11" projectFiles="true">
+          <itemPath>src/API/Robot11/ControladorRobot11.cpp</itemPath>
+          <itemPath>src/API/Robot11/ControladorRobot11.h</itemPath>
+          <itemPath>src/API/Robot11/IControladorRobot11.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Robot5" displayName="Robot5" projectFiles="true">
+          <logicalFolder name="CintaTransportadora"
+                         displayName="CintaTransportadora"
+                         projectFiles="true">
+            <itemPath>src/API/Robot5/CintaTransportadora/CintaTransportadora6.cpp</itemPath>
+            <itemPath>src/API/Robot5/CintaTransportadora/CintaTransportadora6.h</itemPath>
+          </logicalFolder>
+          <itemPath>src/API/Robot5/ControladorRobot5.cpp</itemPath>
+          <itemPath>src/API/Robot5/ControladorRobot5.h</itemPath>
+        </logicalFolder>
       </logicalFolder>
       <logicalFolder name="Exceptions" displayName="Exceptions" projectFiles="true">
         <itemPath>src/Exceptions/Exception.cpp</itemPath>
         <itemPath>src/Exceptions/Exception.h</itemPath>
       </logicalFolder>
       <logicalFolder name="IPCs" displayName="IPCs" projectFiles="true">
+        <logicalFolder name="AbstractMessageQueue"
+                       displayName="AbstractMessageQueue"
+                       projectFiles="true">
+          <itemPath>src/IPCs/AbstractMessageQueue/AbstractMessageQueue.cpp</itemPath>
+          <itemPath>src/IPCs/AbstractMessageQueue/AbstractMessageQueue.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="AbstractSharedMemory"
+                       displayName="AbstractSharedMemory"
+                       projectFiles="true">
+          <itemPath>src/IPCs/AbstractSharedMemory/AbstractSharedMemory.cpp</itemPath>
+          <itemPath>src/IPCs/AbstractSharedMemory/AbstractSharedMemory.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="Barrios" displayName="Barrios" projectFiles="true">
         </logicalFolder>
         <logicalFolder name="Duran" displayName="Duran" projectFiles="true">
@@ -22,8 +54,6 @@
           <logicalFolder name="SharedMemory"
                          displayName="SharedMemory"
                          projectFiles="true">
-            <itemPath>src/IPCs/Duran/SharedMemory/AbstractSharedMemory.cpp</itemPath>
-            <itemPath>src/IPCs/Duran/SharedMemory/AbstractSharedMemory.h</itemPath>
             <itemPath>src/IPCs/Duran/SharedMemory/BufferCanastoSharedMemory.cpp</itemPath>
             <itemPath>src/IPCs/Duran/SharedMemory/BufferCanastoSharedMemory.h</itemPath>
             <itemPath>src/IPCs/Duran/SharedMemory/CintaTransportadoraSharedMemory.cpp</itemPath>
@@ -33,32 +63,26 @@
             <itemPath>src/IPCs/Duran/SharedMemory/EstadoRobot5SharedMemory.cpp</itemPath>
             <itemPath>src/IPCs/Duran/SharedMemory/EstadoRobot5SharedMemory.h</itemPath>
           </logicalFolder>
-          <itemPath>src/IPCs/Duran/IPCException.cpp</itemPath>
-          <itemPath>src/IPCs/Duran/IPCException.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="IPCObject" displayName="IPCObject" projectFiles="true">
+          <itemPath>src/IPCs/IPCObject/IPCObject.cpp</itemPath>
+          <itemPath>src/IPCs/IPCObject/IPCObject.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Semaphore" displayName="Semaphore" projectFiles="true">
+          <itemPath>src/IPCs/Semaphore/Semaphore.cpp</itemPath>
+          <itemPath>src/IPCs/Semaphore/Semaphore.h</itemPath>
         </logicalFolder>
         <logicalFolder name="Soler" displayName="Soler" projectFiles="true">
-          <logicalFolder name="IPCObject" displayName="IPCObject" projectFiles="true">
-            <itemPath>src/IPCs/Soler/IPCObject/IPCObject.cpp</itemPath>
-            <itemPath>src/IPCs/Soler/IPCObject/IPCObject.h</itemPath>
-          </logicalFolder>
           <logicalFolder name="MessageQueue"
                          displayName="MessageQueue"
                          projectFiles="true">
-            <itemPath>src/IPCs/Soler/MessageQueue/AbstractMessageQueue.cpp</itemPath>
-            <itemPath>src/IPCs/Soler/MessageQueue/AbstractMessageQueue.h</itemPath>
             <itemPath>src/IPCs/Soler/MessageQueue/Barrera1112MessageQueue.h</itemPath>
             <itemPath>src/IPCs/Soler/MessageQueue/PedidosAGVMessageQueue.h</itemPath>
             <itemPath>src/IPCs/Soler/MessageQueue/PedidosCanastosMessageQueue.h</itemPath>
           </logicalFolder>
-          <logicalFolder name="Semaphore" displayName="Semaphore" projectFiles="true">
-            <itemPath>src/IPCs/Soler/Semaphore/Semaphore.cpp</itemPath>
-            <itemPath>src/IPCs/Soler/Semaphore/Semaphore.h</itemPath>
-          </logicalFolder>
           <logicalFolder name="SharedMemory"
                          displayName="SharedMemory"
                          projectFiles="true">
-            <itemPath>src/IPCs/Soler/SharedMemory/AbstractSharedMemory.cpp</itemPath>
-            <itemPath>src/IPCs/Soler/SharedMemory/AbstractSharedMemory.h</itemPath>
             <itemPath>src/IPCs/Soler/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.cpp</itemPath>
             <itemPath>src/IPCs/Soler/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h</itemPath>
             <itemPath>src/IPCs/Soler/SharedMemory/BufferCanastoSharedMemory.cpp</itemPath>
@@ -125,6 +149,44 @@
       </makefileType>
       <item path="src/AGV.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/API/AGV/ControladorAGV.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/API/AGV/ControladorAGV.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/API/AGV/IControladorAGV.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/API/Robot11/ControladorRobot11.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot11/ControladorRobot11.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot11/IControladorRobot11.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot5/CintaTransportadora/CintaTransportadora6.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot5/CintaTransportadora/CintaTransportadora6.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot5/ControladorRobot5.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/API/Robot5/ControladorRobot5.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Common.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ControladorRobot5Agv.cpp" ex="false" tool="1" flavor2="0">
@@ -135,9 +197,25 @@
       </item>
       <item path="src/Exceptions/Exception.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/IPCs/Duran/IPCException.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/IPCs/AbstractMessageQueue/AbstractMessageQueue.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
-      <item path="src/IPCs/Duran/IPCException.h" ex="false" tool="3" flavor2="0">
+      <item path="src/IPCs/AbstractMessageQueue/AbstractMessageQueue.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/IPCs/AbstractSharedMemory/AbstractSharedMemory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/IPCs/AbstractSharedMemory/AbstractSharedMemory.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/IPCs/Duran/MessageQueue/ComunicacionRobot5MessageQueue.h"
             ex="false"
@@ -150,16 +228,6 @@
             flavor2="0">
       </item>
       <item path="src/IPCs/Duran/MessageQueue/PedidosProduccionMessageQueue.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/IPCs/Duran/SharedMemory/AbstractSharedMemory.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/IPCs/Duran/SharedMemory/AbstractSharedMemory.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -204,25 +272,13 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="src/IPCs/Soler/IPCObject/IPCObject.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="src/IPCs/IPCObject/IPCObject.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/IPCs/Soler/IPCObject/IPCObject.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="src/IPCs/IPCObject/IPCObject.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/IPCs/Soler/MessageQueue/AbstractMessageQueue.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="src/IPCs/Semaphore/Semaphore.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/IPCs/Soler/MessageQueue/AbstractMessageQueue.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="src/IPCs/Semaphore/Semaphore.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/IPCs/Soler/MessageQueue/Barrera1112MessageQueue.h"
             ex="false"
@@ -235,26 +291,6 @@
             flavor2="0">
       </item>
       <item path="src/IPCs/Soler/MessageQueue/PedidosCanastosMessageQueue.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/IPCs/Soler/Semaphore/Semaphore.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/IPCs/Soler/Semaphore/Semaphore.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/IPCs/Soler/SharedMemory/AbstractSharedMemory.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/IPCs/Soler/SharedMemory/AbstractSharedMemory.h"
             ex="false"
             tool="3"
             flavor2="0">

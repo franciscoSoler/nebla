@@ -5,7 +5,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-#include "AbstractMessageQueue.h"
+#include "../../AbstractMessageQueue/AbstractMessageQueue.h"
 
 #include "../../../Common.h"
 
@@ -15,7 +15,7 @@ class PedidosProduccionMessageQueue : public AbstractMessageQueue
 {
 
 public:
-	PedidosProduccionMessageQueue():AbstractMessageQueue() {} 
+	PedidosProduccionMessageQueue(std::string IPCName = ""):AbstractMessageQueue(IPCName) {} 
 	
 	virtual ~PedidosProduccionMessageQueue() {}
 

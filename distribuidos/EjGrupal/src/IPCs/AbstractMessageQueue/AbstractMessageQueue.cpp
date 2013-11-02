@@ -54,4 +54,5 @@ int AbstractMessageQueue::recibir(int tipo, void *buffer, size_t size) {
     }
     return resultado;
 }
+
 }

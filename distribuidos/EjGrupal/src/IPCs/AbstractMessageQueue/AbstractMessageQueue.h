@@ -34,7 +34,7 @@ public:
 	/* Pre: -
  	 * Post: -
  	 */
-	AbstractMessageQueue(); 
+	AbstractMessageQueue(std::string IPCName = ""); 
 	
 	/* Pre: - 
  	 * Post: - 
@@ -64,6 +64,7 @@ public:
 	virtual int recibir (int tipo, void * dato) = 0;*/
 
 };
+
 }
 
 #endif

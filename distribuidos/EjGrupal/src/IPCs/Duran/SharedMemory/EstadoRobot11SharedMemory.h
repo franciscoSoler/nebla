@@ -1,13 +1,15 @@
 #ifndef ESTADO_ROBOT_11_SHARED_MEMORY
 #define ESTADO_ROBOT_11_SHARED_MEMORY
 
-#include "../../common.h"
-#include "AbstractSharedMemory.h"
+#include "../../../Common.h"
+#include "../../AbstractSharedMemory/AbstractSharedMemory.h"
+
+namespace IPC {
 
 class EstadoRobot11SharedMemory : public AbstractSharedMemory {
 
 public:
-	EstadoRobot11SharedMemory() : AbstractSharedMemory () {}
+	EstadoRobot11SharedMemory(std::string IPCName = "") : AbstractSharedMemory (IPCName) {}
 	virtual ~EstadoRobot11SharedMemory() {}
 
 	bool *readInfo ();
@@ -17,4 +19,5 @@ protected:
 	size_t getMemorySize();
 
 };
+}
 #endif // ESTADO_ROBOT_11_SHARED_MEMORY

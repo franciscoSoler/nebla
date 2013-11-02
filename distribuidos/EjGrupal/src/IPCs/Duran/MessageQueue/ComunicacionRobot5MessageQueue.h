@@ -5,9 +5,9 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-#include "AbstractMessageQueue.h"
+#include "../../AbstractMessageQueue/AbstractMessageQueue.h"
 
-#include "../../common.h"
+#include "../../../Common.h"
 
 namespace IPC {
 
@@ -15,7 +15,7 @@ class ComunicacionRobot5MessageQueue : public AbstractMessageQueue
 {
 public:
 
-    ComunicacionRobot5MessageQueue() : AbstractMessageQueue() {}
+    ComunicacionRobot5MessageQueue(std::string IPCName = "") : AbstractMessageQueue(IPCName) {}
 
     virtual ~ComunicacionRobot5MessageQueue() {}
 
