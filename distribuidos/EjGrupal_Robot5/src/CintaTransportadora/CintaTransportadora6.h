@@ -24,7 +24,7 @@ public:
     CintaTransportadora6(int idCinta);
     virtual ~CintaTransportadora6();
     
-    void iniciarCinta(int idClaveMemoria, int idClaveSemaforo);
+    void iniciarCinta(int idClave);
     void depositarProductoEnProduccion(ProductoEnProduccion producto);
     EstadoCinta obtenerEstadoCinta();
         

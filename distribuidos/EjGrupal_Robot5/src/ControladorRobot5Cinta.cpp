@@ -38,10 +38,10 @@ void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
               
     /* Obtengo las cintas transportadoras */    
     cintaTransportadora[0] = CintaTransportadora6(0);
-    cintaTransportadora[0].iniciarCinta(ID_MEM_CINTA_6_0, ID_SEM_ACCESO_CINTA_6_0);
+    cintaTransportadora[0].iniciarCinta(ID_CINTA_6_0);
     
     cintaTransportadora[1] = CintaTransportadora6(1);
-    cintaTransportadora[1].iniciarCinta(ID_MEM_CINTA_6_1, ID_SEM_ACCESO_CINTA_6_1);
+    cintaTransportadora[1].iniciarCinta(ID_CINTA_6_1);
 
     /* Obtengo la memoria compartida del estado del robot 5 y su semaforo de acceso */
     estadoRobot5.getSharedMemory(DIRECTORY, ID_MEM_ESTADO_ROBOT_5);

@@ -15,35 +15,28 @@
 
 #define ID_COLA_PEDIDOS_AGV_5 2
 
-#define ID_MEM_BUFFER_CANASTOS_1 3
-#define ID_MEM_BUFFER_CANASTOS_2 4
-#define ID_MEM_BUFFER_CANASTOS_3 5
+#define ID_BUFFER_CANASTOS_0 3
+#define ID_BUFFER_CANASTOS_1 4
+#define ID_BUFFER_CANASTOS_2 5
 
-#define ID_SEM_ACCESO_BUFFER_CANASTOS_1 6
-#define ID_SEM_ACCESO_BUFFER_CANASTOS_2 7
-#define ID_SEM_ACCESO_BUFFER_CANASTOS_3 8
+#define ID_SEM_AGV_1 6
+#define ID_SEM_AGV_2 7
+#define ID_SEM_AGV_3 8
 
-#define ID_SEM_AGV_1 9
-#define ID_SEM_AGV_2 10
-#define ID_SEM_AGV_3 11
+#define ID_COLA_PEDIDOS_PRODUCCION 9
 
-#define ID_COLA_PEDIDOS_PRODUCCION 12
+#define ID_CINTA_6_0 10
+#define ID_CINTA_6_1 11
 
-#define ID_MEM_CINTA_6_0 13
-#define ID_MEM_CINTA_6_1 14
+#define ID_SEM_BLOQUEO_ROBOT_5 12
+#define ID_SEM_ACCESO_ESTADO_ROBOT_5 13
+#define ID_MEM_ESTADO_ROBOT_5 14
 
-#define ID_SEM_ACCESO_CINTA_6_0 15
-#define ID_SEM_ACCESO_CINTA_6_1 16
+#define ID_SEM_BLOQUEO_ROBOT_11 15
+#define ID_SEM_ACCESO_ESTADO_ROBOT_11 16
 
-#define ID_SEM_BLOQUEO_ROBOT_5 17
-#define ID_SEM_ACCESO_ESTADO_ROBOT_5 18
-#define ID_MEM_ESTADO_ROBOT_5 19
-
-#define ID_SEM_BLOQUEO_ROBOT_11 20
-#define ID_SEM_ACCESO_ESTADO_ROBOT_11 21
-
-#define ID_MEM_ESTADO_ROBOT_11_0 22
-#define ID_MEM_ESTADO_ROBOT_11_1 23
+#define ID_MEM_ESTADO_ROBOT_11_0 17
+#define ID_MEM_ESTADO_ROBOT_11_1 18
 
 /* Tipos utilizados como identificadores de los mensajes de las colas */
 
@@ -55,12 +48,7 @@
 #define TIPO_PEDIDO_CANASTO 1
 #define TIPO_PEDIDO_PRODUCCION 1
 
-#define TAM_CINTA_INICIAL 5
-
-/* Estructuras utilizadas para la comunicacion entre los AGV y el robot 5.
- */
-
-typedef int IDAgv;
+#define TAM_CINTA_6 5
 
 typedef enum {
     PIEZA_1 = 0,
@@ -100,7 +88,7 @@ typedef struct {
 
 typedef struct {
     TipoPieza tipoPieza;
-    IDAgv idAgv;
+    int idAgv;
 } PedidoCanasto;
 
 typedef struct {
@@ -115,7 +103,7 @@ typedef struct {
 typedef struct {
 	long mtype; // tipo = PEDIDO
 	PedidoCanasto pedidoCanasto;
-} PedidoAgv;
+} MensajePedidoAgv;
 
 /* Estructuras exclusivas utilizadas por el robot 5 
  */
@@ -133,7 +121,7 @@ typedef struct {
 
 typedef struct {
     long mtype; // tipo = respuesta de canasto
-    IDAgv idAgv;
+    int idAgv;
     Canasto canasto;
 } MensajeRespuestaCanasto;
 
@@ -144,8 +132,7 @@ typedef struct {
     Gabinete gabinete;
 } MensajeRespuestaGabinete;
 
-
-/* Estructuras utilizadas para la comunicacion entre los robots 5 y 11.
+/* Producto en produccion. el cual se deposita en las cintas transportadoras.
  */
 
 typedef struct {
@@ -157,8 +144,8 @@ typedef struct {
 /* Cinta transportadora */
 
 typedef struct {
-    ProductoEnProduccion productoProduccion[TAM_CINTA_INICIAL];
-    bool lugarVacio[TAM_CINTA_INICIAL];
+    ProductoEnProduccion productoProduccion[TAM_CINTA_6];
+    bool lugarVacio[TAM_CINTA_6];
     int posicionActual;
 } CintaTransportadora_6;
 
