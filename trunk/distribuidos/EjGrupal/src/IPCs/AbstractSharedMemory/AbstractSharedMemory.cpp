@@ -3,7 +3,7 @@
 
 namespace IPC {
 
-AbstractSharedMemory::AbstractSharedMemory () {
+AbstractSharedMemory::AbstractSharedMemory (std::string IPCName) : IPCObject(IPCName) {
 }
 
 AbstractSharedMemory::~AbstractSharedMemory() { 

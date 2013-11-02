@@ -17,7 +17,9 @@
 #define ID_BUFFER_AGV_5_0           	3	// es el id tanto para shMemory como semaforo de acceso
 #define ID_BUFFER_AGV_5_1		4
 #define ID_BUFFER_AGV_5_2		5
-#define ID_COLA_PEDIDOS_AGV_5           6	
+#define ID_COLA_PEDIDOS_AGV_5           6
+
+//
 
 //ipcs del Robot5
 #define ID_COLA_API_ROBOT_5 			1
