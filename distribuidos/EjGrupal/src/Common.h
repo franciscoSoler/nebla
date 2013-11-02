@@ -49,6 +49,7 @@
 #define BUFF_SIZE_CINTA_6               	5
 #define CANTIDAD_CINTAS_6               	2
 #define CANTIDAD_AGVS                           3
+#define MAX_QUANTITY_CANASTOS                   50
 
 typedef enum {
     PEDIDO_PRODUCCION = 0,
@@ -118,9 +119,9 @@ typedef struct {
     ProductoEnProduccion productoProduccion[BUFF_SIZE_CINTA_6];
 } CintaTransportadora_6;
 
-
-
-
+typedef struct {
+    bool estadoRobot5;
+}EstadoRobot5;
 
 /*
  * Estructuras utilizadas para la comunicacion entre el robot 5 y el almacen de piezas.
@@ -165,6 +166,16 @@ typedef struct {
     int ordenDeCompra;
     Gabinete gabinete;
 } MensajeRespuestaGabinete;
+
+/*
+ * Estructuras utilizadas entre AGVs, almacen de piezas, robot 11 y robot 12
+ */
+
+typedef struct {
+    int robotCinta1EsperaPorElLugarNumero;
+    int robotCinta2EsperaPorElLugarNumero;
+    Canasto canastos[MAX_QUANTITY_CANASTOS];
+} BufferCanastos;
 
 #endif	/* COMMON_H */
 

@@ -11,7 +11,7 @@
 #include <unistd.h>
 
 #include "../../Exceptions/Exception.h"
-#include "../IPCObject/IPCObject.h"
+#include "../../IPCObject/IPCObject.h"
 
 namespace IPC {
 

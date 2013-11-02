@@ -4,7 +4,7 @@
 #include "../../../Common.h"
 #include "../AbstractSharedMemory/AbstractSharedMemory.h"
 
-namespace {
+namespace IPC {
 
 class BufferCanastosSharedMemory : public AbstractSharedMemory {
 

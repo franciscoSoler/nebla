@@ -11,7 +11,7 @@
 #include "../../../Common.h"
 #include "../AbstractSharedMemory/AbstractSharedMemory.h"
 
-namespace {
+namespace IPC {
 
 class Cinta6SharedMemory  : public AbstractSharedMemory {
 protected:

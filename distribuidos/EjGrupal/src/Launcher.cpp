@@ -9,13 +9,13 @@
 #include "Exceptions/Exception.h"
 #include "Logger/Logger.h"
 #include "IPCs/Semaphore/Semaphore.h"
-#include "IPCs/Soler/MessageQueue/Barrera1112MessageQueue.h"
-#include "IPCs/Soler/MessageQueue/PedidosAGVMessageQueue.h"
-#include "IPCs/Soler/MessageQueue/PedidosCanastosMessageQueue.h"
-#include "IPCs/Soler/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
-#include "IPCs/Soler/SharedMemory/BufferCanastoSharedMemory.h"
-#include "IPCs/Soler/SharedMemory/Cinta6SharedMemory.h"
-#include "IPCs/Soler/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
+#include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 
 static char buffer[255];
 static char param1[20];
@@ -67,7 +67,7 @@ void createIPCs() {
     }
     
     // Do the same with the queues
-    IPC::PedidosAGVMessageQueue colaPedidosAGV_5;
+    IPC::PedidosAgvMessageQueue colaPedidosAGV_5;
     colaPedidosAGV_5.create(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
     
     //exclusivo Robot 5

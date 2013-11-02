@@ -10,13 +10,13 @@
 
 #include "IControladorAGV.h"
 #include "../../IPCs/Semaphore/Semaphore.h"
-#include "../../IPCs/Soler/MessageQueue/PedidosCanastosMessageQueue.h"
-#include "../../IPCs/Soler/MessageQueue/Barrera1112MessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 
-#include "../../IPCs/Soler/MessageQueue/PedidosAGVMessageQueue.h"
-#include "../../IPCs/Soler/SharedMemory/BufferCanastoSharedMemory.h"
-#include "../../IPCs/Soler/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "../../IPCs/Soler/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
+#include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 
 class ControladorAGV : public IControladorAGV {
 public:
@@ -42,8 +42,8 @@ private:
     IPC::Semaphore semEstAGV;
 
     IPC::PedidosCanastosMessageQueue colaPedidosReponerCanastos;
-    IPC::PedidosAGVMessageQueue colaPedidosAGV;
-    IPC::BufferCanastoSharedMemory shMemCanastos;
+    IPC::PedidosAgvMessageQueue colaPedidosAGV;
+    IPC::BufferCanastosSharedMemory shMemCanastos;
     IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV;
     IPC::EstadoRobot5SharedMemory shMemEstadoRobot5;
 };
