@@ -8,27 +8,27 @@
 #include <cstdlib>
 #include <exception>
 
-#include "../CintaTransportadora/CintaTransportadora6.h"
+#include "API/Robot5/CintaTransportadora/CintaTransportadora6.h"
 
-#include "../IPC/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "../IPC/SharedMemory/EstadoRobot11SharedMemory.h"
+#include "IPCs/Duran/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "IPCs/Duran/SharedMemory/EstadoRobot11SharedMemory.h"
 
-#include "../IPC/MessageQueue/PedidosProduccionMessageQueue.h"
-#include "../IPC/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "IPCs/Duran/MessageQueue/PedidosProduccionMessageQueue.h"
+#include "IPCs/Duran/MessageQueue/ComunicacionRobot5MessageQueue.h"
 
-#include "../common.h"
+#include "Common.h"
 
-void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
-        PedidosProduccionMessageQueue &colaPedidos, 
+void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
+        IPC::PedidosProduccionMessageQueue &colaPedidos, 
         CintaTransportadora6 *cintaTransportadora,
         
-        EstadoRobot5SharedMemory &estadoRobot5,
-        Semaphore &semaforoAccesoEstadoRobot5,
-        Semaphore &semaforoBloqueoRobot5,
+        IPC::EstadoRobot5SharedMemory &estadoRobot5,
+        IPC::Semaphore &semaforoAccesoEstadoRobot5,
+        IPC::Semaphore &semaforoBloqueoRobot5,
         
-        EstadoRobot11SharedMemory *estadoRobot11,
-        Semaphore &semaforoAccesoEstadoRobot11,
-        Semaphore &semaforoBloqueoRobot11) {
+        IPC::EstadoRobot11SharedMemory *estadoRobot11,
+        IPC::Semaphore &semaforoAccesoEstadoRobot11,
+        IPC::Semaphore &semaforoBloqueoRobot11) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
     colaComunicacionRobot5.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
@@ -95,7 +95,7 @@ int main(int argc, char** argv) {
                 semaforoAccesoEstadoRobot11,
                 semaforoBloqueoRobot11);
     }
-    catch (IPCException const& ex) {
+    catch (Exception const& ex) {
         char buffer[TAM_BUFFER];
         sprintf (buffer, "Controlador Robot 5 - Cinta: Error: %s\n", ex.what());
         write (fileno(stderr),buffer, strlen(buffer));

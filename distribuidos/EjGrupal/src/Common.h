@@ -19,17 +19,20 @@
 #define ID_BUFFER_AGV_5_2		5
 #define ID_COLA_PEDIDOS_AGV_5           6
 
-//
+//ipcs del Robot5 (usar DIRECTORY_ROBOT_5)
+#define ID_COLA_API_ROBOT_5 		1
 
-//ipcs del Robot5
-#define ID_COLA_API_ROBOT_5 			1
+//ipcs entre Robot5 y almacen de piezas (usar DIRECTORY_ROBOT_5)
+#define ID_COLA_PEDIDOS_PRODUCCION      2
+
 
 //mtype colas
-#define TIPO_PEDIDO_ROBOT_5 			1
-#define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 	2
-#define TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5 3
-#define TIPO_PEDIDO_CANASTO 			4
-#define TIPO_PEDIDO_PRODUCCION 			5
+#define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
+#define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 	2 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
+#define TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5 3 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
+
+#define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
+#define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
 
 
 //constantes del sistema
@@ -65,6 +68,9 @@ typedef enum {
     PRODUCTO_3
 } TipoProducto;
 
+/*
+ * Estructuras utilizadas para la comunicacion entre el AGV y el robot 5 
+ */
 
 typedef struct {
     TipoPieza tipoPieza;
@@ -72,9 +78,11 @@ typedef struct {
 } PedidoCanastoAGV;
 
 typedef struct {
-	long mtype; // tipo = PEDIDO
-	PedidoCanastoAGV pedidoCanasto;
-} MensajePedidoAgv;
+	long mtype; // tipo = TIPO_PEDIDO_CANASTO
+	PedidoCanastoAGV pedidoCanastoAgv;
+} MensajePedidoAgv_5;
+
+
 
 
 typedef struct {
@@ -100,28 +108,30 @@ typedef struct {
     int cantidadPiezas;
 } Canasto;
 
-typedef struct {
-    TipoPieza tipoPieza;
-    int idAgv;
-} PedidoCanasto;
+/*
+ * Estructuras utilizadas para la comunicacion entre el robot 5 y el almacen de piezas.
+ */
 
-typedef struct {
-	long mtype; // tipo = PEDIDO
-	PedidoCanasto pedidoCanasto;
-} MensajePedidoAgv_5;
-
-//exclusivo Robot 5
 typedef struct {
     int nroOrdenCompra;
-    TipoProducto tipo; // Nº de producto
+    TipoProducto tipo;
     int cantidad;
     int diferenciaMinima;
 } PedidoProduccion;
 
 typedef struct {
+    long mtype; // mtype = TIPO_PEDIDO_PRODUCCION
+    PedidoProduccion pedidoProduccion;    
+} MensajePedidoProduccion;
+
+/*
+ * Estructuras utilizadas internamente por el robot 5
+ */
+
+typedef struct {
     TipoPedidoRobot5 tipo;
     PedidoProduccion pedidoProduccion;
-    PedidoCanasto pedidoCanasto;
+    PedidoCanastoAGV pedidoCanastoAgv;
 } PedidoRobot5;
 
 typedef struct {
@@ -130,13 +140,13 @@ typedef struct {
 } MensajePedidoRobot5;
 
 typedef struct {
-    long mtype; // tipo = respuesta de canasto
+    long mtype; // tipo = TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5
     int idAgv;
     Canasto canasto;
 } MensajeRespuestaCanasto;
 
 typedef struct {
-    long mtype; // tipo = respuesta de gabinete
+    long mtype; // tipo = TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5
     bool ultimo;
     int ordenDeCompra;
     Gabinete gabinete;

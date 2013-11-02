@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
             sprintf(buffer, "Controlador Robot 5 - AGV: Esperando un pedido por parte de un AGV.\n");
             write(fileno(stdout), buffer, strlen(buffer));
             
-            MensajePedidoAgv *nuevoPedido;
+            MensajePedidoAgv_5 *nuevoPedido;
             colaPedidos.recibirPedidoAgv(TIPO_PEDIDO_CANASTO, nuevoPedido);
             
             sprintf(buffer, "Controlador Robot 5 - AGV: Recibió un pedido de un AGV.\n");
@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
             
             /* Le envio el pedido al robot 5 Aplicacion */
             PedidoRobot5 pedidoRobot5;
-            pedidoRobot5.pedidoCanasto = (*nuevoPedido).pedidoCanasto;
+            pedidoRobot5.pedidoCanastoAgv = (*nuevoPedido).pedidoCanastoAgv;
             pedidoRobot5.tipo = PEDIDO_CANASTO;
 
             MensajePedidoRobot5 mensajePedidoRobot5;
