@@ -1,0 +1,260 @@
+LogFile created succesfully
+
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: voy a obtener mem cinta 6-0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: cinta vacia, aviso que me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: devuelvo mem cinta 6 me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - esperarProximoGabinete: espero a que el robot 11 me despierte[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-3 - atenderPedidos: recibo pedidos canastos de la cola[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: cinta vacia, aviso que me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - atenderPedidoAGV: recibo pedido de AGV[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: devuelvo mem cinta 6 me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-1 - atenderPedidos: recibo pedidos canastos de la cola[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - atenderPedidos: recibo pedidos canastos de la cola[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: robot 11 durmiendo, lo despierto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - esperarProximoGabinete: espero a que el robot 11 me despierte[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: punto de lectura = 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: robot 11 durmiendo, lo despierto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: voy a obtener mem cinta 6-0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: punto de lectura = 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: voy a obtener mem cinta 6-0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: lugar lleno, aviso que me duermo y me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: punto de lectura = 1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: punto de lectura = 1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: robot 5 durmiendo, lo despierto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: voy a obtener mem cinta 6-0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: punto de lectura = 2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: punto de lectura = 2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: lugar lleno, aviso que me duermo y me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: robot 5 durmiendo, lo despierto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: voy a obtener mem cinta 6-0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: punto de lectura = 3[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: voy a obtener mem cinta 6-0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: punto de lectura = 4[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarProximoGabinete: hay gabinete, despierto robot 12[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - esperarProximoGabinete: voy a tomar la memoria de la cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - esperarProximoGabinete: tome la memoria de la cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - esperarProximoGabinete: devuelvo la mem de la cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: tome la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: esta el canasto presente en la posicion 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: no hay piezas en el canasto, aviso que posicion estare esperando y devuelvo mem Canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - pedirPiezaAlAGV: el otro robot NO esta esperando la misma pieza, realizo el pedido al agv por la cola[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - pedirPiezaAlAGV: me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - buscarPieza: realizo el pedido del canasto al robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: pongo gabinete y devuelvo la cinta[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - buscarPieza: veo si robot 5 esta durmiendo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - poseePieza: tomo la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - buscarPieza: duermo hasta que robot 5 traiga el canasto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - atenderPedidoAGV: busco 0 del AGV Nº 1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-2[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - atenderPedidoAGV: voy a obtener mem buffer entre robot5 y agv[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: lugar lleno, aviso que me duermo y me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - atenderPedidoAGV: obtengo mem buffer entre robot5 y agv[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: punto de lectura = 3[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - atenderPedidoAGV: despierto el AGV Nº 1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-1 - poseePieza: canasto no presente, aviso que posicion espero, devuelvo mem canastos y me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - buscarPieza: busco el canasto traido por robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: no hay gabinete en el lugar para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - reponerCanasto: voy a obtener memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - atenderPedidoAGV: recibo pedido de AGV[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - reponerCanasto: obtengo memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - reponerCanasto: despierto al robot de la cinta 1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mAGV-2 - atenderPedidos: recibo pedidos canastos de la cola[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: voy a tomar memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: tome la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: tome memoria estado del robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: robot 5 durmiendo, lo despierto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: esta el canasto presente en la posicion 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - avanzarCinta: devuelvo mem estado robot 5[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: posee pieza, saco pieza del canasto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: voy a obtener mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: la cantidad de piezas que hay en el canasto son 100[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: obtengo mem cinta 6-1[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: obtengo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 5 - llenarCinta: lugar lleno, aviso que me duermo y me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: devuelvo mem cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: tome la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: cinta no vacia, veo si hay gabinete para trabajar[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: punto de lectura = 4[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: esta el canasto presente en la posicion 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarProximoGabinete: hay gabinete, despierto robot 12[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: posee pieza, saco pieza del canasto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - esperarProximoGabinete: voy a tomar la memoria de la cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - poseePieza: la cantidad de piezas que hay en el canasto son 99[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - esperarProximoGabinete: tome la memoria de la cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - poseePieza: tomo la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - esperarProximoGabinete: devuelvo la mem de la cinta 6[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - finalizarEnsamble: envio mensaje que finalicé con el ensamble[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-1 - esperarProximoGabinete: espero a que el robot 11 me despierte[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: tome la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 11-2 - poseePieza: canasto no presente, aviso que posicion espero, devuelvo mem canastos y me duermo[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: esta el canasto presente en la posicion 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: posee pieza, saco pieza del canasto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: la cantidad de piezas que hay en el canasto son 97[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: tome la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: esta el canasto presente en la posicion 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: posee pieza, saco pieza del canasto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: la cantidad de piezas que hay en el canasto son 96[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: voy a tomar la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: tome la memoria de los canastos[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - buscarPosicionPieza: busco en que posicion esta la pieza[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: esta el canasto presente en la posicion 0[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: posee pieza, saco pieza del canasto[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - poseePieza: la cantidad de piezas que hay en el canasto son 95[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - finalizarEnsamble: envio mensaje que finalicé con el ensamble[1;0m
+[2013-11-02]-[10:25:50] - [1;0m[1;0mRobot 12-2 - esperarProximoGabinete: espero a que el robot 11 me despierte[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_bufferCanastos1 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_bufferCanastos2 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_bufferCanastos3 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_bufferCanastoEntreAGVy51 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_bufferCanastoEntreAGVy52 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_bufferCanastoEntreAGVy53 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_estado_robot_5 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_cinta_6_1 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC shMem_cinta_6_2 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC sem_estado_AGV destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC semMutex_shMem_AGV_5 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC semMutex_shMem_Canastos destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mRobot 5 - llenarCinta: Semaphore semEstadoRobot5 Error - wait: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC sem_estado_robot_5 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC semMutex_shMem_EstadoRobot_5 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC semMutex_shMem_Cinta_6 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC sem_robot_11 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC sem_robot_12 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mRobot 5 - atenderPedidoAGV: PedidosAGVMessageQueue - Fallo la operacion recv: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC colaPedidosAGV destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC colaPedidosCanastos destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mRobot 12-1 - esperarProximoGabinete: Barrera1112MessageQueue - Fallo la operacion recv: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC cola11121 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mAGV-3 - atenderPedidos: PedidosCanastosMessageQueue - Fallo la operacion recv: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mRobot 11-2 - poseePieza: Semaphore semRobot11 Error - wait: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mAGV-2 - atenderPedidos: PedidosCanastosMessageQueue - Fallo la operacion recv: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mAGV-1 - atenderPedidos: PedidosCanastosMessageQueue - Fallo la operacion recv: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mRobot 11-1 - poseePieza: Semaphore semRobot11 Error - wait: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;43m[1;31mRobot 12-2 - esperarProximoGabinete: Barrera1112MessageQueue - Fallo la operacion recv: Identifier removed[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC cola11122 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC cola12111 destruido[1;0m
+[2013-11-02]-[10:28:25] - [1;0m[1;37mTerminator: IPC cola12112 destruido[1;0m
