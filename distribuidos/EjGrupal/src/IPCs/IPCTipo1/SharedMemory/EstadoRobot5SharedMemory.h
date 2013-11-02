@@ -11,13 +11,11 @@
 #include "../../Common.h"
 #include "AbstractSharedMemory.h"
 
-namespace IPC {
-
 class EstadoRobot5SharedMemory : public AbstractSharedMemory {
 protected:
     size_t getMemorySize();
 public:
-    EstadoRobot5SharedMemory(std::string IPCName = "") : AbstractSharedMemory(IPCName) {};
+    EstadoRobot5SharedMemory() {};
     virtual ~EstadoRobot5SharedMemory() {};
     
     void readInfo (EstadoRobot5* dato);
@@ -25,8 +23,6 @@ public:
 private:
 
 };
-
-}
 
 #endif	/* ESTADOROBOT5SHAREDMEMORY_H */
 

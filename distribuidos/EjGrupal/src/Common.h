@@ -25,6 +25,16 @@
 //ipcs entre Robot5 y almacen de piezas (usar DIRECTORY_ROBOT_5)
 #define ID_COLA_PEDIDOS_PRODUCCION      2
 
+//ipcs entre robot 11 y robot 5 (usar DIRECTORY_ROBOT_5)
+#define ID_SEM_BLOQUEO_ROBOT_5         3
+#define ID_ESTADO_ROBOT_5              4 // Se utiliza el mismo para la sh mem y para el semaforo
+
+// ipcs entre robot 5 y robot 11 (cinta transportadora 6, usar DIRECTORY_ROBOT_11)
+#define ID_SEM_CINTA_6                  1
+#define ID_CINTA_6_0                    2
+#define ID_CINTA_6_1                    3
+#define ID_SEM_BLOQUEO_ROBOT_11         4
+
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
@@ -68,6 +78,15 @@ typedef enum {
     PRODUCTO_3
 } TipoProducto;
 
+typedef struct {
+    TipoPieza tipoPieza;
+    int cantidadPiezas;
+} Canasto;
+
+typedef struct {
+    TipoGabinete tipoGabinete;
+} Gabinete;
+
 /*
  * Estructuras utilizadas para la comunicacion entre el AGV y el robot 5 
  */
@@ -82,8 +101,9 @@ typedef struct {
 	PedidoCanastoAGV pedidoCanastoAgv;
 } MensajePedidoAgv_5;
 
-
-
+/*
+ * Estrcuturas para la comunicacion entre el robot 5 y el robot 11.
+ */
 
 typedef struct {
     Gabinete gabinete;  
@@ -99,14 +119,9 @@ typedef struct {
     ProductoEnProduccion productoProduccion[BUFF_SIZE_CINTA_6];
 } CintaTransportadora_6;
 
-typedef struct {
-    TipoGabinete tipoGabinete;
-} Gabinete;
 
-typedef struct {
-    TipoPieza tipoPieza;
-    int cantidadPiezas;
-} Canasto;
+
+
 
 /*
  * Estructuras utilizadas para la comunicacion entre el robot 5 y el almacen de piezas.

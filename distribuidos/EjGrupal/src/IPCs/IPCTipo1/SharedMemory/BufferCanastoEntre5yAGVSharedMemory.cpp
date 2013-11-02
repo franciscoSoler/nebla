@@ -7,8 +7,6 @@
 
 #include "BufferCanastoEntre5yAGVSharedMemory.h"
 
-namespace IPC {
-
 //-----------------------------------------------------------------------------
 size_t BufferCanastoEntre5yAGVSharedMemory::getMemorySize() {
 	return sizeof(Canasto);
@@ -24,4 +22,3 @@ void BufferCanastoEntre5yAGVSharedMemory::writeInfo ( Canasto *dato ) {
     memcpy(this->data, dato, getMemorySize());
 }
 
-}
