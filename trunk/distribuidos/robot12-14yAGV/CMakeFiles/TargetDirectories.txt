@@ -1,0 +1,7 @@
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/CMakeFiles/out/AGV.dir
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/CMakeFiles/out/Launcher.dir
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/CMakeFiles/out/MockRobot5AGV.dir
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/CMakeFiles/out/MockRobot5Cinta.dir
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/CMakeFiles/out/Robot11.dir
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/CMakeFiles/out/Robot12.dir
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/CMakeFiles/out/Terminator.dir
