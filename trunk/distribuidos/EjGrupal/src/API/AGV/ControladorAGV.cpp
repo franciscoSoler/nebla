@@ -6,7 +6,7 @@
  */
 
 #include "ControladorAGV.h"
-#include "../Logger/Logger.h"
+#include "../../Logger/Logger.h"
 
 ControladorAGV::ControladorAGV() {
 }
@@ -22,33 +22,33 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
 
         this->id_AGV = id_AGV;
 
-        this->semEstAGV = IPC::Semaphore("semEstadoAGV");
-        this->semEstAGV.getSemaphore(DIRECTORY_AGV, ID_SEM_EST_AGV, 3);
+        this->semBloqueoAGV = IPC::Semaphore("semBloqueoAGV");
+        this->semBloqueoAGV.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 
-        this->semEstadoRobot5 = IPC::Semaphore("semEstadoRobot5");
-        this->semEstadoRobot5.getSemaphore(DIRECTORY, ID_SEM_EST_ROBOT_5, 1);
+        this->semBloqueoRobot5 = IPC::Semaphore("semBloqueoRobot5");
+        this->semBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
 
         this->semMemEstadoRobot5 = IPC::Semaphore("semMemEstadoRobot5");
-        this->semMemEstadoRobot5.getSemaphore(DIRECTORY, ID_SEM_MEM_EST_ROBOT_5, 1);
+        this->semMemEstadoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
 
-        this->semMemAGV_5 = IPC::Semaphore("semMemAGV_5");
-        this->semMemAGV_5.getSemaphore(DIRECTORY, ID_SEM_MEM_AGV_5, 3);
+        this->semBufferAGV_5 = IPC::Semaphore("semBufferAGV_5");
+        this->semBufferAGV_5.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
 
         this->semMemCanastos = IPC::Semaphore("semMemCanastos");
-        this->semMemCanastos.getSemaphore(DIRECTORY, ID_SEM_MEM_CANASTOS_10, 3);
+        this->semMemCanastos.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->shMemEstadoRobot5 = EstadoRobot5SharedMemory();
-        this->shMemEstadoRobot5.getSharedMemory(DIRECTORY, ID_MEM_ESTADO_ROBOT_5);
+        this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
+        this->shMemEstadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
-        this->colaPedidosReponerCanastos = PedidosCanastosMessageQueue();
-        this->colaPedidosReponerCanastos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_A_AGV);
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
+        this->colaPedidosCanastos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_A_AGV);
 
-        this->colaPedidosAGV = PedidosAGVMessageQueue();
+        this->colaPedidosAGV = IPC::PedidosAgvMessageQueue("colaPedidosAGV");
         this->colaPedidosAGV.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
 
         this->semRobotCinta = IPC::Semaphore("semRobotCinta");
-        this->shMemCanastos = BufferCanastoSharedMemory();
-        this->shMemPasajeCanastoEntre5yAGV = BufferCanastoEntre5yAGVSharedMemory();
+        this->shMemCanastos = IPC::BufferCanastosSharedMemory("shMemCanastos");
+        this->shMemPasajeCanastoEntre5yAGV = IPC::BufferCanastoEntre5yAGVSharedMemory("shMemPasajeCanastoEntre5yAGV");
         switch (id_AGV) {
             case 0 : 
                 this->semRobotCinta.getSemaphore(DIRECTORY, ID_SEM_ROBOT_11, 2);
@@ -81,7 +81,7 @@ TipoPieza ControladorAGV::atenderPedidos() {
         PedidoCanasto pedidoCanasto;
         Logger::logMessage(Logger::TRACE, "recibo pedidos canastos de la cola");
 
-        this->colaPedidosReponerCanastos.recibirPedidoCanasto(this->id_AGV + 1, &pedidoCanasto);
+        this->colaPedidosCanastos.recibirPedidoCanasto(this->id_AGV + 1, &pedidoCanasto);
         this->posicionCanasto = pedidoCanasto.lugar;
         //this->pedidoDeDeposito = pedidoCanasto.pedidoEsDeDeposito;
         return pedidoCanasto.tipoPieza;
@@ -115,17 +115,17 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
             Logger::logMessage(Logger::TRACE, "robot 5 esta durmiendo, lo despierto");
             estadoRobot5.robot5Durmiendo = false;
             this->shMemEstadoRobot5.writeInfo(&estadoRobot5);
-            this->semEstadoRobot5.signal();
+            this->semBloqueoRobot5.signal();
         }
         this->semMemEstadoRobot5.signal();
 
         Logger::logMessage(Logger::TRACE, "duermo hasta que robot 5 traiga el canasto");
-        this->semEstAGV.wait(this->id_AGV);
+        this->semBloqueoAGV.wait(this->id_AGV);
 
         Logger::logMessage(Logger::TRACE, "busco el canasto traido por robot 5");
-        this->semMemAGV_5.wait(this->id_AGV);
+        this->semBufferAGV_5.wait(this->id_AGV);
         this->shMemPasajeCanastoEntre5yAGV.readInfo(&canasto);
-        this->semMemAGV_5.signal(this->id_AGV);
+        this->semBufferAGV_5.signal(this->id_AGV);
 
         return canasto;
     }

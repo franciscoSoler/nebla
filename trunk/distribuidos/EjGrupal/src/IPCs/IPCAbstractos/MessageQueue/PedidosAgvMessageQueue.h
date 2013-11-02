@@ -15,7 +15,7 @@ class PedidosAgvMessageQueue : public AbstractMessageQueue
 {
 
 public:
-	PedidosAgvMessageQueue(std::string IPCName = ""):AbstractMessageQueue(IPCName) {} 
+	PedidosAgvMessageQueue(std::string IPCName = "") : AbstractMessageQueue(IPCName) {} 
 	
 	virtual ~PedidosAgvMessageQueue() {}
 

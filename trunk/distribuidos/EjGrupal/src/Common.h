@@ -18,6 +18,9 @@
 #define ID_BUFFER_AGV_5_2		5
 #define ID_COLA_PEDIDOS_AGV_5           6
 
+// ipcs entre AGV y robot 11 (usar DIRECTORY_AGV)
+#define ID_SEM_BUFFER_CANASTOS          7
+
 //ipcs del Robot5 (usar DIRECTORY_ROBOT_5)
 #define ID_COLA_API_ROBOT_5 		1
 
@@ -33,6 +36,7 @@
 #define ID_CINTA_6_0                    2
 #define ID_CINTA_6_1                    3
 #define ID_SEM_BLOQUEO_ROBOT_11         4
+
 
 
 //mtype colas
@@ -176,6 +180,21 @@ typedef struct {
     int robotCinta2EsperaPorElLugarNumero;
     Canasto canastos[MAX_QUANTITY_CANASTOS];
 } BufferCanastos;
+
+/*
+ * Estructuras utilizadas entre AGVs, robot 11 y robot 12
+ */
+
+typedef struct {
+    long mtype;
+    TipoPieza tipoPieza;
+    int lugar;
+} PedidoCanastoRobotCitna6;
+
+typedef struct {
+	long mtype; // tipo = TIPO_PEDIDO_CANASTO
+	PedidoCanastoRobotCitna6 pedidoCanastoAgv;
+} MensajePedidoRobotCinta_6;
 
 #endif	/* COMMON_H */
 
