@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="90">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="CMakeFiles">
+        <df name="CMakeTmp">
+          <df name="CMakeFiles">
+            <df name="cmTryCompileExec.dir">
+            </df>
+          </df>
+        </df>
+        <df name="CompilerIdC">
+          <in>CMakeCCompilerId.c</in>
+        </df>
+        <df name="CompilerIdCXX">
+          <in>CMakeCXXCompilerId.cpp</in>
+        </df>
+        <df name="out">
+          <df name="AGV.dir">
+            <df name="src">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+          <df name="Launcher.dir">
+            <df name="src">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+          <df name="MockRobot5AGV.dir">
+            <df name="src">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+          <df name="MockRobot5Cinta.dir">
+            <df name="src">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+          <df name="Robot11.dir">
+            <df name="src">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+          <df name="Robot12.dir">
+            <df name="src">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+          <df name="Terminator.dir">
+            <df name="src">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+        </df>
+      </df>
+      <df name="out">
+      </df>
+      <df name="src">
+        <df name="API">
+          <in>IControladorAGV.h</in>
+          <in>IControladorRobot11.h</in>
+          <in>IControladorRobot12.h</in>
+          <in>IControladorRobot5.h</in>
+        </df>
+        <df name="build">
+          <df name="Debug">
+            <df name="GNU-Linux-x86">
+              <df name="Controladores">
+              </df>
+              <df name="Exceptions">
+              </df>
+              <df name="IPC">
+                <df name="IPCObject">
+                </df>
+                <df name="MessageQueue">
+                </df>
+                <df name="Semaphore">
+                </df>
+                <df name="SharedMemory">
+                </df>
+              </df>
+              <df name="Logger">
+              </df>
+            </df>
+          </df>
+        </df>
+        <df name="Controladores">
+          <in>ControladorAGV.cpp</in>
+          <in>ControladorAGV.h</in>
+          <in>ControladorRobot11.cpp</in>
+          <in>ControladorRobot11.h</in>
+          <in>ControladorRobot12.cpp</in>
+          <in>ControladorRobot12.h</in>
+          <in>MockControladorRobot5.cpp</in>
+          <in>MockControladorRobot5.h</in>
+        </df>
+        <df name="Exceptions">
+          <in>Exception.cpp</in>
+          <in>Exception.h</in>
+        </df>
+        <df name="IPC">
+          <df name="IPCObject">
+            <in>IPCObject.cpp</in>
+            <in>IPCObject.h</in>
+          </df>
+          <df name="MessageQueue">
+            <in>AbstractMessageQueue.cpp</in>
+            <in>AbstractMessageQueue.h</in>
+            <in>Barrera1112MessageQueue.h</in>
+            <in>PedidosAGVMessageQueue.h</in>
+            <in>PedidosCanastosMessageQueue.h</in>
+          </df>
+          <df name="Semaphore">
+            <in>Semaphore.cpp</in>
+            <in>Semaphore.h</in>
+          </df>
+          <df name="SharedMemory">
+            <in>AbstractSharedMemory.cpp</in>
+            <in>AbstractSharedMemory.h</in>
+            <in>BufferCanastoEntre5yAGVSharedMemory.cpp</in>
+            <in>BufferCanastoEntre5yAGVSharedMemory.h</in>
+            <in>BufferCanastoSharedMemory.cpp</in>
+            <in>BufferCanastoSharedMemory.h</in>
+            <in>Cinta6SharedMemory.cpp</in>
+            <in>Cinta6SharedMemory.h</in>
+            <in>EstadoRobot5SharedMemory.cpp</in>
+            <in>EstadoRobot5SharedMemory.h</in>
+          </df>
+        </df>
+        <df name="Logger">
+          <in>LockFile.cpp</in>
+          <in>LockFile.h</in>
+          <in>Logger.cpp</in>
+          <in>Logger.h</in>
+        </df>
+        <in>AGV.cpp</in>
+        <in>Common.h</in>
+        <in>Launcher.cpp</in>
+        <in>MockRobot5AGV.cpp</in>
+        <in>MockRobot5Cinta.cpp</in>
+        <in>Robot11.cpp</in>
+        <in>Robot12.cpp</in>
+        <in>Terminator.cpp</in>
+      </df>
+    </df>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>
