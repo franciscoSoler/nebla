@@ -10,11 +10,10 @@
 
 #include "API/Robot5/CintaTransportadora/CintaTransportadora6.h"
 
-#include "IPCs/Duran/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "IPCs/Duran/SharedMemory/EstadoRobot11SharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 
-#include "IPCs/Duran/MessageQueue/PedidosProduccionMessageQueue.h"
-#include "IPCs/Duran/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
 
 #include "Common.h"
 
@@ -26,15 +25,13 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         IPC::Semaphore &semaforoAccesoEstadoRobot5,
         IPC::Semaphore &semaforoBloqueoRobot5,
         
-        IPC::EstadoRobot11SharedMemory *estadoRobot11,
-        IPC::Semaphore &semaforoAccesoEstadoRobot11,
         IPC::Semaphore &semaforoBloqueoRobot11) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
-    colaComunicacionRobot5.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
+    colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_PEDIDOS_AGV_5);
     
     /* Obtengo la cola de pedidos */
-    colaPedidos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_PRODUCCION);
+    colaPedidos.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_PEDIDOS_PRODUCCION);
               
     /* Obtengo las cintas transportadoras */    
     cintaTransportadora[0] = CintaTransportadora6(0);
@@ -44,16 +41,9 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
     cintaTransportadora[1].iniciarCinta(ID_CINTA_6_1);
 
     /* Obtengo la memoria compartida del estado del robot 5 y su semaforo de acceso */
-    estadoRobot5.getSharedMemory(DIRECTORY, ID_MEM_ESTADO_ROBOT_5);
-    semaforoAccesoEstadoRobot5.getSemaphore(DIRECTORY, ID_SEM_ACCESO_ESTADO_ROBOT_5, 1);
-    semaforoBloqueoRobot5.getSemaphore(DIRECTORY, ID_SEM_BLOQUEO_ROBOT_5, 1);
-
-    /* Obtengo la memoria compartida del estado de los robot 11 y sus semaforos de acceso */
-    semaforoBloqueoRobot11.getSemaphore(DIRECTORY, ID_SEM_BLOQUEO_ROBOT_11, 2);
-    semaforoAccesoEstadoRobot11.getSemaphore(DIRECTORY, ID_SEM_ACCESO_ESTADO_ROBOT_11, 2);
-    estadoRobot11[0].getSharedMemory(DIRECTORY, ID_MEM_ESTADO_ROBOT_11_0);
-    estadoRobot11[1].getSharedMemory(DIRECTORY, ID_MEM_ESTADO_ROBOT_11_1);
-    
+    estadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
+    semaforoAccesoEstadoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
+    semaforoBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
 }
 
 void leerEstadoCintas (CintaTransportadora6 *cintaTransportadora,
@@ -69,30 +59,24 @@ int main(int argc, char** argv) {
      /* Se crean e inician todos los ipc necesarios para
       * el funcionamiento del proceso.
       */
-    ComunicacionRobot5MessageQueue colaComunicacionRobot5 = ComunicacionRobot5MessageQueue();
-    
+    IPC::ComunicacionRobot5MessageQueue colaComunicacionRobot5 = IPC::ComunicacionRobot5MessageQueue("ComunicacionRobot5MessageQueue");
+
     CintaTransportadora6 cintasTransportadoras[2];
-    PedidosProduccionMessageQueue colaPedidosProduccion = PedidosProduccionMessageQueue();    
-    
-    EstadoRobot5SharedMemory estadoRobot5 = EstadoRobot5SharedMemory();
-    Semaphore semaforoAccesoEstadoRobot5 = Semaphore();
-    Semaphore semaforoBloqueoRobot5 = Semaphore();
-    
-    EstadoRobot11SharedMemory estadoRobot11[2];
-    Semaphore semaforoAccesoEstadoRobot11 = Semaphore();
-    Semaphore semaforoBloqueoRobot11 = Semaphore();
-    
+    IPC::PedidosProduccionMessageQueue colaPedidosProduccion = IPC::PedidosProduccionMessageQueue("PedidosProduccionMessageQueue");
+
+    IPC::EstadoRobot5SharedMemory estadoRobot5 = IPC::EstadoRobot5SharedMemory("EstadoRobot5SharedMemory");
+    IPC::Semaphore semaforoAccesoEstadoRobot5 = IPC::Semaphore("AccesoEstadoRobot5");
+    IPC::Semaphore semaforoBloqueoRobot5 = IPC::Semaphore("BloqueoRobot5");
+
+    IPC::Semaphore semaforoBloqueoRobot11 = IPC::Semaphore("BloqueoRobot11");
+
     try {
         iniciarIPC(colaComunicacionRobot5, 
                 colaPedidosProduccion, 
                 cintasTransportadoras,
-                
                 estadoRobot5,
                 semaforoAccesoEstadoRobot5,
                 semaforoBloqueoRobot5,
-                
-                estadoRobot11,
-                semaforoAccesoEstadoRobot11,
                 semaforoBloqueoRobot11);
     }
     catch (Exception const& ex) {
@@ -124,7 +108,7 @@ int main(int argc, char** argv) {
 
         /* Le envio el pedido de produccion al robot 5 Aplicacion */
         colaComunicacionRobot5.enviarPedidoRobot5(mensajePedidoRobot5);
-        
+
         bool ultimo = false;
         /* Sigo depositando gabinetes mientras no reciba el ultimo de este pedido */
         while (!ultimo) {         
@@ -192,17 +176,11 @@ int main(int argc, char** argv) {
             
             /* Verifico si el robot 11 encargado de la cinta utilizada esta 
              * bloqueado */
-            semaforoAccesoEstadoRobot11.wait(cintaAUtilizar);
-            {
-                bool *bloqueado = estadoRobot11[cintaAUtilizar].readInfo();
-                if (*bloqueado) {
-                    /* Si el robot esta bloqeuado, debo liberarlo */
-                    semaforoBloqueoRobot11.signal(cintaAUtilizar);
-                    (*bloqueado) = false;
-                    estadoRobot11[cintaAUtilizar].writeInfo(bloqueado);
-                }
+            if (cintasTransportadoras[cintaAUtilizar].robot11Bloqueado()) {
+                cintasTransportadoras[cintaAUtilizar].marcarRobot11Liberado();
+                semaforoBloqueoRobot11.signal(cintaAUtilizar);
+
             }
-            semaforoAccesoEstadoRobot11.signal(cintaAUtilizar);
         }
 
     }

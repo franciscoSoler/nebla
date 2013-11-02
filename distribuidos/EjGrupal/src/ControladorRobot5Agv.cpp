@@ -9,9 +9,11 @@
 
 #include <exception>
 
-#include "IPCs/Duran/MessageQueue/ComunicacionRobot5MessageQueue.h"
-#include "IPCs/Duran/SharedMemory/BufferCanastoSharedMemory.h"
-#include "IPCs/Duran/MessageQueue/PedidosAgvMessageQueue.h"
+#include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
+
+#include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
+
 #include "IPCs/Semaphore/Semaphore.h"
 
 #include "Exceptions/Exception.h"
@@ -20,7 +22,7 @@
 
 void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         IPC::PedidosAgvMessageQueue &colaPedidos, 
-        IPC::BufferCanastoSharedMemory *bufferCanasto, 
+        IPC::BufferCanastoEntre5yAGVSharedMemory *bufferCanasto, 
         IPC::Semaphore &semaforoAccesoBufferAgv, 
         IPC::Semaphore &semaforoBloqueoAgv) {
     
@@ -51,11 +53,11 @@ int main(int argc, char** argv) {
     
     IPC::PedidosAgvMessageQueue colaPedidos = IPC::PedidosAgvMessageQueue("PedidosAgvMessageQueue");
 
-    IPC::BufferCanastoSharedMemory bufferCanasto[CANTIDAD_AGVS];
+    IPC::BufferCanastoEntre5yAGVSharedMemory bufferCanasto[CANTIDAD_AGVS];
     for (int i = 0; i < CANTIDAD_AGVS; ++i) {
         char buffer[TAM_BUFFER];
         sprintf(buffer, "BufferCanastoSharedMemory %d", i);
-        bufferCanasto[i] = IPC::BufferCanastoSharedMemory(buffer);
+        bufferCanasto[i] = IPC::BufferCanastoEntre5yAGVSharedMemory(buffer);
     }
     IPC::Semaphore semaforoAccesoBufferAgv = IPC::Semaphore("Acceso al buffer AGV - 5");
     IPC::Semaphore semaforoBloqueoAgv = IPC::Semaphore("Bloqueo AGV");

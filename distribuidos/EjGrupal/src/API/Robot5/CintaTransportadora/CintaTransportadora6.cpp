@@ -7,6 +7,8 @@
 
 #include "CintaTransportadora6.h"
 
+#include "../../../Common.h"
+
 CintaTransportadora6::CintaTransportadora6(int idCinta) {
     this->idCinta = idCinta;
 }
@@ -75,7 +77,7 @@ EstadoCinta CintaTransportadora6::obtenerEstadoCinta() {
 }
 
 /* TRUE = Robot 11 bloqueado */
-bool CintaTransportadora6::obtenerEstadoRobot11() {
+bool CintaTransportadora6::robot11Bloqueado() {
     bool estado = false;
     semaforoAcceso.wait(this->idCinta);
     {
@@ -87,6 +89,22 @@ bool CintaTransportadora6::obtenerEstadoRobot11() {
     semaforoAcceso.signal(this->idCinta);
     return estado;
 }
+
+bool CintaTransportadora6::marcarRobot11Liberado() {
+    bool estado = false;
+    semaforoAcceso.wait(this->idCinta);
+    {
+        /* Leo el contenido actual de la cinta.
+         */
+        CintaTransportadora_6 cintaTransportadora;
+        cinta.readInfo(&cintaTransportadora);
+        cintaTransportadora.robot11Durmiendo = false;
+        cinta.writeInfo(&cintaTransportadora);
+    }
+    semaforoAcceso.signal(this->idCinta);
+    return estado;
+}
+
 
 void CintaTransportadora6::mostrarEstadoCinta(CintaTransportadora_6 cintaTransportadora) {
     char buffer[TAM_BUFFER];

@@ -21,8 +21,8 @@ public:
     Cinta6SharedMemory(std::string IPCName = "") : AbstractSharedMemory (IPCName) {};
     virtual ~Cinta6SharedMemory() {};
     
-    void readInfo (CintaTransportadora_6* dato);
-    void writeInfo ( CintaTransportadora_6 *dato );
+    void readInfo (CintaTransportadora_6 *dato);
+    void writeInfo ( CintaTransportadora_6 *dato);
 };
 
 }
