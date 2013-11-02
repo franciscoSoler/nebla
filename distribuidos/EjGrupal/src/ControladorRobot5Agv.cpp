@@ -9,37 +9,37 @@
 
 #include <exception>
 
-#include "../IPC/MessageQueue/ComunicacionRobot5MessageQueue.h"
-#include "../IPC/SharedMemory/BufferCanastoSharedMemory.h"
-#include "../IPC/MessageQueue/PedidosAgvMessageQueue.h"
-#include "../IPC/Semaphore/Semaphore.h"
+#include "IPCs/Duran/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "IPCs/Duran/SharedMemory/BufferCanastoSharedMemory.h"
+#include "IPCs/Duran/MessageQueue/PedidosAgvMessageQueue.h"
+#include "IPCs/Semaphore/Semaphore.h"
 
-#include "../IPC/IPCException.h"
+#include "Exceptions/Exception.h"
 
-#include "../common.h"
+#include "Common.h"
 
-void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
-        PedidosAgvMessageQueue &colaPedidos, 
-        BufferCanastoSharedMemory *bufferCanasto, 
-        Semaphore &semaforoAccesoBufferAgv, 
-        Semaphore &semaforoBloqueoAgv) {
+void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
+        IPC::PedidosAgvMessageQueue &colaPedidos, 
+        IPC::BufferCanastoSharedMemory *bufferCanasto, 
+        IPC::Semaphore &semaforoAccesoBufferAgv, 
+        IPC::Semaphore &semaforoBloqueoAgv) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
-    colaComunicacionRobot5.getMessageQueue(DIRECTORY,ID_COLA_API_ROBOT_5);
+    colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_API_ROBOT_5);
     
     /* Obtengo la cola de pedidos */
-    colaPedidos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
+    colaPedidos.getMessageQueue(DIRECTORY_AGV,ID_COLA_PEDIDOS_AGV_5);
 
     /* Obtengo el buffer para depositar los canastos */    
-    bufferCanasto[0].getSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_0);
-    bufferCanasto[1].getSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_1);
-    bufferCanasto[2].getSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_2);
+    bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+    bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
+    bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
     
     /* Obtengo los semaforos de acceso a los buffer */    
-    semaforoAccesoBufferAgv.getSemaphore(DIRECTORY, ID_SEM_ACCESO_BUFFER_AGV, 3);
+    semaforoAccesoBufferAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
     
     /* Obtengo los semaforos de bloqueo de los Agv */
-    semaforoBloqueoAgv.getSemaphore(DIRECTORY, ID_SEM_BLOQUEO_AGV, 3);
+    semaforoBloqueoAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 }
 
 int main(int argc, char** argv) {
@@ -47,18 +47,23 @@ int main(int argc, char** argv) {
     /* Se crean e inician todos los ipc necesarios para
      * el funcionamiento del proceso.
      */
-    ComunicacionRobot5MessageQueue colaComunicacionRobot5 = ComunicacionRobot5MessageQueue();
+    IPC::ComunicacionRobot5MessageQueue colaComunicacionRobot5 = IPC::ComunicacionRobot5MessageQueue("ComunicacionRobot5MessageQueue");
     
-    PedidosAgvMessageQueue colaPedidos = PedidosAgvMessageQueue();
-        
-    BufferCanastoSharedMemory bufferCanasto[3];
-    Semaphore semaforoAccesoBufferAgv;
-    Semaphore semaforoBloqueoAgv;
+    IPC::PedidosAgvMessageQueue colaPedidos = IPC::PedidosAgvMessageQueue("PedidosAgvMessageQueue");
+
+    IPC::BufferCanastoSharedMemory bufferCanasto[CANTIDAD_AGVS];
+    for (int i = 0; i < CANTIDAD_AGVS; ++i) {
+        char buffer[TAM_BUFFER];
+        sprintf(buffer, "BufferCanastoSharedMemory %d", i);
+        bufferCanasto[i] = IPC::BufferCanastoSharedMemory(buffer);
+    }
+    IPC::Semaphore semaforoAccesoBufferAgv = IPC::Semaphore("Acceso al buffer AGV - 5");
+    IPC::Semaphore semaforoBloqueoAgv = IPC::Semaphore("Bloqueo AGV");
     
     try {
         iniciarIPC(colaComunicacionRobot5, colaPedidos, bufferCanasto, semaforoAccesoBufferAgv, semaforoBloqueoAgv);
     }
-    catch (IPCException const& ex) {
+    catch (Exception const& ex) {
         char buffer[TAM_BUFFER];
         sprintf (buffer, "Controlador Robot 5 - AGV: Error: %s\n", ex.what());
         write (fileno(stderr),buffer, strlen(buffer));
@@ -122,7 +127,7 @@ int main(int argc, char** argv) {
             /* Libero el buffer del canasto */
             semaforoAccesoBufferAgv.signal(mensajeRespuestaCanasto.idAgv);
         }
-        catch (IPCException const& ex) {
+        catch (Exception const& ex) {
             char buffer[TAM_BUFFER];
             sprintf(buffer, "Controlador Robot 5 - AGV:Error: %s\n", ex.what());
             write(fileno(stderr), buffer, strlen(buffer));
