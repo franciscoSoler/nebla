@@ -25,8 +25,8 @@ int main(int argc, char** argv) {
     }
     int idAgv;
     sscanf(argv[1], "%d", &idAgv);
-    if ((idAgv < 1) || (idAgv > 3)) {
-        sprintf(buffer, "Prueba Robot 5 - AGV: Error el id del Agv debe estar entre 1 y 3.\n");
+    if ((idAgv < 0) || (idAgv > 2)) {
+        sprintf(buffer, "Prueba Robot 5 - AGV: Error el id del Agv debe estar entre 0 y 2.\n");
         write(fileno(stdout), buffer, strlen(buffer));
         exit(-1);
     }
@@ -38,16 +38,12 @@ int main(int argc, char** argv) {
     bufferCanasto[2].getSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_2);
 
     /* Creo los semaforos de acceso a los buffer de los canastos */
-    Semaphore semaforoAccesoBufferAgv[3];
-    semaforoAccesoBufferAgv[0].getSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_0, 1);
-    semaforoAccesoBufferAgv[1].getSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_1, 1);
-    semaforoAccesoBufferAgv[2].getSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_2, 1);
-
+    Semaphore semaforoAccesoBufferAgv;
+    semaforoAccesoBufferAgv.getSemaphore(DIRECTORY, ID_SEM_ACCESO_BUFFER_AGV, 3);
+    
     /* Creo los semaforos de bloqueo de los Agv */
-    Semaphore semaforoAgv[3];
-    semaforoAgv[0].getSemaphore(DIRECTORY, ID_SEM_AGV_1, 1);
-    semaforoAgv[1].getSemaphore(DIRECTORY, ID_SEM_AGV_2, 1);
-    semaforoAgv[2].getSemaphore(DIRECTORY, ID_SEM_AGV_3, 1);
+    Semaphore semaforoBloqueoAgv;
+    semaforoBloqueoAgv.getSemaphore(DIRECTORY, ID_SEM_BLOQUEO_AGV, 3);
 
     /* Creo la cola de pedidos de los AGV */
     PedidosAgvMessageQueue colaPedidosAgv;
@@ -71,18 +67,18 @@ int main(int argc, char** argv) {
             colaPedidosAgv.enviarPedidoAgv(nuevoPedido);
 
             /* Una vez enviado el pedido, me bloqueo esperando por el mismo */
-            semaforoAgv[idAgv - 1].wait();
+            semaforoBloqueoAgv.wait(idAgv);
 
             /* Cuando me libero significa que el pedido ya fue resuelto */
 
             /* Accedo al buffer */
-            semaforoAccesoBufferAgv[idAgv - 1].wait();
+            semaforoAccesoBufferAgv.wait(idAgv);
             {
                 Canasto *canasto = bufferCanasto[idAgv - 1].readInfo();
                 sprintf(buffer, "AGV %d: Canasto recibido con piezas: %d\n", idAgv, (*canasto).cantidadPiezas);
                 write(fileno(stdout), buffer, strlen(buffer));
             }
-            semaforoAccesoBufferAgv[idAgv - 1].signal();
+            semaforoAccesoBufferAgv.signal(idAgv);
 
             /* Me duermo un intervalo de tiempo aleatorio antes de realizar un nuevo pedido */
             srand(time(NULL));
@@ -97,7 +93,6 @@ int main(int argc, char** argv) {
             exit(-1);
         }
     }
-    
-    
+
     return 0;
 }

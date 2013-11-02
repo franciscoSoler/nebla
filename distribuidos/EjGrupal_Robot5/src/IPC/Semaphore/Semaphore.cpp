@@ -87,6 +87,7 @@ void Semaphore::wait(int numSem)
 	struct sembuf oper;
 	oper.sem_num = numSem;
 	oper.sem_op = -1;
+        oper.sem_flg = 0;
 	int resultado = semop(this->id, &oper, 1);
 	if (resultado == -1) {
 		char error[255];
