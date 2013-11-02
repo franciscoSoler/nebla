@@ -16,7 +16,6 @@ Exception::Exception(std::string error_description) {
 }
 
 Exception::~Exception() {
-	// TODO Auto-generated destructor stub
 }
 
 std::string Exception::get_error_description() const {
@@ -27,3 +26,6 @@ void Exception::set_error_description(std::string error_description) {
 	error_description_ = error_description;
 }
 
+const char* Exception::what() const throw() {
+        return error_description_.c_str();
+}

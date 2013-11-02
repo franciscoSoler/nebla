@@ -20,4 +20,5 @@ protected:
 
 };
 }
+
 #endif // ESTADO_ROBOT_5_SHARED_MEMORY

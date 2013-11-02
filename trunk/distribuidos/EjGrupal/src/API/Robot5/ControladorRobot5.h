@@ -8,7 +8,7 @@
 #ifndef CONTROLADORROBOT5_H
 #define	CONTROLADORROBOT5_H
 
-#include "../IPC/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "../../IPCs/Duran/MessageQueue/ComunicacionRobot5MessageQueue.h"
 
 class ControladorRobot5 {
 public:
@@ -26,7 +26,7 @@ public:
      Gabinete obtenerGabinete(TipoProducto tipoPorudcto);
 
 private:
-    ComunicacionRobot5MessageQueue comunicacionMsgQueue;
+    IPC::ComunicacionRobot5MessageQueue comunicacionMsgQueue;
 };
 
 #endif	/* CONTROLADORROBOT5_H */

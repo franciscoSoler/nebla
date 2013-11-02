@@ -9,10 +9,11 @@
 // Path utilizado para inicializar los semáforos a través de la función ftok()
 #define DIRECTORY_AGV 		"./AGV"
 #define DIRECTORY_ROBOT_5 	"./Robot5"
+#define DIRECTORY_ROBOT_11 	"./Robot11"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
-#define ID_SEM_BUFFER_AGV_5            	2	// es el id tanto para el semaforo de acceso
+#define ID_SEM_BUFFER_AGV_5            	2	// es el id para el semaforo de acceso al buffer
 #define ID_BUFFER_AGV_5_0           	3	// es el id tanto para shMemory como semaforo de acceso
 #define ID_BUFFER_AGV_5_1		4
 #define ID_BUFFER_AGV_5_2		5
@@ -85,7 +86,7 @@ typedef struct {
     int puntoLectura;
     int cantLibres;
     bool lugarVacio[BUFF_SIZE_CINTA_6];
-    ProductoEnProduccion gabinetes[BUFF_SIZE_CINTA_6];
+    ProductoEnProduccion productoProduccion[BUFF_SIZE_CINTA_6];
 } CintaTransportadora_6;
 
 typedef struct {

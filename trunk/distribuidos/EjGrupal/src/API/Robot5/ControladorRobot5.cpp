@@ -15,8 +15,8 @@ ControladorRobot5::~ControladorRobot5() {
 
 void ControladorRobot5::iniciarControlador() {
     /* Obtengo la cola de pedidos */
-    comunicacionMsgQueue = ComunicacionRobot5MessageQueue();
-    comunicacionMsgQueue.getMessageQueue(DIRECTORY,ID_COLA_API_ROBOT_5);
+    comunicacionMsgQueue = IPC::ComunicacionRobot5MessageQueue("ComunicacionRobot5MessageQueue");
+    comunicacionMsgQueue.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_API_ROBOT_5);
 }
 
 PedidoRobot5 ControladorRobot5::obtenerPedido() {

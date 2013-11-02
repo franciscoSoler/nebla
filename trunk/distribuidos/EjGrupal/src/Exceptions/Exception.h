@@ -2,8 +2,9 @@
 #define _EXCEPTION_H_
 
 #include <string>
+#include <exception>
 
-class Exception {
+class Exception : public std::exception {
 private:
 	std::string error_description_;
 
@@ -13,6 +14,8 @@ public:
 	virtual ~Exception();
 	std::string get_error_description() const;
 	void set_error_description(std::string error_description);
+        
+        const char* what() const throw();
 };
 
 #endif /* EXCEPTION_H_ */

@@ -8,9 +8,8 @@
 #ifndef CINTATRANSPORTADORA6_H
 #define	CINTATRANSPORTADORA6_H
 
-#include "IPC/SharedMemory/CintaTransportadoraSharedMemory.h"
-#include "IPC/Semaphore/Semaphore.h"
-
+#include "../../../IPCs/Duran/SharedMemory/CintaTransportadoraSharedMemory.h"
+#include "../../../IPCs/Semaphore/Semaphore.h"
 
 typedef struct {
     bool ocupado;
@@ -21,23 +20,23 @@ class CintaTransportadora6 {
 public:
     
     CintaTransportadora6();
-    CintaTransportadora6(int idCinta);
+    CintaTransportadora6(int idCinta, int idSemCinta);
     virtual ~CintaTransportadora6();
     
     void iniciarCinta(int idClave);
     void depositarProductoEnProduccion(ProductoEnProduccion producto);
+    bool obtenerEstadoRobot11();
     EstadoCinta obtenerEstadoCinta();
         
 private:
     CintaTransportadora6(const CintaTransportadora6& orig);
     
     int idCinta;  
-    Semaphore semaforoAcceso;
-    CintaTransportadoraSharedMemory cinta;
+    IPC::Semaphore semaforoAcceso;
+    IPC::CintaTransportadoraSharedMemory cinta;
     
     void mostrarEstadoCinta(CintaTransportadora_6 cintaTransportadora);
        
 };
 
 #endif	/* CINTATRANSPORTADORAINICIAL_H */
-
