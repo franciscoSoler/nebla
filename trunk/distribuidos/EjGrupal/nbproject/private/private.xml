@@ -4,16 +4,4 @@
         <activeConfTypeElem>0</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/media/datos/documents/facultad/sistemas%20distribuidos/repo/distribuidos/EjGrupal/src/IPCs/Soler/SharedMemory/BufferCanastoSharedMemory.cpp</file>
-            <file>file:/media/datos/documents/facultad/sistemas%20distribuidos/repo/distribuidos/EjGrupal/src/AGV.cpp</file>
-            <file>file:/media/datos/documents/facultad/sistemas%20distribuidos/repo/distribuidos/EjGrupal/src/IPCs/Soler/SharedMemory/BufferCanastoSharedMemory.h</file>
-            <file>file:/media/datos/documents/facultad/sistemas%20distribuidos/repo/distribuidos/EjGrupal/src/IPCs/AbstractSharedMemory/AbstractSharedMemory.h</file>
-            <file>file:/media/datos/documents/facultad/sistemas%20distribuidos/repo/distribuidos/EjGrupal/src/API/AGV/ControladorAGV.h</file>
-            <file>file:/media/datos/documents/facultad/sistemas%20distribuidos/repo/distribuidos/EjGrupal/src/IPCs/Soler/MessageQueue/PedidosAGVMessageQueue.h</file>
-            <file>file:/media/datos/documents/facultad/sistemas%20distribuidos/repo/distribuidos/EjGrupal/src/IPCs/AbstractSharedMemory/AbstractSharedMemory.cpp</file>
-        </group>
-    </open-files>
 </project-private>
