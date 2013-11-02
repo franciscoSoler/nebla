@@ -9,7 +9,7 @@
 #include <iostream>
 #include <exception>
 
-#include "Controladores/ControladorRobot5.h"
+#include "API/Robot5/ControladorRobot5.h"
 
 #define MAX_DEMORA 10 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
                        

@@ -1,5 +1,7 @@
 #include "BufferCanastoSharedMemory.h"
 
+namespace IPC {
+
 //-----------------------------------------------------------------------------
 size_t BufferCanastoSharedMemory::getMemorySize() {
 	return sizeof(BufferCanastos);
@@ -13,4 +15,6 @@ void BufferCanastoSharedMemory::readInfo (BufferCanastos* dato) {
 //-----------------------------------------------------------------------------
 void BufferCanastoSharedMemory::writeInfo ( BufferCanastos *dato ) {
     memcpy(this->data, dato, getMemorySize());
+}
+
 }

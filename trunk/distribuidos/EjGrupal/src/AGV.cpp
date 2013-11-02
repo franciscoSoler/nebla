@@ -8,8 +8,8 @@
 #include <memory>
 #include <cstdlib>
 #include "Common.h"
-#include "API/IControladorAGV.h"
-#include "Controladores/ControladorAGV.h"
+#include "API/AGV/IControladorAGV.h"
+#include "API/AGV/ControladorAGV.h"
 
 /*
  * 
@@ -21,7 +21,6 @@ int main(int argc, char** argv) {
     ss >> nroRobot;
     
     std::auto_ptr<IControladorAGV> controladorAGV = std::auto_ptr<IControladorAGV>(new ControladorAGV());
-   // IControladorAGV controladorAGV = new ControladorAGV();
     controladorAGV->iniciarControlador(nroRobot);
     while(true) {
         TipoPieza tipoPieza = controladorAGV->atenderPedidos();
