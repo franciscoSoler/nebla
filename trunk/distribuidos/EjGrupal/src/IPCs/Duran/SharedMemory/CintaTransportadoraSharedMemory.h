@@ -1,13 +1,15 @@
 #ifndef CINTA_TRANSPORTADORA_SHARED_MEMORY
 #define CINTA_TRANSPORTADORA_SHARED_MEMORY
 
-#include "../../common.h"
-#include "AbstractSharedMemory.h"
+#include "../../../Common.h"
+#include "../../AbstractSharedMemory/AbstractSharedMemory.h"
 
+namespace IPC {
+    
 class CintaTransportadoraSharedMemory : public AbstractSharedMemory {
 
 public:
-	CintaTransportadoraSharedMemory() : AbstractSharedMemory () {}
+	CintaTransportadoraSharedMemory(std::string IPCName = "") : AbstractSharedMemory (IPCName) {}
 	virtual ~CintaTransportadoraSharedMemory() {}
 
 	CintaTransportadora_6* readInfo ();
@@ -17,4 +19,5 @@ protected:
 	size_t getMemorySize();
 
 };
+}
 #endif // CINTA_TRANSPORTADORA_SHARED_MEMORY
