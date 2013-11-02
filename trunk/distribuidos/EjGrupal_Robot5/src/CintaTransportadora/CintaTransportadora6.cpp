@@ -20,13 +20,13 @@ CintaTransportadora6::CintaTransportadora6(const CintaTransportadora6& orig) {
 CintaTransportadora6::~CintaTransportadora6() {
 }
 
-void CintaTransportadora6::iniciarCinta(int idClaveMemoria, int idClaveSemaforo) {
+void CintaTransportadora6::iniciarCinta(int idClave) {
     
     semaforoAcceso = Semaphore();
-    semaforoAcceso.getSemaphore(DIRECTORY, idClaveSemaforo, 1);
+    semaforoAcceso.getSemaphore(DIRECTORY, idClave, 1);
     
     cinta = CintaTransportadoraSharedMemory();
-    cinta.getSharedMemory(DIRECTORY, idClaveMemoria);
+    cinta.getSharedMemory(DIRECTORY, idClave);
 
 }
 
@@ -66,7 +66,7 @@ EstadoCinta CintaTransportadora6::obtenerEstadoCinta() {
         CintaTransportadora_6 *cintaTransportadora = cinta.readInfo();
         
         estado.ocupado = ! (*cintaTransportadora).lugarVacio[(*cintaTransportadora).posicionActual];
-        for (int i = 0; i < TAM_CINTA_INICIAL; ++i) {
+        for (int i = 0; i < TAM_CINTA_6; ++i) {
             if (! (*cintaTransportadora).lugarVacio[i]) estado.cantOcupados++;
         }
     }
@@ -78,14 +78,14 @@ EstadoCinta CintaTransportadora6::obtenerEstadoCinta() {
 void CintaTransportadora6::mostrarEstadoCinta(CintaTransportadora_6 cintaTransportadora) {
     char buffer[TAM_BUFFER];
     sprintf(buffer, "Estado cinta %d: ", this->idCinta);
-    for (int i = 0; i < TAM_CINTA_INICIAL; ++i) {
+    for (int i = 0; i < TAM_CINTA_6; ++i) {
         if (cintaTransportadora.lugarVacio[i]) {
-            strcat(buffer, "|0|");
+            strcat(buffer, "|0");
         }
         else {
-            strcat(buffer, "|X|");
+            strcat(buffer, "|X");
         }
     }
-    strcat(buffer, "\n");
+    strcat(buffer, "|\n");
     write(fileno(stdout),buffer,strlen(buffer));
 }

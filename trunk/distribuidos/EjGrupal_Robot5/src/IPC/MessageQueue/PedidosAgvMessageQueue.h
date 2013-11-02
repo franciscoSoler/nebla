@@ -19,12 +19,12 @@ public:
 	
 	virtual ~PedidosAgvMessageQueue() {}
 
-	int enviarPedidoAgv (PedidoAgv dato) {
-            return this->enviar("PedidosAgvMessageQueue", (const void *)&dato,sizeof(PedidoAgv)-sizeof(long));
+	int enviarPedidoAgv (MensajePedidoAgv dato) {
+            return this->enviar("PedidosAgvMessageQueue", (const void *)&dato,sizeof(MensajePedidoAgv)-sizeof(long));
 	}
 	
-	int recibirPedidoAgv ( int tipo, PedidoAgv* buffer ) {
-            return this->recibir("PedidosAgvMessageQueue", tipo, (void *)buffer, sizeof(PedidoAgv)-sizeof(long));
+	int recibirPedidoAgv ( int tipo, MensajePedidoAgv* buffer ) {
+            return this->recibir("PedidosAgvMessageQueue", tipo, (void *)buffer, sizeof(MensajePedidoAgv)-sizeof(long));
 	}
 
 };

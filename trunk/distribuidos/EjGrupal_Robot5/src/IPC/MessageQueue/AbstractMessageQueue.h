@@ -41,7 +41,7 @@ public:
 	 * El launcher es el encargado de crear los ipcs, y por lo tanto de 
 	 * invocar este metodo.
 	 */
-	int create(const char *fileName, int id);
+	int createMessageQueue(const char *fileName, int id);
 
 	/* 
 	 * Metodo utilizado para obtener una Cola de Mensajes, si no existe

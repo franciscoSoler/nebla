@@ -25,7 +25,7 @@ PedidoRobot5 ControladorRobot5::obtenerPedido() {
     return mensajePedido.pedidoRobot5;
 }
 
-void ControladorRobot5::resolverPedido(Canasto canasto, IDAgv idDestino) {
+void ControladorRobot5::resolverPedido(Canasto canasto, int idDestino) {
     MensajeRespuestaCanasto mensajeRespuesta;
     mensajeRespuesta.idAgv = idDestino;
     mensajeRespuesta.canasto = canasto;
