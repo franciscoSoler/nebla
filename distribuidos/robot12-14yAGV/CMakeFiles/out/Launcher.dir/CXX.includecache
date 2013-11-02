@@ -1,0 +1,192 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/Common.h
+string.h
+-
+stdio.h
+-
+errno.h
+-
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/Exceptions/Exception.h
+string
+-
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/AbstractMessageQueue.h
+sys/ipc.h
+-
+stdio.h
+-
+stdlib.h
+-
+sys/shm.h
+-
+sys/types.h
+-
+sys/msg.h
+-
+sys/ipc.h
+-
+string.h
+-
+errno.h
+-
+unistd.h
+-
+../../Common.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/../../Common.h
+../../Exceptions/Exception.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/../../Exceptions/Exception.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/Barrera1112MessageQueue.h
+sys/types.h
+-
+sys/ipc.h
+-
+sys/msg.h
+-
+AbstractMessageQueue.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/AbstractMessageQueue.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/PedidosAGVMessageQueue.h
+sys/types.h
+-
+sys/ipc.h
+-
+sys/msg.h
+-
+AbstractMessageQueue.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/AbstractMessageQueue.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/PedidosCanastosMessageQueue.h
+sys/types.h
+-
+sys/ipc.h
+-
+sys/msg.h
+-
+AbstractMessageQueue.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/AbstractMessageQueue.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/../../Common.h
+string.h
+-
+stdio.h
+-
+errno.h
+-
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/../../Exceptions/Exception.h
+string
+-
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/../IPCObject/IPCObject.h
+string
+-
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/Semaphore.h
+sys/types.h
+-
+sys/ipc.h
+-
+sys/sem.h
+-
+unistd.h
+-
+errno.h
+-
+string.h
+-
+stdlib.h
+-
+stdio.h
+-
+../../Exceptions/Exception.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/../../Exceptions/Exception.h
+../IPCObject/IPCObject.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/../IPCObject/IPCObject.h
+../../Common.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/../../Common.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/AbstractSharedMemory.h
+stdio.h
+-
+stdlib.h
+-
+sys/shm.h
+-
+sys/types.h
+-
+sys/ipc.h
+-
+string.h
+-
+errno.h
+-
+unistd.h
+-
+../../Exceptions/Exception.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/../../Exceptions/Exception.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h
+../../Common.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/../../Common.h
+AbstractSharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/AbstractSharedMemory.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/BufferCanastoSharedMemory.h
+../../Common.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/../../Common.h
+AbstractSharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/AbstractSharedMemory.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/Cinta6SharedMemory.h
+../../Common.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/../../Common.h
+AbstractSharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/AbstractSharedMemory.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/EstadoRobot5SharedMemory.h
+../../Common.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/../../Common.h
+AbstractSharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/AbstractSharedMemory.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/Launcher.cpp
+iostream
+-
+Common.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/Common.h
+Exceptions/Exception.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/Exceptions/Exception.h
+Logger/Logger.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/Logger/Logger.h
+IPC/Semaphore/Semaphore.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/Semaphore/Semaphore.h
+IPC/MessageQueue/Barrera1112MessageQueue.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/Barrera1112MessageQueue.h
+IPC/MessageQueue/PedidosAGVMessageQueue.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/PedidosAGVMessageQueue.h
+IPC/MessageQueue/PedidosCanastosMessageQueue.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/MessageQueue/PedidosCanastosMessageQueue.h
+IPC/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h
+IPC/SharedMemory/BufferCanastoSharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/BufferCanastoSharedMemory.h
+IPC/SharedMemory/Cinta6SharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/Cinta6SharedMemory.h
+IPC/SharedMemory/EstadoRobot5SharedMemory.h
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/IPC/SharedMemory/EstadoRobot5SharedMemory.h
+
+/media/datos/documents/facultad/sistemas distribuidos/ej15/robot12-14yAGV/src/Logger/Logger.h
+iostream
+-
+string
+-
+
