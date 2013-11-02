@@ -78,7 +78,7 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
         Logger::setProcessInformation(this->buffer);
         
         CintaTransportadora_6 ctrlCinta;
-        MessageBarrera messageBarrera;
+        MensajeBarrera messageBarrera;
         messageBarrera.mtype = 1;
 
         while (true) {

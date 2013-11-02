@@ -24,8 +24,8 @@ public:
 	
 	virtual ~Barrera1112MessageQueue() {}
 
-	int send (MessageBarrera dato) {
-		int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(MessageBarrera)-sizeof(long),0 );
+	int send (MensajeBarrera dato) {
+		int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(MensajeBarrera)-sizeof(long),0 );
 		if (resultado == -1) {
 			sprintf(this->buffer, "Barrera1112MessageQueue - Fallo la operacion send: %s", strerror(errno));
                         throw Exception(std::string(this->buffer));
@@ -33,8 +33,8 @@ public:
 		return resultado;
 	}
 	
-	int receive ( int tipo, MessageBarrera* buffer ) {
-		int resultado = msgrcv ( this->id,(void *)buffer,sizeof(MessageBarrera)-sizeof(long),tipo,0 );
+	int receive ( int tipo, MensajeBarrera* buffer ) {
+		int resultado = msgrcv ( this->id,(void *)buffer,sizeof(MensajeBarrera)-sizeof(long),tipo,0 );
 		if (resultado == -1) {
 			sprintf(this->buffer, "Barrera1112MessageQueue - Fallo la operacion recv: %s", strerror(errno));
 			throw Exception(std::string(this->buffer));

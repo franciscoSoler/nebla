@@ -196,5 +196,13 @@ typedef struct {
 	PedidoCanastoRobotCitna6 pedidoCanastoAgv;
 } MensajePedidoRobotCinta_6;
 
+/*
+ * Estructuras utilizadas entre robot 11 y robot 12
+ */
+
+typedef struct {
+    long mtype; 
+} MensajeBarrera;
+
 #endif	/* COMMON_H */
 
