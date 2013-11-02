@@ -28,3 +28,6 @@ add_executable(${OUT_DIR}controladorRobot5Agv     ${SRC_DIR}ControladorRobot5Agv
 add_executable(${OUT_DIR}controladorRobot5Cinta   ${SRC_DIR}ControladorRobot5Cinta.cpp  ${COMMON_SRC})
 
 add_executable(${OUT_DIR}launcherRobot5           ${SRC_DIR}LauncherRobot5.cpp          ${COMMON_SRC})
+add_executable(${OUT_DIR}terminatorRobot5         ${SRC_DIR}TerminatorRobot5.cpp        ${COMMON_SRC})
+
+add_executable(${OUT_DIR}pruebaRobot5AGV          ${SRC_DIR}PruebaRobot5AGV.cpp          ${COMMON_SRC})

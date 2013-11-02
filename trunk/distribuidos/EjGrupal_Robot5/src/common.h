@@ -7,7 +7,7 @@
 
 #define TAM_BUFFER 255
 
-#define DIRECTORY "/home/Duran"
+#define DIRECTORY "/home/knoppix/nebla"
 
 /* Id de los IPC utilizados */
 

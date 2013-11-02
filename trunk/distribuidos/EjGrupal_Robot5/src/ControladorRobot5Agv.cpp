@@ -25,7 +25,7 @@ void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         Semaphore *semaforoAgv) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
-    colaComunicacionRobot5.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
+    colaComunicacionRobot5.getMessageQueue(DIRECTORY,ID_COLA_API_ROBOT_5);
     
     /* Obtengo la cola de pedidos */
     colaPedidos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
@@ -111,7 +111,7 @@ int main(int argc, char** argv) {
              */
             semaforoAccesoBufferAgv[mensajeRespuestaCanasto.idAgv - 1].wait();
             {
-                sprintf(buffer, "Controlador Robot 5 - AGV: Accedo al buffer del canasto.\n");
+                sprintf(buffer, "Controlador Robot 5 - AGV: Accedo al buffer del canasto para el AGV: %d.\n",mensajeRespuestaCanasto.idAgv);
                 write(fileno(stdout), buffer, strlen(buffer));
 
                 /* Una vez obtenido al acceso, dejo el canasto. */
