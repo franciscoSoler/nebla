@@ -9,7 +9,7 @@
 #define	ESTADOROBOT5SHAREDMEMORY_H
 
 #include "../../../Common.h"
-#include "AbstractSharedMemory.h"
+#include "../IPCs/IPCAbstractos/AbstractSharedMemory/AbstractSharedMemory.h"
 
 namespace IPC {
 

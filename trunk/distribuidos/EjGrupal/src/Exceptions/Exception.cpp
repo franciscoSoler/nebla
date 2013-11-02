@@ -15,8 +15,10 @@ Exception::Exception(std::string error_description) {
 	error_description_ = error_description;
 }
 
-Exception::~Exception() {
+virtual Exception::~Exception() throw () {
+    
 }
+
 
 std::string Exception::get_error_description() const {
 	return error_description_;

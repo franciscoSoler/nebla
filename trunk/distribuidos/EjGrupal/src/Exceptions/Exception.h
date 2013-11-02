@@ -11,7 +11,8 @@ private:
 public:
 	Exception();
 	explicit Exception(std::string error_description);
-	virtual ~Exception();
+        virtual ~Exception() throw();
+        
 	std::string get_error_description() const;
 	void set_error_description(std::string error_description);
         
