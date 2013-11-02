@@ -24,8 +24,8 @@ public:
 	
 	virtual ~PedidosCanastosMessageQueue() {}
 
-	int enviarPedidoCanasto (PedidoCanasto dato) {
-            int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(PedidoCanasto)-sizeof(long),0 );
+	int enviarPedidoCanasto (MensajePedidoRobotCinta_6 dato) {
+            int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(MensajePedidoRobotCinta_6)-sizeof(long),0 );
             if (resultado == -1) {
                 sprintf(this->buffer, "PedidosCanastosMessageQueue - Fallo la operacion send: %s", strerror(errno));
                 throw Exception(std::string(this->buffer));
@@ -33,8 +33,8 @@ public:
             return resultado;
 	}
 	
-	int recibirPedidoCanasto ( int tipo, PedidoCanasto* buffer ) {
-            int resultado = msgrcv ( this->id,(void *)buffer,sizeof(PedidoCanasto)-sizeof(long),tipo,0 );
+	int recibirPedidoCanasto ( int tipo, MensajePedidoRobotCinta_6* buffer ) {
+            int resultado = msgrcv ( this->id,(void *)buffer,sizeof(MensajePedidoRobotCinta_6)-sizeof(long),tipo,0 );
             if (resultado == -1) {
                 sprintf(this->buffer, "PedidosCanastosMessageQueue - Fallo la operacion recv: %s", strerror(errno));
                 throw Exception(std::string(this->buffer));

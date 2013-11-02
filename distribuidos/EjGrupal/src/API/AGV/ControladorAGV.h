@@ -34,14 +34,14 @@ private:
     int id_semMemCanastos;
     int posicionCanasto;
     
-    IPC::Semaphore semEstadoRobot5;
+    IPC::Semaphore semBloqueoRobot5;
     IPC::Semaphore semMemEstadoRobot5;
-    IPC::Semaphore semMemAGV_5;
+    IPC::Semaphore semBufferAGV_5;
     IPC::Semaphore semMemCanastos;
     IPC::Semaphore semRobotCinta;
-    IPC::Semaphore semEstAGV;
+    IPC::Semaphore semBloqueoAGV;
 
-    IPC::PedidosCanastosMessageQueue colaPedidosReponerCanastos;
+    IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
     IPC::PedidosAgvMessageQueue colaPedidosAGV;
     IPC::BufferCanastosSharedMemory shMemCanastos;
     IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV;
