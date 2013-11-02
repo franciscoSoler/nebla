@@ -1,28 +1,23 @@
 /* 
- * File:   Cinta6SharedMemory.cpp
+ * File:   EstadoRobot5SharedMemory.cpp
  * Author: francisco
  * 
- * Created on 25 de octubre de 2013, 9:27
+ * Created on 26 de octubre de 2013, 22:30
  */
 
-#include "Cinta6SharedMemory.h"
-
-namespace IPC {
+#include "EstadoRobot5SharedMemory.h"
 
 //-----------------------------------------------------------------------------
-size_t Cinta6SharedMemory::getMemorySize() {
-	return sizeof(CintaTransportadora_6);
+size_t EstadoRobot5SharedMemory::getMemorySize() {
+	return sizeof(EstadoRobot5);
 }
 
 //-----------------------------------------------------------------------------
-void Cinta6SharedMemory::readInfo (CintaTransportadora_6* dato) {
+void EstadoRobot5SharedMemory::readInfo (EstadoRobot5* dato) {
     memcpy(dato, this->data, getMemorySize());
 }
 
 //-----------------------------------------------------------------------------
-void Cinta6SharedMemory::writeInfo ( CintaTransportadora_6 *dato ) {
+void EstadoRobot5SharedMemory::writeInfo ( EstadoRobot5 *dato ) {
     memcpy(this->data, dato, getMemorySize());
 }
-
-}
-
