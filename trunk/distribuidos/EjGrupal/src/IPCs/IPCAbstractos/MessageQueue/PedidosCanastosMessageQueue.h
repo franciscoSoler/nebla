@@ -12,7 +12,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-#include "../../AbstractMessageQueue/AbstractMessageQueue.h"
+#include "../AbstractMessageQueue/AbstractMessageQueue.h"
 
 namespace IPC {
 

@@ -5,9 +5,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-#include "../../AbstractMessageQueue/AbstractMessageQueue.h"
-
-#include "../../../Common.h"
+#include "../AbstractMessageQueue/AbstractMessageQueue.h"
 
 namespace IPC {
     
