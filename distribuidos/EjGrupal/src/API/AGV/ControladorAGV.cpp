@@ -14,7 +14,7 @@ ControladorAGV::ControladorAGV() {
 ControladorAGV::~ControladorAGV() {
 }
 
-void ControladorAGV::iniciarControlador(IDAgv id_AGV) {
+void ControladorAGV::iniciarControlador(int id_AGV) {
     try {
         Logger::getInstance();
         sprintf(this->buffer, "AGV-%u:", id_AGV + 1);
@@ -23,7 +23,7 @@ void ControladorAGV::iniciarControlador(IDAgv id_AGV) {
         this->id_AGV = id_AGV;
 
         this->semEstAGV = IPC::Semaphore("semEstadoAGV");
-        this->semEstAGV.getSemaphore(DIRECTORY, ID_SEM_EST_AGV, 3);
+        this->semEstAGV.getSemaphore(DIRECTORY_AGV, ID_SEM_EST_AGV, 3);
 
         this->semEstadoRobot5 = IPC::Semaphore("semEstadoRobot5");
         this->semEstadoRobot5.getSemaphore(DIRECTORY, ID_SEM_EST_ROBOT_5, 1);
@@ -101,7 +101,7 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
 
         Logger::logMessage(Logger::TRACE, "realizo el pedido del canasto al robot 5");
         
-        PedidoCanastoAGV pedidoCanastoAGV;
+        MensajePedidoAgv_5 pedidoCanastoAGV;
         pedidoCanastoAGV.mtype = 1;
         pedidoCanastoAGV.idAgv = this->id_AGV;
         pedidoCanastoAGV.tipo = tipoPieza;
