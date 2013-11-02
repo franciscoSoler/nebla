@@ -39,22 +39,18 @@ void createIpc() {
     bufferCanasto[2].createSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_2);
     
     /* Creo los semaforos de acceso a los buffer de los canastos */    
-    Semaphore semaforoAccesoBufferAgv[3];
-    semaforoAccesoBufferAgv[0].createSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_0, 1);
-    semaforoAccesoBufferAgv[0].initializeSemaphore(0,1);
-    semaforoAccesoBufferAgv[1].createSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_1, 1);
-    semaforoAccesoBufferAgv[1].initializeSemaphore(0,1);
-    semaforoAccesoBufferAgv[2].createSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_2, 1);
-    semaforoAccesoBufferAgv[2].initializeSemaphore(0,1);
+    Semaphore semaforoAccesoBufferAgv;
+    semaforoAccesoBufferAgv.createSemaphore(DIRECTORY, ID_SEM_ACCESO_BUFFER_AGV, 3);
+    semaforoAccesoBufferAgv.initializeSemaphore(0,1);
+    semaforoAccesoBufferAgv.initializeSemaphore(1,1);
+    semaforoAccesoBufferAgv.initializeSemaphore(2,1);
     
     /* Creo los semaforos de bloqueo de los Agv */
-    Semaphore semaforoAgv[3];
-    semaforoAgv[0].createSemaphore(DIRECTORY, ID_SEM_AGV_1, 1);
-    semaforoAgv[0].initializeSemaphore(0,0);
-    semaforoAgv[1].createSemaphore(DIRECTORY, ID_SEM_AGV_2, 1);
-    semaforoAgv[1].initializeSemaphore(0,0);
-    semaforoAgv[2].createSemaphore(DIRECTORY, ID_SEM_AGV_3, 1);
-    semaforoAgv[2].initializeSemaphore(0,0);
+    Semaphore semaforoBloqueoAgv;
+    semaforoBloqueoAgv.createSemaphore(DIRECTORY, ID_SEM_BLOQUEO_AGV, 3);
+    semaforoBloqueoAgv.initializeSemaphore(0,0);
+    semaforoBloqueoAgv.initializeSemaphore(1,0);
+    semaforoBloqueoAgv.initializeSemaphore(2,0);
 
     /* Creo la cola de pedidos de los AGV */    
     PedidosAgvMessageQueue colaPedidosAgv; 

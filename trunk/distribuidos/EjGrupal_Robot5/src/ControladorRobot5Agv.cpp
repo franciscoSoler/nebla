@@ -21,29 +21,25 @@
 void iniciarIPC(ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         PedidosAgvMessageQueue &colaPedidos, 
         BufferCanastoSharedMemory *bufferCanasto, 
-        Semaphore *semaforoAccesoBufferAgv, 
-        Semaphore *semaforoAgv) {
+        Semaphore &semaforoAccesoBufferAgv, 
+        Semaphore &semaforoBloqueoAgv) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
     colaComunicacionRobot5.getMessageQueue(DIRECTORY,ID_COLA_API_ROBOT_5);
     
     /* Obtengo la cola de pedidos */
     colaPedidos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
-              
+
     /* Obtengo el buffer para depositar los canastos */    
     bufferCanasto[0].getSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_0);
     bufferCanasto[1].getSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_1);
     bufferCanasto[2].getSharedMemory(DIRECTORY, ID_BUFFER_CANASTOS_2);
     
     /* Obtengo los semaforos de acceso a los buffer */    
-    semaforoAccesoBufferAgv[0].getSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_0, 1);
-    semaforoAccesoBufferAgv[1].getSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_1, 1);
-    semaforoAccesoBufferAgv[2].getSemaphore(DIRECTORY, ID_BUFFER_CANASTOS_2, 1);
+    semaforoAccesoBufferAgv.getSemaphore(DIRECTORY, ID_SEM_ACCESO_BUFFER_AGV, 3);
     
     /* Obtengo los semaforos de bloqueo de los Agv */
-    semaforoAgv[0].getSemaphore(DIRECTORY, ID_SEM_AGV_1, 1);
-    semaforoAgv[1].getSemaphore(DIRECTORY, ID_SEM_AGV_2, 1);
-    semaforoAgv[2].getSemaphore(DIRECTORY, ID_SEM_AGV_3, 1);
+    semaforoBloqueoAgv.getSemaphore(DIRECTORY, ID_SEM_BLOQUEO_AGV, 3);
 }
 
 int main(int argc, char** argv) {
@@ -56,11 +52,11 @@ int main(int argc, char** argv) {
     PedidosAgvMessageQueue colaPedidos = PedidosAgvMessageQueue();
         
     BufferCanastoSharedMemory bufferCanasto[3];
-    Semaphore semaforoAccesoBufferAgv[3];
-    Semaphore semaforoAgv[3];
+    Semaphore semaforoAccesoBufferAgv;
+    Semaphore semaforoBloqueoAgv;
     
     try {
-        iniciarIPC(colaComunicacionRobot5, colaPedidos, bufferCanasto, semaforoAccesoBufferAgv, semaforoAgv);
+        iniciarIPC(colaComunicacionRobot5, colaPedidos, bufferCanasto, semaforoAccesoBufferAgv, semaforoBloqueoAgv);
     }
     catch (IPCException const& ex) {
         char buffer[TAM_BUFFER];
@@ -109,7 +105,7 @@ int main(int argc, char** argv) {
             /* Una vez recibido el canasto requerido, se lo envio al agv correspondiente.
              * Intento acceder al buffer del agv al que va destinado al pedido.  
              */
-            semaforoAccesoBufferAgv[mensajeRespuestaCanasto.idAgv - 1].wait();
+            semaforoAccesoBufferAgv.wait(mensajeRespuestaCanasto.idAgv);
             {
                 sprintf(buffer, "Controlador Robot 5 - AGV: Accedo al buffer del canasto para el AGV: %d.\n",mensajeRespuestaCanasto.idAgv);
                 write(fileno(stdout), buffer, strlen(buffer));
@@ -118,13 +114,13 @@ int main(int argc, char** argv) {
                 bufferCanasto[mensajeRespuestaCanasto.idAgv - 1].writeInfo(&mensajeRespuestaCanasto.canasto);
             }
             /* Libero al AGV para que este retire el canasto */
-            semaforoAgv[mensajeRespuestaCanasto.idAgv - 1].signal();
+            semaforoBloqueoAgv.signal(mensajeRespuestaCanasto.idAgv);
             
             sprintf(buffer, "Controlador Robot 5 - AGV: Libero al AGV %d.\n",mensajeRespuestaCanasto.idAgv);
             write(fileno(stdout), buffer, strlen(buffer));
 
             /* Libero el buffer del canasto */
-            semaforoAccesoBufferAgv[mensajeRespuestaCanasto.idAgv - 1].signal();
+            semaforoAccesoBufferAgv.signal(mensajeRespuestaCanasto.idAgv);
         }
         catch (IPCException const& ex) {
             char buffer[TAM_BUFFER];
@@ -136,4 +132,3 @@ int main(int argc, char** argv) {
     
     return 0;
 }
-
