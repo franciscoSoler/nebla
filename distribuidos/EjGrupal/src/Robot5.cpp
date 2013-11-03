@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
                         
             switch (pedido.tipo) {
                 case PEDIDO_PRODUCCION:
-                    Logger::getInstance().logMessage(Logger::TRACE, "Robot 5: Recibi un pedido de produccion.");
+                    Logger::getInstance().logMessage(Logger::TRACE, "Recibi un pedido de produccion.");
                     sprintf(buffer, "\tOrden de compra: %d Producto: %d Cantidad: %d Diferencia minima: %d.",pedido.pedidoProduccion.nroOrdenCompra, pedido.pedidoProduccion.tipo,pedido.pedidoProduccion.cantidad, pedido.pedidoProduccion.diferenciaMinima);
                     Logger::getInstance().logMessage(Logger::TRACE, buffer);
                     
@@ -101,21 +101,21 @@ int main(int argc, char **argv) {
                     }
                     break;
                 case PEDIDO_GABINETE:
-                    sprintf(buffer, "Robot 5: Recibi un pedido de GABINETE.\n");
-                    write(fileno(stderr), buffer, strlen(buffer));
+                    Logger::getInstance().logMessage(Logger::TRACE, "Recibi un pedido de GABINETE.");
+
                     if (productoAProducir.cantidad > 0) {
                         Gabinete gabinete = resolverPedidoGabinete(controladorRobot5, productoAProducir.tipo);
                         int ordenDeCompra = (productoAProducir.cantidad <= productoAProducir.cantidad) ? 0 : productoAProducir.nroOrdenCompra;
                         productoAProducir.cantidad--;
                         bool ultimo = (productoAProducir.cantidad == 0);
                         
-                        sprintf(buffer, "Robot 5: Enviando el gabinete de tipo %d para la orden %d.\n", gabinete.tipoGabinete, ordenDeCompra);
-                        write(fileno(stderr), buffer, strlen(buffer));
+                        sprintf(buffer, " Enviando el gabinete de tipo %d para la orden %d.\n", gabinete.tipoGabinete, ordenDeCompra);
+                        Logger::getInstance().logMessage(Logger::TRACE, buffer);
 
                         controladorRobot5.resolverPedido(gabinete, ultimo, ordenDeCompra);
                     } else {
-                        sprintf(buffer, "Robot 5: ERROR: Recibi un pedido de Gabinete cuando ya se deberían haber fabricado todos lo de la orden de producción.\n");
-                        write(fileno(stderr), buffer, strlen(buffer));
+                        Logger::getInstance().logMessage(Logger::ERROR, "Recibi un pedido de Gabinete cuando ya se deberían haber fabricado todos lo de la orden de producción.");
+
                         /* ERROR: Se recibio un pedido para un gabinete, cuando
                          * ya se deberían haber fabricado todos lo de la orden
                          * de producción.
@@ -123,14 +123,14 @@ int main(int argc, char **argv) {
                     }
                     break;
                 case PEDIDO_CANASTO:
-                    sprintf(buffer, "Robot 5: Recibi un pedido de CANASTO.\n");
-                    write(fileno(stderr), buffer, strlen(buffer));
-                    
+                    Logger::getInstance().logMessage(Logger::TRACE, "Recibi un pedido de CANASTO.");
+
                     Canasto canasto;
                     canasto = resolverPedidoCanasto(controladorRobot5, pedido.pedidoCanastoAgv);
                     
                     sprintf(buffer, "Robot 5: Enviando un CANASTO con %d piezas al AGV %d.\n", canasto.cantidadPiezas, pedido.pedidoCanastoAgv.idAgv);
-                    write(fileno(stderr), buffer, strlen(buffer));
+                    Logger::getInstance().logMessage(Logger::TRACE, buffer);
+                    
                     controladorRobot5.resolverPedido(canasto, pedido.pedidoCanastoAgv.idAgv);
                     break;
                     
@@ -139,14 +139,13 @@ int main(int argc, char **argv) {
             }
         }        
         catch (std::exception ex) {
-            sprintf(buffer, "Robot 5: Error: %s\n", ex.what());
-            write(fileno(stderr), buffer, strlen(buffer));
+            sprintf(buffer, "Error: %s\n", ex.what());
+            Logger::getInstance().logMessage(Logger::ERROR, buffer);
             deboSeguir = false;
         }
     }
     
-    sprintf (buffer, "Robot 5: Finalizando\n");
-    write (fileno(stderr),buffer, strlen(buffer));
-
+    Logger::getInstance().logMessage(Logger::TRACE, "Finalizado");
+ 
     return 0;
 }
