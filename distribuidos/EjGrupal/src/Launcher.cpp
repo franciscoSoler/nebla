@@ -5,6 +5,10 @@
  * Created on 29 de octubre de 2013, 22:37
  */
 #include <iostream>
+
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include "Common.h"
 #include "Exceptions/Exception.h"
 #include "Logger/Logger.h"
@@ -14,13 +18,9 @@
 #include "IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
-<<<<<<< .mine
 #include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
 
-=======
-#include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
->>>>>>> .r79
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
@@ -31,19 +31,26 @@ static char param1[20];
 static char param2[20];
 
 void createIPCs();
+void createDirectory(std::string directoryName);
 void createProcess(std::string processName, int amountOfProcesses = 1);
 
 int main(int argc, char* argv[]) {
     try {
+
+        createDirectory(DIRECTORY_AGV);
+        createDirectory(DIRECTORY_ROBOT_5);
+        createDirectory(DIRECTORY_ROBOT_11);
+        createDirectory(DIRECTORY_ROBOT_12);
+        
         createIPCs();
         
-        createProcess("Robot5", 1);
-        createProcess("ControladorRobot5Agv", 1);
-        createProcess("ControladorRobot5Cinta", 1);
+        //createProcess("Robot5", 1);
+        //createProcess("ControladorRobot5Agv", 1);
+        //createProcess("ControladorRobot5Cinta", 1);
                                 
-        createProcess("Robot11", 2);
-        createProcess("Robot12", 2);
-        createProcess("AGV", 3);
+        //createProcess("Robot11", 2);
+        //createProcess("Robot12", 2);
+        //createProcess("AGV", 3);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -54,6 +61,9 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
+void createDirectory(std::string directoryName) {
+    mkdir(directoryName.c_str(), 0777);
+}
 
 void createIPCs() {
     Logger::getInstance().createLog();
@@ -76,7 +86,6 @@ void createIPCs() {
     }
     semaforoAccesoEstadoRobot5.signal();
     
-        
     IPC::Semaphore semaforoBloqueoRobot5("Bloqueo Robot 5");
     semaforoBloqueoRobot5.createSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
     semaforoBloqueoRobot5.initializeSemaphore(0,0);
@@ -96,13 +105,30 @@ void createIPCs() {
     IPC::Cinta6SharedMemory cinta6_0("Cinta 6 Share dMemory 0");
     cinta6_0.createSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_0);
     IPC::Cinta6SharedMemory cinta6_1("Cinta 6 Share dMemory 1");
-    cinta6_1.createSharedMemory((DIRECTORY_ROBOT_11, ID_CINTA_6_1));
+    cinta6_1.createSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_1);
 
+    CintaTransportadora_6 cinta6;
+    cinta6.cantLibres = BUFF_SIZE_CINTA_6;
+    cinta6.puntoLectura = 0;
+    cinta6.robot11Durmiendo = false;
+    for (int i = 0; i < BUFF_SIZE_CINTA_6; i++) cinta6.lugarVacio[i] = true;
+
+    semaforoAccesoCinta6.wait(0);
+    {
+        cinta6_0.writeInfo(&cinta6);
+    }
+    semaforoAccesoCinta6.signal(0);    
+    
+    semaforoAccesoCinta6.wait(1);
+    {
+        cinta6_1.writeInfo(&cinta6);
+    }
+    semaforoAccesoCinta6.signal(1);
     
     //Robot 5 - AGV
-    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV1;
-    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV2;
-    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV3;
+    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV1("BufferCanastoEntre5yAGVSharedMemory 0");
+    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV2("BufferCanastoEntre5yAGVSharedMemory 1");
+    IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV3("BufferCanastoEntre5yAGVSharedMemory 2");
     shMemPasajeCanastoEntre5yAGV1.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
     shMemPasajeCanastoEntre5yAGV2.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
     shMemPasajeCanastoEntre5yAGV3.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);

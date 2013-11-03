@@ -6,10 +6,10 @@
 #include <errno.h>
 
 // Path utilizado para inicializar los semáforos a través de la función ftok()
-#define DIRECTORY_AGV 		"./AGV"
-#define DIRECTORY_ROBOT_5 	"./Robot5"
-#define DIRECTORY_ROBOT_11 	"./Robot11"
-#define DIRECTORY_ROBOT_12 	"./Robot12"
+#define DIRECTORY_AGV 		"./DAGV"
+#define DIRECTORY_ROBOT_5 	"./DRobot5"
+#define DIRECTORY_ROBOT_11 	"./DRobot11"
+#define DIRECTORY_ROBOT_12 	"./DRobot12"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
