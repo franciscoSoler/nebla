@@ -55,13 +55,13 @@ int AbstractSharedMemory::attachMemory() {
 int AbstractSharedMemory::getId(const char *fileName, int id, int flags) {
 	key_t clave = ftok (fileName, id);
 	if ( clave == -1 ) {
-		sprintf(this->buffer, "%s - Fallo la operacion ftok: %s", strerror(errno));
+		sprintf(this->buffer, "%s - Fallo la operacion ftok: %s", getIPCName().c_str(), strerror(errno));
                 throw Exception(std::string(this->buffer));
 	}
 
 	this->id = shmget( clave, this->getMemorySize() , flags);
 	if ( this->id == -1 ) {
-		sprintf(this->buffer, "%s - Fallo la operacion shmget: %s", strerror(errno));
+		sprintf(this->buffer, "%s - Fallo la operacion shmget: %s", getIPCName().c_str(), strerror(errno));
 		throw Exception(std::string(this->buffer));
 	}
 	return 0;
