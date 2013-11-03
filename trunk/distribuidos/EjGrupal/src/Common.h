@@ -13,6 +13,7 @@
 #define DIRECTORY_ROBOT_12 	"./DRobot12"
 #define DIRECTORY_ROBOT_14 	"./DRobot14"
 #define DIRECTORY_ROBOT_16 	"./DRobot16"
+#define DIRECTORY_VENDEDOR 	"./DVendedor"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
@@ -91,6 +92,38 @@
 #define CINTA_13_CAPACITY                       3
 #define CINTA_15_CAPACITY                       5
 
+/* Tipos de productos. */
+
+#define CANT_MAX_PEDIDOS 10
+#define CANT_PRODUCTOS 3
+
+/*#define PRODUCTO_1 0
+#define PRODUCTO_2 1
+#define PRODUCTO_3 2*/
+
+#define CANT_VENDEDORES 10
+#define CANT_CLIENTES 50
+#define TAM_ALMACEN 30
+
+#define CANT_MAX_COMPONENTES_PRODUCTO 10
+
+// comunicación robot 5
+//#define NOMBRE_ARCHIVO_ROBOT5 "/home/"
+//#define LETRA_ROBOT5 '2'
+//#define TIPO_ROBOT_5 1
+
+/* Constantes IPC internas. */
+//#define NOMBRE_ARCHIVO "/home"
+#define LETRA_COLA_VENDEDORES 'b'
+#define LETRA_COLA_CLIENTES 'z'
+#define LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS 'e'
+#define LETRA_COLA_CONSULTAS_ALMACEN_PIEZAS 'f'
+#define LETRA_SHMEM_ALMACEN_TERMINADOS 'c'
+#define LETRA_SHMEM_NRO_OC 'g'
+#define LETRA_SHMEM_NRO_OP 'h'
+#define LETRA_SEM_ALMACEN_TERMINADOS 'd'
+
+
 typedef enum {
     PEDIDO_PRODUCCION = 0,
     PEDIDO_GABINETE = 1,
@@ -117,6 +150,20 @@ typedef enum {
     PRODUCTO_2 = 1,
     PRODUCTO_3
 } TipoProducto;
+
+typedef enum  { 
+    CANT_MINIMA_FABRICACION, 
+    PRODUCTOS_NECESARIOS, 
+    ORDEN_PRODUCCION 
+} TipoConsulta;
+
+typedef enum { 
+    VACIO, 
+    PRODUCTO_PARA_ENTREGAR, 
+    RESERVADO_DISPONIBLE, 
+    RESERVADO_VENDIDO, 
+    PRODUCTO_DISPONIBLE 
+} EstadoEspacio;
 
 typedef struct {
     TipoPieza tipoPieza;
@@ -269,5 +316,91 @@ public:
     TipoProducto idProducto_;
     bool fallado_;
 };
+
+/* 
+ * Cliente - Vendedor - Almacen de piezas - Almacen productos terminados 
+ */
+
+typedef struct _OrdenCompra
+{
+    int vendedor;
+    int cliente;
+    int numero;
+} OrdenDeCompra;
+
+typedef struct _OrdenProduccion
+{
+    int vendedor;
+    int numero;
+    int tipoProducto;
+} OrdenDeProduccion;
+
+
+
+typedef struct _EspacioAlmacen
+{
+    EstadoEspacio estado;
+    OrdenDeCompra ordenCompra;
+    OrdenDeProduccion ordenProduccion;
+    Caja caja;
+} EspacioAlmacenProductos;
+
+
+
+typedef struct _consulta_almacen_piezas
+{
+    long mtype; // receptor.
+    long emisor;
+    TipoProducto tipoProducto;
+    int cantidad;
+    int cliente;
+    int numOrdenCompra;
+    int diferencia;
+    TipoConsulta tipoConsulta; 
+} consulta_almacen_piezas_t;
+
+typedef struct _respuesta_almacen_piezas
+{
+    long mtype; // receptor.
+    long emisor;
+    int tipoProducto;
+    int tipo;
+    int cantidad;
+} respuesta_almacen_piezas_t;
+
+/* 
+ * Estructura utilizadas para la comunicacion entre vendedor y almacen de piezas 
+ */
+
+typedef struct _pedido_produccion
+{
+    bool ventaEnCurso;
+    int producidoParaStockear;
+    int producidoVendido;
+    int vendidoStockeado;
+    int diferenciaMinimaProducto;
+    int numOrdenCompra;
+    TipoProducto tipoProducto;
+} pedido_produccion_t;
+
+/* 
+ * Etructuras utilizadas entre el cliente y el vendedor
+ */
+
+typedef struct _mensaje_inicial
+{
+    long mtype; // receptor.
+    long emisor; 
+} mensaje_inicial_t;
+
+typedef struct _pedido
+{
+    long mtype; // receptor.
+    long emisor;
+    int numMensaje;
+    TipoProducto tipoProducto;
+    int cantidad;
+    bool fin;
+} pedido_t;
 
 #endif	/* COMMON_H */

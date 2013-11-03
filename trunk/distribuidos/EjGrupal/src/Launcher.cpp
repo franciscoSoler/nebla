@@ -29,6 +29,11 @@
 #include "API/Objects/DataSM_R14_R16.h"
 #include "IPCs/IPCTemplate/SharedMemory.h"
 
+#include "IPCs/Barrios/Cola.h"
+#include "IPCs/Barrios/MemoriaCompartida.h"
+#include "IPCs/Barrios/Semaforo.h"
+
+
 static char buffer[255];
 static char param1[20];
 static char param2[20];
@@ -44,7 +49,10 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_ROBOT_5);
         createDirectory(DIRECTORY_ROBOT_11);
         createDirectory(DIRECTORY_ROBOT_12);
-        
+        createDirectory(DIRECTORY_ROBOT_14);
+        createDirectory(DIRECTORY_ROBOT_16);
+        createDirectory(DIRECTORY_VENDEDOR);
+                
         createIPCs();
         
         createProcess("Robot5", 1);
@@ -246,6 +254,31 @@ void createIPCs() {
     IPC::Semaphore semR16("semR16");
 	semR16.createSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
 	semR16.initializeSemaphore(0, 0);
+        
+    Cola<mensaje_inicial_t> vendedores(DIRECTORY_VENDEDOR, LETRA_COLA_VENDEDORES);
+    vendedores.crear();
+    Cola<mensaje_inicial_t> clientes(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES);
+    clientes.crear();
+    for(int i = 0; i < CANT_VENDEDORES; i++)
+    {
+	Cola<pedido_t> pedidos(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES + (char) 1 + (char) i);
+	pedidos.crear();
+    }
+    
+    Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, LETRA_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    consultasAlmacen.crear();
+    Cola<respuesta_almacen_piezas_t> respuestasAlmacen(DIRECTORY_VENDEDOR, LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS);
+    respuestasAlmacen.crear();  
+    
+    MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, LETRA_SHMEM_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
+    shmemAlmacenTerminados.crear();
+    MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OC, sizeof(int));
+    shmemNumeroOrdenCompra.crear();
+    MemoriaCompartida shmemNumeroOrdenProduccion(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OP, sizeof(int));
+    shmemNumeroOrdenProduccion.crear();
+    
+    Semaforo mutexAlmacenTerminados(DIRECTORY_VENDEDOR, LETRA_SEM_ALMACEN_TERMINADOS, 1);
+    mutexAlmacenTerminados.crear();
 }
 
 void createProcess(std::string processName, int amountOfProcesses) {
