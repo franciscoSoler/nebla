@@ -215,10 +215,9 @@ int main(int argc, char** argv) {
              */
             Logger::getInstance().logMessage(Logger::TRACE, "Verifico si el robot 11 correspondiente esta bloqueado.");
             if (cintasTransportadoras[cintaAUtilizar].robot11Bloqueado()) {
-                Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo marco como desbloqueado.");
-                cintasTransportadoras[cintaAUtilizar].marcarRobot11Liberado();
-                Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo desbloqueo.");
+                cintasTransportadoras[cintaAUtilizar].marcarRobot11Liberado();     
                 semaforoBloqueoRobot11.signal(cintaAUtilizar);
+                Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo marco como desbloqueado y lo desbloqueo.");
             }
         }
     }
