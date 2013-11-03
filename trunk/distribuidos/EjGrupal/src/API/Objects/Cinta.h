@@ -15,7 +15,7 @@
 #include <iostream>
 
 // Solo para debugging
-#include <CSO/Logger/Logger.h>
+#include "../../Logger/Logger.h"
 #include <string>
 
 template <class PACKAGE, unsigned int SIZE>

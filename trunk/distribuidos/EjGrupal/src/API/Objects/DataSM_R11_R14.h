@@ -1,9 +1,9 @@
 #ifndef DATASM_R11_R14_H
 #define	DATASM_R11_R14_H
 
-#include <Objects/Cinta.h>
-#include <common.h>
-#include <definedTypes.h>
+#include "Cinta.h"
+#include "../../Common.h"
+#include "../../definedTypes.h"
 #include <string>
 
 class DataSM_R11_R14 {

@@ -9,8 +9,8 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include <CSO/Exceptions/Exception.h>
-#include <CSO/IPCs/IPCObject.h>
+#include "../../Exceptions/Exception.h"
+#include "../../IPCs/IPCObject/IPCObject.h"
 
 namespace IPC {
 

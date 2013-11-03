@@ -11,6 +11,7 @@
 #define DIRECTORY_ROBOT_5 	"./DRobot5"
 #define DIRECTORY_ROBOT_11 	"./DRobot11"
 #define DIRECTORY_ROBOT_12 	"./DRobot12"
+#define DIRECTORY_ROBOT_14 	"./DRobot14"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
@@ -46,6 +47,11 @@
 // ipcs entre robot 5, robot 11 y AGV (usar DIRECTORY_ROBOT_11)
 #define ID_SEM_BLOQUEO_ROBOT_11         4
 
+// ipcs entre robot 11 y robot 14 (usar DIRECTORY_ROBOT_11)
+#define SEM_R11_CINTA_13                5
+#define SEM_MUTEX_SM_R11_R14_ID         6
+#define SM_R11_R14_ID                   6
+
 // ipcs entre robot 12 y AGV (usar DIRECTORY_ROBOT_12)
 #define ID_SEM_BLOQUEO_ROBOT_12         1
 
@@ -54,6 +60,9 @@
 #define ID_COLA_11_A_12_2               2
 #define ID_COLA_12_A_11_1               3
 #define ID_COLA_12_A_11_2               4
+
+//ipcs del robot 14
+#define SEM_R14_ID                      1
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
@@ -72,6 +81,9 @@
 #define MAX_QUANTITY_CANASTOS                   50
 #define MAX_PIEZAS_POR_PRODUCTO                 9
 #define MAX_PIEZAS_CANASTO                      40
+#define AMOUNT_CINTA_13                         2
+#define CINTA_13_CAPACITY                       3
+#define CINTA_15_CAPACITY                       5
 
 typedef enum {
     PEDIDO_PRODUCCION = 0,
@@ -239,11 +251,17 @@ typedef struct
 /*
  * Estructuras utilizadas entre robot 11, 14 y 16
  */
-
-typedef struct {
-    TipoProducto idProducto;
-    int ordenDeCompra;
-    bool fallado;
-} Caja;
+class Caja {
+public:
+    Caja() {ordenDeCompra_ = 0;};
+    Caja(long ordenDeCompra) { ordenDeCompra_ = ordenDeCompra;};
+    long getOrdenDeCompra() { return ordenDeCompra_;};
+    bool estaVacio() { return ordenDeCompra_ == 0; };
+    
+public:
+    long ordenDeCompra_;
+    TipoProducto idProducto_;
+    bool fallado_;
+};
 
 #endif	/* COMMON_H */
