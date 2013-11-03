@@ -31,8 +31,6 @@
 
 #include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
-#include "IPCs/Barrios/Semaforo.h"
-
 
 static char buffer[255];
 static char param1[20];
@@ -273,8 +271,8 @@ void createIPCs() {
     MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
     shmemNumeroOrdenCompra.crear();
     
-    Semaforo mutexAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
-    mutexAlmacenTerminados.crear();
+    IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");
+    mutexAlmacenTerminados.createSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
 }
 
 void createProcess(std::string processName, int amountOfProcesses) {

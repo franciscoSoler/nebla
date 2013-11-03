@@ -9,7 +9,7 @@
 #define	SMMEMALMACENPRODUCTOSTERMINADOS_H
 
 #include "MemoriaCompartida.h"
-#include "Semaforo.h"
+#include "../../IPCs/Semaphore/Semaphore.h"
 #include "../../Common.h"
 
 class SmMemAlmacenProductosTerminados
