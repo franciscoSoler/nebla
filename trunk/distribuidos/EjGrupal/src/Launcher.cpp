@@ -28,6 +28,7 @@
 #include "API/Objects/DataSM_R11_R14.h"
 #include "API/Objects/DataSM_R14_R16.h"
 #include "IPCs/IPCTemplate/SharedMemory.h"
+#include "IPCs/IPCTemplate/MsgQueue.h"
 
 #include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
@@ -50,6 +51,9 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_ROBOT_14);
         createDirectory(DIRECTORY_ROBOT_16);
         createDirectory(DIRECTORY_VENDEDOR);
+        createDirectory(DIRECTORY_CLIENTE);
+        createDirectory(DIRECTORY_DESPACHO);
+        createDirectory(DIRECTORY_APT);
                 
         createIPCs();
         
@@ -273,6 +277,39 @@ void createIPCs() {
     
     IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");
     mutexAlmacenTerminados.createSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
+    
+    IPC::MsgQueue outputQueueDespacho("outputQueueDespacho");
+    outputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
+    
+    IPC::MsgQueue inputQueueRobot16("inputQueueRobot16");
+    inputQueueRobot16.create(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_INPUT_ID);
+    
+    IPC::MsgQueue outputQueueRobot16("outputQueueRobot16");
+    outputQueueRobot16.create(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_OUTPUT_ID);
+    
+    IPC::MsgQueue inputQueueCliente("inputQueueCliente");
+    inputQueueCliente.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
+    
+    IPC::MsgQueue outputQueueCliente("outputQueueRobot16");
+    outputQueueRobot16.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_OUTPUT_ID);
+    
+    IPC::MsgQueue R16_Cliente_Queue("R16_Cliente_Queue");
+    R16_Cliente_Queue.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
+    
+    IPC::MsgQueue inputQueueVendedor("inputQueueVendedor");
+    inputQueueVendedor.create(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_INPUT_ID);
+    
+    IPC::MsgQueue outputQueueVendedor("outputQueueVendedor");
+    outputQueueVendedor.create(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_OUTPUT_ID);  
+    
+    //IPCs de Fede
+    IPC::Semaphore semMutex_APT("semMutex_APT");
+    semMutex_APT.createSemaphore(DIRECTORY_APT, SEM_MUTEX_SM_APT_ID, 1);
+    semMutex_APT.initializeSemaphore(0, 1);
+    
+    MemoriaCompartida shMem_APT(DIRECTORY_APT, LETRA_SHMEM_ALMACEN_TERMINADOS, 
+            TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
+    shMem_APT.crear();
 }
 
 void createProcess(std::string processName, int amountOfProcesses) {

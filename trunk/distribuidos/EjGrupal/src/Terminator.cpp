@@ -30,6 +30,7 @@
 
 #include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
+#include "MsgQueue.h"
 
 int main(int argc, char* argv[]) {
     try {
@@ -169,6 +170,56 @@ int main(int argc, char* argv[]) {
         semR16.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC semR16 destruido");
         
+        
+        IPC::MsgQueue outputQueueDespacho("outputQueueDespacho");
+        outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
+        outputQueueDespacho.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueDespacho destruido");
+        
+        IPC::MsgQueue inputQueueRobot16("inputQueueRobot16");
+        inputQueueRobot16.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_INPUT_ID);
+        inputQueueRobot16.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueRobot16 destruido");
+    
+        IPC::MsgQueue outputQueueRobot16("outputQueueRobot16");
+        outputQueueRobot16.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_OUTPUT_ID);
+        outputQueueRobot16.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueRobot16 destruido");
+        
+        IPC::MsgQueue inputQueueCliente("inputQueueCliente");
+        inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
+        inputQueueCliente.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueCliente destruido");
+         
+        IPC::MsgQueue outputQueueCliente("outputQueueRobot16");
+        outputQueueRobot16.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_OUTPUT_ID);
+        outputQueueRobot16.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueRobot16 destruido");
+    
+        IPC::MsgQueue R16_Cliente_Queue("R16_Cliente_Queue");
+        R16_Cliente_Queue.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
+        R16_Cliente_Queue.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC R16_Cliente_Queue destruido");
+        
+        IPC::MsgQueue inputQueueVendedor("inputQueueVendedor");
+        inputQueueVendedor.getMsgQueue(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_INPUT_ID);
+        inputQueueVendedor.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueVendedor destruido");
+   
+        IPC::MsgQueue outputQueueVendedor("outputQueueVendedor");
+        outputQueueVendedor.getMsgQueue(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_OUTPUT_ID);  
+        outputQueueVendedor.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueVendedor destruido");
+    
+        IPC::Semaphore semMutex_APT("semMutex_APT");
+        semMutex_APT.getSemaphore(DIRECTORY_APT, SEM_MUTEX_SM_APT_ID, 1);
+        semMutex_APT.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_APT destruido");
+        
+        MemoriaCompartida shMem_APT(DIRECTORY_APT, LETRA_SHMEM_ALMACEN_TERMINADOS, 
+                TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
+        shMem_APT.liberar();
+        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_APT destruido");
     }    
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 

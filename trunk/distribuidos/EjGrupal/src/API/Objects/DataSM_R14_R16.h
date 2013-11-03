@@ -33,8 +33,8 @@ private:
     // Variable que permite indicarle al Robot16 si el Robot11 está bloqueado
     // esperando que el Robot16 saque cajas de la cinta porque estaba llena
     bool robot14EstaBloqueado_;
-    // Permite indicarle al Robot14 si el Robot16 está bloqueado porque no
-    // hay cajas sobre la cinta
+    // Variable que indica si el robot16 está bloqueado porque no había nada
+    // en la cinta
     bool robot16EstaBloqueado_;
     // Indica cuando el Robot16 está trabajando. Esto es cuando está moviendo
     // la cinta y/o esté moviendo una caja de la Cinta15 al despacho
