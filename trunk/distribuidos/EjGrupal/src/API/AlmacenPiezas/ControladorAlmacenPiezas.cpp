@@ -12,10 +12,11 @@
 ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
         mensajesRobot5 ("Mensage Robot 5 Msg Queue")
 { 
-    this->consultasAlmacen = Cola<consulta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
-    consultasAlmacen.obtener();
-    this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
-    respuestasAlmacen.obtener();
+    this->colaReciboOrdenProduccion = Cola<pedido_produccion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    colaReciboOrdenProduccion.obtener();
+    
+    this->colaEnvioMensajePedidoProduccion = Cola<MensajePedidoProduccion>(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
+    colaEnvioMensajePedidoProduccion.obtener();
     
     mensajesRobot5.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
     
@@ -33,15 +34,33 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
 
 ControladorAlmacenPiezas::~ControladorAlmacenPiezas() { }
 
-consulta_almacen_piezas_t ControladorAlmacenPiezas::recibirConsulta()
+
+void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(pedido_produccion_t pedidoProduccion)
 {
-    char mensajePantalla[256];
-    consulta_almacen_piezas_t buffer;
-    consultasAlmacen.recibir(0, &buffer);
-    long numVendedor = buffer.emisor;
-    int numProductoConsultado = buffer.tipoProducto;
-    sprintf(mensajePantalla, "Almacén recibe consulta de producto %d por vendedor #%ld.\n", numProductoConsultado, numVendedor);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    PedidoProduccion pedido;
+    pedido.cantidad = pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido;
+    pedido.diferenciaMinima = pedidoProduccion.diferenciaMinimaProducto;
+    pedido.nroOrdenCompra = pedidoProduccion.numOrdenCompra;
+    pedido.tipo = pedidoProduccion.tipoProducto;
+    
+    MensajePedidoProduccion mensaje;
+    mensaje.pedidoProduccion = pedido;
+    mensaje.mtype = TIPO_PEDIDO_PRODUCCION;
+    
+    colaEnvioMensajePedidoProduccion.enviar(mensaje);
+}
+
+pedido_produccion_t ControladorAlmacenPiezas::recibirPedidoDeProduccion()
+{
+    pedido_produccion_t buffer;
+    this->colaReciboOrdenProduccion.recibir(1, &buffer);
+    
+    PedidoProduccion pedido;
+    pedido.cantidad = buffer.producidoParaStockear + buffer.producidoVendido;
+    pedido.diferenciaMinima = buffer.diferenciaMinimaProducto;
+    pedido.nroOrdenCompra = buffer.numOrdenCompra;
+    pedido.tipo = buffer.tipoProducto;
+    
     return buffer;
 }
 
@@ -61,30 +80,6 @@ int ControladorAlmacenPiezas::obtenerCantidadMinimaDeProduccion(int numeroProduc
     return cantMinimaProduccion;
 }
 
-/*
-int ControladorAlmacenPiezas::obtenerComposicion(int numeroProducto)
-{
-    ifstream stream;
-    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
-    Parser parser;
-    this->buscarUbiacionDeProductoEnArchivo(parser, stream, numeroProducto);
-    parser.obtenerProximoValor(); / cantidad mínima de producción. *
-    string numeroComponentesString = parser.obtenerProximoValor();
-    int numeroComponentes = atoi(numeroComponentesString.c_str());
-    
-    int* componentes = (int*) malloc(sizeof(int) * (CANT_MAX_COMPONENTES_PRODUCTO*2 + 1));
-    componentes[0] = numeroComponentes;
-	    
-    for(int i = 1; i < numeroComponentes*2 + 2; i++)
-    {
-	string valorString = parser.obtenerProximoValor();
-	int valor = atoi(valorString.c_str());
-	componentes[i] = valor;
-    }
-    
-    return componentes;    
-}*/
-
 void ControladorAlmacenPiezas::buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
 {
     bool continuaArchivo = true;
@@ -99,26 +94,12 @@ void ControladorAlmacenPiezas::buscarUbiacionDeProductoEnArchivo(Parser parser, 
     } while(continuaArchivo && ultimoNumeroProductoLeido != numeroProducto);
 }
 
-void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(consulta_almacen_piezas_t consulta)
-{
-    PedidoProduccion pedidoProduccion;
-    pedidoProduccion.cantidad = consulta.cantidad;
-    pedidoProduccion.diferenciaMinima = consulta.diferencia;
-    pedidoProduccion.nroOrdenCompra = consulta.numOrdenCompra;
-    pedidoProduccion.tipo = consulta.tipoProducto;
-    
-    MensajePedidoProduccion mensajePedidoProduccion;
-    mensajePedidoProduccion.pedidoProduccion = pedidoProduccion;
-    mensajePedidoProduccion.mtype = TIPO_PEDIDO_PRODUCCION;
-    
-    mensajesRobot5.enviarPedidoProduccion(mensajePedidoProduccion);    
-}
 
 void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor)
 {
     respuesta.emisor = 0;
     respuesta.mtype = numEmisor;
-    respuestasAlmacen.enviar(respuesta);
+    //respuestasAlmacen.enviar(respuesta);
 }
 
 void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd piezas) {

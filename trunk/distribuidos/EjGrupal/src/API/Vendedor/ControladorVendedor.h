@@ -50,8 +50,7 @@ class ControladorVendedor
 	Cola<pedido_t> pedidos;
 	MemoriaCompartida shmemNumeroOrdenCompra;
 	int* numeroOrdenCompra;
-	Cola<consulta_almacen_piezas_t> consultasAlmacen;
-	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
+	Cola<pedido_produccion_t> colaEnvioOrdenProduccion;
 	IPC::Semaphore mutexAlmacenTerminados;
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
         

@@ -25,28 +25,24 @@ int main(int argc, char** argv)
 {
     std::auto_ptr<IControladorAlmacenPiezas> controladorAlmacenPiezas = std::auto_ptr<IControladorAlmacenPiezas>(new ControladorAlmacenPiezas());
 
-    OrdenDeCompra ordenCompra;
+    pedido_produccion_t pedidoProduccion;
     EspecifProd piezasReservadasTemporalmente[2];
     EspecifProd piezasProductoActual;
     piezasReservadasTemporalmente[0].idProducto = NULL_PRODUCT;
     piezasReservadasTemporalmente[1].idProducto = NULL_PRODUCT;
     
     while (true) {
-        //ordenCompra = reciboColaOrdenDeCompra()
+        pedidoProduccion = controladorAlmacenPiezas->recibirPedidoDeProduccion();
 
-        for (int i = 0; i < CANTIDAD_PRODUCTOS; i++) {
-            if (ordenCompra.cantidadPorProducto_[i] == 0)
-                continue;
-            //enviarPorColaInstruccionARobot5(lo que sea...);
-
-            controladorAlmacenPiezas->obtenerEspecificacionesDelProducto(static_cast<TipoProducto> (i), piezasProductoActual);
-            for (int j = 0; j < piezasProductoActual.cantPiezas; j++) 
-                controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.pieza[j].tipoPieza, piezasReservadasTemporalmente);
-            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.tipoPantalla.tipoPieza, piezasReservadasTemporalmente);
-            memcpy(piezasReservadasTemporalmente, piezasReservadasTemporalmente + 1, sizeof(EspecifProd));
-            memcpy(piezasReservadasTemporalmente + 1, &piezasProductoActual, sizeof(EspecifProd));
-            controladorAlmacenPiezas->recibirConfirmacionProduccion();
-        }
+        controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoProduccion);
+        
+        controladorAlmacenPiezas->obtenerEspecificacionesDelProducto(pedidoProduccion.tipoProducto, piezasProductoActual);
+        for (int j = 0; j < piezasProductoActual.cantPiezas; j++) 
+            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.pieza[j].tipoPieza, piezasReservadasTemporalmente);
+        controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.tipoPantalla.tipoPieza, piezasReservadasTemporalmente);
+        memcpy(piezasReservadasTemporalmente, piezasReservadasTemporalmente + 1, sizeof(EspecifProd));
+        memcpy(piezasReservadasTemporalmente + 1, &piezasProductoActual, sizeof(EspecifProd));
+        controladorAlmacenPiezas->recibirConfirmacionProduccion();
     } 
 }
 
