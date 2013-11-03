@@ -183,9 +183,8 @@ typedef struct {
 
 typedef struct {
     long mtype; // tipo = TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5
+    ProductoEnProduccion productoEnProduccion;
     bool ultimo;
-    int ordenDeCompra;
-    Gabinete gabinete;
 } MensajeRespuestaGabinete;
 
 /*

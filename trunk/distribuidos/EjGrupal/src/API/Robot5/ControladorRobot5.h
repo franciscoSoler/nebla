@@ -20,7 +20,7 @@ public:
     PedidoRobot5 obtenerPedido();
     
     void resolverPedido(Canasto canasto, int idDestino);
-    void resolverPedido(Gabinete gabinete, bool ultimo, int ordenDeCompra);
+    void resolverPedido(ProductoEnProduccion prodEnProduccion, bool ultimo);
     
      Canasto obtenerCanasto(TipoPieza tipoPieza);
      Gabinete obtenerGabinete(TipoProducto tipoPorudcto);

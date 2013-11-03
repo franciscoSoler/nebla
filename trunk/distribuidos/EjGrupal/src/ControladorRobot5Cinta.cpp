@@ -153,17 +153,17 @@ int main(int argc, char** argv) {
             ultimo = mensajeRespuestaGabinete.ultimo;
                     
             /* Una vez obtenido el gabinete lo deposito en la cinta que convenga.
-             * Si ambas estan libres, en aquella que este menos ocupada *
+             * Si ambas estan libres, en aquella que este menos ocupada.
              * Leo nuevamente el estado de ambas cintas para tener una version mas actualizada del mismo */
             leerEstadoCintas(cintasTransportadoras, estadoCinta0, estadoCinta1);
             
             int cintaAUtilizar;
             if (! estadoCinta0.ocupado && estadoCinta1.ocupado) {
-                /* Utilizo la cinta 0 */
+                /* Utilizo la cinta 0. */
                 cintaAUtilizar = 0;
             }
             else if (estadoCinta0.ocupado && !estadoCinta1.ocupado) {
-                /* Utilizo la cinta 1 */
+                /* Utilizo la cinta 1. */
                 cintaAUtilizar = 1;
             }
             else {
@@ -172,15 +172,14 @@ int main(int argc, char** argv) {
             }
             
             /* Una vez obtenida la cinta a utilizar, creo y deposito 
-             * el producto en produccion */
-            ProductoEnProduccion productoEnProduccion;
-            productoEnProduccion.gabinete = mensajeRespuestaGabinete.gabinete;
-            productoEnProduccion.nroOrdenCompra = mensajeRespuestaGabinete.ordenDeCompra;
-            productoEnProduccion.falla = false;
+             * el producto en produccion 
+             */
+            ProductoEnProduccion productoEnProduccion = mensajeRespuestaGabinete.productoEnProduccion;
             cintasTransportadoras[cintaAUtilizar].depositarProductoEnProduccion(productoEnProduccion);
             
             /* Verifico si el robot 11 encargado de la cinta utilizada esta 
-             * bloqueado */
+             * bloqueado 
+             */
             if (cintasTransportadoras[cintaAUtilizar].robot11Bloqueado()) {
                 cintasTransportadoras[cintaAUtilizar].marcarRobot11Liberado();
                 semaforoBloqueoRobot11.signal(cintaAUtilizar);
