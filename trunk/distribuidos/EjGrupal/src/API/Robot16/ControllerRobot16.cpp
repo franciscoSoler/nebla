@@ -1,6 +1,6 @@
 #include "ControllerRobot16.h"
-#include <CSO/Exceptions/Exception.h>
-#include <CSO/Logger/Logger.h>
+#include <Exceptions/Exception.h>
+#include <Logger/Logger.h>
 
 ControllerRobot16::ControllerRobot16() {
     try {
@@ -11,28 +11,28 @@ ControllerRobot16::ControllerRobot16() {
              
         // Se crean los IPCs
         shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("shMem_R14_R16");
-        shMem_R14_R16_.getSharedMemory(DIRECTORY, SM_R14_R16_ID);
+        shMem_R14_R16_.getSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
         
         semMutex_shMem_R14_R16_ = IPC::Semaphore ("semMutex_shMem_R14_R16");
-        semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY, SEM_MUTEX_SM_R14_R16_ID, 1);
+        semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
         
         semR14_ = IPC::Semaphore("semR14");
-        semR14_.getSemaphore(DIRECTORY, SEM_R14_ID, 1);
+        semR14_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_ID, 1);
         
         semR16_ = IPC::Semaphore("semR16");
-        semR16_.getSemaphore(DIRECTORY, SEM_R16_ID, 1);
+        semR16_.getSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
         
         outputQueueR16_ = IPC::MsgQueue("outputQueueR16");
-        outputQueueR16_.getMsgQueue(DIRECTORY, MSGQUEUE_ROBOT16_OUTPUT_ID);
+        outputQueueR16_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_OUTPUT_ID);
         
         R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue");
-        R16_Cliente_Queue_.getMsgQueue(DIRECTORY, MSGQUEUE_R16_CLIENT_ID);
+        R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
         
         outputQueueDespacho_ = IPC::MsgQueue("outputQueueDespacho");
-        outputQueueDespacho_.getMsgQueue(DIRECTORY, MSGQUEUE_DESPACHO_OUTPUT_ID);
+        outputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
         
         semMutex_shMem_APT = IPC::Semaphore("semMutex_APT");
-        semMutex_shMem_APT.getSemaphore(DIRECTORY, SEM_MUTEX_SM_APT_ID, 1);
+        semMutex_shMem_APT.getSemaphore(DIRECTORY_APT, SEM_MUTEX_SM_APT_ID, 1);
         
     }
     catch (Exception & e) {

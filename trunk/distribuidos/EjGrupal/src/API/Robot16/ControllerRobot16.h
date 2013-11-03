@@ -2,12 +2,12 @@
 #define	CONTROLLERROBOT16_H
 
 #include <API/Robot16/IControllerRobot16.h>
-#include <CSO/IPCs/Semaphore.h>
-#include <CSO/IPCs/SharedMemory.h>
-#include <CSO/IPCs/MsgQueue.h>
-#include <Objects/DataSM_R14_R16.h>
+#include <IPCs/Semaphore/Semaphore.h>
+#include <IPCs/IPCTemplate/SharedMemory.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
+#include <API/Objects/DataSM_R14_R16.h>
 #include <definedTypes.h>
-#include <common.h>
+#include <Common.h>
 
 // IPCs de Fede
 #include <Objects/SmMemAlmacenProductosTerminados.h>
