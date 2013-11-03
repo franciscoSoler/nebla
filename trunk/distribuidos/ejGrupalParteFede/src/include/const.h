@@ -8,7 +8,7 @@
 #ifndef CONST_H
 #define	CONST_H
 
-/* Constantes IPC. */
+/* Constantes IPC internas. */
 #define NOMBRE_ARCHIVO "/home/"
 #define LETRA_COLA_VENDEDORES 'b'
 #define LETRA_COLA_CLIENTES 'z'
@@ -18,6 +18,11 @@
 #define LETRA_SHMEM_NRO_OC 'g'
 #define LETRA_SHMEM_NRO_OP 'h'
 #define LETRA_SEM_ALMACEN_TERMINADOS 'd'
+
+// comunicación robot 5
+#define NOMBRE_ARCHIVO_ROBOT5 "/home/"
+#define LETRA_ROBOT5 '2'
+#define TIPO_ROBOT_5 1
 
 /* Tipos de productos. */
 #define NOMBRE_ARCHIVO_PRODUCTOS "../info_productos.csv"
@@ -35,15 +40,18 @@
 
 #define CANT_MAX_COMPONENTES_PRODUCTO 10
 
+/* Tipos de mensajes y datos. */
+
 typedef struct _pedido_produccion
 {
     bool ventaEnCurso;
     int producidoParaStockear;
     int producidoVendido;
     int vendidoStockeado;
+    int diferenciaMinimaProducto;
+    int numOrdenCompra;
+    int tipoProducto;
 } pedido_produccion_t;
-
-/* Tipos de mensajes y datos. */
 
 typedef struct _mensaje_inicial
 {
@@ -55,8 +63,8 @@ typedef struct _pedido
 {
     long mtype; // receptor.
     long emisor;
-    int numeroMensaje;
-    int tipo;
+    int numMensaje;
+    int tipoProducto;
     int cantidad;
 } pedido_t;
 
@@ -97,9 +105,11 @@ typedef struct _consulta_almacen_piezas
 {
     long mtype; // receptor.
     long emisor;
-    int producto;
+    int tipoProducto;
     int cantidad;
     int cliente;
+    int numOrdenCompra;
+    int diferencia;
     TipoConsulta tipoConsulta; 
 } consulta_almacen_piezas_t;
 
@@ -107,11 +117,10 @@ typedef struct _respuesta_almacen_piezas
 {
     long mtype; // receptor.
     long emisor;
-    int producto;
+    int tipoProducto;
     int tipo;
     int cantidad;
 } respuesta_almacen_piezas_t;
-
 
 /* Comunicación con robot 5. */
 typedef enum {

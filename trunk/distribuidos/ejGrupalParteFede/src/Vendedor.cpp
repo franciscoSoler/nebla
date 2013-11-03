@@ -32,20 +32,22 @@ int main(int argc, char** argv)
 	{
 	    pedido = controlador.recibirPedido();
 	    
-	    if(pedido.tipo == FIN_ENVIO)
+	    if(pedido.tipoProducto == FIN_ENVIO)
 		continue;
 	    
-	    sprintf(mensajePantalla, "Vendedor #%ld recibe pedido del cliente %ld de %d unidades del producto %d.\n", numVendedor, pedido.emisor, pedido.cantidad, pedido.tipo);
+	    sprintf(mensajePantalla, "Vendedor #%ld recibe pedido del cliente %ld de %d unidades del producto %d.\n", numVendedor, pedido.emisor, pedido.cantidad, pedido.tipoProducto);
 	    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
 	    
-	    bool exitoAlRealizarPedido = controlador.realizarPedido(pedido);
+	    pedido_produccion_t pedidoProduccion = controlador.realizarPedido(pedido);
+	    if(pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido > 0)
+		controlador.enviarPedidoProduccionAAlmacenPiezas(pedidoProduccion);
 	    
-	    if(exitoAlRealizarPedido)
+	    if(pedidoProduccion.ventaEnCurso)
 		controlador.informarExitoEnPedido(pedido);
 	    else
 		controlador.informarErrorEnPedido(pedido);
 	    
-	} while(pedido.tipo != FIN_ENVIO);
+	} while(pedido.tipoProducto != FIN_ENVIO);
     }    
     
 }

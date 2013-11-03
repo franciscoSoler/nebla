@@ -49,9 +49,9 @@ void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo, int numMen
     pedido.emisor = numCliente;
     pedido.cantidad = cantidadUnidades;
     pedido.mtype = numVendedorAsociado;
-    pedido.tipo = tipo;
-    pedido.numeroMensaje = numMensaje + 1;
-    sprintf(mensajePantalla, "Cliente #%ld envía al vendedor %ld un pedido por %d productos de tipo %d.\n", numCliente, numVendedorAsociado, pedido.cantidad, pedido.tipo);
+    pedido.tipoProducto = tipo;
+    pedido.numMensaje = numMensaje + 1;
+    sprintf(mensajePantalla, "Cliente #%ld envía al vendedor %ld un pedido por %d productos de tipo %d.\n", numCliente, numVendedorAsociado, pedido.cantidad, pedido.tipoProducto);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     pedidos.enviar(pedido);	    
 }
@@ -65,8 +65,8 @@ void ControladorCliente::finalizarEnvio(int cantPedidos)
     pedidoFinal.emisor = numCliente;
     pedidoFinal.cantidad = 0;
     pedidoFinal.mtype = numVendedorAsociado;
-    pedidoFinal.tipo = FIN_ENVIO;
-    pedidoFinal.numeroMensaje = cantPedidos + 1;
+    pedidoFinal.tipoProducto = FIN_ENVIO;
+    pedidoFinal.numMensaje = cantPedidos + 1;
     sprintf(mensajePantalla, "Cliente #%ld envía al vendedor %ld el mensaje de fin de pedido.\n", numCliente, numVendedorAsociado);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     pedidos.enviar(pedidoFinal);

@@ -25,10 +25,12 @@ class ControladorAlmacenPiezas
 	int obtenerCantidadMinimaDeProduccion(int numProductoConsultado);
 	//int obtenerComposicion(int numProductoConsultado);
 	void responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor);
+	void enviarPedidoProduccionARobot5(consulta_almacen_piezas_t consulta);
     
     private:
 	Cola<consulta_almacen_piezas_t> consultasAlmacen;
 	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
+	Cola<MensajePedidoProduccion> mensajesRobot5;
 	
 	void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
 

@@ -66,9 +66,11 @@ pedido_t ControladorVendedor::recibirPedido()
 pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido)
 {
     pedido_produccion_t pedidoProduccion;
+    pedidoProduccion.tipoProducto = pedido.tipoProducto;
     
     int cantidadEspacioVacio = almacenProductosTerminados.obtenerEspaciosVacios();
-    int cantidadEnStock = almacenProductosTerminados.obtenerCantidadDeStockDeProducto(pedido.tipo);
+    int cantidadEnStock = almacenProductosTerminados.obtenerCantidadDeStockDeProducto(pedido.tipoProducto);
+    int cantidadMinima = obtenerCantidadMinimaDeProduccion(pedido.tipoProducto);
     
     if(cantidadEspacioVacio + cantidadEnStock < pedido.cantidad)
     {
@@ -82,11 +84,11 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
 	pedidoProduccion.producidoParaStockear = 0;
 	pedidoProduccion.producidoVendido = 0;
 	pedidoProduccion.vendidoStockeado = pedido.cantidad;
+	pedidoProduccion.diferenciaMinimaProducto = -1;
 	return pedidoProduccion;
     }
     
     int cantidadAProducir = pedido.cantidad - cantidadEnStock;
-    int cantidadMinima = obtenerCantidadMinimaDeProduccion(pedido.tipo);
     if(cantidadMinima > cantidadAProducir && cantidadMinima > cantidadEspacioVacio)
     {
 	pedidoProduccion.ventaEnCurso = false;
@@ -99,11 +101,12 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
     pedidoProduccion.vendidoStockeado = cantidadEnStock;
     pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock;
     pedidoProduccion.producidoParaStockear = cantidadAProducir - pedido.cantidad;
+    pedidoProduccion.diferenciaMinimaProducto = cantidadMinima > pedido.cantidad ? cantidadMinima : -1;
     
     return pedidoProduccion;
 }
 
-void ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t pedidoProduccion)
+int ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t pedidoProduccion)
 {
     OrdenDeCompra ordenCompra;
     ordenCompra.cliente = pedido.emisor;
@@ -117,7 +120,7 @@ void ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t pe
 	ordenProduccion.vendedor = numVendedor;
 	(*numeroOrdenProduccion)++;
 	ordenProduccion.numero = *numeroOrdenProduccion;
-	ordenProduccion.tipoProducto = pedido.tipo;
+	ordenProduccion.tipoProducto = pedido.tipoProducto;
 	
 	/*
 	consulta_almacen_piezas_t pedidoProduccion;
@@ -131,7 +134,7 @@ void ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t pe
     }
 
     char mensajePantalla[1024];
-    sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer otras %d de producto para vender y se stockean %d de tipo %d.\n", pedidoProduccion.vendidoStockeado, pedidoProduccion.producidoVendido , pedidoProduccion.producidoParaStockear, pedido.tipo);
+    sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer otras %d de producto para vender y se stockean %d de tipo %d.\n", pedidoProduccion.vendidoStockeado, pedidoProduccion.producidoVendido , pedidoProduccion.producidoParaStockear, pedido.tipoProducto);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     
     if(pedidoProduccion.producidoParaStockear > 0)
@@ -141,18 +144,19 @@ void ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t pe
 	almacenProductosTerminados.asignarVaciosAProduccion(ordenProduccion, ordenCompra, pedidoProduccion.producidoVendido);
     
     if(pedidoProduccion.vendidoStockeado > 0)
-	almacenProductosTerminados.asignarStockeados(ordenCompra, pedido.tipo, pedidoProduccion.vendidoStockeado);
+	almacenProductosTerminados.asignarStockeados(ordenCompra, pedido.tipoProducto, pedidoProduccion.vendidoStockeado);
     
+    return ordenCompra.numero;
 }
 
-bool ControladorVendedor::realizarPedido(pedido_t pedido)
+pedido_produccion_t ControladorVendedor::realizarPedido(pedido_t pedido)
 {
     mutexAlmacenTerminados.p();
     pedido_produccion_t pedidoProduccion = calcularCantidadAProducir(pedido);
     if(pedidoProduccion.ventaEnCurso)
-	reservarPedido(pedido, pedidoProduccion);
+	pedidoProduccion.numOrdenCompra = reservarPedido(pedido, pedidoProduccion);
     mutexAlmacenTerminados.v();
-    return pedidoProduccion.ventaEnCurso;
+    return pedidoProduccion;
 }
 
 int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numProducto)
@@ -162,7 +166,7 @@ int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numProducto)
     consulta_almacen_piezas_t consulta;
     consulta.emisor = numVendedor;
     consulta.mtype = 1;
-    consulta.producto = numProducto;
+    consulta.tipoProducto = numProducto;
     consulta.tipoConsulta = CANT_MINIMA_FABRICACION;
     consultasAlmacen.enviar(consulta);
     sprintf(mensajePantalla, "Vendedor #%ld consulta al almacén cantidad mínima de productos a producir.\n", numVendedor);
@@ -174,6 +178,24 @@ int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numProducto)
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     
     return respuesta.cantidad;
+}
+
+void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion)
+{
+    consulta_almacen_piezas_t consulta;
+    consulta.emisor = numVendedor;
+    consulta.mtype = 1;
+    consulta.cantidad = pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido;
+    consulta.diferencia = pedidoProduccion.diferenciaMinimaProducto;
+    consulta.numOrdenCompra = pedidoProduccion.numOrdenCompra;
+    consulta.tipoProducto = pedidoProduccion.tipoProducto;
+    consulta.tipoConsulta = ORDEN_PRODUCCION;
+    
+    char mensajePantalla[256];
+    sprintf(mensajePantalla, "Vendedor #%ld envía pedido de producción de %d unidades de producto %d al almacén de piezas.\n", numVendedor, consulta.cantidad, consulta.tipoProducto);
+    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    
+    consultasAlmacen.enviar(consulta);
 }
 
 void ControladorVendedor::informarExitoEnPedido(pedido_t pedido)
