@@ -1,6 +1,6 @@
 #include "ControllerRobot16.h"
-#include <Exceptions/Exception.h>
-#include <Logger/Logger.h>
+#include <CSO/Exceptions/Exception.h>
+#include <CSO/Logger/Logger.h>
 
 ControllerRobot16::ControllerRobot16() {
     try {
@@ -10,33 +10,83 @@ ControllerRobot16::ControllerRobot16() {
         shMem_R14_R16_Data_ = new DataSM_R14_R16();
              
         // Se crean los IPCs
-        shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("ShMem_R14_R16");
-        shMem_R14_R16_.getSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
+        shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("shMem_R14_R16");
+        shMem_R14_R16_.getSharedMemory(DIRECTORY, SM_R14_R16_ID);
         
         semMutex_shMem_R14_R16_ = IPC::Semaphore ("semMutex_shMem_R14_R16");
-        semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
+        semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY, SEM_MUTEX_SM_R14_R16_ID, 1);
         
         semR14_ = IPC::Semaphore("semR14");
-        semR14_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_ID, 1);
+        semR14_.getSemaphore(DIRECTORY, SEM_R14_ID, 1);
         
         semR16_ = IPC::Semaphore("semR16");
-        semR16_.getSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
+        semR16_.getSemaphore(DIRECTORY, SEM_R16_ID, 1);
         
-        // Creo los estados
-        estadoDurmiendo_ = new StateR16_Durmiendo(this);
-        estadoTrabajando_ = new StateR16_Trabajando(this);
-        estadoConCarga_ = new StateR16_ConCarga(this);
-        estadoActual_ = estadoDurmiendo_;
+        outputQueueR16_ = IPC::MsgQueue("outputQueueR16");
+        outputQueueR16_.getMsgQueue(DIRECTORY, MSGQUEUE_ROBOT16_OUTPUT_ID);
+        
+        R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue");
+        R16_Cliente_Queue_.getMsgQueue(DIRECTORY, MSGQUEUE_R16_CLIENT_ID);
+        
+        outputQueueDespacho_ = IPC::MsgQueue("outputQueueDespacho");
+        outputQueueDespacho_.getMsgQueue(DIRECTORY, MSGQUEUE_DESPACHO_OUTPUT_ID);
+        
+        semMutex_shMem_APT = IPC::Semaphore("semMutex_APT");
+        semMutex_shMem_APT.getSemaphore(DIRECTORY, SEM_MUTEX_SM_APT_ID, 1);
+        
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
     }
 }
 
+PedidoDespacho ControllerRobot16::recibirPedido() {
+    try {
+        Logger::setProcessInformation("Robot16 - recibirPedido:");
+        outputQueueR16_.recv(0, pedido_);
+        
+        obtener_shMem_R14_R16();
+        if (pedido_.tipoPedido_ == PEDIDO_ROBOT16 && pedido_.idProducto_ == NULL_PRODUCT) {
+            shMem_R14_R16_Data_->setEstadoTrabajoRobot16(true);
+        }
+        liberar_shMem_R14_R16();
+        
+        return pedido_;
+
+        Logger::logMessage(Logger::TRACE, "Recibe Pedido");
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
 bool ControllerRobot16::moverCinta() {
     try {
         Logger::setProcessInformation("Robot16 - moverCinta:");
-        return estadoActual_->moverCinta();
+        bool cintaVacia = true;
+        bool cintaMovida = false;
+        
+        while (cintaVacia) {
+            // Intenta mover la cinta
+            obtener_shMem_R14_R16();
+
+            if (shMem_R14_R16_Data_->getCantidadElementosEnCinta() == 0) {
+                Logger::logMessage(Logger::TRACE, "Cinta vacía. Robot se bloquea");
+                shMem_R14_R16_Data_->setEstadoBloqueoRobot16(true);
+                liberar_shMem_R14_R16();
+                
+                semR16_.wait();
+                Logger::logMessage(Logger::TRACE, "Es despertado");
+            }
+            else {
+                cintaMovida = avanzarCinta();
+                liberar_shMem_R14_R16();
+                cintaVacia = false;
+            }
+        }
+        
+        return cintaMovida;
     } 
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -44,10 +94,25 @@ bool ControllerRobot16::moverCinta() {
     }
 }
 
-bool ControllerRobot16::tomarCaja(Caja & unaCaja) {
+bool ControllerRobot16::tomarCajaCinta15(Caja & unaCaja) {
     try {
         Logger::setProcessInformation("Robot16 - tomarCaja:");
-        return estadoActual_->tomarCaja(unaCaja);
+        obtener_shMem_R14_R16();
+        bool retVal = shMem_R14_R16_Data_->retirarCajaDeCinta(unaCaja);
+
+        if (retVal) {
+            Logger::logMessage(Logger::TRACE, "Retira caja de la Cinta15");
+
+            // El robot14 ahora no está trabajando sobre ninguna cinta, dado que 
+            // está intentando depositar la misma en la Cinta15
+            shMem_R14_R16_Data_->setEstadoTrabajoRobot16(false);
+        }
+        else {
+            Logger::logMessage(Logger::TRACE, "No se pudo retirar caja de la Cinta15");
+        }
+
+        liberar_shMem_R14_R16();
+        return retVal;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -55,10 +120,20 @@ bool ControllerRobot16::tomarCaja(Caja & unaCaja) {
     }
 }
 
-void ControllerRobot16::depositarCaja(Caja unaCaja) {
+bool ControllerRobot16::depositarCajaEnAPT(Caja unaCaja, long & idNroOrdenAPT) {
     try {
         Logger::setProcessInformation("Robot16 - depositarCaja:");
-        estadoActual_->depositarCaja(unaCaja);
+        semMutex_shMem_APT.wait();
+        
+        Logger::logMessage(Logger::TRACE, "Deposita Caja en APT");
+        bool resultado = shMem_APT_.depositarCaja( unaCaja );
+        semMutex_shMem_APT.signal();
+
+        obtener_shMem_R14_R16();
+        shMem_R14_R16_Data_->setEstadoTrabajoRobot16(false);
+        liberar_shMem_R14_R16();
+        
+        return resultado;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -66,86 +141,57 @@ void ControllerRobot16::depositarCaja(Caja unaCaja) {
     }
 }
 
-bool ControllerRobot16::moverCintaEnEstadoDurmiendo() {
-    Logger::logMessage(Logger::TRACE, "Se bloquea esperando que un Robot14 coloque cajas");
-    semR16_.wait();
-    Logger::logMessage(Logger::TRACE, "Es liberado");
-    
-    // Setea su estado trabajando en true y procede  a mover la cinta
-    obtener_shMem_R14_R16();
-    shMem_R14_R16_Data_->setEstadoTrabajoRobot16 (true); 
-    setEstado( getEstadoTrabajando() );
-
-    bool cintaMovida = avanzarCinta();
-    liberar_shMem_R14_R16();
-    return cintaMovida;
-}
-
-bool ControllerRobot16::moverCintaEnEstadoTrabajando() {
-    obtener_shMem_R14_R16();
-    bool cintaMovida = avanzarCinta();
-    liberar_shMem_R14_R16();
-    
-    return cintaMovida;
-}
-
-bool ControllerRobot16::tomarCajaEnEstadoTrabajando(Caja & unaCaja) {
-    obtener_shMem_R14_R16();
-    bool retVal = shMem_R14_R16_Data_->retirarCajaDeCinta(unaCaja);
-    
-    if (retVal) {
-        Logger::logMessage(Logger::TRACE, "Retira caja de la Cinta15");
-
-        // El robot14 ahora no está trabajando sobre ninguna cinta, dado que 
-        // está intentando depositar la misma en la Cinta15
-        shMem_R14_R16_Data_->setEstadoTrabajoRobot16(false);
-        setEstado( getEstadoConCarga() );
+void ControllerRobot16::tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja) {
+    try {
+        Logger::setProcessInformation("Robot16 - tomarCajaDeAPT:");
+        semMutex_shMem_APT.wait();
+        shMem_APT_.sacarCaja(unaCaja, pedido.idProducto_, pedido.idOrdenDeCompra_);
+        Logger::logMessage(Logger::TRACE, "Saca Caja del APT");
+        semMutex_shMem_APT.signal();
     }
-    else {
-        Logger::logMessage(Logger::TRACE, "No se pudo retirar caja de la Cinta15");
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();        
     }
 
-    liberar_shMem_R14_R16();
-    return retVal;
-}
+} 
 
-void ControllerRobot16::depositarCajaEnEstadoConCarga(Caja & caja) {
-    depositarCajaEnAPT(caja);
-    
-    obtener_shMem_R14_R16();    
-    if (! shMem_R14_R16_Data_->getCantidadElementosEnCinta() ) {
-        setEstado( getEstadoDurmiendo() );
-        shMem_R14_R16_Data_->setEstadoBloqueoRobot16(true);
+void ControllerRobot16::informarAlDespachoProductoTerminado(long idNroOrden, 
+                                                            TipoProducto tipo) {
+    try {
+        PedidoDespacho pedido;
+        pedido.tipoPedido_ = PEDIDO_ROBOT16;
+        pedido.idOrdenDeCompra_ = idNroOrden;
+        pedido.idProducto_ = tipo;
+
+        sprintf(buffer_, "Robot informa que el tipo de producto %u de la ODC "
+                "N°%lu ha sido terminado", tipo, idNroOrden);
+        Logger::logMessage(Logger::TRACE, buffer_);
+
+        outputQueueDespacho_.send(pedido);
     }
-    else {
-        setEstado( getEstadoTrabajando() );
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();                
     }
-    
-    liberar_shMem_R14_R16();
 }
 
-IStateR16* ControllerRobot16::getEstadoDurmiendo() {
-    return estadoDurmiendo_;
-}
-
-IStateR16* ControllerRobot16::getEstadoConCarga() {
-    return estadoConCarga_;
-}
-
-IStateR16* ControllerRobot16::getEstadoTrabajando() {
-    return estadoTrabajando_;
-}
-
-void ControllerRobot16::setEstado(IStateR16* estado) {
-    estadoActual_ = estado;
+void ControllerRobot16::enviarCajaAlCliente(long idCliente, Caja caja) {
+    try {
+        Logger::logMessage(Logger::TRACE, "Se envía Caja al cliente");
+        EnvioCajaCliente envio;
+        envio.mtype = idCliente;
+        envio.caja = caja;
+        R16_Cliente_Queue_.send(envio);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();                
+    }
 }
 
 ControllerRobot16::~ControllerRobot16() {
     delete shMem_R14_R16_Data_;
-    
-    delete estadoDurmiendo_;
-    delete estadoTrabajando_;
-    delete estadoConCarga_;
 }
 
 void ControllerRobot16::obtener_shMem_R14_R16() {
@@ -168,11 +214,11 @@ bool ControllerRobot16::avanzarCinta() {
                 shMem_R14_R16_Data_->cintaToString().c_str()); 
         Logger::logMessage(Logger::DEBUG, buffer_);
 
-        // Se intenta despertar al Robot 11 si es que este está dormido
+        // Se intenta despertar al Robot 14 si es que este está dormido
         if (shMem_R14_R16_Data_->estaRobot14Bloqueado()) {
             Logger::logMessage(Logger::TRACE, "Se despierta al Robot14 de la Cinta15");
 
-            shMem_R14_R16_Data_->setEstadoBloqueoRobot16(false);
+            shMem_R14_R16_Data_->setEstadoBloqueoRobot14(false);
             semR14_.signal();
         }
     }
@@ -182,11 +228,5 @@ bool ControllerRobot16::avanzarCinta() {
 
     liberar_shMem_R14_R16();
     return cintaMovida;
-}
-
-void ControllerRobot16::depositarCajaEnAPT(Caja caja) {
-    // TODO:
-    Logger::logMessage(Logger::IMPORTANT, "Se tira Caja hasta implementación "
-    "del Despacho y APT");
 }
 
