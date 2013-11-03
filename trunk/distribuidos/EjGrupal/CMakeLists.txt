@@ -32,6 +32,8 @@ include_directories("${SRC_DIR}IPCs/Semaphore")
 
 include_directories("${SRC_DIR}Logger")
 
+include_directories("${SRC_DIR}Parser")
+
 aux_source_directory("${SRC_DIR}API"                                     COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/AGV"                                 COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/Robot5"                              COMMON_SRC)
@@ -47,7 +49,9 @@ aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/MessageQueue"          COMMON
 aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/AbstractSharedMemory"  COMMON_SRC)
 aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/SharedMemory"           COMMON_SRC)
 aux_source_directory("${SRC_DIR}IPCs/Semaphore"                           COMMON_SRC)
+
 aux_source_directory("${SRC_DIR}Logger"                                  COMMON_SRC)
+aux_source_directory("${SRC_DIR}Parser"                                  COMMON_SRC)
 
 
 add_executable(${OUT_DIR}AGV                    ${SRC_DIR}AGV.cpp                    ${COMMON_SRC})

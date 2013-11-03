@@ -7,6 +7,7 @@
 
 #include "ControladorRobot11.h"
 #include "../Logger/Logger.h"
+#include "../Parser/Parser.h"
 
 ControladorRobot11::ControladorRobot11() {
 }
@@ -113,6 +114,8 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
         if(!ctrlCinta.lugarVacio[ctrlCinta.puntoLectura]) {
             Logger::logMessage(Logger::TRACE, "hay gabinete, despierto robot 12");
             this->cola11_A_12.send(messageBarrera);
+            
+            ControladorRobot11::obtenerPantallaDelProducto(ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto, piezas);
             //TODO sacar especificaciones piezas del archivo!!!!!!!!!!!!!!!!!!!!!!!!!!
             
             //*piezas = ctrlCinta.especificacionesProd[ctrlCinta.puntoLectura];
@@ -321,5 +324,33 @@ void ControladorRobot11::buscarPosicionPieza(BufferCanastos canastos, int id_pie
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
+    }
+}
+
+void ControladorRobot11::obtenerPantallaDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
+    ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
+    Parser parser;
+    
+    int ultimoNumeroProductoLeido = 0;
+    do
+    {
+	if(!parser.obtenerLineaSiguiente(stream))
+	    break;
+	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
+	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
+    } while(ultimoNumeroProductoLeido != tipoProducto);
+    parser.obtenerProximoValor();
+    string cantidadPiezasString = parser.obtenerProximoValor();
+    int cantPiezas = atoi(cantidadPiezasString.c_str());
+    piezas->cantPiezas = 0;
+    for (int i = 0; i < cantPiezas*2; i+=2) {
+        int id = atoi(parser.obtenerProximoValor().c_str());
+        int cantidad = atoi(parser.obtenerProximoValor().c_str());
+        if (id > PIEZA_3) {
+            piezas->pieza[i].tipoPieza = static_cast<TipoPieza> (id);
+            piezas->pieza[i].cantidad = cantidad;
+            break;
+        }
     }
 }
