@@ -61,16 +61,22 @@ bool SmMemAlmacenProductosTerminados::depositarCaja(Caja caja)
 
 bool SmMemAlmacenProductosTerminados::sacarCaja(Caja* caja, int idProducto, int idOrdenCompra)
 {
+    bool primeraCajaEncontrada = false;
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
 	if(almacenTerminados[numeroEspacio].ordenCompra.numero == idOrdenCompra &&
 		almacenTerminados[numeroEspacio].ordenProduccion.tipoProducto == idProducto)
 	{
-	    almacenTerminados[numeroEspacio].caja = *caja;
-	    return true;
+	    if(primeraCajaEncontrada == true)
+	        return false;
+	    else
+	        primeraCajaEncontrada = true;
+		
+	    *caja = almacenTerminados[numeroEspacio].caja;
+	    almacenTerminados[numeroEspacio]..estado = VACIO;
 	}
     }
-    return false;
+    return true;
 }
 
 void SmMemAlmacenProductosTerminados::asignarVaciosComoDisponibles(OrdenDeProduccion ordenProduccion, int cantidad)
