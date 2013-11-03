@@ -8,13 +8,13 @@
 #ifndef CONTROLADORROBOT11_H
 #define	CONTROLADORROBOT11_H
 
-#include "../API/IControladorRobot11.h"
-#include "../IPC/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "../IPC/SharedMemory/Cinta6SharedMemory.h"
-#include "../IPC/SharedMemory/BufferCanastoSharedMemory.h"
-#include "../IPC/Semaphore/Semaphore.h"
-#include "../IPC/MessageQueue/Barrera1112MessageQueue.h"
-#include "../IPC/MessageQueue/PedidosCanastosMessageQueue.h"
+#include "../../API/Robot11/IControladorRobot11.h"
+#include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "../../IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
+#include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
+#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 
 class ControladorRobot11 : public IControladorRobot11 {
 public:
@@ -31,22 +31,22 @@ public:
         
 private:
     char buffer[255];
-    IDAgv id_Agv;
+    int id_Agv;
     int id_semMemCanastos;
     int id_Robot;
     int posicionPieza;
-    IPC::Semaphore semRobot11;
+    IPC::Semaphore semBloqueoRobot11;
     IPC::Semaphore semMemCanastos;
-    IPC::Semaphore semMemCinta6;
+    IPC::Semaphore semBufferCinta6;
     IPC::Semaphore semMemEstadoRobot5;
-    IPC::Semaphore semEstadoRobot5;
+    IPC::Semaphore semBloqueoRobot5;
 
-    PedidosCanastosMessageQueue colaPedidosCanastos;
-    Barrera1112MessageQueue cola1112;
-    Barrera1112MessageQueue cola1211;
-    BufferCanastoSharedMemory shMemCanastos;
-    Cinta6SharedMemory shMemCinta6;
-    EstadoRobot5SharedMemory shMemEstadoRobot5;
+    IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
+    IPC::Barrera1112MessageQueue cola11_A_12;
+    IPC::Barrera1112MessageQueue cola12_A_11;
+    IPC::BufferCanastosSharedMemory shMemBufferCanastos;
+    IPC::Cinta6SharedMemory shMemBufferCinta6;
+    IPC::EstadoRobot5SharedMemory shMemEstadoRobot5;
     
     bool poseePieza(int id_pieza);
     void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
