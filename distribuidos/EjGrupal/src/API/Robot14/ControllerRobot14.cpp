@@ -1,4 +1,5 @@
 #include "ControllerRobot14.h"
+#include "MsgQueue.h"
 #include <Logger/Logger.h>
 #include <IPCs/Semaphore/Semaphore.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
@@ -37,6 +38,9 @@ ControllerRobot14::ControllerRobot14() {
         
         semR16_ = IPC::Semaphore("semR16");
         semR16_.getSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
+        
+        outputQueueR16_ = IPC::MsgQueue("outputQueueR16_");
+        outputQueueR16_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_OUTPUT_ID);
 
         // Creo los estados
         estadoDurmiendo_ = new StateR14_Durmiendo(this);
@@ -299,6 +303,7 @@ bool ControllerRobot14::avanzarCinta(uint nroCinta) {
 void ControllerRobot14::depositarCajaEnCinta15(Caja unaCaja) {
     try {
         bool cajaDepositada = false;
+        
         while (! cajaDepositada) {
             obtener_shMem_R14_R16();
 
@@ -315,6 +320,9 @@ void ControllerRobot14::depositarCajaEnCinta15(Caja unaCaja) {
                         shMem_R14_R16_Data_->cintaToString().c_str());
                 Logger::logMessage(Logger::DEBUG, buffer_);
                 cajaDepositada = true;
+                
+                Logger::logMessage(Logger::TRACE, "Envío de mensaje a Robot16");
+                outputQueueR16_.send( pedido_ );
             }
             else if (estaRobot16Trabajando()) {
                 Logger::logMessage(Logger::TRACE, "Robot16 trabajando en la "
@@ -334,6 +342,9 @@ void ControllerRobot14::depositarCajaEnCinta15(Caja unaCaja) {
                         shMem_R14_R16_Data_->cintaToString().c_str());
                 Logger::logMessage(Logger::DEBUG, buffer_);
                 cajaDepositada = true;
+                
+                Logger::logMessage(Logger::TRACE, "Envío de mensaje a Robot16");
+                outputQueueR16_.send( pedido_ );
             }
             else {
                 Logger::logMessage(Logger::TRACE, "No se pudo mover cinta. Robot se bloquea");

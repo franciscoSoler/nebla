@@ -13,7 +13,10 @@
 #define DIRECTORY_ROBOT_12 	"./DRobot12"
 #define DIRECTORY_ROBOT_14 	"./DRobot14"
 #define DIRECTORY_ROBOT_16 	"./DRobot16"
+#define DIRECTORY_CLIENTE       "./DCliente"
 #define DIRECTORY_VENDEDOR 	"./DVendedor"
+#define DIRECTORY_DESPACHO      "./DDespacho"
+#define DIRECTORY_APT           "./DAPT"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
@@ -70,6 +73,26 @@
 
 //ipcs del robot 16 (usar DIRECTORY_ROBOT_16)
 #define SEM_R16_ID                      1
+#define MSGQUEUE_ROBOT16_INPUT_ID       1
+#define MSGQUEUE_ROBOT16_OUTPUT_ID      2
+#define MSGQUEUE_R16_CLIENT_ID          3
+
+// ipcs del despacho (usar DIRECTORY_DESPACHO)
+#define MSGQUEUE_DESPACHO_OUTPUT_ID     1
+
+// ipcs del cliente (usar DIRECTORY_CLIENTE)
+#define MSGQUEUE_CLIENT_INPUT_ID        1
+#define MSGQUEUE_CLIENT_OUTPUT_ID       2
+
+// ipcs del vendedor (usar DIRECTORY_VENDEDOR)
+#define MSGQUEUE_VENDOR_INPUT_ID        1
+#define MSGQUEUE_VENDOR_OUTPUT_ID       2
+
+// ipcs del APT (usar DIRECTORY_APT)
+#define LETRA_SHMEM_ALMACEN_TERMINADOS  'a'
+#define SEM_MUTEX_SM_APT_ID             1
+
+
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
@@ -349,7 +372,47 @@ public:
     long idOrden_;
     int cantidadPorProducto_[CANTIDAD_PRODUCTOS];
 
-};  
+};
+
+typedef enum {
+    PEDIDO_VACIO = 0,
+    PEDIDO_ODC = 1,
+    PEDIDO_CLIENTE,
+    PEDIDO_ROBOT16
+} TipoPedidoDespacho;
+
+// Utilizado por las colas que intercambian info con el despacho
+class PedidoDespacho {
+public:
+    PedidoDespacho() :  mtype(1),
+                        tipoPedido_(PEDIDO_VACIO),
+                        idProducto_(NULL_PRODUCT),
+                        idCliente_(0),
+                        idOrdenDeCompra_(0)
+    {}
+    
+public:
+    long mtype;
+    TipoPedidoDespacho tipoPedido_;
+    TipoProducto idProducto_;
+    long idCliente_;
+    long idOrdenDeCompra_;
+};
+
+typedef struct {
+    long mtype;
+    Caja caja;
+} EnvioCajaCliente;
+
+class PedidoOrdenDeCompra {
+public:
+    PedidoOrdenDeCompra() {
+        mtype = 1;   
+    }
+public:
+    long mtype;
+    OrdenDeCompra ordenDeCompra_;
+};
 
 
 /* 

@@ -1,11 +1,14 @@
 #include <Objects/DataSM_R14_R16.h>
 
 DataSM_R14_R16::DataSM_R14_R16() {
-    // El estado inicial del Robot16 es estar bloqueado.  
-    robot16EstaBloqueado_ = true;
+    // El estado inicial del Robot16 es no estar trabajando.
+    estaRobot16Trabajando_ = false;
     // El estado inicial del Robot14 es estar desbloqueado. Está bloqueado
     // inicialmente en la Cinta13
     robot14EstaBloqueado_ = false;
+    // El estado inicial del roboy16 es desbloqueado, porque está esperando en
+    // la cinta
+    robot16EstaBloqueado_ = false;
 }
 
 bool DataSM_R14_R16::insertarCajaEnCinta(Caja caja) {
@@ -39,7 +42,7 @@ void DataSM_R14_R16::setEstadoBloqueoRobot14(bool estado) {
 bool DataSM_R14_R16::estaRobot16Bloqueado() const {
     return robot16EstaBloqueado_;
 }
-    
+
 void DataSM_R14_R16::setEstadoBloqueoRobot16(bool estado) {
     robot16EstaBloqueado_ = estado;
 }

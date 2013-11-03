@@ -2,7 +2,7 @@
 #include <memory>
 #include <API/Robot14/ControllerRobot14.h>
 #include <Objects/Util.h>
-#include <CSO/Exceptions/Exception.h>
+#include <Exceptions/Exception.h>
 
 int main(int argc, char* argv[]) {
     std::auto_ptr<IControllerRobot14> controller = std::auto_ptr<IControllerRobot14>(new ControllerRobot14());

@@ -4,6 +4,7 @@
 #include <API/Robot14/IControllerRobot14.h>
 #include <IPCs/Semaphore/Semaphore.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 #include <Objects/DataSM_R11_R14.h>
 #include <Objects/DataSM_R14_R16.h>
 #include <API/Robot14/State/StateR14_Durmiendo.h>
@@ -72,6 +73,10 @@ private:
     IPC::Semaphore semR11_Cinta13_;
     IPC::Semaphore semR14_;
     IPC::Semaphore semR16_;
+    
+    // IPC::Semaphore semR16_;
+    IPC::MsgQueue outputQueueR16_;
+    PedidoDespacho pedido_;
 };
 
 #endif	/* CONTROLLERROBOT14_H */
