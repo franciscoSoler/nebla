@@ -30,7 +30,6 @@
 
 #include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
-#include "IPCs/Barrios/Semaforo.h"
 
 int main(int argc, char* argv[]) {
     try {
@@ -196,7 +195,8 @@ int main(int argc, char* argv[]) {
     MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
     shmemNumeroOrdenCompra.liberar();
 
-    Semaforo mutexAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
-    mutexAlmacenTerminados.destruir();
+    IPC::Semaphore mutexAlmacenTerminados("Mutex Almacen Terminados");
+    mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
+    mutexAlmacenTerminados.destroy();
 }
 

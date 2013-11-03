@@ -31,8 +31,9 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     this->respuestasAlmacen.obtener();
     
     /* Comunicación con el almacén de productos terminados. */
-    this->mutexAlmacenTerminados = Semaforo(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
-    this->mutexAlmacenTerminados.obtener();
+    this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
+    this->mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
+    
     
     this->numVendedor = numVendedor;
 }
@@ -147,11 +148,11 @@ int ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t ped
 
 pedido_produccion_t ControladorVendedor::realizarPedido(pedido_t pedido)
 {
-    mutexAlmacenTerminados.p();
+    mutexAlmacenTerminados.wait();
     pedido_produccion_t pedidoProduccion = calcularCantidadAProducir(pedido);
     if(pedidoProduccion.ventaEnCurso)
 	pedidoProduccion.numOrdenCompra = reservarPedido(pedido, pedidoProduccion);
-    mutexAlmacenTerminados.v();
+    mutexAlmacenTerminados.signal();
     return pedidoProduccion;
 }
 

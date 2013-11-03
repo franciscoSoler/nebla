@@ -13,8 +13,9 @@
 #include <cstring>
 #include <unistd.h>
 
+#include "../../IPCs/Semaphore/Semaphore.h"
+
 #include "../../IPCs/Barrios/Cola.h"
-#include "../../IPCs/Barrios/Semaforo.h"
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
 #include "../../Common.h"
@@ -40,10 +41,9 @@ class ControladorVendedor
 	Cola<pedido_t> pedidos;
 	MemoriaCompartida shmemNumeroOrdenCompra;
 	int* numeroOrdenCompra;
-	int* numeroOrdenProduccion;
 	Cola<consulta_almacen_piezas_t> consultasAlmacen;
 	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
-	Semaforo mutexAlmacenTerminados;
+	IPC::Semaphore mutexAlmacenTerminados;
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
 
 	int obtenerCantidadMinimaDeProduccion(int numProducto);
