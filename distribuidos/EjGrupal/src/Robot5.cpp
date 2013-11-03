@@ -109,10 +109,16 @@ int main(int argc, char **argv) {
                         productoAProducir.cantidad--;
                         bool ultimo = (productoAProducir.cantidad == 0);
                         
+                        ProductoEnProduccion productoEnProduccion;
+                        productoEnProduccion.tipoProducto = productoAProducir.tipo;
+                        productoEnProduccion.gabinete = gabinete;
+                        productoEnProduccion.nroOrdenCompra = ordenDeCompra;
+                        productoEnProduccion.falla = false;
+                        
                         sprintf(buffer, " Enviando el gabinete de tipo %d para la orden %d.\n", gabinete.tipoGabinete, ordenDeCompra);
                         Logger::getInstance().logMessage(Logger::TRACE, buffer);
 
-                        controladorRobot5.resolverPedido(gabinete, ultimo, ordenDeCompra);
+                        controladorRobot5.resolverPedido(productoEnProduccion, ultimo);
                     } else {
                         Logger::getInstance().logMessage(Logger::ERROR, "Recibi un pedido de Gabinete cuando ya se deberían haber fabricado todos lo de la orden de producción.");
 
