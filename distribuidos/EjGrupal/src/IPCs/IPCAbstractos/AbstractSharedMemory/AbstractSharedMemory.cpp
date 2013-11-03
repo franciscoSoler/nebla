@@ -45,7 +45,7 @@ int AbstractSharedMemory::attachMemory() {
 	//(atributo en NULL)y para lectura/escritura (atributo en 0)
 	void *shmaddr = shmat(this->id, NULL, 0);
 	if (shmaddr == (void *)-1) {
-		sprintf(this->buffer, "%s - Fallo la operacion shmat: %s", strerror(errno));
+		sprintf(this->buffer, "%s - Fallo la operacion shmat: %s", getIPCName().c_str(), strerror(errno));
 		throw Exception(std::string(this->buffer));
 	}
 	data = shmaddr;
