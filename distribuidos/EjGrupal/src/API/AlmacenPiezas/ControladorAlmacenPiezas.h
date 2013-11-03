@@ -17,6 +17,8 @@
 #include "../../Common.h"
 #include "IControladorAlmacenPiezas.h"
 
+#include "../../IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
+
 class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
 {
     public:
@@ -35,7 +37,9 @@ class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
     private:
 	Cola<consulta_almacen_piezas_t> consultasAlmacen;
 	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
-	Cola<MensajePedidoProduccion> mensajesRobot5;
+        
+        IPC::PedidosProduccionMessageQueue mensajesRobot5;
+	//Cola<MensajePedidoProduccion> mensajesRobot5;
 	
 	void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
 

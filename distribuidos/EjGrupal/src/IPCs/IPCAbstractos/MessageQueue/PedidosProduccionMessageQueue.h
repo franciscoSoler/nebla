@@ -24,6 +24,14 @@ public:
 	int recibirPedidoProduccion ( int tipo, MensajePedidoProduccion* buffer ) {
             return this->recibir(tipo, (void *)buffer, sizeof(MensajePedidoProduccion)-sizeof(long));
 	}
+        
+        int enviarProximoPedidoProduccion (MensajeProximoPedidoProduccion dato) {
+            return this->enviar((const void *)&dato,sizeof(MensajeProximoPedidoProduccion)-sizeof(long));
+	}
+	
+	int recibirProximoPedidoProduccion ( int tipo, MensajeProximoPedidoProduccion* buffer ) {
+            return this->recibir(tipo, (void *)buffer, sizeof(MensajeProximoPedidoProduccion)-sizeof(long));
+	}
 
 };
 
