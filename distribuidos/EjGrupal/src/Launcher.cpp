@@ -12,6 +12,7 @@
 #include "IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
