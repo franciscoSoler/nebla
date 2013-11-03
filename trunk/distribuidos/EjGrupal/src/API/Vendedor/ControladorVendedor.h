@@ -19,6 +19,7 @@
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
 #include "../../Common.h"
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 class ControladorVendedor
 {
@@ -36,6 +37,8 @@ class ControladorVendedor
 	pedido_produccion_t reservarPedido(pedido_t pedido);
 	void enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion);
 	void terminarLlamadoTelefonico();
+        
+        void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
 	
 	void confirmarPedido(pedido_produccion_t pedidoProduccion, OrdenDeCompra ordenDeCompra);
 	void anularPedidos();
@@ -51,6 +54,8 @@ class ControladorVendedor
 	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
 	IPC::Semaphore mutexAlmacenTerminados;
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
+        
+        IPC::MsgQueue outputQueueDespacho;
 	
 	int obtenerCantidadMinimaDeProduccion(int numProducto);
 	pedido_produccion_t calcularCantidadAProducir(pedido_t pedido);

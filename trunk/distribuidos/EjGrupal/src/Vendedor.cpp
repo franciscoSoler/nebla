@@ -12,10 +12,10 @@ OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
 {
     OrdenDeCompra ordenDeCompra;
     for(int i = 0; i < CANT_PRODUCTOS; i++)
-	ordenDeCompra.cantidadPorProducto[i] = 0;
-    ordenDeCompra.cliente = 0;
-    ordenDeCompra.numero = numOrdenCompra;
-    ordenDeCompra.vendedor = numVendedor;
+	ordenDeCompra.cantidadPorProducto_[i] = 0;
+    ordenDeCompra.idCliente_ = 0;
+    ordenDeCompra.idOrden_ = numOrdenCompra;
+    ordenDeCompra.idVendedor_ = numVendedor;
 }
 
 int main(int argc, char** argv)
@@ -38,8 +38,8 @@ int main(int argc, char** argv)
 	write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
 	
 	OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
-	ordenDeCompra.cliente = mensajeInicial.emisor;
-	long numCliente = ordenDeCompra.cliente;
+	ordenDeCompra.idCliente_ = mensajeInicial.emisor;
+	long numCliente = ordenDeCompra.idCliente_;
 	
 	pedido_t pedido;
 	bool pedidoEsValido = true;
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 	    if(pedido.fin)
 		continue;
 	    
-	    ordenDeCompra.cantidadPorProducto[pedido.tipoProducto] = pedido.cantidad;
+	    ordenDeCompra.cantidadPorProducto_[pedido.tipoProducto] = pedido.cantidad;
 	    
 	    sprintf(mensajePantalla, "Vendedor #%ld recibe pedido del cliente %ld de %d unidades del producto %d.\n", numVendedor, pedido.emisor, pedido.cantidad, pedido.tipoProducto);
 	    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));

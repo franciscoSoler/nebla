@@ -38,9 +38,7 @@ void ControladorCliente::contactarVendedores()
     long numVendedor = respuesta.emisor;
     sprintf(mensajePantalla, "Cliente #%ld recibe la respuesta del vendedor.\n", numCliente);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
-    
-
-    
+        
     this->numVendedorAsociado = numVendedor;
 }
 
@@ -61,8 +59,9 @@ void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo, int numMen
 
 void ControladorCliente::finalizarEnvio(int cantPedidos)
 {
-    char mensajePantalla[256];
+    this->cantidadProductos = cantPedidos;
     
+    char mensajePantalla[256];    
     /* Envío el mensaje final. */
     pedido_t pedidoFinal;
     pedidoFinal.emisor = numCliente;
@@ -84,3 +83,19 @@ bool ControladorCliente::recibirResultado()
     return respuesta.recepcionOK;
 }
 
+void ControladorCliente::retirarEncargo(TipoProducto & tipoProducto, int & nroOrdenCompra)
+{
+    // TODO: Log!!!
+    PedidoDespacho pedido;
+    despacho.recv(1, pedido);
+    
+    tipoProducto = pedido.idProducto_;
+    nroOrdenCompra = pedido.idOrdenDeCompra_;
+}
+
+Caja ControladorCliente::obtenerProducto(int nroOrdenCompra) {
+    // TODO: LOG!!!
+    EnvioCajaCliente msgCaja;
+    retiro.recv(1, msgCaja);
+    return msgCaja.caja;
+}
