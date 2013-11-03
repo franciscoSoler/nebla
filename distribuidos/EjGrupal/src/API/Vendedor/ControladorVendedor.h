@@ -20,6 +20,7 @@
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
 #include "../../Common.h"
 #include <IPCs/IPCTemplate/MsgQueue.h>
+#include "../../Parser/Parser.h"
 
 class ControladorVendedor
 {
@@ -39,7 +40,7 @@ class ControladorVendedor
 	void terminarLlamadoTelefonico();
         
         void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
-	
+        
 	void confirmarPedido(pedido_produccion_t pedidoProduccion, OrdenDeCompra ordenDeCompra);
 	void anularPedidos();
 	
@@ -59,6 +60,8 @@ class ControladorVendedor
 	int obtenerCantidadMinimaDeProduccion(int numProducto);
 	pedido_produccion_t calcularCantidadAProducir(pedido_t pedido);
 	void efectuarReserva(pedido_t pedido, pedido_produccion_t pedidoProduccion);
+        
+        void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
 };
 
 #endif	/* CONTROLADORVENDEDOR_H */

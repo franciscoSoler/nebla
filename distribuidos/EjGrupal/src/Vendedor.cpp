@@ -65,7 +65,9 @@ int main(int argc, char** argv)
 	    sprintf(mensajePantalla, "Vendedor #%ld recibe pedido del cliente %ld de %d unidades del producto %d.\n", numVendedor, pedido.emisor, pedido.cantidad, pedido.tipoProducto);
 	    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
 	    cantPedidos++;
-	    	    
+            
+            controlador.enviarRespuestaDePedido(numCliente, pedidoEsValido);
+            
 	} while(!pedido.fin && pedidoEsValido);
 	
 	if(pedidoEsValido)

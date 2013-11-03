@@ -116,15 +116,15 @@ int main(int argc, char** argv) {
                 Logger::getInstance().logMessage(Logger::TRACE, buffer);
                 
                 /* Una vez obtenido al acceso, dejo el canasto. */
-                bufferCanasto[mensajeRespuestaCanasto.idAgv - 1].writeInfo(&mensajeRespuestaCanasto.canasto);
+                bufferCanasto[mensajeRespuestaCanasto.idAgv].writeInfo(&mensajeRespuestaCanasto.canasto);
             }
             /* Libero al AGV para que este retire el canasto */
-            semaforoBloqueoAgv.signal(mensajeRespuestaCanasto.idAgv);
+            semaforoAccesoBufferAgv.signal(mensajeRespuestaCanasto.idAgv);
             
             sprintf(buffer, "Libero al AGV %d.",mensajeRespuestaCanasto.idAgv);
             Logger::getInstance().logMessage(Logger::TRACE, buffer);
             /* Libero el buffer del canasto */
-            semaforoAccesoBufferAgv.signal(mensajeRespuestaCanasto.idAgv);
+            semaforoBloqueoAgv.signal(mensajeRespuestaCanasto.idAgv);
         }
         catch (Exception const& ex) {
             sprintf(buffer, "Error: %s\n", ex.what());

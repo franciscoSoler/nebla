@@ -19,6 +19,12 @@ ControladorCliente::ControladorCliente(long numCliente)
     this->pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     this->pedidos.obtener();
     
+    this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
+    this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
+    
+    this->retiro = IPC::MsgQueue("retiro");
+    this->retiro.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
+    
     this->numCliente = numCliente;
 }
 
