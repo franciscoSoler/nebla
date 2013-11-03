@@ -45,8 +45,14 @@
 // ipcs entre robot 5, robot 11 y AGV (usar DIRECTORY_ROBOT_11)
 #define ID_SEM_BLOQUEO_ROBOT_11         4
 
-// ipcs entre robot 11 y AGV (usar DIRECTORY_ROBOT_12)
+// ipcs entre robot 12 y AGV (usar DIRECTORY_ROBOT_12)
 #define ID_SEM_BLOQUEO_ROBOT_12         1
+
+// ipcs entre robot 11 y 12 (usar DIRECTORY_ROBOT_12)
+#define ID_COLA_11_A_12_1               1 // se lee cola de 11 a 12
+#define ID_COLA_11_A_12_2               2
+#define ID_COLA_12_A_11_1               3
+#define ID_COLA_12_A_11_2               4
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
@@ -63,6 +69,7 @@
 #define CANTIDAD_CINTAS_6               	2
 #define CANTIDAD_AGVS                           3
 #define MAX_QUANTITY_CANASTOS                   50
+#define MAX_PIEZAS_POR_PRODUCTO                 9
 
 typedef enum {
     PEDIDO_PRODUCCION = 0,
@@ -119,6 +126,7 @@ typedef struct {
  */
 
 typedef struct {
+    TipoProducto tipoProducto;
     Gabinete gabinete;  
     int nroOrdenCompra;
     bool falla;
@@ -195,7 +203,6 @@ typedef struct {
  */
 
 typedef struct {
-    long mtype;
     TipoPieza tipoPieza;
     int lugar;
 } PedidoCanastoRobotCitna6;
@@ -212,5 +219,30 @@ typedef struct {
 typedef struct {
     long mtype; 
 } MensajeBarrera;
+
+typedef struct
+{
+    TipoPieza tipoPieza;
+    int cantidad;
+} EspecifPiezaDeProd;
+
+
+typedef struct
+{
+    TipoProducto idProducto;
+    int cantPiezas;
+    EspecifPiezaDeProd tipoPantalla;
+    EspecifPiezaDeProd pieza[MAX_PIEZAS_POR_PRODUCTO];    
+} EspecifProd;
+
+/*
+ * Estructuras utilizadas entre robot 11, 14 y 16
+ */
+
+typedef struct {
+    TipoProducto idProducto;
+    int ordenDeCompra;
+    bool fallado;
+} Caja;
 
 #endif	/* COMMON_H */
