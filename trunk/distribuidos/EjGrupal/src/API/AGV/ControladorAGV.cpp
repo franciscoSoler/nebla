@@ -23,47 +23,47 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->id_AGV = id_AGV;
 
         this->semBloqueoAGV = IPC::Semaphore("semBloqueoAGV");
-        this->semBloqueoAGV.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
+        this->semBloqueoAGV.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 
         this->semBloqueoRobot5 = IPC::Semaphore("semBloqueoRobot5");
-        this->semBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
+        this->semBloqueoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
 
         this->semMemEstadoRobot5 = IPC::Semaphore("semMemEstadoRobot5");
-        this->semMemEstadoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
+        this->semMemEstadoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
 
         this->semBufferAGV_5 = IPC::Semaphore("semBufferAGV_5");
-        this->semBufferAGV_5.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
+        this->semBufferAGV_5.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
 
         this->semMemCanastos = IPC::Semaphore("semMemCanastos");
-        this->semMemCanastos.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
+        this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
         this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
-        this->shMemEstadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
+        this->shMemEstadoRobot5.getSharedMemory((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
-        this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
+        this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
         this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5");
-        this->colaPedidosAGV_5.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
+        this->colaPedidosAGV_5.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
         this->semRobotCinta = IPC::Semaphore("semRobotCinta");
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         this->shMemBuffer5yAGV = IPC::BufferCanastoEntre5yAGVSharedMemory("shMemBuffer5yAGV");
         switch (id_AGV) {
             case 0 : 
-                this->semRobotCinta.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
-                this->shMemBufferCanastos.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
-                this->shMemBuffer5yAGV.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+                this->semRobotCinta.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
+                this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+                this->shMemBuffer5yAGV.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
                 break;
             case 1 :
-                this->semRobotCinta.getSemaphore(DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
-                this->shMemBufferCanastos.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
-                this->shMemBuffer5yAGV.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
+                this->semRobotCinta.getSemaphore((char*) DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
+                this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+                this->shMemBuffer5yAGV.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
                 break;
             case 2 :
-                this->semRobotCinta.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
-                this->shMemBufferCanastos.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
-                this->shMemBuffer5yAGV.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
+                this->semRobotCinta.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
+                this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+                this->shMemBuffer5yAGV.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
                 break;
         }
     }
