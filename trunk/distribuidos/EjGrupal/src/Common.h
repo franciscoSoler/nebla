@@ -132,13 +132,19 @@ typedef enum {
 } TipoGabinete;
 
 typedef enum {
-    NULL_PRODUCT = 0,
     PIEZA_1 = 1,
     PIEZA_2 = 2,
     PIEZA_3 = 3,
     PANTALLA_1 = 4,
     PANTALLA_2 = 5,
     PANTALLA_3
+} TipoPieza;
+
+typedef enum {
+    NULL_PRODUCT = 0,
+    PRODUCTO_1 = 1,
+    PRODUCTO_2 = 2,
+    PRODUCTO_3
 } TipoProducto;
 
 typedef enum  { 
@@ -156,7 +162,7 @@ typedef enum {
 } EstadoEspacio;
 
 typedef struct {
-    TipoProducto tipoPieza;
+    TipoPieza tipoPieza;
     int cantidadPiezas;
 } Canasto;
 
@@ -169,7 +175,7 @@ typedef struct {
  */
 
 typedef struct {
-    TipoProducto tipoPieza;
+    TipoPieza tipoPieza;
     int idAgv;
 } PedidoCanastoAGV;
 
@@ -263,7 +269,7 @@ typedef struct {
  */
 
 typedef struct {
-    TipoProducto tipoPieza;
+    TipoPieza tipoPieza;
     int lugar;
 } PedidoCanastoRobotCitna6;
 
@@ -282,7 +288,7 @@ typedef struct {
 
 typedef struct
 {
-    TipoProducto tipoPieza;
+    TipoPieza tipoPieza;
     int cantidad;
 } EspecifPiezaDeProd;
 

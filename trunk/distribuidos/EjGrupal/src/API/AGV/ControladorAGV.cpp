@@ -39,21 +39,24 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->colaPedidosAGV_5.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
         this->semRobotCinta = IPC::Semaphore("semRobotCinta");
-        this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
+        
         this->shMemBuffer5yAGV = IPC::BufferCanastoEntre5yAGVSharedMemory("shMemBuffer5yAGV");
         switch (id_AGV) {
             case 0 : 
                 this->semRobotCinta.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
+                this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos_0");
                 this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
                 this->shMemBuffer5yAGV.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
                 break;
             case 1 :
                 this->semRobotCinta.getSemaphore((char*) DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
+                this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos_1");
                 this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
                 this->shMemBuffer5yAGV.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
                 break;
             case 2 :
                 this->semRobotCinta.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
+                this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos_2");
                 this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
                 this->shMemBuffer5yAGV.getSharedMemory((char*)DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
                 break;
@@ -65,7 +68,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
     }
 }
 
-TipoProducto ControladorAGV::atenderPedidos() {
+TipoPieza ControladorAGV::atenderPedidos() {
     try {
         sprintf(this->buffer, "AGV-%u - atenderPedidos:", id_AGV + 1);
         Logger::setProcessInformation(this->buffer);
@@ -84,7 +87,7 @@ TipoProducto ControladorAGV::atenderPedidos() {
     }
 }
 
-Canasto ControladorAGV::buscarPieza(TipoProducto tipoPieza) {
+Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
     try {
         sprintf(this->buffer, "AGV-%u - buscarPieza:", id_AGV + 1);
         Logger::setProcessInformation(this->buffer);

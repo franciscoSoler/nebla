@@ -211,7 +211,7 @@ bool ControladorRobot11::agregarPantalla(EspecifPiezaDeProd piezaDeProd) {
     }
 }
 
-void ControladorRobot11::pedirPiezaAlAGV(TipoProducto tipoPieza) {
+void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza) {
     try {
         sprintf(this->buffer, "Robot 11-%u - pedirPiezaAlAGV:", this->id_Robot + 1);
         Logger::setProcessInformation(this->buffer);
@@ -424,7 +424,7 @@ void ControladorRobot11::obtenerPantallaDelProducto(TipoProducto tipoProducto, E
         int id = atoi(parser.obtenerProximoValor().c_str());
         int cantidad = atoi(parser.obtenerProximoValor().c_str());
         if (id > PIEZA_3) {
-            piezas->pieza[i].tipoPieza = static_cast<TipoProducto> (id);
+            piezas->pieza[i].tipoPieza = static_cast<TipoPieza> (id);
             piezas->pieza[i].cantidad = cantidad;
             break;
         }

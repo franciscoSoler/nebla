@@ -73,7 +73,7 @@ bool SmMemAlmacenProductosTerminados::sacarCaja(Caja* caja, int idProducto, int 
 	        primeraCajaEncontrada = true;
 		
 	    *caja = almacenTerminados[numeroEspacio].caja;
-	    almacenTerminados[numeroEspacio]..estado = VACIO;
+	    almacenTerminados[numeroEspacio].estado = VACIO;
 	}
     }
     return true;
