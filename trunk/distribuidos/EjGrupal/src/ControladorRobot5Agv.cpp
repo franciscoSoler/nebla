@@ -19,6 +19,7 @@
 #include "Exceptions/Exception.h"
 
 #include "Common.h"
+#include "Logger.h"
 
 void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         IPC::PedidosAgvMessageQueue &colaPedidos, 
@@ -45,6 +46,10 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
 }
 
 int main(int argc, char** argv) {
+    
+    char buffer[TAM_BUFFER];
+    
+    Logger::getInstance().setProcessInformation("Controlador Robot 5 - AGV:");
 
     /* Se crean e inician todos los ipc necesarios para
      * el funcionamiento del proceso.
@@ -55,7 +60,6 @@ int main(int argc, char** argv) {
 
     IPC::BufferCanastoEntre5yAGVSharedMemory bufferCanasto[CANTIDAD_AGVS];
     for (int i = 0; i < CANTIDAD_AGVS; ++i) {
-        char buffer[TAM_BUFFER];
         sprintf(buffer, "BufferCanastoSharedMemory %d", i);
         bufferCanasto[i] = IPC::BufferCanastoEntre5yAGVSharedMemory(buffer);
     }
@@ -66,29 +70,24 @@ int main(int argc, char** argv) {
         iniciarIPC(colaComunicacionRobot5, colaPedidos, bufferCanasto, semaforoAccesoBufferAgv, semaforoBloqueoAgv);
     }
     catch (Exception const& ex) {
-        char buffer[TAM_BUFFER];
-        sprintf (buffer, "Controlador Robot 5 - AGV: Error: %s\n", ex.what());
-        write (fileno(stderr),buffer, strlen(buffer));
+        sprintf (buffer, "Error: %s\n", ex.what());
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
         exit(-1);
     }
     
-    char buffer[TAM_BUFFER];
-    sprintf(buffer, "Controlador Robot 5 - AGV: Iniciando.\n");
-    write(fileno(stdout), buffer, strlen(buffer));
+    Logger::getInstance().logMessage(Logger::TRACE,"Iniciando");
     
     bool deboSeguir = true;
     
     while (deboSeguir) {
         try {
             /* Obtengo un pedido de alguno de los AGV */
-            sprintf(buffer, "Controlador Robot 5 - AGV: Esperando un pedido por parte de un AGV.\n");
-            write(fileno(stdout), buffer, strlen(buffer));
+            Logger::getInstance().logMessage(Logger::TRACE, "Esperando un pedido por parte de un AGV.");
             
             MensajePedidoAgv_5 nuevoPedido;
             colaPedidos.recibirPedidoAgv(TIPO_PEDIDO_CANASTO, &nuevoPedido);
             
-            sprintf(buffer, "Controlador Robot 5 - AGV: Recibió un pedido de un AGV.\n");
-            write(fileno(stdout), buffer, strlen(buffer));
+            Logger::getInstance().logMessage(Logger::TRACE , "Recibió un pedido de un AGV.");
             
             /* Le envio el pedido al robot 5 Aplicacion */
             PedidoRobot5 pedidoRobot5;
@@ -99,15 +98,14 @@ int main(int argc, char** argv) {
             mensajePedidoRobot5.mtype = TIPO_PEDIDO_ROBOT_5;
             mensajePedidoRobot5.pedidoRobot5 = pedidoRobot5;
 
-            sprintf(buffer, "Controlador Robot 5 - AGV: Le envio un pedido de canasto al robot 5.\n");
-            write(fileno(stdout), buffer, strlen(buffer));
+            Logger::getInstance().logMessage(Logger::TRACE, "Le envio un pedido de canasto al robot 5.");
             colaComunicacionRobot5.enviarPedidoRobot5(mensajePedidoRobot5);
 
             /* Me quedo esperando la respuesta del robot 5 */
             MensajeRespuestaCanasto mensajeRespuestaCanasto;
             colaComunicacionRobot5.recibirCanasto(TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5, &mensajeRespuestaCanasto);
-            sprintf(buffer, "Controlador Robot 5 - AGV: Recibió la respuesta del robot 5 para el AGV %d.\n",mensajeRespuestaCanasto.idAgv);
-            write(fileno(stdout), buffer, strlen(buffer));
+            sprintf(buffer, "Recibió la respuesta del robot 5 para el AGV %d.\n",mensajeRespuestaCanasto.idAgv);
+            Logger::getInstance().logMessage(Logger::TRACE, buffer);
                        
             /* Una vez recibido el canasto requerido, se lo envio al agv correspondiente.
              * Intento acceder al buffer del agv al que va destinado al pedido.  
@@ -115,27 +113,24 @@ int main(int argc, char** argv) {
             semaforoAccesoBufferAgv.wait(mensajeRespuestaCanasto.idAgv);
             {
                 sprintf(buffer, "Controlador Robot 5 - AGV: Accedo al buffer del canasto para el AGV: %d.\n",mensajeRespuestaCanasto.idAgv);
-                write(fileno(stdout), buffer, strlen(buffer));
-
+                Logger::getInstance().logMessage(Logger::TRACE, buffer);
+                
                 /* Una vez obtenido al acceso, dejo el canasto. */
                 bufferCanasto[mensajeRespuestaCanasto.idAgv - 1].writeInfo(&mensajeRespuestaCanasto.canasto);
             }
             /* Libero al AGV para que este retire el canasto */
             semaforoBloqueoAgv.signal(mensajeRespuestaCanasto.idAgv);
             
-            sprintf(buffer, "Controlador Robot 5 - AGV: Libero al AGV %d.\n",mensajeRespuestaCanasto.idAgv);
-            write(fileno(stdout), buffer, strlen(buffer));
-
+            sprintf(buffer, "Libero al AGV %d.",mensajeRespuestaCanasto.idAgv);
+            Logger::getInstance().logMessage(Logger::TRACE, buffer);
             /* Libero el buffer del canasto */
             semaforoAccesoBufferAgv.signal(mensajeRespuestaCanasto.idAgv);
         }
         catch (Exception const& ex) {
-            char buffer[TAM_BUFFER];
-            sprintf(buffer, "Controlador Robot 5 - AGV:Error: %s\n", ex.what());
-            write(fileno(stderr), buffer, strlen(buffer));
+            sprintf(buffer, "Error: %s\n", ex.what());
+            Logger::getInstance().logMessage(Logger::ERROR,buffer);
             exit(-1);
         }
-       
     }
     
     return 0;
