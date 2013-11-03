@@ -248,6 +248,7 @@ void ControladorRobot12::obtenerPiezasDelProducto(TipoProducto tipoProducto, Esp
 	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
     } while(ultimoNumeroProductoLeido != tipoProducto);
     parser.obtenerProximoValor();
+    parser.obtenerProximoValor();
     string cantidadPiezasString = parser.obtenerProximoValor();
     int cantPiezas = atoi(cantidadPiezasString.c_str());
     piezas->cantPiezas = 0;
