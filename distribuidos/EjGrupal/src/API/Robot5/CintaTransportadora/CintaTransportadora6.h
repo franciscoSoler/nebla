@@ -29,6 +29,8 @@ public:
     
     bool robot11Bloqueado();
     void marcarRobot11Liberado();
+    std::string obtenerMensajeEstado();
+    
         
 private:
     CintaTransportadora6(const CintaTransportadora6& orig);

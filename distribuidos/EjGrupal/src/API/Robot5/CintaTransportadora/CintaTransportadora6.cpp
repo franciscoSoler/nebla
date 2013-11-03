@@ -50,7 +50,7 @@ void CintaTransportadora6::depositarProductoEnProduccion(ProductoEnProduccion pr
         cintaTransportadora.productoProduccion[posicion] = producto;
         cintaTransportadora.lugarVacio[posicion] = false;
         cintaTransportadora.cantLibres--;
-        mostrarEstadoCinta(cintaTransportadora);
+        //mostrarEstadoCinta(cintaTransportadora);
         
         /* Escribo el nuevo valor en la memoria compartida.
          */
@@ -123,4 +123,27 @@ void CintaTransportadora6::mostrarEstadoCinta(CintaTransportadora_6 cintaTranspo
     }
     strcat(buffer, "|\n");
     write(fileno(stdout),buffer,strlen(buffer));
+}
+
+std::string CintaTransportadora6::obtenerMensajeEstado() {
+    char buffer[TAM_BUFFER];
+    CintaTransportadora_6 cintaTransportadora;
+    
+    semaforoAcceso.wait(this->idCinta);
+    {
+        cinta.readInfo(&cintaTransportadora);
+    }
+    semaforoAcceso.signal(this->idCinta);
+    
+    sprintf(buffer, "|");
+    for (int i = 0; i < BUFF_SIZE_CINTA_6; ++i) {
+        if (cintaTransportadora.lugarVacio[i]) {
+            strcat(buffer, "0|");
+        }
+        else {
+            strcat(buffer, "X|");
+        }
+    }
+    std::string retorno(buffer);
+    return retorno;
 }
