@@ -16,6 +16,7 @@
 
 #include "../../Common.h"
 #include "../../IPCs/Barrios/Cola.h"
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 class ControladorCliente
 {
@@ -27,16 +28,24 @@ class ControladorCliente
 	void contactarVendedores();
 	void enviarPedido(int cantidadUnidades, int tipo, int numMensaje);
 	void finalizarEnvio(int cantPedidos);
-	
 	bool recibirResultado();
-    
+        
+        void retirarEncargo(TipoProducto & tipoProducto, int & nroOrdenCompra);
+        Caja obtenerProducto(int nroOrdenCompra);
+        
     private:
 	Cola<mensaje_inicial_t> vendedores;
 	Cola<respuesta_pedido_t> clientes;
 	Cola<pedido_t> pedidos;
+        
+        IPC::MsgQueue despacho;
+        IPC::MsgQueue retiro;
 
 	long numCliente;
 	long numVendedorAsociado;
+        
+        int nroOrdenDeCompra;
+        int cantidadProductos;        
 };
 
 #endif	/* CONTROLADORCLIENTE_H */

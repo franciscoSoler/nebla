@@ -34,6 +34,9 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
     this->mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
     
+    outputQueueDespacho = IPC::MsgQueue("outputQueueDespacho");
+    outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
+    
     
     this->numVendedor = numVendedor;
 }
@@ -203,6 +206,8 @@ void ControladorVendedor::confirmarPedido(pedido_produccion_t pedidoProduccion, 
     
     if(pedidoProduccion.vendidoStockeado > 0)
 	almacenProductosTerminados.asignarStockeados(ordenDeCompra, pedidoProduccion.tipoProducto, pedidoProduccion.vendidoStockeado);
+    
+    this->enviarOrdenDeCompraDespacho(ordenDeCompra);
 }
 
 void ControladorVendedor::anularPedidos()
@@ -213,6 +218,20 @@ void ControladorVendedor::anularPedidos()
 void ControladorVendedor::terminarLlamadoTelefonico()
 {
     mutexAlmacenTerminados.signal();
+}
+
+void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra) {
+    // TODO:LOG!!!
+    // Primero manda un mensaje avisando que hay una ODC
+    PedidoDespacho pedido;
+    pedido.idOrdenDeCompra_ = ordenDeCompra.idOrden_;
+    outputQueueDespacho.send(pedido);
+    
+    // Luego se manda la ODC con el mtype = idOrden
+    PedidoOrdenDeCompra pedidoOrdenDeCompra;
+    pedidoOrdenDeCompra.mtype = ordenDeCompra.idOrden_;
+    pedidoOrdenDeCompra.ordenDeCompra_ = ordenDeCompra;
+    outputQueueDespacho.send(pedidoOrdenDeCompra);
 }
 
 void ControladorVendedor::enviarRespuestaDePedido(long numCliente, bool resultado)

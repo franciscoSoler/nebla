@@ -40,5 +40,14 @@ int main(int argc, char** argv)
     
     if(pedidoEsValido)
 	controlador.finalizarEnvio(cantPedidos);
+    
+    // Cliente espera una orden de pedidos terminada
+    TipoProducto tipo;
+    int nroOrden;
+    controlador.retirarEncargo(tipo, nroOrden);
+    
+    for (int i = 0; i < /*?? Acà va la cantidad pedida de tipo*/1 ;++i) {
+        controlador.obtenerProducto(nroOrden);
+    }
 }
 
