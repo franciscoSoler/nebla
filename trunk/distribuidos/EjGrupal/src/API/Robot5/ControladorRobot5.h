@@ -8,7 +8,7 @@
 #ifndef CONTROLADORROBOT5_H
 #define	CONTROLADORROBOT5_H
 
-#include "../../IPCs/Duran/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
 
 class ControladorRobot5 {
 public:

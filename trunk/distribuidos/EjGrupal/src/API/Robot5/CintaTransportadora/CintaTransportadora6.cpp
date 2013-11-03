@@ -9,8 +9,11 @@
 
 #include "../../../Common.h"
 
-CintaTransportadora6::CintaTransportadora6(int idCinta) {
-    this->idCinta = idCinta;
+CintaTransportadora6::CintaTransportadora6(int idCinta) 
+        : idCinta(idCinta),
+          semaforoAcceso("Cinta Transportadora"),
+          cinta("CintaTransportadoraSharedMemory")
+{
 }
 
 CintaTransportadora6::CintaTransportadora6() {
@@ -24,10 +27,8 @@ CintaTransportadora6::~CintaTransportadora6() {
 
 void CintaTransportadora6::iniciarCinta(int idClaveMem, int idClaveSem) {
     
-    semaforoAcceso = IPC::Semaphore("Cinta Transportadora");
     semaforoAcceso.getSemaphore(DIRECTORY_ROBOT_11, idClaveSem, CANTIDAD_CINTAS_6);
     
-    cinta = IPC::CintaTransportadoraSharedMemory("CintaTransportadoraSharedMemory");
     cinta.getSharedMemory(DIRECTORY_ROBOT_11, idClaveMem);
 }
 

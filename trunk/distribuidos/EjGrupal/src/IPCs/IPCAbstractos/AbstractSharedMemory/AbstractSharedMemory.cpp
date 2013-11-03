@@ -28,7 +28,7 @@ int AbstractSharedMemory::destroy(void) {
     
     // Si no quedan procesos attachados, libero la memoria
     if (shmctl(this->id, IPC_RMID, NULL) != 0) {
-        sprintf(buffer, "%s Error - destroy: %s", , strerror(errno));
+        sprintf(buffer, "%s Error - destroy: %s", getIPCName().c_str(), strerror(errno));
         throw Exception(std::string(buffer));
     }        
     return 0;
