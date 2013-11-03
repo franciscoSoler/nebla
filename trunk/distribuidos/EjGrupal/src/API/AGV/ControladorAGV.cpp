@@ -7,6 +7,7 @@
 
 #include "ControladorAGV.h"
 #include "../../Logger/Logger.h"
+ 
 
 ControladorAGV::ControladorAGV() {
 }
@@ -63,7 +64,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
             case 2 :
                 this->semRobotCinta.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
                 this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
-                this->shMemBuffer5yAGV.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
+                this->shMemBuffer5yAGV.getSharedMemory((char*)DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
                 break;
         }
     }
