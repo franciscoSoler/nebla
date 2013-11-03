@@ -41,6 +41,15 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semBufferCanastos = IPC::Semaphore("semMemCanastos");
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
+        this->semMutex_shMem_R11_R14_ = IPC::Semaphore ("semMutex_shMem_R11_R14");
+        this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY, SEM_MUTEX_SM_R11_R14_ID, 1);
+        
+        this->semR11_Cinta13_ = IPC::Semaphore ("semR11_Cinta13");
+        this->semR11_Cinta13_.getSemaphore(DIRECTORY, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
+        
+        this->semR14_ = IPC::Semaphore("semR14");
+        this->semR14_.getSemaphore(DIRECTORY, SEM_R14_ID, 1);
+        
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
@@ -51,6 +60,9 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
         this->shMemEstadoRobot5.getSharedMemory((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
+        this->shMem_R11_R14_ = IPC::SharedMemory<DataSM_R11_R14>("ShMem_R11_R14");
+        this->shMem_R11_R14_.getSharedMemory(DIRECTORY, SM_R11_R14_ID);
+        
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         
         this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12");
@@ -258,6 +270,10 @@ void ControladorRobot11::depositarCaja(Caja unaCaja) {
     else
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba sanaaaa!!!!!!!!!!!!!!!!");
     //TODO agregar lo de ezequiel aca y en el .h!!!!!!!!!!!!!!
+    
+    
+    
+    
 }
 
 bool ControladorRobot11::poseePieza(int id_pieza) {
