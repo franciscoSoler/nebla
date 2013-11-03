@@ -5,135 +5,88 @@
  * Created on 29 de octubre de 2013, 22:37
  */
 #include <iostream>
-#include "Common.h"
+
 #include "Exceptions/Exception.h"
 #include "Logger/Logger.h"
+
 #include "IPCs/Semaphore/Semaphore.h"
-#include "IPCs/MessageQueue/Barrera1112MessageQueue.h"
-#include "IPCs/MessageQueue/PedidosAGVMessageQueue.h"
-#include "IPCs/MessageQueue/PedidosCanastosMessageQueue.h"
-#include "IPCs/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
-#include "IPCs/SharedMemory/BufferCanastoSharedMemory.h"
-#include "IPCs/SharedMemory/Cinta6SharedMemory.h"
-#include "IPCs/SharedMemory/EstadoRobot5SharedMemory.h"
+
+#include "IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
+
+#include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 
 int main(int argc, char* argv[]) {
     try {
         Logger::getInstance().setProcessInformation("Terminator:");
-        
-        BufferCanastoSharedMemory shMemCanastos1;
-        BufferCanastoSharedMemory shMemCanastos2;
-        BufferCanastoSharedMemory shMemCanastos3;
-        shMemCanastos1.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTOS_1);
-        shMemCanastos2.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTOS_2);
-        shMemCanastos3.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTOS_3);
-        shMemCanastos1.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_bufferCanastos1 destruido");
-        shMemCanastos2.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_bufferCanastos2 destruido");
-        shMemCanastos3.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_bufferCanastos3 destruido");
-        
-        BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV1;
-        BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV2;
-        BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV3;
-        shMemPasajeCanastoEntre5yAGV1.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTO_AGV_5_1);
-        shMemPasajeCanastoEntre5yAGV2.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTO_AGV_5_2);
-        shMemPasajeCanastoEntre5yAGV3.getSharedMemory(DIRECTORY, ID_MEM_BUFFER_CANASTO_AGV_5_3);
+
+        // Robot 5 - Cinta
+        IPC::PedidosProduccionMessageQueue colaPedidos("PedidosProduccionMessageQueue");
+        colaPedidos.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
+        colaPedidos.destroy();
+
+        IPC::Semaphore semaforoAccesoEstadoRobot5("Estado Robot 5");
+        semaforoAccesoEstadoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
+        semaforoAccesoEstadoRobot5.destroy();
+        IPC::EstadoRobot5SharedMemory estadoRobot5ShMem("EstadoRobot5SharedMemory");
+        estadoRobot5ShMem.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
+        estadoRobot5ShMem.destroy();
+
+        IPC::Semaphore semaforoBloqueoRobot5("Bloqueo Robot 5");
+        semaforoBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
+        semaforoBloqueoRobot5.destroy();
+
+        IPC::Semaphore semaforoBloqueoRobot11("Bloqueo Robot 11");
+        semaforoBloqueoRobot11.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, CANTIDAD_CINTAS_6);
+        semaforoBloqueoRobot11.destroy();
+
+        IPC::Semaphore semaforoAccesoCinta6("Acceso Cinta 6");
+        semaforoAccesoCinta6.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, CANTIDAD_CINTAS_6);
+        semaforoAccesoCinta6.destroy();
+
+        IPC::Cinta6SharedMemory cinta6_0("Cinta 6 Share dMemory 0");
+        cinta6_0.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_0);
+        cinta6_0.destroy();
+        IPC::Cinta6SharedMemory cinta6_1("Cinta 6 Share dMemory 1");
+        cinta6_1.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_1);
+        cinta6_1.destroy();
+
+        //Robot 5 - AGV
+        IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV1("BufferCanastoEntre5yAGVSharedMemory 0");
+        IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV2("BufferCanastoEntre5yAGVSharedMemory 1");
+        IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV3("BufferCanastoEntre5yAGVSharedMemory 2");
+        shMemPasajeCanastoEntre5yAGV1.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+        shMemPasajeCanastoEntre5yAGV2.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
+        shMemPasajeCanastoEntre5yAGV3.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
         shMemPasajeCanastoEntre5yAGV1.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_bufferCanastoEntreAGVy51 destruido");
         shMemPasajeCanastoEntre5yAGV2.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_bufferCanastoEntreAGVy52 destruido");
         shMemPasajeCanastoEntre5yAGV3.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_bufferCanastoEntreAGVy53 destruido");
 
-        EstadoRobot5SharedMemory shMemEstadoRobot5;
-        shMemEstadoRobot5.getSharedMemory(DIRECTORY, ID_MEM_ESTADO_ROBOT_5);
-        shMemEstadoRobot5.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_estado_robot_5 destruido");
+        // Do the same with the semaphores
+        IPC::Semaphore semBloqueoAGV("semBloqueoAGV");
+        IPC::Semaphore semBufferAGV_5("semBufferAGV_5");
+        semBloqueoAGV.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
+        semBloqueoAGV.destroy();
+        semBufferAGV_5.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
+        semBufferAGV_5.destroy();
 
-        Cinta6SharedMemory shMemCinta61;
-        Cinta6SharedMemory shMemCinta62;
-        shMemCinta61.getSharedMemory(DIRECTORY, ID_MEM_CINTA_6_1);
-        shMemCinta62.getSharedMemory(DIRECTORY, ID_MEM_CINTA_6_2);
-        shMemCinta61.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_cinta_6_1 destruido");
-        shMemCinta62.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_cinta_6_2 destruido");
-        
-        //semaphores
-        IPC::Semaphore semEstAGV("semEstadoAGV");
-        IPC::Semaphore semMemAGV_5("semMemAGV_5");
-        IPC::Semaphore semMemCanastos("semMemCanastos");
-        semEstAGV.getSemaphore(DIRECTORY, ID_SEM_EST_AGV, CANTIDAD_AGVS);
-        semEstAGV.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC sem_estado_AGV destruido");
-        
-        semMemAGV_5.getSemaphore(DIRECTORY, ID_SEM_MEM_AGV_5, CANTIDAD_AGVS);
-        semMemAGV_5.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_shMem_AGV_5 destruido");
-        
-        semMemCanastos.getSemaphore(DIRECTORY, ID_SEM_MEM_CANASTOS_10, CANTIDAD_AGVS);
-        semMemCanastos.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_shMem_Canastos destruido");
-        
-        
-        IPC::Semaphore semEstadoRobot5("semEstadoRobot5");
-        semEstadoRobot5.getSemaphore(DIRECTORY, ID_SEM_EST_ROBOT_5, CANTIDAD_AGVS);
-        semEstadoRobot5.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC sem_estado_robot_5 destruido");
-        
-        IPC::Semaphore semMemEstadoRobot5("semMemEstadoRobot5");
-        semMemEstadoRobot5.getSemaphore(DIRECTORY, ID_SEM_MEM_EST_ROBOT_5, 1);
-        semMemEstadoRobot5.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_shMem_EstadoRobot_5 destruido");
-
-        IPC::Semaphore semMemCinta6("semMemCinta6");
-        IPC::Semaphore semRobot11("semRobot11");
-        IPC::Semaphore semRobot12("semRobot12");
-        semMemCinta6.getSemaphore(DIRECTORY, ID_SEM_MEM_CINTA_6, CANTIDAD_CINTAS_6);
-        semMemCinta6.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_shMem_Cinta_6 destruido");
-        
-        semRobot11.getSemaphore(DIRECTORY, ID_SEM_ROBOT_11, CANTIDAD_CINTAS_6);
-        semRobot11.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC sem_robot_11 destruido");
-        
-        semRobot12.getSemaphore(DIRECTORY, ID_SEM_ROBOT_12, CANTIDAD_CINTAS_6);
-        semRobot12.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC sem_robot_12 destruido");
-        
         // Do the same with the queues
-        PedidosAGVMessageQueue colaPedidosAGV;
-        colaPedidosAGV.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_AGV_5);
-        colaPedidosAGV.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC colaPedidosAGV destruido");
+        IPC::PedidosAgvMessageQueue colaPedidosAGV_5;
+        colaPedidosAGV_5.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
+        colaPedidosAGV_5.destroy();
 
-        PedidosCanastosMessageQueue colaPedidosCanastos;
-        colaPedidosCanastos.getMessageQueue(DIRECTORY,ID_COLA_PEDIDOS_A_AGV);
-        colaPedidosCanastos.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC colaPedidosCanastos destruido");
-
-        Barrera1112MessageQueue cola11121;
-        Barrera1112MessageQueue cola11122;
-        cola11121.getMessageQueue(DIRECTORY,ID_COLA_11_12_1);
-        cola11121.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC cola11121 destruido");
-        
-        cola11122.getMessageQueue(DIRECTORY,ID_COLA_11_12_2);
-        cola11122.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC cola11122 destruido");
-        
-        Barrera1112MessageQueue cola12111;
-        Barrera1112MessageQueue cola12112;
-        cola12111.getMessageQueue(DIRECTORY,ID_COLA_12_11_1);
-        cola12111.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC cola12111 destruido");
-        
-        cola12112.getMessageQueue(DIRECTORY,ID_COLA_12_11_2);
-        cola12112.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC cola12112 destruido");
-    }
+        //exclusivo Robot 5
+        /* Creo la cola de comunicacion con el robot 5 con los dos procesos del controlador */
+        IPC::ComunicacionRobot5MessageQueue colaComunicacionRobot5 = IPC::ComunicacionRobot5MessageQueue("colaComunicacionRobot5");
+        colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_API_ROBOT_5);
+        colaComunicacionRobot5.destroy();
+    }    
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
         e.get_error_description().c_str());

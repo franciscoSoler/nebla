@@ -10,6 +10,7 @@
 #include <exception>
 
 #include "API/Robot5/ControladorRobot5.h"
+#include "Logger.h"
 
 #define MAX_DEMORA 10 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
                        
@@ -49,17 +50,20 @@ Gabinete resolverPedidoGabinete(ControladorRobot5 &controladorRobot5, TipoProduc
 }
 
 int main(int argc, char **argv) {
+    
+    Logger::getInstance().setProcessInformation("Robot 5:");
+    
     char buffer[TAM_BUFFER];
-    sprintf(buffer, "Iniciando Robot 5.\n");
-    write(fileno(stdout), buffer, strlen(buffer));
-
+    
+    Logger::getInstance().logMessage(Logger::TRACE, "Iniciando Robot 5.");
+    
     ControladorRobot5 controladorRobot5;
     try {
         controladorRobot5.iniciarControlador();
     }
     catch (std::exception ex) {
-        sprintf(buffer, "Robot 5: Error al iniciar el controlador: %s\n", ex.what());
-        write(fileno(stderr), buffer, strlen(buffer));
+        sprintf(buffer, "Error al iniciar el controlador: %s\n", ex.what());
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
         exit(-1);
     }
     
@@ -83,10 +87,10 @@ int main(int argc, char **argv) {
                         
             switch (pedido.tipo) {
                 case PEDIDO_PRODUCCION:
-                    sprintf(buffer, "Robot 5: Recibi un pedido de produccion.\n");
-                    write(fileno(stderr), buffer, strlen(buffer));
-                    sprintf(buffer, "\tOrden de compra: %d Producto: %d Cantidad: %d Diferencia minima: %d.\n",pedido.pedidoProduccion.nroOrdenCompra, pedido.pedidoProduccion.tipo,pedido.pedidoProduccion.cantidad, pedido.pedidoProduccion.diferenciaMinima);
-                    write(fileno(stderr), buffer, strlen(buffer));
+                    Logger::getInstance().logMessage(Logger::TRACE, "Robot 5: Recibi un pedido de produccion.");
+                    sprintf(buffer, "\tOrden de compra: %d Producto: %d Cantidad: %d Diferencia minima: %d.",pedido.pedidoProduccion.nroOrdenCompra, pedido.pedidoProduccion.tipo,pedido.pedidoProduccion.cantidad, pedido.pedidoProduccion.diferenciaMinima);
+                    Logger::getInstance().logMessage(Logger::TRACE, buffer);
+                    
                     /* El robot recibió una nueva orden de producción */
                     if (productoAProducir.cantidad == 0) {
                         productoAProducir = pedido.pedidoProduccion;
