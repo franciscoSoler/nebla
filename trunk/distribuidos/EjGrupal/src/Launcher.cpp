@@ -91,9 +91,12 @@ void createIPCs() {
     semaforoBloqueoRobot5.initializeSemaphore(0,0);
     
     IPC::Semaphore semaforoBloqueoRobot11("Bloqueo Robot 11");
+    IPC::Semaphore semBloqueoRobot12("semBloqueoRobot12");
     semaforoBloqueoRobot11.createSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, CANTIDAD_CINTAS_6);
+    semBloqueoRobot12.createSemaphore(DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, CANTIDAD_CINTAS_6);
     for (int i = 0; i < CANTIDAD_CINTAS_6; ++i) {
         semaforoBloqueoRobot11.initializeSemaphore(i, 0);
+        semBloqueoRobot12.initializeSemaphore(i, 0);
     }
     
     IPC::Semaphore semaforoAccesoCinta6("Acceso Cinta 6");
@@ -136,12 +139,15 @@ void createIPCs() {
     // Do the same with the semaphores
     IPC::Semaphore semBloqueoAGV("semBloqueoAGV");
     IPC::Semaphore semBufferAGV_5("semBufferAGV_5");
+    IPC::Semaphore semBufferCanastos("semMemCanastos");
     semBloqueoAGV.createSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
     semBufferAGV_5.createSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
+    semBufferCanastos.createSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, CANTIDAD_AGVS);
     
     for (int i = 0; i < CANTIDAD_AGVS; i++) {
         semBloqueoAGV.initializeSemaphore(i, 0);
         semBufferAGV_5.initializeSemaphore(i, 1);
+        semBufferCanastos.initializeSemaphore(i, 1);
     }
     
     // Do the same with the queues
@@ -152,6 +158,53 @@ void createIPCs() {
     /* Creo la cola de comunicacion con el robot 5 con los dos procesos del controlador */
     IPC::ComunicacionRobot5MessageQueue colaComunicacionRobot5 = IPC::ComunicacionRobot5MessageQueue("colaComunicacionRobot5");
     colaComunicacionRobot5.createMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_API_ROBOT_5);
+    
+    // Robots cintas - AGV
+    BufferCanastos canastos;
+    for (int i = 0; i < MAX_QUANTITY_CANASTOS; i++) {
+        canastos.canastos[i].cantidadPiezas = 0;
+        canastos.canastos[i].tipoPieza = PIEZA_1;
+    }
+    
+    IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
+    colaPedidosCanastos.createMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
+    
+    IPC::BufferCanastosSharedMemory shMemBufferCanastos0 = IPC::BufferCanastosSharedMemory("shMemBufferCanastos0");
+    IPC::BufferCanastosSharedMemory shMemBufferCanastos1 = IPC::BufferCanastosSharedMemory("shMemBufferCanastos1");
+    IPC::BufferCanastosSharedMemory shMemBufferCanastos2 = IPC::BufferCanastosSharedMemory("shMemBufferCanastos2");
+    shMemBufferCanastos0.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+    shMemBufferCanastos1.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
+    shMemBufferCanastos2.createSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
+    
+    semBufferCanastos.wait(0);
+    {
+        shMemBufferCanastos0.writeInfo(&canastos);
+    }
+    semBufferCanastos.signal(0);
+    
+    semBufferCanastos.wait(1);
+    {
+        shMemBufferCanastos1.writeInfo(&canastos);
+    }
+    semBufferCanastos.signal(1);
+    
+    semBufferCanastos.wait(2);
+    {
+        shMemBufferCanastos2.writeInfo(&canastos);
+    }
+    semBufferCanastos.signal(2);
+    
+    //Robots 11 y 12
+    IPC::Barrera1112MessageQueue cola11_A_121;
+    IPC::Barrera1112MessageQueue cola11_A_122;
+    cola11_A_121.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_1);
+    cola11_A_122.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_2);
+    
+    IPC::Barrera1112MessageQueue cola12_A_111;
+    IPC::Barrera1112MessageQueue cola12_A_112;
+    cola12_A_111.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
+    cola12_A_112.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
+    
 }
 
 void createProcess(std::string processName, int amountOfProcesses) {
