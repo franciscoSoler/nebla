@@ -20,8 +20,8 @@ public:
     EstadoRobot5SharedMemory(std::string IPCName = "") : AbstractSharedMemory(IPCName) {};
     virtual ~EstadoRobot5SharedMemory() {};
     
-    void readInfo (EstadoRobot5* dato);
-    void writeInfo ( EstadoRobot5 *dato );
+    void readInfo (EstadoRobot5 *dato);
+    void writeInfo (EstadoRobot5 *dato );
 private:
 
 };

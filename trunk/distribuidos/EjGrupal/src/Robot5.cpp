@@ -13,7 +13,7 @@
 
 #define MAX_DEMORA 10 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
                        
-Canasto resolverPedidoCanasto(ControladorRobot5 &controladorRobot5, PedidoCanasto pedido) {
+Canasto resolverPedidoCanasto(ControladorRobot5 &controladorRobot5, PedidoCanastoAGV pedido) {
     // El robot va a buscar el canasto al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
@@ -123,11 +123,11 @@ int main(int argc, char **argv) {
                     write(fileno(stderr), buffer, strlen(buffer));
                     
                     Canasto canasto;
-                    canasto = resolverPedidoCanasto(controladorRobot5, pedido.pedidoCanasto);
+                    canasto = resolverPedidoCanasto(controladorRobot5, pedido.pedidoCanastoAgv);
                     
-                    sprintf(buffer, "Robot 5: Enviando un CANASTO con %d piezas al AGV %d.\n", canasto.cantidadPiezas, pedido.pedidoCanasto.idAgv);
+                    sprintf(buffer, "Robot 5: Enviando un CANASTO con %d piezas al AGV %d.\n", canasto.cantidadPiezas, pedido.pedidoCanastoAgv.idAgv);
                     write(fileno(stderr), buffer, strlen(buffer));
-                    controladorRobot5.resolverPedido(canasto, pedido.pedidoCanasto.idAgv);
+                    controladorRobot5.resolverPedido(canasto, pedido.pedidoCanastoAgv.idAgv);
                     break;
                     
                 default:

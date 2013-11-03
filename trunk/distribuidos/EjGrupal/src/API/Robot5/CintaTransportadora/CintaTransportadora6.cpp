@@ -16,7 +16,11 @@ CintaTransportadora6::CintaTransportadora6(int idCinta)
 {
 }
 
-CintaTransportadora6::CintaTransportadora6() {
+CintaTransportadora6::CintaTransportadora6() 
+        : idCinta(idCinta),
+          semaforoAcceso("Cinta Transportadora"),
+          cinta("CintaTransportadoraSharedMemory")
+{
 }
 
 CintaTransportadora6::CintaTransportadora6(const CintaTransportadora6& orig) {
@@ -26,9 +30,7 @@ CintaTransportadora6::~CintaTransportadora6() {
 }
 
 void CintaTransportadora6::iniciarCinta(int idClaveMem, int idClaveSem) {
-    
     semaforoAcceso.getSemaphore(DIRECTORY_ROBOT_11, idClaveSem, CANTIDAD_CINTAS_6);
-    
     cinta.getSharedMemory(DIRECTORY_ROBOT_11, idClaveMem);
 }
 
@@ -39,19 +41,20 @@ void CintaTransportadora6::depositarProductoEnProduccion(ProductoEnProduccion pr
     {
         /* Leo el contenido actual de la cinta.
          */
-        CintaTransportadora_6 *cintaTransportadora = cinta.readInfo();
+        CintaTransportadora_6 cintaTransportadora; 
+        cinta.readInfo(&cintaTransportadora);
         
         /* Deposito el gabinete en la posicion actual e indico que ese lugar no esta mas vacio
          */
-         int posicion = (((*cintaTransportadora).puntoLectura + BUFF_SIZE_CINTA_6 - 1) % BUFF_SIZE_CINTA_6);
-        (*cintaTransportadora).productoProduccion[posicion] = producto;
-        (*cintaTransportadora).lugarVacio[posicion] = false;
-        (*cintaTransportadora).cantLibres--;
-        mostrarEstadoCinta((*cintaTransportadora));
+         int posicion = ((cintaTransportadora.puntoLectura + BUFF_SIZE_CINTA_6 - 1) % BUFF_SIZE_CINTA_6);
+        cintaTransportadora.productoProduccion[posicion] = producto;
+        cintaTransportadora.lugarVacio[posicion] = false;
+        cintaTransportadora.cantLibres--;
+        mostrarEstadoCinta(cintaTransportadora);
         
         /* Escribo el nuevo valor en la memoria compartida.
          */
-        cinta.writeInfo(cintaTransportadora);
+        cinta.writeInfo(&cintaTransportadora);
     }
     semaforoAcceso.signal(this->idCinta);
 }
@@ -66,11 +69,12 @@ EstadoCinta CintaTransportadora6::obtenerEstadoCinta() {
     {
         /* Leo el contenido actual de la cinta.
          */
-        CintaTransportadora_6 *cintaTransportadora = cinta.readInfo();
+        CintaTransportadora_6 cintaTransportadora;
+        cinta.readInfo(&cintaTransportadora);
         
-        int posicion = (((*cintaTransportadora).puntoLectura + BUFF_SIZE_CINTA_6 - 1) % BUFF_SIZE_CINTA_6);
-        estado.ocupado = ! (*cintaTransportadora).lugarVacio[posicion];
-        estado.cantOcupados = BUFF_SIZE_CINTA_6 - (*cintaTransportadora).cantLibres;
+        int posicion = ((cintaTransportadora.puntoLectura + BUFF_SIZE_CINTA_6 - 1) % BUFF_SIZE_CINTA_6);
+        estado.ocupado = ! cintaTransportadora.lugarVacio[posicion];
+        estado.cantOcupados = BUFF_SIZE_CINTA_6 - cintaTransportadora.cantLibres;
     }
     semaforoAcceso.signal(this->idCinta);
     
@@ -84,15 +88,15 @@ bool CintaTransportadora6::robot11Bloqueado() {
     {
         /* Leo el contenido actual de la cinta.
          */
-        CintaTransportadora_6 *cintaTransportadora = cinta.readInfo();
-        estado = (*cintaTransportadora).robot11Durmiendo;
+        CintaTransportadora_6 cintaTransportadora;
+        cinta.readInfo(&cintaTransportadora);
+        estado = cintaTransportadora.robot11Durmiendo;
     }
     semaforoAcceso.signal(this->idCinta);
     return estado;
 }
 
-bool CintaTransportadora6::marcarRobot11Liberado() {
-    bool estado = false;
+void CintaTransportadora6::marcarRobot11Liberado() {
     semaforoAcceso.wait(this->idCinta);
     {
         /* Leo el contenido actual de la cinta.
@@ -103,7 +107,6 @@ bool CintaTransportadora6::marcarRobot11Liberado() {
         cinta.writeInfo(&cintaTransportadora);
     }
     semaforoAcceso.signal(this->idCinta);
-    return estado;
 }
 
 
