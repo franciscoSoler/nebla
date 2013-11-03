@@ -26,20 +26,11 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->semBloqueoAGV = IPC::Semaphore("semBloqueoAGV");
         this->semBloqueoAGV.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 
-        this->semBloqueoRobot5 = IPC::Semaphore("semBloqueoRobot5");
-        this->semBloqueoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
-
-        this->semMemEstadoRobot5 = IPC::Semaphore("semMemEstadoRobot5");
-        this->semMemEstadoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
-
         this->semBufferAGV_5 = IPC::Semaphore("semBufferAGV_5");
         this->semBufferAGV_5.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
 
         this->semMemCanastos = IPC::Semaphore("semMemCanastos");
         this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
-
-        this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
-        this->shMemEstadoRobot5.getSharedMemory((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
@@ -107,18 +98,6 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
         pedidoCanastoAGV.pedidoCanastoAgv.idAgv = this->id_AGV;
         pedidoCanastoAGV.pedidoCanastoAgv.tipoPieza = tipoPieza;
         this->colaPedidosAGV_5.enviarPedidoAgv(pedidoCanastoAGV);
-
-        // despierto robot 5 si esta durmiendo
-        Logger::logMessage(Logger::TRACE, "veo si robot 5 esta durmiendo");
-        this->semMemEstadoRobot5.wait();
-        this->shMemEstadoRobot5.readInfo(&estadoRobot5);
-        if (estadoRobot5.robot5Bloqueado) {
-            Logger::logMessage(Logger::TRACE, "robot 5 esta durmiendo, lo despierto");
-            estadoRobot5.robot5Bloqueado = false;
-            this->shMemEstadoRobot5.writeInfo(&estadoRobot5);
-            this->semBloqueoRobot5.signal();
-        }
-        this->semMemEstadoRobot5.signal();
 
         Logger::logMessage(Logger::TRACE, "duermo hasta que robot 5 traiga el canasto");
         this->semBloqueoAGV.wait(this->id_AGV);

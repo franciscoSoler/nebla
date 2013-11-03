@@ -15,7 +15,6 @@
 
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
-#include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 
 class ControladorAGV : public IControladorAGV {
@@ -34,8 +33,6 @@ private:
     int id_semMemCanastos;
     int posicionCanasto;
     
-    IPC::Semaphore semBloqueoRobot5;
-    IPC::Semaphore semMemEstadoRobot5;
     IPC::Semaphore semBufferAGV_5;
     IPC::Semaphore semMemCanastos;
     IPC::Semaphore semRobotCinta;
@@ -45,7 +42,6 @@ private:
     IPC::PedidosAgvMessageQueue colaPedidosAGV_5;
     IPC::BufferCanastosSharedMemory shMemBufferCanastos;
     IPC::BufferCanastoEntre5yAGVSharedMemory shMemBuffer5yAGV;
-    IPC::EstadoRobot5SharedMemory shMemEstadoRobot5;
 };
 
 #endif	/* CONTROLADORAGV_H */
