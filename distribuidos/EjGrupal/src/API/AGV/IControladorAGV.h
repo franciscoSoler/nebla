@@ -13,8 +13,8 @@
 class IControladorAGV {
 public:
     virtual void iniciarControlador(int id_AGV) = 0;
-    virtual TipoProducto atenderPedidos() = 0;
-    virtual Canasto buscarPieza(TipoProducto tipoPieza) = 0;
+    virtual TipoPieza atenderPedidos() = 0;
+    virtual Canasto buscarPieza(TipoPieza tipoPieza) = 0;
     virtual void reponerCanasto(Canasto canasto) = 0;
     virtual ~IControladorAGV() {};
 };

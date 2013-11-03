@@ -15,7 +15,7 @@ class IControladorAlmacenPiezas
 public:
     virtual void enviarPedidoProduccionARobot5(consulta_almacen_piezas_t consulta) = 0;
     virtual void obtenerEspecificacionesDelProducto(TipoProducto tipoPieza, EspecifProd piezasProductoActual) = 0;
-    virtual void avisarAAGVQueAgregueCanasto(TipoProducto tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) = 0;
+    virtual void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) = 0;
     virtual void recibirConfirmacionProduccion() = 0;
     virtual ~IControladorAlmacenPiezas() {};
 };
