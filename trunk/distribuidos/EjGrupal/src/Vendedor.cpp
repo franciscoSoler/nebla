@@ -8,6 +8,16 @@
 #include "Common.h"
 #include "ControladorVendedor.h"
 
+OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
+{
+    OrdenDeCompra ordenDeCompra;
+    for(int i = 0; i < CANT_PRODUCTOS; i++)
+	ordenDeCompra.cantidadPorProducto[i] = 0;
+    ordenDeCompra.cliente = 0;
+    ordenDeCompra.numero = numOrdenCompra;
+    ordenDeCompra.vendedor = numVendedor;
+}
+
 int main(int argc, char** argv)
 {
     long numVendedor = atoi(argv[1]);
@@ -27,28 +37,56 @@ int main(int argc, char** argv)
 	sprintf(mensajePantalla, "Vendedor #%ld recibe mensaje del cliente %ld y establece una comunicación.\n", numVendedor, mensajeInicial.emisor);
 	write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
 	
+	OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
+	ordenDeCompra.cliente = mensajeInicial.emisor;
+	long numCliente = ordenDeCompra.cliente;
+	
 	pedido_t pedido;
+	bool pedidoEsValido = true;
+	pedido_produccion_t pedidosProduccion[CANT_MAX_PEDIDOS];
+	int cantPedidos = 0;
+	
 	do
 	{
 	    pedido = controlador.recibirPedido();
-	    
+	    pedidosProduccion[cantPedidos] = controlador.reservarPedido(pedido);
+	    if(!pedidosProduccion[cantPedidos].ventaEsValida)
+	    {
+		controlador.enviarRespuestaDePedido(numCliente, pedidosProduccion[cantPedidos].ventaEsValida);
+		pedidoEsValido = false;
+		continue;
+	    }
+		
 	    if(pedido.fin)
 		continue;
 	    
+	    ordenDeCompra.cantidadPorProducto[pedido.tipoProducto] = pedido.cantidad;
+	    
 	    sprintf(mensajePantalla, "Vendedor #%ld recibe pedido del cliente %ld de %d unidades del producto %d.\n", numVendedor, pedido.emisor, pedido.cantidad, pedido.tipoProducto);
 	    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
-	    
-	    pedido_produccion_t pedidoProduccion = controlador.realizarPedido(pedido);
-	    if(pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido > 0)
-		controlador.enviarPedidoProduccionAAlmacenPiezas(pedidoProduccion);
-	    
-	    if(pedidoProduccion.ventaEnCurso)
-		controlador.informarExitoEnPedido(pedido);
-	    else
-		controlador.informarErrorEnPedido(pedido);
-	    
-	} while(!pedido.fin);
-    }    
+	    cantPedidos++;
+	    	    
+	} while(!pedido.fin && pedidoEsValido);
+	
+	if(pedidoEsValido)
+	{
+	    for(int i = 0; i < cantPedidos + 1; i++)
+            {
+		if(pedidosProduccion[i].producidoParaStockear + pedidosProduccion[i].producidoVendido > 0)
+		    controlador.enviarPedidoProduccionAAlmacenPiezas(pedidosProduccion[i]);
+		controlador.confirmarPedido(pedidosProduccion[i], ordenDeCompra);
+	    }	
+
+	}
+
+	else
+	{
+	    controlador.anularPedidos();
+	}
+	
+	controlador.terminarLlamadoTelefonico();
+
+    }  
     
 }
 

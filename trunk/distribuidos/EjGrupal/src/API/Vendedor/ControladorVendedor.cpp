@@ -15,7 +15,7 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     /* Comunicación con los clientes. */
     this->vendedores = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     this->vendedores.obtener();
-    this->clientes = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
+    this->clientes = Cola<respuesta_pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
     this->clientes.obtener();
     this->pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     this->pedidos.obtener();
@@ -47,12 +47,18 @@ mensaje_inicial_t ControladorVendedor::recibirLlamadoTelefonico()
 
     /* Arma el mensaje para contactar al cliente. */
     long numCliente = bufferMensajeInicial.emisor;
-    mensaje_inicial_t respuesta;
+    respuesta_pedido_t respuesta;
     respuesta.emisor = numVendedor;
     respuesta.mtype = numCliente;
     clientes.enviar(respuesta);
     
+    mutexAlmacenTerminados.wait();        
     return bufferMensajeInicial;
+}
+
+int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
+{
+    return *numeroOrdenCompra;
 }
 
 pedido_t ControladorVendedor::recibirPedido()
@@ -73,13 +79,13 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
     
     if(cantidadEspacioVacio + cantidadEnStock < pedido.cantidad)
     {
-	pedidoProduccion.ventaEnCurso = false;
+	pedidoProduccion.ventaEsValida = false;
 	return pedidoProduccion;
     }
     
     if(cantidadEnStock >= pedido.cantidad)
     {
-	pedidoProduccion.ventaEnCurso = true;
+	pedidoProduccion.ventaEsValida = true;
 	pedidoProduccion.producidoParaStockear = 0;
 	pedidoProduccion.producidoVendido = 0;
 	pedidoProduccion.vendidoStockeado = pedido.cantidad;
@@ -90,13 +96,13 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
     int cantidadAProducir = pedido.cantidad - cantidadEnStock;
     if(cantidadMinima > cantidadAProducir && cantidadMinima > cantidadEspacioVacio)
     {
-	pedidoProduccion.ventaEnCurso = false;
+	pedidoProduccion.ventaEsValida = false;
 	return pedidoProduccion;
     }
     
     cantidadAProducir = std::max(cantidadAProducir, cantidadMinima);
     
-    pedidoProduccion.ventaEnCurso = true;
+    pedidoProduccion.ventaEsValida = true;
     pedidoProduccion.vendidoStockeado = cantidadEnStock;
     pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock;
     pedidoProduccion.producidoParaStockear = cantidadAProducir - pedido.cantidad;
@@ -105,14 +111,8 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
     return pedidoProduccion;
 }
 
-int ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t pedidoProduccion)
+void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_produccion_t pedidoProduccion)
 {
-    OrdenDeCompra ordenCompra;
-    ordenCompra.idCliente_ = pedido.emisor;
-    ordenCompra.idVendedor_ = numVendedor;
-    (*numeroOrdenCompra)++;
-    ordenCompra.idOrden_ = (*numeroOrdenCompra);
-
     OrdenDeProduccion ordenProduccion;
     if(pedidoProduccion.producidoVendido + pedidoProduccion.producidoParaStockear != 0)
     {
@@ -135,24 +135,22 @@ int ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t ped
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     
     if(pedidoProduccion.producidoParaStockear > 0)
-	almacenProductosTerminados.asignarVaciosComoDisponibles(ordenProduccion, pedidoProduccion.producidoParaStockear);
+	almacenProductosTerminados.reservarVaciosComoDisponibles(pedidoProduccion.producidoParaStockear);
     
     if(pedidoProduccion.producidoVendido > 0)
-	almacenProductosTerminados.asignarVaciosAProduccion(ordenProduccion, ordenCompra, pedidoProduccion.producidoVendido);
+	almacenProductosTerminados.reservarVaciosAProduccion(pedidoProduccion.producidoVendido);
     
     if(pedidoProduccion.vendidoStockeado > 0)
-	almacenProductosTerminados.asignarStockeados(ordenCompra, pedido.tipoProducto, pedidoProduccion.vendidoStockeado);
-    
-    return ordenCompra.idOrden_;
+	almacenProductosTerminados.reservarStockeados(pedido.tipoProducto, pedidoProduccion.vendidoStockeado);
+
 }
 
-pedido_produccion_t ControladorVendedor::realizarPedido(pedido_t pedido)
+pedido_produccion_t ControladorVendedor::reservarPedido(pedido_t pedido)
 {
-    mutexAlmacenTerminados.wait();
+    
     pedido_produccion_t pedidoProduccion = calcularCantidadAProducir(pedido);
-    if(pedidoProduccion.ventaEnCurso)
-	pedidoProduccion.numOrdenCompra = reservarPedido(pedido, pedidoProduccion);
-    mutexAlmacenTerminados.signal();
+    if(pedidoProduccion.ventaEsValida)
+	efectuarReserva(pedido, pedidoProduccion);
     return pedidoProduccion;
 }
 
@@ -195,12 +193,33 @@ void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_produccion
     consultasAlmacen.enviar(consulta);
 }
 
-void ControladorVendedor::informarExitoEnPedido(pedido_t pedido)
+void ControladorVendedor::confirmarPedido(pedido_produccion_t pedidoProduccion, OrdenDeCompra ordenDeCompra)
 {
+    if(pedidoProduccion.producidoParaStockear > 0)
+	almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion.producidoParaStockear);
     
+    if(pedidoProduccion.producidoVendido > 0)
+	almacenProductosTerminados.asignarVaciosAProduccion(ordenDeCompra, pedidoProduccion.producidoVendido);
+    
+    if(pedidoProduccion.vendidoStockeado > 0)
+	almacenProductosTerminados.asignarStockeados(ordenDeCompra, pedidoProduccion.tipoProducto, pedidoProduccion.vendidoStockeado);
 }
 
-void ControladorVendedor::informarErrorEnPedido(pedido_t pedido)
+void ControladorVendedor::anularPedidos()
 {
-    
+    almacenProductosTerminados.anularReservas();
+}
+
+void ControladorVendedor::terminarLlamadoTelefonico()
+{
+    mutexAlmacenTerminados.signal();
+}
+
+void ControladorVendedor::enviarRespuestaDePedido(long numCliente, bool resultado)
+{
+    respuesta_pedido_t respuesta;
+    respuesta.mtype = numCliente;
+    respuesta.recepcionOK = resultado;
+    respuesta.emisor = numVendedor;
+    clientes.enviar(respuesta);
 }

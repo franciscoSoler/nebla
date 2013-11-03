@@ -431,8 +431,9 @@ typedef struct _EspacioAlmacen
 {
     EstadoEspacio estado;
     OrdenDeCompra ordenCompra;
-    OrdenDeProduccion ordenProduccion;
+    int tipoProducto;
     Caja caja;
+    bool esTemporal;
 } EspacioAlmacenProductos;
 
 
@@ -464,7 +465,7 @@ typedef struct _respuesta_almacen_piezas
 
 typedef struct _pedido_produccion
 {
-    bool ventaEnCurso;
+    bool ventaEsValida;
     int producidoParaStockear;
     int producidoVendido;
     int vendidoStockeado;
@@ -492,5 +493,12 @@ typedef struct _pedido
     int cantidad;
     bool fin;
 } pedido_t;
+
+typedef struct _respuesta_pedido
+{
+    long mtype;
+    long emisor;
+    bool recepcionOK;
+} respuesta_pedido_t;
 
 #endif	/* COMMON_H */

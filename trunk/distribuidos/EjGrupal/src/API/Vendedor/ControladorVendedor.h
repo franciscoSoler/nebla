@@ -27,17 +27,23 @@ class ControladorVendedor
 	ControladorVendedor(long numVendedor);
 	virtual ~ControladorVendedor();
 	
+	int obtenerNumeroDeOrdenDeCompra();
+	
 	mensaje_inicial_t recibirLlamadoTelefonico();
 	pedido_t recibirPedido();
-	pedido_produccion_t realizarPedido(pedido_t pedido);
+	void enviarRespuestaDePedido(long numCliente, bool resultado);
+	
+	pedido_produccion_t reservarPedido(pedido_t pedido);
 	void enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion);
-	void informarExitoEnPedido(pedido_t pedido);
-	void informarErrorEnPedido(pedido_t pedido);
+	void terminarLlamadoTelefonico();
+	
+	void confirmarPedido(pedido_produccion_t pedidoProduccion, OrdenDeCompra ordenDeCompra);
+	void anularPedidos();
 	
     private:
 	long numVendedor;
 	Cola<mensaje_inicial_t> vendedores;
-	Cola<mensaje_inicial_t> clientes;
+	Cola<respuesta_pedido_t> clientes;
 	Cola<pedido_t> pedidos;
 	MemoriaCompartida shmemNumeroOrdenCompra;
 	int* numeroOrdenCompra;
@@ -45,10 +51,10 @@ class ControladorVendedor
 	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
 	IPC::Semaphore mutexAlmacenTerminados;
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
-
+	
 	int obtenerCantidadMinimaDeProduccion(int numProducto);
 	pedido_produccion_t calcularCantidadAProducir(pedido_t pedido);
-	int reservarPedido(pedido_t pedido, pedido_produccion_t pedidoProduccion);
+	void efectuarReserva(pedido_t pedido, pedido_produccion_t pedidoProduccion);
 };
 
 #endif	/* CONTROLADORVENDEDOR_H */

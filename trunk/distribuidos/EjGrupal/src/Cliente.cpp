@@ -22,15 +22,23 @@ int main(int argc, char** argv)
     
     controlador.contactarVendedores();
     
+    bool pedidoEsValido = true;
+    
     /* Envío los pedidos. */
     int cantPedidos = 1 + rand() % 3;
     for(int i = 0; i < cantPedidos; i++)
     {
 	int cantUnidades = 1 + rand() % CANT_MAX_PEDIDOS;
 	int tipoProducto = rand() % CANT_PRODUCTOS;
-	controlador.enviarPedido(cantUnidades, tipoProducto, i);    
+	controlador.enviarPedido(cantUnidades, tipoProducto, i);
+	if(controlador.recibirResultado() == false)
+	{
+	    pedidoEsValido = false;
+	    break;
+	}
     }
     
-    controlador.finalizarEnvio(cantPedidos);
+    if(pedidoEsValido)
+	controlador.finalizarEnvio(cantPedidos);
 }
 

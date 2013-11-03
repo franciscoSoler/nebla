@@ -43,7 +43,6 @@ class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
 	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
         
         IPC::PedidosProduccionMessageQueue mensajesRobot5;
-	//Cola<MensajePedidoProduccion> mensajesRobot5;
         IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
         IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
         IPC::Semaphore semMemCanastos;

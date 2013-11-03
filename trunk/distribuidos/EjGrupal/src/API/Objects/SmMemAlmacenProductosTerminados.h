@@ -21,9 +21,15 @@ class SmMemAlmacenProductosTerminados
 	int obtenerEspaciosVacios();
 	int obtenerCantidadDeStockDeProducto(int numProducto);
 	
-	void asignarVaciosComoDisponibles(OrdenDeProduccion ordenProduccion, int cantidad);
-	void asignarVaciosAProduccion(OrdenDeProduccion ordenProduccion, OrdenDeCompra ordenCompra, int cantidad);
+	void asignarVaciosComoDisponibles(int cantidad);
+	void asignarVaciosAProduccion(OrdenDeCompra ordenCompra, int cantidad);
 	void asignarStockeados(OrdenDeCompra ordenCompra, int tipo, int cantidad);
+	
+	void reservarVaciosComoDisponibles(int cantidad);
+	void reservarVaciosAProduccion(int cantidad);
+	void reservarStockeados(int tipo, int cantidad);
+	
+	void anularReservas();
 	
 	bool depositarCaja(Caja caja);
 	bool sacarCaja(Caja* caja, int idProducto, int idOrdenCompra);
