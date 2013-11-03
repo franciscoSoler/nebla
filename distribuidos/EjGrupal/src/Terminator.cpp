@@ -8,14 +8,14 @@
 #include "Common.h"
 #include "Exceptions/Exception.h"
 #include "Logger/Logger.h"
-#include "IPC/Semaphore/Semaphore.h"
-#include "IPC/MessageQueue/Barrera1112MessageQueue.h"
-#include "IPC/MessageQueue/PedidosAGVMessageQueue.h"
-#include "IPC/MessageQueue/PedidosCanastosMessageQueue.h"
-#include "IPC/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
-#include "IPC/SharedMemory/BufferCanastoSharedMemory.h"
-#include "IPC/SharedMemory/Cinta6SharedMemory.h"
-#include "IPC/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "IPCs/Semaphore/Semaphore.h"
+#include "IPCs/MessageQueue/Barrera1112MessageQueue.h"
+#include "IPCs/MessageQueue/PedidosAGVMessageQueue.h"
+#include "IPCs/MessageQueue/PedidosCanastosMessageQueue.h"
+#include "IPCs/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
+#include "IPCs/SharedMemory/BufferCanastoSharedMemory.h"
+#include "IPCs/SharedMemory/Cinta6SharedMemory.h"
+#include "IPCs/SharedMemory/EstadoRobot5SharedMemory.h"
 
 int main(int argc, char* argv[]) {
     try {

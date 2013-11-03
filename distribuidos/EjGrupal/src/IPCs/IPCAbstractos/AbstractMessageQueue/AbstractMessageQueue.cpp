@@ -9,7 +9,7 @@ AbstractMessageQueue::AbstractMessageQueue(std::string IPCName) : IPCObject(IPCN
 AbstractMessageQueue::~AbstractMessageQueue() {
 }
 
-int AbstractMessageQueue::create(const char *fileName, int id) {
+int AbstractMessageQueue::createMessageQueue(const char *fileName, int id) {
 	return this->getId(fileName, id, 0666|IPC_CREAT|IPC_EXCL);
 }
 
