@@ -201,7 +201,6 @@ void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza) {
         
         MensajePedidoRobotCinta_6 pedidoCanasto;
         pedidoCanasto.mtype = this->id_Agv;
-        pedidoCanasto.pedidoCanastoAgv;
         pedidoCanasto.pedidoCanastoAgv.lugar = this->posicionPieza;
         pedidoCanasto.pedidoCanastoAgv.tipoPieza = tipoPieza;
         this->colaPedidosCanastos.enviarPedidoCanasto(pedidoCanasto);

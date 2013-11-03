@@ -94,13 +94,13 @@ int main(int argc, char** argv) {
     while (deboSeguir) {
 
         /* Recibo una orden de produccion */
-        MensajePedidoProduccion *mensajePedidoProduccion;
-        colaPedidosProduccion.recibirPedidoProduccion(TIPO_PEDIDO_PRODUCCION, mensajePedidoProduccion);
+        MensajePedidoProduccion mensajePedidoProduccion;
+        colaPedidosProduccion.recibirPedidoProduccion(TIPO_PEDIDO_PRODUCCION, &mensajePedidoProduccion);
 
         /* Le envio la orden de producción al robot 5 */
         PedidoRobot5 pedidoRobot5;
         pedidoRobot5.tipo = PEDIDO_PRODUCCION;
-        pedidoRobot5.pedidoProduccion = (*mensajePedidoProduccion).pedidoProduccion;
+        pedidoRobot5.pedidoProduccion = mensajePedidoProduccion.pedidoProduccion;
 
         MensajePedidoRobot5 mensajePedidoRobot5;
         mensajePedidoRobot5.mtype = TIPO_PEDIDO_ROBOT_5;
@@ -120,11 +120,8 @@ int main(int argc, char** argv) {
                  * aviso que me voy a bloquear y me bloqueo */
                 semaforoAccesoEstadoRobot5.wait();
                 {
-                    
                     EstadoRobot5 estadoRobot;
                     estadoRobot.robot5Bloqueado = true;
-                    
-                    
                     estadoRobot5.writeInfo(&estadoRobot);
                 }
                 semaforoAccesoEstadoRobot5.signal();
