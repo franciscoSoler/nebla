@@ -218,8 +218,14 @@ int main(int argc, char** argv) {
                 cintasTransportadoras[cintaAUtilizar].marcarRobot11Liberado();     
                 semaforoBloqueoRobot11.signal(cintaAUtilizar);
                 Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo marco como desbloqueado y lo desbloqueo.");
-            }
+            }   
         }
+
+        Logger::getInstance().logMessage(Logger::TRACE, "Envio mensaje al almacen de piezas para que envie la proxima orden de produccion.");
+        MensajeProximoPedidoProduccion mensajeProximoPedido;
+        mensajeProximoPedido.mtype = TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS;
+        colaPedidosProduccion.enviarProximoPedidoProduccion(mensajeProximoPedido);
+        
     }
     return 0;
 }

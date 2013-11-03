@@ -132,19 +132,13 @@ typedef enum {
 } TipoGabinete;
 
 typedef enum {
-    PIEZA_1 = 0,
-    PIEZA_2 = 1,
-    PIEZA_3 = 2,
-    PANTALLA_1 = 3,
-    PANTALLA_2 = 4,
-    PANTALLA_3
-} TipoProducto;
-
-typedef enum {
     NULL_PRODUCT = 0,
-    PRODUCTO_1,
-    PRODUCTO_2,
-    PRODUCTO_3
+    PIEZA_1 = 1,
+    PIEZA_2 = 2,
+    PIEZA_3 = 3,
+    PANTALLA_1 = 4,
+    PANTALLA_2 = 5,
+    PANTALLA_3
 } TipoProducto;
 
 typedef enum  { 
