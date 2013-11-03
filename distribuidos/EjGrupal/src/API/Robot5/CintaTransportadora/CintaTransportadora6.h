@@ -20,10 +20,10 @@ class CintaTransportadora6 {
 public:
     
     CintaTransportadora6();
-    CintaTransportadora6(int idCinta, int idSemCinta);
+    CintaTransportadora6(int idCinta);
     virtual ~CintaTransportadora6();
     
-    void iniciarCinta(int idClave);
+    void iniciarCinta(int idClave, int idClaveSem);
     void depositarProductoEnProduccion(ProductoEnProduccion producto);
     EstadoCinta obtenerEstadoCinta();
     

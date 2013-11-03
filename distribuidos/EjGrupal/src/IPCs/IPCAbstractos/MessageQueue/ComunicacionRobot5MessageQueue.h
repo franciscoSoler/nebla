@@ -24,23 +24,23 @@ public:
     }
 
     int recibirPedidoRobot5(int tipo, MensajePedidoRobot5* buffer) {
-        return this->recibir(tipo, (void *)buffer, sizeof (MensajePedidoRobot5) - sizeof (long));
+        return AbstractMessageQueue::recibir(tipo, (void *)buffer, sizeof (MensajePedidoRobot5) - sizeof (long));
     }
 
     int enviarCanasto(MensajeRespuestaCanasto dato) {
-        return this->enviar((const void *) &dato, sizeof (MensajeRespuestaCanasto) - sizeof (long)); 
+        return AbstractMessageQueue::enviar((const void *) &dato, sizeof (MensajeRespuestaCanasto) - sizeof (long)); 
     }
 
     int recibirCanasto(int tipo, MensajeRespuestaCanasto* buffer) {
-        return this->recibir(tipo, (void *)buffer, sizeof (MensajeRespuestaCanasto) - sizeof (long));
+        return AbstractMessageQueue::recibir(tipo, (void *)buffer, sizeof (MensajeRespuestaCanasto) - sizeof (long));
     }
     
     int enviarGabinete(MensajeRespuestaGabinete dato) {
-        return this->enviar ((const void *) &dato, sizeof (MensajeRespuestaGabinete) - sizeof (long)); 
+        return AbstractMessageQueue::enviar((const void *) &dato, sizeof (MensajeRespuestaGabinete) - sizeof (long)); 
     }
 
     int recibirGabinete(int tipo, MensajeRespuestaGabinete* buffer) {
-        return this->recibir(tipo, (void *)buffer, sizeof (MensajeRespuestaGabinete) - sizeof (long));
+        return AbstractMessageQueue::recibir(tipo, (void *)buffer, sizeof (MensajeRespuestaGabinete) - sizeof (long));
     }
 };
 

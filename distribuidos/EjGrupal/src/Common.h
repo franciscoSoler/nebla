@@ -111,7 +111,7 @@ typedef struct {
 
 typedef struct {
 	long mtype; // tipo = TIPO_PEDIDO_CANASTO
-	PedidoCanastoAGV pedidoCanastoAgv;
+        PedidoCanastoAGV pedidoCanastoAgv;
 } MensajePedidoAgv_5;
 
 /*
@@ -134,7 +134,7 @@ typedef struct {
 
 typedef struct {
     bool robot5Bloqueado;
-}EstadoRobot5;
+} EstadoRobot5;
 
 /*
  * Estructuras utilizadas para la comunicacion entre el robot 5 y el almacen de piezas.
@@ -214,4 +214,3 @@ typedef struct {
 } MensajeBarrera;
 
 #endif	/* COMMON_H */
-

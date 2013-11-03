@@ -35,10 +35,10 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
               
     /* Obtengo las cintas transportadoras */    
     cintaTransportadora[0] = CintaTransportadora6(0);
-    cintaTransportadora[0].iniciarCinta(ID_CINTA_6_0);
+    cintaTransportadora[0].iniciarCinta(ID_CINTA_6_0, ID_SEM_CINTA_6);
     
     cintaTransportadora[1] = CintaTransportadora6(1);
-    cintaTransportadora[1].iniciarCinta(ID_CINTA_6_1);
+    cintaTransportadora[1].iniciarCinta(ID_CINTA_6_1, ID_SEM_CINTA_6);
 
     /* Obtengo la memoria compartida del estado del robot 5 y su semaforo de acceso */
     estadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
@@ -120,21 +120,26 @@ int main(int argc, char** argv) {
                  * aviso que me voy a bloquear y me bloqueo */
                 semaforoAccesoEstadoRobot5.wait();
                 {
-                    bool *bloqueado;
-                    (*bloqueado) = true;
-                    estadoRobot5.writeInfo(bloqueado);
+                    
+                    EstadoRobot5 estadoRobot;
+                    estadoRobot.robot5Bloqueado = true;
+                    
+                    
+                    estadoRobot5.writeInfo(&estadoRobot);
                 }
                 semaforoAccesoEstadoRobot5.signal();
                 semaforoBloqueoRobot5.wait();
                 /* Cuando me libero debo verificar que se haya liberado 
-                 * alguna de las cintas*/
+                 * alguna de las cintas
+                 */
                 leerEstadoCintas(cintasTransportadoras, estadoCinta0, estadoCinta1);
                 bloqueadas = (estadoCinta0.ocupado && estadoCinta1.ocupado);
             }
 
             /* A partir de aca, al menos una de las cintas tiene lugar para 
              * depositar un gabinete. 
-             * Por lo tanto le indico al robot 5 que busque uno. */
+             * Por lo tanto le indico al robot 5 que busque uno. 
+             */
             pedidoRobot5.tipo = PEDIDO_GABINETE;
             mensajePedidoRobot5.mtype = TIPO_PEDIDO_ROBOT_5;
             mensajePedidoRobot5.pedidoRobot5 = pedidoRobot5;
@@ -179,11 +184,8 @@ int main(int argc, char** argv) {
             if (cintasTransportadoras[cintaAUtilizar].robot11Bloqueado()) {
                 cintasTransportadoras[cintaAUtilizar].marcarRobot11Liberado();
                 semaforoBloqueoRobot11.signal(cintaAUtilizar);
-
             }
         }
-
     }
-    
     return 0;
 }

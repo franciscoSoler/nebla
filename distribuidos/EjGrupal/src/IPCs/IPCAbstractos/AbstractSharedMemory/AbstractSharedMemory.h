@@ -33,7 +33,7 @@ public:
 	/* Pre:
  	 * Post:
  	 */
-	~AbstractSharedMemory();
+	virtual ~AbstractSharedMemory();
 
 	/* 
 	 * Metodo utilizado para obtener una Memoria Compartida, si no existe

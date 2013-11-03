@@ -27,13 +27,13 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         IPC::Semaphore &semaforoBloqueoAgv) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
-    colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_API_ROBOT_5);
+    colaComunicacionRobot5.getMessageQueue((char *)DIRECTORY_ROBOT_5,ID_COLA_API_ROBOT_5);
     
     /* Obtengo la cola de pedidos */
-    colaPedidos.getMessageQueue(DIRECTORY_AGV,ID_COLA_PEDIDOS_AGV_5);
+    colaPedidos.getMessageQueue((char *)DIRECTORY_AGV,ID_COLA_PEDIDOS_AGV_5);
 
     /* Obtengo el buffer para depositar los canastos */    
-    bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+    bufferCanasto[0].getSharedMemory((char *)DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
     bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
     bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
     
@@ -84,15 +84,15 @@ int main(int argc, char** argv) {
             sprintf(buffer, "Controlador Robot 5 - AGV: Esperando un pedido por parte de un AGV.\n");
             write(fileno(stdout), buffer, strlen(buffer));
             
-            MensajePedidoAgv_5 *nuevoPedido;
-            colaPedidos.recibirPedidoAgv(TIPO_PEDIDO_CANASTO, nuevoPedido);
+            MensajePedidoAgv_5 nuevoPedido;
+            colaPedidos.recibirPedidoAgv(TIPO_PEDIDO_CANASTO, &nuevoPedido);
             
             sprintf(buffer, "Controlador Robot 5 - AGV: Recibió un pedido de un AGV.\n");
             write(fileno(stdout), buffer, strlen(buffer));
             
             /* Le envio el pedido al robot 5 Aplicacion */
             PedidoRobot5 pedidoRobot5;
-            pedidoRobot5.pedidoCanastoAgv = (*nuevoPedido).pedidoCanastoAgv;
+            pedidoRobot5.pedidoCanastoAgv = nuevoPedido.pedidoCanastoAgv;
             pedidoRobot5.tipo = PEDIDO_CANASTO;
 
             MensajePedidoRobot5 mensajePedidoRobot5;
@@ -135,6 +135,7 @@ int main(int argc, char** argv) {
             write(fileno(stderr), buffer, strlen(buffer));
             exit(-1);
         }
+       
     }
     
     return 0;
