@@ -2,7 +2,7 @@
 #define	DATASM_R14_R16_H
 
 #include <Objects/Cinta.h>
-#include <common.h>
+#include <Common.h>
 #include <definedTypes.h>
 #include <string>
 

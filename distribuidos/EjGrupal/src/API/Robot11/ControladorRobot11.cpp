@@ -6,8 +6,8 @@
  */
 
 #include "ControladorRobot11.h"
-#include "../Logger/Logger.h"
-#include "../Parser/Parser.h"
+#include "../../Logger/Logger.h"
+#include "../../Parser/Parser.h"
 
 ControladorRobot11::ControladorRobot11() {
 }
@@ -42,13 +42,13 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
         this->semMutex_shMem_R11_R14_ = IPC::Semaphore ("semMutex_shMem_R11_R14");
-        this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY, SEM_MUTEX_SM_R11_R14_ID, 1);
+        this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
         this->semR11_Cinta13_ = IPC::Semaphore ("semR11_Cinta13");
-        this->semR11_Cinta13_.getSemaphore(DIRECTORY, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
+        this->semR11_Cinta13_.getSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
         
         this->semR14_ = IPC::Semaphore("semR14");
-        this->semR14_.getSemaphore(DIRECTORY, SEM_R14_ID, 1);
+        this->semR14_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_ID, 1);
         
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
@@ -60,8 +60,11 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
         this->shMemEstadoRobot5.getSharedMemory((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
+        this->shMem_R11_R14_Data_ = new DataSM_R11_R14();
         this->shMem_R11_R14_ = IPC::SharedMemory<DataSM_R11_R14>("ShMem_R11_R14");
-        this->shMem_R11_R14_.getSharedMemory(DIRECTORY, SM_R11_R14_ID);
+        this->shMem_R11_R14_.getSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
+        
+        
         
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         
@@ -247,12 +250,12 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         Logger::logMessage(Logger::TRACE, "devuelvo mem cinta 6");
         this->semBufferCinta6.signal(this->id_Robot);
 
-        unaCaja.idProducto = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto;
-        unaCaja.ordenDeCompra = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
+        unaCaja.idProducto_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto;
+        unaCaja.ordenDeCompra_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
         if (ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].falla || rand() % 100 > 98) {
-            unaCaja.fallado = true;
+            unaCaja.fallado_ = true;
         } else {
-            unaCaja.fallado = false;
+            unaCaja.fallado_ = false;
         }
         return unaCaja;
     }
@@ -265,7 +268,7 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
 void ControladorRobot11::depositarCaja(Caja unaCaja) {
     sprintf(this->buffer, "Robot 11-%u - depositarCaja:", this->id_Robot + 1);
     Logger::setProcessInformation(this->buffer);
-    if (unaCaja.fallado)
+    if (unaCaja.fallado_)
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba rotaaaa!!!!!!!!!!!!!!!!");
     else
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba sanaaaa!!!!!!!!!!!!!!!!");

@@ -1,10 +1,10 @@
-#include <Objects/DataSM_R11_R14.h>
+#include "DataSM_R11_R14.h"
 #include <iostream>
-#include <CSO/Exceptions/Exception.h>
+#include "../../Exceptions/Exception.h"
 
 // Only for debugging
 #include <sstream>
-#include <CSO/Logger/Logger.h>
+#include "../../Logger/Logger.h"
 
 DataSM_R11_R14::DataSM_R11_R14() {    
     for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
