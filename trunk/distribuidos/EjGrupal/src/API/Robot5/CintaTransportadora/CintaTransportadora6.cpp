@@ -136,8 +136,8 @@ std::string CintaTransportadora6::obtenerMensajeEstado() {
     semaforoAcceso.signal(this->idCinta);
     
     sprintf(buffer, "|");
-    for (int i = 0; i < BUFF_SIZE_CINTA_6; ++i) {
-        if (cintaTransportadora.lugarVacio[i]) {
+    for (int i = BUFF_SIZE_CINTA_6-1; i >= 0; --i) {
+        if (cintaTransportadora.lugarVacio[(cintaTransportadora.puntoLectura + i) % BUFF_SIZE_CINTA_6]) {
             strcat(buffer, "0|");
         }
         else {

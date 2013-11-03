@@ -44,13 +44,13 @@ int main(int argc, char* argv[]) {
         
         createIPCs();
         
-        //createProcess("Robot5", 1);
-        //createProcess("ControladorRobot5Agv", 1);
-        //createProcess("ControladorRobot5Cinta", 1);
+        createProcess("Robot5", 1);
+        createProcess("ControladorRobot5Agv", 1);
+        createProcess("ControladorRobot5Cinta", 1);
                                 
-        //createProcess("Robot11", 2);
-        //createProcess("Robot12", 2);
-        //createProcess("AGV", 3);
+        createProcess("Robot11", 2);
+        createProcess("Robot12", 2);
+        createProcess("AGV", 3);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -163,7 +163,7 @@ void createIPCs() {
     BufferCanastos canastos;
     for (int i = 0; i < MAX_QUANTITY_CANASTOS; i++) {
         canastos.canastos[i].cantidadPiezas = 0;
-        canastos.canastos[i].tipoPieza = PIEZA_1;
+        canastos.canastos[i].tipoPieza = PIEZA_2;
     }
     
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;

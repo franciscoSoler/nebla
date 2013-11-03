@@ -19,6 +19,7 @@ int main(int argc, char** argv) {
     char buffer[TAM_BUFFER];
     int nroOrdenDeCompra = generateRandomNumber(1,150);
     IPC::PedidosProduccionMessageQueue colaPedidosProduccion = IPC::PedidosProduccionMessageQueue("Mock PedidosProduccionMessageQueue");
+    colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_PEDIDOS_PRODUCCION);
 
     while (true) {
 
@@ -27,7 +28,7 @@ int main(int argc, char** argv) {
         pedidoProduccion.cantidad = generateRandomNumber(15,101);
         pedidoProduccion.diferenciaMinima = generateRandomNumber(0, pedidoProduccion.cantidad);
         pedidoProduccion.nroOrdenCompra = nroOrdenDeCompra++;
-        pedidoProduccion.tipo = (TipoProducto)generateRandomNumber(0,2);
+        pedidoProduccion.tipo = (TipoProducto)1;
 
         MensajePedidoProduccion mensajePedidoProduccion;
         mensajePedidoProduccion.mtype = TIPO_PEDIDO_PRODUCCION;

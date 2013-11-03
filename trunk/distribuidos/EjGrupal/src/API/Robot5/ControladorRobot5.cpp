@@ -6,6 +6,7 @@
  */
 
 #include "ControladorRobot5.h"
+#include "../../Parser/Parser.h"
 
 ControladorRobot5::ControladorRobot5() {
 }
@@ -45,11 +46,34 @@ void ControladorRobot5::resolverPedido(ProductoEnProduccion prodEnProduccion, bo
 Canasto ControladorRobot5::obtenerCanasto(TipoPieza tipoPieza) {
     Canasto canasto;
     canasto.tipoPieza = tipoPieza;
-    canasto.cantidadPiezas = 10;
+    canasto.cantidadPiezas = generateRandomNumber(0, MAX_PIEZAS_CANASTO);
     return canasto;
 }
 
 Gabinete ControladorRobot5::obtenerGabinete(TipoProducto tipoPorudcto) {
     Gabinete gabinete;
+    gabinete.tipoGabinete = obtenerTipoGabinete(tipoPorudcto);
     return gabinete;
+}
+
+int ControladorRobot5::generateRandomNumber(int minValue, int maxValue) {
+    srand( time(NULL) + getpid() );
+    return minValue + rand() % ( (abs(maxValue - minValue)) );
+}
+
+TipoGabinete ControladorRobot5::obtenerTipoGabinete(TipoProducto tipoProducto) {
+    std::ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
+    Parser parser;
+    
+    int ultimoNumeroProductoLeido = 0;
+    do
+    {
+	if(!parser.obtenerLineaSiguiente(stream))
+	    break;
+	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
+	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
+    } while(ultimoNumeroProductoLeido != tipoProducto);
+    
+    return static_cast<TipoGabinete> (atoi(parser.obtenerProximoValor().c_str()));
 }

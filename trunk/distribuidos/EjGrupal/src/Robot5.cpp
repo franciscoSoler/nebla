@@ -18,15 +18,16 @@ Canasto resolverPedidoCanasto(ControladorRobot5 &controladorRobot5, PedidoCanast
     // El robot va a buscar el canasto al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot 5: Buscando durante %d segundos\n", buscando);
-    write(fileno(stdout), buffer, strlen(buffer));
-    usleep(buscando * 1000 * 1000);    
+    sprintf(buffer, "Buscando durante %d segundos\n", buscando);
+    Logger::getInstance().logMessage(Logger::TRACE, buffer);
+
+    //usleep(buscando * 1000 * 1000);    
     Canasto canasto = controladorRobot5.obtenerCanasto(pedido.tipoPieza);
 
     int volviendo = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot 5: Volviendo durante %d segundos\n", volviendo);
-    write(fileno(stdout), buffer, strlen(buffer));
-    usleep(volviendo * 1000 * 1000);
+    sprintf(buffer, "Volviendo durante %d segundos\n", volviendo);
+    Logger::getInstance().logMessage(Logger::TRACE, buffer);
+    //usleep(volviendo * 1000 * 1000);
     
     return canasto;
 }
@@ -35,16 +36,16 @@ Gabinete resolverPedidoGabinete(ControladorRobot5 &controladorRobot5, TipoProduc
     // El robot va a buscar el gabinete al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot 5: Buscando durante %d segundos\n", buscando);
-    write(fileno(stdout), buffer, strlen(buffer));
-    usleep(buscando * 1000 * 1000);    
+    sprintf(buffer, "Buscando durante %d segundos.", buscando);
+    Logger::getInstance().logMessage(Logger::TRACE, buffer);
+    //usleep(buscando * 1000 * 1000);    
     
     Gabinete gabinete = controladorRobot5.obtenerGabinete(tipoPorudcto);
 
     int volviendo = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Robot 5: Volviendo durante %d segundos\n", volviendo);
-    write(fileno(stdout), buffer, strlen(buffer));
-    usleep(volviendo * 1000 * 1000);
+    sprintf(buffer, "Volviendo durante %d segundos.", volviendo);
+    Logger::getInstance().logMessage(Logger::TRACE, buffer);
+    //usleep(volviendo * 1000 * 1000);
     
     return gabinete;
 }
@@ -105,7 +106,7 @@ int main(int argc, char **argv) {
 
                     if (productoAProducir.cantidad > 0) {
                         Gabinete gabinete = resolverPedidoGabinete(controladorRobot5, productoAProducir.tipo);
-                        int ordenDeCompra = (productoAProducir.cantidad <= productoAProducir.cantidad) ? 0 : productoAProducir.nroOrdenCompra;
+                        int ordenDeCompra = (productoAProducir.cantidad <= productoAProducir.diferenciaMinima) ? 0 : productoAProducir.nroOrdenCompra;
                         productoAProducir.cantidad--;
                         bool ultimo = (productoAProducir.cantidad == 0);
                         

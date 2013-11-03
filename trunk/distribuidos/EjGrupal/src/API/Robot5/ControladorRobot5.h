@@ -27,6 +27,10 @@ public:
 
 private:
     IPC::ComunicacionRobot5MessageQueue comunicacionMsgQueue;
+    
+    int generateRandomNumber(int minValue, int maxValue);
+    TipoGabinete obtenerTipoGabinete(TipoProducto tipoProducto);
+
 };
 
 #endif	/* CONTROLADORROBOT5_H */

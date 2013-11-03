@@ -28,13 +28,13 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         IPC::Semaphore &semaforoBloqueoAgv) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
-    colaComunicacionRobot5.getMessageQueue((char *)DIRECTORY_ROBOT_5,ID_COLA_API_ROBOT_5);
+    colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_API_ROBOT_5);
     
     /* Obtengo la cola de pedidos */
-    colaPedidos.getMessageQueue((char *)DIRECTORY_AGV,ID_COLA_PEDIDOS_AGV_5);
+    colaPedidos.getMessageQueue(DIRECTORY_AGV,ID_COLA_PEDIDOS_AGV_5);
 
     /* Obtengo el buffer para depositar los canastos */    
-    bufferCanasto[0].getSharedMemory((char *)DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+    bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
     bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
     bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
     
