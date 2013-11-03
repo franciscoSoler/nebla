@@ -23,14 +23,20 @@ int main(int argc, char** argv)
     {
 	consulta_almacen_piezas_t consulta = controlador.recibirConsulta();
 	
-	respuesta_almacen_piezas_t respuesta;
 	if(consulta.tipoConsulta == CANT_MINIMA_FABRICACION)
-	    respuesta.cantidad = controlador.obtenerCantidadMinimaDeProduccion(consulta.producto);
+	{
+	    respuesta_almacen_piezas_t respuesta;
+	    respuesta.cantidad = controlador.obtenerCantidadMinimaDeProduccion(consulta.tipoProducto);
+	    controlador.responderConsulta(respuesta, consulta.emisor);	
+	}
+	
 	else if(consulta.tipoConsulta == PRODUCTOS_NECESARIOS)
 	{
 	    // doStuff();
 	}
 	
-	controlador.responderConsulta(respuesta, consulta.emisor);	
+	else if(consulta.tipoConsulta == ORDEN_PRODUCCION)
+	    controlador.enviarPedidoProduccionARobot5(consulta);
+	
     }   
 }

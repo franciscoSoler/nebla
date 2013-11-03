@@ -13,6 +13,8 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas()
     consultasAlmacen.obtener();
     this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(NOMBRE_ARCHIVO, LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     respuestasAlmacen.obtener();
+    this->mensajesRobot5 = Cola<MensajePedidoProduccion>(NOMBRE_ARCHIVO_ROBOT5, LETRA_ROBOT5);
+    mensajesRobot5.obtener();
 }
 
 ControladorAlmacenPiezas::~ControladorAlmacenPiezas() { }
@@ -23,7 +25,7 @@ consulta_almacen_piezas_t ControladorAlmacenPiezas::recibirConsulta()
     consulta_almacen_piezas_t buffer;
     consultasAlmacen.recibir(0, &buffer);
     long numVendedor = buffer.emisor;
-    int numProductoConsultado = buffer.producto;
+    int numProductoConsultado = buffer.tipoProducto;
     sprintf(mensajePantalla, "Almacén recibe consulta de producto %d por vendedor #%ld.\n", numProductoConsultado, numVendedor);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     return buffer;
@@ -81,6 +83,32 @@ void ControladorAlmacenPiezas::buscarUbiacionDeProductoEnArchivo(Parser parser, 
 	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
 	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
     } while(continuaArchivo && ultimoNumeroProductoLeido != numeroProducto);
+}
+
+void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(consulta_almacen_piezas_t consulta)
+{
+    PedidoProduccion pedidoProduccion;
+    pedidoProduccion.cantidad = consulta.cantidad;
+    pedidoProduccion.diferenciaMinima = consulta.diferencia;
+    pedidoProduccion.nroOrdenCompra = consulta.numOrdenCompra;
+    switch(consulta.tipoProducto)
+    {
+	case PRODUCTO_1:
+	    pedidoProduccion.tipo = _PRODUCTO_1;
+	    break;
+	case PRODUCTO_2:
+	    pedidoProduccion.tipo = _PRODUCTO_2;
+	    break;
+	case PRODUCTO_3:
+	    pedidoProduccion.tipo = _PRODUCTO_3;
+	    break;    
+    }
+    
+    MensajePedidoProduccion mensajePedidoProduccion;
+    mensajePedidoProduccion.pedidoProduccion = pedidoProduccion;
+    mensajePedidoProduccion.mtype = TIPO_ROBOT_5;
+    
+    mensajesRobot5.enviar(mensajePedidoProduccion);    
 }
 
 void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor)

@@ -27,7 +27,8 @@ class ControladorVendedor
 	
 	mensaje_inicial_t recibirLlamadoTelefonico();
 	pedido_t recibirPedido();
-	bool realizarPedido(pedido_t pedido);
+	pedido_produccion_t realizarPedido(pedido_t pedido);
+	void enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion);
 	void informarExitoEnPedido(pedido_t pedido);
 	void informarErrorEnPedido(pedido_t pedido);
 	
@@ -47,7 +48,7 @@ class ControladorVendedor
 
 	int obtenerCantidadMinimaDeProduccion(int numProducto);
 	pedido_produccion_t calcularCantidadAProducir(pedido_t pedido);
-	void reservarPedido(pedido_t pedido, pedido_produccion_t pedidoProduccion);
+	int reservarPedido(pedido_t pedido, pedido_produccion_t pedidoProduccion);
 };
 
 #endif	/* CONTROLADORVENDEDOR_H */

@@ -29,6 +29,8 @@ void crearColas()
     consultasAlmacen.crear();
     Cola<respuesta_almacen_piezas_t> respuestasAlmacen(NOMBRE_ARCHIVO, LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     respuestasAlmacen.crear();
+    Cola<MensajePedidoProduccion> mensajesRobot5(NOMBRE_ARCHIVO_ROBOT5, LETRA_ROBOT5);
+    mensajesRobot5.crear();
 }
 
 void crearShmems()
