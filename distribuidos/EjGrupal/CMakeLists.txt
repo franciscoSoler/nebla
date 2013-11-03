@@ -23,6 +23,9 @@ include_directories("${SRC_DIR}API/Robot14")
 include_directories("${SRC_DIR}API/Robot14/State")
 include_directories("${SRC_DIR}API/Robot16")
 include_directories("${SRC_DIR}API/Robot16/State")
+include_directories("${SRC_DIR}API/Cliente")
+include_directories("${SRC_DIR}API/Vendedor")
+include_directories("${SRC_DIR}API/AlmacenPiezas")
 
 include_directories("${SRC_DIR}Exceptions")
 
@@ -34,6 +37,7 @@ include_directories("${SRC_DIR}IPCs/IPCAbstractos/MessageQueue")
 include_directories("${SRC_DIR}IPCs/IPCAbstractos/AbstractSharedMemory")
 include_directories("${SRC_DIR}IPCs/IPCAbstractos/SharedMemory")
 include_directories("${SRC_DIR}IPCs/IPCTemplate")
+include_directories("${SRC_DIR}IPCs/Barrios")
 include_directories("${SRC_DIR}IPCs/Semaphore")
 
 include_directories("${SRC_DIR}Logger")
@@ -51,6 +55,10 @@ aux_source_directory("${SRC_DIR}API/Robot14"                             COMMON_
 aux_source_directory("${SRC_DIR}API/Robot14/State"                       COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/Robot16"                             COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/Robot16/State"                       COMMON_SRC)
+aux_source_directory("${SRC_DIR}API/Cliente"                             COMMON_SRC)
+aux_source_directory("${SRC_DIR}API/Vendedor"                            COMMON_SRC)
+aux_source_directory("${SRC_DIR}API/AlmacenPiezas"                       COMMON_SRC)
+
 aux_source_directory("${SRC_DIR}Exceptions"                              COMMON_SRC)
 aux_source_directory("${SRC_DIR}IPCs"                                    COMMON_SRC)
 aux_source_directory("${SRC_DIR}IPCs/IPCObject"                          COMMON_SRC)
@@ -61,6 +69,7 @@ aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/MessageQueue"         COMMON_
 aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/AbstractSharedMemory" COMMON_SRC)
 aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/SharedMemory"         COMMON_SRC)
 aux_source_directory("${SRC_DIR}IPCs/Semaphore"                          COMMON_SRC)
+aux_source_directory("${SRC_DIR}IPCs/Barrios"                            COMMON_SRC)
 
 aux_source_directory("${SRC_DIR}Logger"                                  COMMON_SRC)
 aux_source_directory("${SRC_DIR}Parser"                                  COMMON_SRC)
@@ -74,3 +83,7 @@ add_executable(${OUT_DIR}ControladorRobot5Agv   ${SRC_DIR}ControladorRobot5Agv.c
 add_executable(${OUT_DIR}ControladorRobot5Cinta	${SRC_DIR}ControladorRobot5Cinta.cpp ${COMMON_SRC})
 add_executable(${OUT_DIR}Robot11		${SRC_DIR}Robot11.cpp   	     ${COMMON_SRC})
 add_executable(${OUT_DIR}Robot12		${SRC_DIR}Robot12.cpp   	     ${COMMON_SRC})
+
+add_executable(${OUT_DIR}Vendedor		${SRC_DIR}Vendedor.cpp	             ${COMMON_SRC})
+add_executable(${OUT_DIR}AlmacenPiezas		${SRC_DIR}AlmacenPiezas.cpp	     ${COMMON_SRC})
+add_executable(${OUT_DIR}Cliente		${SRC_DIR}Cliente.cpp		     ${COMMON_SRC})
