@@ -7,15 +7,15 @@
 
 #include "ControladorAlmacenPiezas.h"
 
-ControladorAlmacenPiezas::ControladorAlmacenPiezas()
+ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
+        mensajesRobot5 ("Mensage Robot 5 Msg Queue")
 { 
     this->consultasAlmacen = Cola<consulta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     consultasAlmacen.obtener();
     this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     respuestasAlmacen.obtener();
     
-    this->mensajesRobot5 = Cola<MensajePedidoProduccion>(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
-    mensajesRobot5.obtener();
+    mensajesRobot5.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 }
 
 ControladorAlmacenPiezas::~ControladorAlmacenPiezas() { }
@@ -98,7 +98,7 @@ void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(consulta_almacen_pi
     mensajePedidoProduccion.pedidoProduccion = pedidoProduccion;
     mensajePedidoProduccion.mtype = TIPO_PEDIDO_PRODUCCION;
     
-    mensajesRobot5.enviar(mensajePedidoProduccion);    
+    mensajesRobot5.enviarPedidoProduccion(mensajePedidoProduccion);    
 }
 
 void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor)
@@ -142,6 +142,6 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoProducto tipoPiez
 }
 
 void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {
-    
-    this->mensajesRobot5.recibir(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, );
+    MensajeProximoPedidoProduccion mensajeProximoPedido;
+    this->mensajesRobot5.recibirProximoPedido(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, &mensajeProximoPedido);
 }
