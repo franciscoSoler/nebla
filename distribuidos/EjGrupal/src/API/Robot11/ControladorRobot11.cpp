@@ -140,7 +140,6 @@ void ControladorRobot11::avanzarCinta() {
         
         shMemBufferCinta6.readInfo(&ctrlCinta);    
 
-        //ctrlCinta.puntoEscritura = (ctrlCinta.puntoEscritura + 1) % BUFF_SIZE_CINTA_6;
         ctrlCinta.puntoLectura = (ctrlCinta.puntoLectura + 1) % BUFF_SIZE_CINTA_6;
         this->shMemBufferCinta6.writeInfo(&ctrlCinta);
         this->semBufferCinta6.signal(this->id_Robot);
@@ -235,6 +234,11 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
 
         unaCaja.idProducto = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto;
         unaCaja.ordenDeCompra = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
+        if (ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].falla || rand() % 100 > 98) {
+            unaCaja.fallado = true;
+        } else {
+            unaCaja.fallado = false;
+        }
         return unaCaja;
     }
     catch (Exception & e) {
@@ -246,7 +250,10 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
 void ControladorRobot11::depositarCaja(Caja unaCaja) {
     sprintf(this->buffer, "Robot 11-%u - depositarCaja:", this->id_Robot + 1);
     Logger::setProcessInformation(this->buffer);
-    Logger::logMessage(Logger::TRACE, "deposite una caja!!!!!!!!!!!!!!!!");
+    if (unaCaja.fallado)
+        Logger::logMessage(Logger::TRACE, "deposite una caja, estaba rotaaaa!!!!!!!!!!!!!!!!");
+    else
+        Logger::logMessage(Logger::TRACE, "deposite una caja, estaba sanaaaa!!!!!!!!!!!!!!!!");
     //TODO agregar lo de ezequiel aca y en el .h!!!!!!!!!!!!!!
 }
 
