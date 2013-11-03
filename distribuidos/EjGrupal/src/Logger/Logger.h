@@ -11,7 +11,7 @@ public:
     typedef enum {	TRACE = 0,
                     IMPORTANT,
                     DEBUG,
-                    ERROR,
+                    ERROR
     } LogLevelEnum;
     
 	static Logger & getInstance(); 

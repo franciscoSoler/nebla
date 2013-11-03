@@ -3,8 +3,9 @@
 namespace IPC {
 
 Semaphore::Semaphore(std::string IPCName) : IPCObject(IPCName),
-                                            cantSem(1),
-                                            id(0)
+                                            id(0),
+                                            cantSem(1)
+                                            
 {
 }
 
