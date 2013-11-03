@@ -14,8 +14,7 @@ SmMemAlmacenProductosTerminados::SmMemAlmacenProductosTerminados()
 }
 
 SmMemAlmacenProductosTerminados::~SmMemAlmacenProductosTerminados() 
-{
-    
+{    
     
 }
 
@@ -115,6 +114,14 @@ void SmMemAlmacenProductosTerminados::asignarStockeados(OrdenDeCompra ordenCompr
 	{
 	    almacenTerminados[numeroEspacio].ordenCompra = ordenCompra;
 	    almacenTerminados[numeroEspacio].estado = RESERVADO_VENDIDO;
+	    cantidad--;	    
+	}
+	
+	else if(almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE &&
+		almacenTerminados[numeroEspacio].ordenProduccion.tipoProducto == tipo)
+	{
+	    almacenTerminados[numeroEspacio].ordenCompra = ordenCompra;
+	    almacenTerminados[numeroEspacio].estado = PRODUCTO_PARA_ENTREGAR;
 	    cantidad--;	    
 	}
 	

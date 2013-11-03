@@ -100,7 +100,7 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
     pedidoProduccion.ventaEnCurso = true;
     pedidoProduccion.vendidoStockeado = cantidadEnStock;
     pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock;
-    pedidoProduccion.producidoParaStockear = cantidadAProducir - pedido.cantidad;
+    pedidoProduccion.producidoParaStockear = cantidadAProducir + cantidadEnStock - pedido.cantidad;
     pedidoProduccion.diferenciaMinimaProducto = cantidadMinima > pedido.cantidad ? cantidadMinima : -1;
     
     return pedidoProduccion;
