@@ -21,13 +21,13 @@ Canasto resolverPedidoCanasto(ControladorRobot5 &controladorRobot5, PedidoCanast
     sprintf(buffer, "Buscando durante %d segundos\n", buscando);
     Logger::getInstance().logMessage(Logger::TRACE, buffer);
 
-    //usleep(buscando * 1000 * 1000);    
+    usleep(buscando * 1000 * 1000);    
     Canasto canasto = controladorRobot5.obtenerCanasto(pedido.tipoPieza);
 
     int volviendo = rand() % MAX_DEMORA + 1;
     sprintf(buffer, "Volviendo durante %d segundos\n", volviendo);
     Logger::getInstance().logMessage(Logger::TRACE, buffer);
-    //usleep(volviendo * 1000 * 1000);
+    usleep(volviendo * 1000 * 1000);
     
     return canasto;
 }
@@ -38,14 +38,14 @@ Gabinete resolverPedidoGabinete(ControladorRobot5 &controladorRobot5, TipoProduc
     int buscando = rand() % MAX_DEMORA + 1;
     sprintf(buffer, "Buscando durante %d segundos.", buscando);
     Logger::getInstance().logMessage(Logger::TRACE, buffer);
-    //usleep(buscando * 1000 * 1000);    
+    usleep(buscando * 1000 * 1000);    
     
     Gabinete gabinete = controladorRobot5.obtenerGabinete(tipoPorudcto);
 
     int volviendo = rand() % MAX_DEMORA + 1;
     sprintf(buffer, "Volviendo durante %d segundos.", volviendo);
     Logger::getInstance().logMessage(Logger::TRACE, buffer);
-    //usleep(volviendo * 1000 * 1000);
+    usleep(volviendo * 1000 * 1000);
     
     return gabinete;
 }
@@ -82,8 +82,7 @@ int main(int argc, char **argv) {
              * un pedido de un canasto de un agv, un pedido por un 
              * gabinete o un pedido de producción de un producto.
              */
-            sprintf(buffer, "Robot 5: Espero por un pedido.\n");
-            write(fileno(stderr), buffer, strlen(buffer));
+            Logger::getInstance().logMessage(Logger::TRACE,"Espero por un pedido.");
             PedidoRobot5 pedido = controladorRobot5.obtenerPedido();
                         
             switch (pedido.tipo) {
@@ -115,8 +114,8 @@ int main(int argc, char **argv) {
                         productoEnProduccion.gabinete = gabinete;
                         productoEnProduccion.nroOrdenCompra = ordenDeCompra;
                         productoEnProduccion.falla = false;
-                        
-                        sprintf(buffer, " Enviando el gabinete de tipo %d para la orden %d.\n", gabinete.tipoGabinete, ordenDeCompra);
+
+                        sprintf(buffer, "Enviando el gabinete de tipo %d para la orden %d.", gabinete.tipoGabinete, ordenDeCompra);
                         Logger::getInstance().logMessage(Logger::TRACE, buffer);
 
                         controladorRobot5.resolverPedido(productoEnProduccion, ultimo);

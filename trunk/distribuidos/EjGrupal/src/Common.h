@@ -97,10 +97,6 @@
 #define CANT_MAX_PEDIDOS 10
 #define CANT_PRODUCTOS 3
 
-/*#define PRODUCTO_1 0
-#define PRODUCTO_2 1
-#define PRODUCTO_3 2*/
-
 #define CANT_VENDEDORES 10
 #define CANT_CLIENTES 50
 #define TAM_ALMACEN 30
@@ -108,21 +104,16 @@
 #define CANT_MAX_COMPONENTES_PRODUCTO 10
 
 // comunicación robot 5
-//#define NOMBRE_ARCHIVO_ROBOT5 "/home/"
-//#define LETRA_ROBOT5 '2'
-//#define TIPO_ROBOT_5 1
 
 /* Constantes IPC internas. */
-//#define NOMBRE_ARCHIVO "/home"
-#define LETRA_COLA_VENDEDORES 'b'
-#define LETRA_COLA_CLIENTES 'z'
-#define LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS 'e'
-#define LETRA_COLA_CONSULTAS_ALMACEN_PIEZAS 'f'
-#define LETRA_SHMEM_ALMACEN_TERMINADOS 'c'
-#define LETRA_SHMEM_NRO_OC 'g'
-#define LETRA_SHMEM_NRO_OP 'h'
-#define LETRA_SEM_ALMACEN_TERMINADOS 'd'
-
+// User DIRECTORY_VENDEDOR
+#define ID_COLA_VENDEDORES 'b'
+#define ID_COLA_CLIENTES 'i'
+#define ID_COLA_PEDIDOS 'j'
+#define ID_COLA_RESPUESTAS_ALMACEN_PIEZAS 'e'
+#define ID_COLA_CONSULTAS_ALMACEN_PIEZAS 'f'
+#define ID_ALMACEN_TERMINADOS 'c'
+#define ID_SHMEM_NRO_OC 'g'
 
 typedef enum {
     PEDIDO_PRODUCCION = 0,
@@ -331,7 +322,6 @@ typedef struct _OrdenCompra
 typedef struct _OrdenProduccion
 {
     int vendedor;
-    int numero;
     int tipoProducto;
 } OrdenDeProduccion;
 

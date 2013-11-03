@@ -9,7 +9,7 @@
 
 SmMemAlmacenProductosTerminados::SmMemAlmacenProductosTerminados() 
 {
-    this->shmemAlmacenTerminados = MemoriaCompartida(DIRECTORY_VENDEDOR, LETRA_SHMEM_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
+    this->shmemAlmacenTerminados = MemoriaCompartida(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     this->almacenTerminados = (EspacioAlmacenProductos*) shmemAlmacenTerminados.obtener();
 }
 
