@@ -50,6 +50,7 @@ private:
     
     bool poseePieza(int id_pieza);
     void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
+    void obtenerPantallaDelProducto(TipoProducto tipoProducto, EspecifProd *piezas);
 };
 
 #endif	/* CONTROLADORROBOT11_H */

@@ -7,6 +7,7 @@
 
 #include "ControladorRobot12.h"
 #include "../Logger/Logger.h"
+#include "../Parser/Parser.h"
 
 ControladorRobot12::ControladorRobot12() {
 }
@@ -80,6 +81,7 @@ EspecifProd ControladorRobot12::esperarProximoGabinete() {
         this->shMemBufferCinta6.readInfo(&ctrlCinta);
         //TODO robar el archivo de fede que parsea el registro de disco!!!!!!!!!!! lee nomas un archivo
         
+        ControladorRobot12::obtenerPiezasDelProducto(ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto, &especifProductoAux);
         //especifProductoAux = ctrlCinta.especificacionesProd[ctrlCinta.puntoLectura];
         
         Logger::logMessage(Logger::TRACE, "devuelvo la mem de la cinta 6");
@@ -205,11 +207,7 @@ void ControladorRobot12::finalizarEnsamble() {
         Logger::logMessage(Logger::TRACE, "envio mensaje que finalicé con el ensamble");
         MensajeBarrera message;
         message.mtype = 1;
-        //version 2
         this->cola12_A_11.send(message);
-        //version 1
-        /*this->cola1211.send(message);
-        this->cola1112.receive(0, &message);*/
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -233,5 +231,33 @@ void ControladorRobot12::buscarPosicionPieza(BufferCanastos canastos, int id_pie
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
+    }
+}
+
+void ControladorRobot12::obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
+    ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
+    Parser parser;
+    
+    int ultimoNumeroProductoLeido = 0;
+    do
+    {
+	if(!parser.obtenerLineaSiguiente(stream))
+	    break;
+	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
+	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
+    } while(ultimoNumeroProductoLeido != tipoProducto);
+    parser.obtenerProximoValor();
+    string cantidadPiezasString = parser.obtenerProximoValor();
+    int cantPiezas = atoi(cantidadPiezasString.c_str());
+    piezas->cantPiezas = 0;
+    for (int i = 0; i < cantPiezas*2; i+=2) {
+        int id = atoi(parser.obtenerProximoValor().c_str());
+        int cantidad = atoi(parser.obtenerProximoValor().c_str());
+        if (id < PANTALLA_1) {
+            piezas->pieza[i].tipoPieza = static_cast<TipoPieza> (id);
+            piezas->pieza[i].cantidad = cantidad;
+            piezas->cantPiezas++;
+        }
     }
 }

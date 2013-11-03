@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <errno.h>
 
+#define NOMBRE_ARCHIVO_PRODUCTOS        "info_productos.csv"
 // Path utilizado para inicializar los semáforos a través de la función ftok()
 #define DIRECTORY_AGV 		"./DAGV"
 #define DIRECTORY_ROBOT_5 	"./DRobot5"
