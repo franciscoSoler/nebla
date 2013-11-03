@@ -16,7 +16,7 @@ public:
     virtual bool buscarProximoGabinete(EspecifProd *piezas) = 0;
     virtual void avanzarCinta() = 0;
     virtual bool agregarPantalla(EspecifPiezaDeProd piezaDeProd) = 0;
-    virtual void pedirPiezaAlAGV(TipoPieza tipoPieza) = 0;
+    virtual void pedirPiezaAlAGV(TipoProducto tipoPieza) = 0;
     virtual Caja cerrarYTomarCaja() = 0;
     virtual void depositarCaja(Caja unaCaja) = 0;
     virtual ~IControladorRobot11 () {};

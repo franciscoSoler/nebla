@@ -27,7 +27,7 @@ public:
     bool buscarProximoGabinete(EspecifProd *piezas);
     void avanzarCinta();
     bool agregarPantalla(EspecifPiezaDeProd piezaDeProd);
-    void pedirPiezaAlAGV(TipoPieza tipoPieza);
+    void pedirPiezaAlAGV(TipoProducto tipoPieza);
     Caja cerrarYTomarCaja();
     void depositarCaja(Caja unaCaja);
         

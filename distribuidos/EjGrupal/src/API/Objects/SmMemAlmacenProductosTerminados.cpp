@@ -50,7 +50,7 @@ bool SmMemAlmacenProductosTerminados::depositarCaja(Caja caja)
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
-	if(almacenTerminados[numeroEspacio].ordenCompra.numero == caja.ordenDeCompra_)
+	if(almacenTerminados[numeroEspacio].ordenCompra.idOrden_ == caja.ordenDeCompra_)
 	{
 	    almacenTerminados[numeroEspacio].caja = caja;
 	    return true;
@@ -64,7 +64,7 @@ bool SmMemAlmacenProductosTerminados::sacarCaja(Caja* caja, int idProducto, int 
     bool primeraCajaEncontrada = false;
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
-	if(almacenTerminados[numeroEspacio].ordenCompra.numero == idOrdenCompra &&
+	if(almacenTerminados[numeroEspacio].ordenCompra.idOrden_ == idOrdenCompra &&
 		almacenTerminados[numeroEspacio].ordenProduccion.tipoProducto == idProducto)
 	{
 	    if(primeraCajaEncontrada == true)

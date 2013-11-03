@@ -23,8 +23,8 @@ public:
     virtual ~ControladorAGV();
     
     void iniciarControlador(int id_AGV);
-    TipoPieza atenderPedidos();
-    Canasto buscarPieza(TipoPieza tipoPieza);
+    TipoProducto atenderPedidos();
+    Canasto buscarPieza(TipoProducto tipoPieza);
     void reponerCanasto(Canasto canasto);
     
 private:

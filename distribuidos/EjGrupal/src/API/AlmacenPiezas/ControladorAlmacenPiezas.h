@@ -15,8 +15,9 @@
 #include "../../IPCs/Barrios/Cola.h"
 #include "../../Parser/Parser.h"
 #include "../../Common.h"
+#include "IControladorAlmacenPiezas.h"
 
-class ControladorAlmacenPiezas
+class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
 {
     public:
 	ControladorAlmacenPiezas();
@@ -26,6 +27,10 @@ class ControladorAlmacenPiezas
 	//int obtenerComposicion(int numProductoConsultado);
 	void responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor);
 	void enviarPedidoProduccionARobot5(consulta_almacen_piezas_t consulta);
+        
+        void obtenerEspecificacionesDelProducto(TipoProducto tipoPieza, EspecifProd piezasProductoActual);
+        void avisarAAGVQueAgregueCanasto(TipoProducto tipoPieza, EspecifProd piezasReservadasTemporalmente[2]);
+        void recibirConfirmacionProduccion();
     
     private:
 	Cola<consulta_almacen_piezas_t> consultasAlmacen;

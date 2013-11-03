@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
     std::auto_ptr<IControladorAGV> controladorAGV = std::auto_ptr<IControladorAGV>(new ControladorAGV());
     controladorAGV->iniciarControlador(nroRobot);
     while(true) {
-        TipoPieza tipoPieza = controladorAGV->atenderPedidos();
+        TipoProducto tipoPieza = controladorAGV->atenderPedidos();
         Canasto canasto = controladorAGV->buscarPieza(tipoPieza);
         controladorAGV->reponerCanasto(canasto);
     }

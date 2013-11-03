@@ -15,7 +15,7 @@ public:
     virtual void iniciarControlador(int numRobot) = 0;
     virtual EspecifProd esperarProximoGabinete() = 0;
     virtual bool agregarConector(EspecifPiezaDeProd piezaDeProd) = 0;
-    virtual void pedirPiezaAlAGV(TipoPieza tipoPieza) = 0;
+    virtual void pedirPiezaAlAGV(TipoProducto tipoPieza) = 0;
     virtual void finalizarEnsamble() = 0;
     virtual ~IControladorRobot12 () {};
 };

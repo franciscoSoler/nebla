@@ -22,7 +22,7 @@ public:
     void resolverPedido(Canasto canasto, int idDestino);
     void resolverPedido(ProductoEnProduccion prodEnProduccion, bool ultimo);
     
-     Canasto obtenerCanasto(TipoPieza tipoPieza);
+     Canasto obtenerCanasto(TipoProducto tipoPieza);
      Gabinete obtenerGabinete(TipoProducto tipoPorudcto);
 
 private:

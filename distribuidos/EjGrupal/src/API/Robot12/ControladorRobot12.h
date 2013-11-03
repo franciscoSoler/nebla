@@ -24,7 +24,7 @@ public:
     void iniciarControlador(int numRobot);
     EspecifProd esperarProximoGabinete();
     bool agregarConector(EspecifPiezaDeProd piezaDeProd);
-    void pedirPiezaAlAGV(TipoPieza tipoPieza);
+    void pedirPiezaAlAGV(TipoProducto tipoPieza);
     void finalizarEnsamble();
     
 private:
