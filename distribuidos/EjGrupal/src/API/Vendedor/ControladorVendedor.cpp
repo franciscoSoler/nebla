@@ -13,27 +13,25 @@ ControladorVendedor::ControladorVendedor() {
 ControladorVendedor::ControladorVendedor(long numVendedor)
 {
     /* Comunicación con los clientes. */
-    this->vendedores = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, LETRA_COLA_VENDEDORES);
+    this->vendedores = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     this->vendedores.obtener();
-    this->clientes = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES);
+    this->clientes = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
     this->clientes.obtener();
-    this->pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES + (char) 1 + (char) numVendedor);
+    this->pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     this->pedidos.obtener();
     
     /* Información sobre las órdenes de producción y compra. */
-    this->shmemNumeroOrdenCompra = MemoriaCompartida(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OC, sizeof(int));
+    this->shmemNumeroOrdenCompra = MemoriaCompartida(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
     this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
-    this->shmemNumeroOrdenProduccion = MemoriaCompartida(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OP, sizeof(int));
-    this->numeroOrdenProduccion = (int*) shmemNumeroOrdenProduccion.obtener();    
 
     /* Comunicación con el almacén de piezas. */
-    this->consultasAlmacen = Cola<consulta_almacen_piezas_t>(DIRECTORY_VENDEDOR, LETRA_COLA_CONSULTAS_ALMACEN_PIEZAS);
-    this->consultasAlmacen.obtener();    
-    this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(DIRECTORY_VENDEDOR, LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS);
+    this->consultasAlmacen = Cola<consulta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    this->consultasAlmacen.obtener();
+    this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     this->respuestasAlmacen.obtener();
     
     /* Comunicación con el almacén de productos terminados. */
-    this->mutexAlmacenTerminados = Semaforo(DIRECTORY_VENDEDOR, LETRA_SEM_ALMACEN_TERMINADOS);
+    this->mutexAlmacenTerminados = Semaforo(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
     this->mutexAlmacenTerminados.obtener();
     
     this->numVendedor = numVendedor;
@@ -118,8 +116,6 @@ int ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t ped
     if(pedidoProduccion.producidoVendido + pedidoProduccion.producidoParaStockear != 0)
     {
 	ordenProduccion.vendedor = numVendedor;
-	(*numeroOrdenProduccion)++;
-	ordenProduccion.numero = *numeroOrdenProduccion;
 	ordenProduccion.tipoProducto = pedido.tipoProducto;
 	
 	/*

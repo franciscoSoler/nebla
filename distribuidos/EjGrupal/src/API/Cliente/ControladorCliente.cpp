@@ -11,10 +11,13 @@ ControladorCliente::ControladorCliente() { }
 
 ControladorCliente::ControladorCliente(long numCliente)
 { 
-    this->vendedores = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, LETRA_COLA_VENDEDORES);
+    this->vendedores = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     this->vendedores.obtener();
-    this->clientes = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES);
+    this->clientes = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
     this->clientes.obtener();
+    
+    this->pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
+    this->pedidos.obtener();
     
     this->numCliente = numCliente;
 }
@@ -36,8 +39,7 @@ void ControladorCliente::contactarVendedores()
     sprintf(mensajePantalla, "Cliente #%ld recibe la respuesta del vendedor.\n", numCliente);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     
-    pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES + (char) 1 + (char) numVendedor);
-    pedidos.obtener();
+
     
     this->numVendedorAsociado = numVendedor;
 }

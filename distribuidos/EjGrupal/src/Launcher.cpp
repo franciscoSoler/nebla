@@ -255,29 +255,25 @@ void createIPCs() {
 	semR16.createSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
 	semR16.initializeSemaphore(0, 0);
         
-    Cola<mensaje_inicial_t> vendedores(DIRECTORY_VENDEDOR, LETRA_COLA_VENDEDORES);
+    Cola<mensaje_inicial_t> vendedores(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     vendedores.crear();
-    Cola<mensaje_inicial_t> clientes(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES);
+    Cola<mensaje_inicial_t> clientes(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
     clientes.crear();
-    for(int i = 0; i < CANT_VENDEDORES; i++)
-    {
-	Cola<pedido_t> pedidos(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES + (char) 1 + (char) i);
-	pedidos.crear();
-    }
+	
+    Cola<pedido_t> pedidos(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
+    pedidos.crear();
     
-    Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, LETRA_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     consultasAlmacen.crear();
-    Cola<respuesta_almacen_piezas_t> respuestasAlmacen(DIRECTORY_VENDEDOR, LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS);
+    Cola<respuesta_almacen_piezas_t> respuestasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     respuestasAlmacen.crear();  
     
-    MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, LETRA_SHMEM_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
+    MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     shmemAlmacenTerminados.crear();
-    MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OC, sizeof(int));
+    MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
     shmemNumeroOrdenCompra.crear();
-    MemoriaCompartida shmemNumeroOrdenProduccion(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OP, sizeof(int));
-    shmemNumeroOrdenProduccion.crear();
     
-    Semaforo mutexAlmacenTerminados(DIRECTORY_VENDEDOR, LETRA_SEM_ALMACEN_TERMINADOS, 1);
+    Semaforo mutexAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
     mutexAlmacenTerminados.crear();
 }
 

@@ -9,9 +9,9 @@
 
 ControladorAlmacenPiezas::ControladorAlmacenPiezas()
 { 
-    this->consultasAlmacen = Cola<consulta_almacen_piezas_t>(DIRECTORY_VENDEDOR, LETRA_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    this->consultasAlmacen = Cola<consulta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     consultasAlmacen.obtener();
-    this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(DIRECTORY_VENDEDOR, LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS);
+    this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     respuestasAlmacen.obtener();
     
     this->mensajesRobot5 = Cola<MensajePedidoProduccion>(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
@@ -107,4 +107,3 @@ void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t resp
     respuesta.mtype = numEmisor;
     respuestasAlmacen.enviar(respuesta);
 }
-

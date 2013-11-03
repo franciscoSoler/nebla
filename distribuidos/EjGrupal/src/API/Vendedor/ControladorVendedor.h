@@ -38,7 +38,6 @@ class ControladorVendedor
 	Cola<mensaje_inicial_t> vendedores;
 	Cola<mensaje_inicial_t> clientes;
 	Cola<pedido_t> pedidos;
-	MemoriaCompartida shmemNumeroOrdenProduccion;
 	MemoriaCompartida shmemNumeroOrdenCompra;
 	int* numeroOrdenCompra;
 	int* numeroOrdenProduccion;
