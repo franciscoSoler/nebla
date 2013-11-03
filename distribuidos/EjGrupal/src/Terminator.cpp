@@ -25,6 +25,13 @@
 #include "API/Objects/DataSM_R14_R16.h"
 #include "IPCs/IPCTemplate/SharedMemory.h"
 
+#include "API/Objects/DataSM_R14_R16.h"
+#include "IPCs/IPCTemplate/SharedMemory.h"
+
+#include "IPCs/Barrios/Cola.h"
+#include "IPCs/Barrios/MemoriaCompartida.h"
+#include "IPCs/Barrios/Semaforo.h"
+
 int main(int argc, char* argv[]) {
     try {
         Logger::getInstance().setProcessInformation("Terminator:");
@@ -169,5 +176,30 @@ int main(int argc, char* argv[]) {
         e.get_error_description().c_str());
         return -1;
     }
+    
+    
+    Cola<mensaje_inicial_t> vendedores(DIRECTORY_VENDEDOR, LETRA_COLA_VENDEDORES);
+    vendedores.destruir();
+    Cola<mensaje_inicial_t> clientes(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES);
+    clientes.destruir();
+    for(int i = 0; i < CANT_VENDEDORES; i++)
+    {
+	Cola<pedido_t> pedidos(DIRECTORY_VENDEDOR, LETRA_COLA_CLIENTES + (char) 1 + (char) i);
+	pedidos.destruir();
+    }
+    Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, LETRA_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    consultasAlmacen.destruir();
+    Cola<respuesta_almacen_piezas_t> respuestasAlmacen(DIRECTORY_VENDEDOR, LETRA_COLA_RESPUESTAS_ALMACEN_PIEZAS);
+    respuestasAlmacen.destruir();
+   
+    MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, LETRA_SHMEM_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
+    shmemAlmacenTerminados.liberar();
+    MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OC, sizeof(int));
+    shmemNumeroOrdenCompra.liberar();
+    MemoriaCompartida shmemNumeroOrdenProduccion(DIRECTORY_VENDEDOR, LETRA_SHMEM_NRO_OP, sizeof(int));
+    shmemNumeroOrdenProduccion.liberar();
+
+    Semaforo mutexAlmacenTerminados(DIRECTORY_VENDEDOR, LETRA_SEM_ALMACEN_TERMINADOS, 1);
+    mutexAlmacenTerminados.destruir();
 }
 
