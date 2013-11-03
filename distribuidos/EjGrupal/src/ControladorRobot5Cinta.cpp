@@ -29,7 +29,7 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
         IPC::Semaphore &semaforoBloqueoRobot11) {
     
     /* Obtengo la cola de comunicacion con el robot 5 */
-    colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_PEDIDOS_AGV_5);
+    colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_API_ROBOT_5);
     
     /* Obtengo la cola de pedidos */
     colaPedidos.getMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_PEDIDOS_PRODUCCION);
@@ -45,6 +45,8 @@ void iniciarIPC(IPC::ComunicacionRobot5MessageQueue &colaComunicacionRobot5,
     estadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
     semaforoAccesoEstadoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
     semaforoBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
+    
+    semaforoBloqueoRobot11.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11,CANTIDAD_CINTAS_6);
 }
 
 void leerEstadoCintas (CintaTransportadora6 *cintaTransportadora,
@@ -205,7 +207,7 @@ int main(int argc, char** argv) {
             ProductoEnProduccion productoEnProduccion = mensajeRespuestaGabinete.productoEnProduccion;
             cintasTransportadoras[cintaAUtilizar].depositarProductoEnProduccion(productoEnProduccion);
 
-            sprintf(buffer, "Estado cinta luego del deposito: %s", cintasTransportadoras[cintaAUtilizar].obtenerMensajeEstado().c_str());
+            sprintf(buffer, "Estado cinta %d luego del deposito: %s",cintaAUtilizar, cintasTransportadoras[cintaAUtilizar].obtenerMensajeEstado().c_str());
             Logger::getInstance().logMessage(Logger::TRACE, buffer);
             
             /* Verifico si el robot 11 encargado de la cinta utilizada esta 
@@ -213,8 +215,9 @@ int main(int argc, char** argv) {
              */
             Logger::getInstance().logMessage(Logger::TRACE, "Verifico si el robot 11 correspondiente esta bloqueado.");
             if (cintasTransportadoras[cintaAUtilizar].robot11Bloqueado()) {
-                Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo desbloqueo.");
+                Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo marco como desbloqueado.");
                 cintasTransportadoras[cintaAUtilizar].marcarRobot11Liberado();
+                Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo desbloqueo.");
                 semaforoBloqueoRobot11.signal(cintaAUtilizar);
             }
         }

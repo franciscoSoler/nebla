@@ -71,6 +71,7 @@
 #define CANTIDAD_AGVS                           3
 #define MAX_QUANTITY_CANASTOS                   50
 #define MAX_PIEZAS_POR_PRODUCTO                 9
+#define MAX_PIEZAS_CANASTO                      40
 
 typedef enum {
     PEDIDO_PRODUCCION = 0,
