@@ -1,5 +1,7 @@
-1,6,3,4,1,3,2,7,2
-2,9,2,2,1,3,3
-0,3,4,1,2,6,1,5,1,4,2
+tipoProducto, tipoGabinete, cantidadMinimaProdProducto, cantidadComponentes [,tipoPieza, cantidad]
 
-numProducto, cantidadMinimaProdProducto, cantidadComponentes, 
+1,0,6,3,4,1,3,2,7,2
+2,1,9,2,2,1,3,3
+0,2,3,4,1,2,6,1,5,1,4,2
+
+ 
