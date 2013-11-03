@@ -25,6 +25,9 @@
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "API/Objects/DataSM_R11_R14.h"
+#include "API/Objects/DataSM_R14_R16.h"
+#include "IPCs/IPCTemplate/SharedMemory.h"
 
 static char buffer[255];
 static char param1[20];
@@ -205,6 +208,44 @@ void createIPCs() {
     cola12_A_111.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
     cola12_A_112.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
     
+    
+    // de robots 11, 14 y 16
+    DataSM_R11_R14 dataSM_R11_R14;
+    DataSM_R14_R16 dataSM_R14_R16;
+    
+	// Create and initialize ShMem
+	IPC::SharedMemory<DataSM_R11_R14> SM_R11_R14("SM_R11_R14");
+	SM_R11_R14.createSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
+    SM_R11_R14.write( & dataSM_R11_R14 );
+    
+    IPC::SharedMemory<DataSM_R14_R16> SM_R14_R16("SM_R14_R16");
+	SM_R14_R16.createSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
+    SM_R14_R16.write( & dataSM_R14_R16 );
+   
+	// Do the same with the semaphores
+	IPC::Semaphore semMutexSM_R11_R14("semMutexSM_R11_R14");
+	semMutexSM_R11_R14.createSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
+	semMutexSM_R11_R14.initializeSemaphore(0, 1);
+    
+	IPC::Semaphore semMutexSM_R14_R16("semMutexSM_R14_R16");
+	semMutexSM_R14_R16.createSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
+	semMutexSM_R14_R16.initializeSemaphore(0, 1);
+    
+    IPC::Semaphore semR11_Cinta13("semR11_Cinta13");
+	semR11_Cinta13.createSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
+    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
+        semR11_Cinta13.initializeSemaphore(i, 0);    
+    }
+	
+    // TODO: Preguntar si con sólo este semáforo alcanza, o tengo que implementar
+    // uno para condición de bloqueo
+    IPC::Semaphore semR14("semR14");
+	semR14.createSemaphore(DIRECTORY_ROBOT_14, SEM_R14_ID, 1);
+	semR14.initializeSemaphore(0, 0);
+    
+    IPC::Semaphore semR16("semR16");
+	semR16.createSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
+	semR16.initializeSemaphore(0, 0);
 }
 
 void createProcess(std::string processName, int amountOfProcesses) {

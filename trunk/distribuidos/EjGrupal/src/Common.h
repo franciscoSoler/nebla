@@ -12,6 +12,7 @@
 #define DIRECTORY_ROBOT_11 	"./DRobot11"
 #define DIRECTORY_ROBOT_12 	"./DRobot12"
 #define DIRECTORY_ROBOT_14 	"./DRobot14"
+#define DIRECTORY_ROBOT_16 	"./DRobot16"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
@@ -61,8 +62,13 @@
 #define ID_COLA_12_A_11_1               3
 #define ID_COLA_12_A_11_2               4
 
-//ipcs del robot 14
+//ipcs del robot 14 (usar DIRECTORY_ROBOT_14)
 #define SEM_R14_ID                      1
+#define SEM_MUTEX_SM_R14_R16_ID         2
+#define SM_R14_R16_ID                   2
+
+//ipcs del robot 16 (usar DIRECTORY_ROBOT_16)
+#define SEM_R16_ID                      1
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
