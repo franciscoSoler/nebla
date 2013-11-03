@@ -34,6 +34,7 @@ public:
 private:
     char buffer[255];
     int id_Agv;
+    int nroCinta_;
     int id_semMemCanastos;
     int id_Robot;
     int posicionPieza;
