@@ -43,7 +43,7 @@ ControladorVendedor::~ControladorVendedor() { }
 mensaje_inicial_t ControladorVendedor::recibirLlamadoTelefonico()
 {
     mensaje_inicial_t bufferMensajeInicial;
-    vendedores.recibir(0, &bufferMensajeInicial);
+    this->vendedores.recibir(CANT_VENDEDORES, &bufferMensajeInicial);
 
     /* Arma el mensaje para contactar al cliente. */
     long numCliente = bufferMensajeInicial.emisor;
@@ -154,27 +154,6 @@ pedido_produccion_t ControladorVendedor::reservarPedido(pedido_t pedido)
     return pedidoProduccion;
 }
 
-int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numProducto)
-{
-    char mensajePantalla[256];
-    
-    consulta_almacen_piezas_t consulta;
-    consulta.emisor = numVendedor;
-    consulta.mtype = 1;
-    consulta.tipoProducto = (TipoProducto)numProducto;
-    consulta.tipoConsulta = CANT_MINIMA_FABRICACION;
-    //consultasAlmacen.enviar(consulta);
-    sprintf(mensajePantalla, "Vendedor #%ld consulta al almacén cantidad mínima de productos a producir.\n", numVendedor);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
-
-    respuesta_almacen_piezas_t respuesta;
-    //respuestasAlmacen.recibir(numVendedor, &respuesta);
-    sprintf(mensajePantalla, "Vendedor #%ld recibe que la cantidad mínima de producción del producto %d es de %d.\n", numVendedor, numProducto, respuesta.cantidad);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
-    
-    return respuesta.cantidad;
-}
-
 void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion)
 {    
     char mensajePantalla[256];
@@ -230,3 +209,35 @@ void ControladorVendedor::enviarRespuestaDePedido(long numCliente, bool resultad
     respuesta.emisor = numVendedor;
     clientes.enviar(respuesta);
 }
+
+int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)
+{
+    ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
+    Parser parser;
+    this->buscarUbicacionDeProductoEnArchivo(parser, stream, numeroProducto);
+    string cantMinimaProduccionString = parser.obtenerProximoValor();
+    cantMinimaProduccionString = parser.obtenerProximoValor();
+    int cantMinimaProduccion = atoi(cantMinimaProduccionString.c_str());
+    
+    char mensajePantalla[256];
+    sprintf(mensajePantalla, "La cantidad mínima de producción de producto %d es %d.\n", numeroProducto, cantMinimaProduccion);
+    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    
+    return cantMinimaProduccion;
+}
+
+void ControladorVendedor::buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
+{
+    bool continuaArchivo = true;
+    int ultimoNumeroProductoLeido = 0;
+    do
+    {
+	continuaArchivo = parser.obtenerLineaSiguiente(stream);
+	if(!continuaArchivo)
+	    continue;
+	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
+	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
+    } while(continuaArchivo && ultimoNumeroProductoLeido != numeroProducto);
+}
+

@@ -60,6 +60,7 @@ int main(int argc, char* argv[]) {
         createProcess("Robot5", 1);
         createProcess("ControladorRobot5Agv", 1);
         createProcess("ControladorRobot5Cinta", 1);
+        createProcess("AlmacenPiezas", 1);
                                 
         createProcess("Robot11", 2);
         createProcess("Robot12", 2);
@@ -277,6 +278,7 @@ void createIPCs() {
     
     IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");
     mutexAlmacenTerminados.createSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
+    mutexAlmacenTerminados.initializeSemaphore(0,1);
     
     IPC::MsgQueue outputQueueDespacho("outputQueueDespacho");
     outputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
@@ -302,7 +304,7 @@ void createIPCs() {
     IPC::MsgQueue outputQueueVendedor("outputQueueVendedor");
     outputQueueVendedor.create(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_OUTPUT_ID);  
     
-    //IPCs de Fede
+    //IPCs de Fede    
     IPC::Semaphore semMutex_APT("semMutex_APT");
     semMutex_APT.createSemaphore(DIRECTORY_APT, SEM_MUTEX_SM_APT_ID, 1);
     semMutex_APT.initializeSemaphore(0, 1);
