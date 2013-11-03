@@ -43,8 +43,11 @@ int main(int argc, char* argv[]) {
         semaforoBloqueoRobot5.destroy();
 
         IPC::Semaphore semaforoBloqueoRobot11("Bloqueo Robot 11");
+        IPC::Semaphore semBloqueoRobot12("semBloqueoRobot12");
         semaforoBloqueoRobot11.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, CANTIDAD_CINTAS_6);
+        semBloqueoRobot12.getSemaphore(DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, CANTIDAD_CINTAS_6);
         semaforoBloqueoRobot11.destroy();
+        semBloqueoRobot12.destroy();
 
         IPC::Semaphore semaforoAccesoCinta6("Acceso Cinta 6");
         semaforoAccesoCinta6.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, CANTIDAD_CINTAS_6);
@@ -71,10 +74,13 @@ int main(int argc, char* argv[]) {
         // Do the same with the semaphores
         IPC::Semaphore semBloqueoAGV("semBloqueoAGV");
         IPC::Semaphore semBufferAGV_5("semBufferAGV_5");
+        IPC::Semaphore semBufferCanastos("semMemCanastos");
         semBloqueoAGV.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
         semBloqueoAGV.destroy();
         semBufferAGV_5.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
         semBufferAGV_5.destroy();
+        semBufferCanastos.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, CANTIDAD_AGVS);
+        semBufferCanastos.destroy();
 
         // Do the same with the queues
         IPC::PedidosAgvMessageQueue colaPedidosAGV_5;
@@ -86,6 +92,37 @@ int main(int argc, char* argv[]) {
         IPC::ComunicacionRobot5MessageQueue colaComunicacionRobot5 = IPC::ComunicacionRobot5MessageQueue("colaComunicacionRobot5");
         colaComunicacionRobot5.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_API_ROBOT_5);
         colaComunicacionRobot5.destroy();
+        
+        // Robots cintas - AGV
+        
+        IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
+        colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
+        colaPedidosCanastos.destroy();
+
+        IPC::BufferCanastosSharedMemory shMemBufferCanastos0 = IPC::BufferCanastosSharedMemory("shMemBufferCanastos0");
+        IPC::BufferCanastosSharedMemory shMemBufferCanastos1 = IPC::BufferCanastosSharedMemory("shMemBufferCanastos1");
+        IPC::BufferCanastosSharedMemory shMemBufferCanastos2 = IPC::BufferCanastosSharedMemory("shMemBufferCanastos2");
+        shMemBufferCanastos0.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+        shMemBufferCanastos1.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
+        shMemBufferCanastos2.getSharedMemory(DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
+        shMemBufferCanastos0.destroy();
+        shMemBufferCanastos1.destroy();
+        shMemBufferCanastos2.destroy();
+        
+        //Robots 11 y 12
+        IPC::Barrera1112MessageQueue cola11_A_121;
+        IPC::Barrera1112MessageQueue cola11_A_122;
+        cola11_A_121.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_1);
+        cola11_A_122.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_2);
+        cola11_A_121.destroy();
+        cola11_A_122.destroy();
+
+        IPC::Barrera1112MessageQueue cola12_A_111;
+        IPC::Barrera1112MessageQueue cola12_A_112;
+        cola12_A_111.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
+        cola12_A_112.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
+        cola12_A_111.destroy();
+        cola12_A_112.destroy();
     }    
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
