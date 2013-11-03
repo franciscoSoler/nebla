@@ -25,10 +25,8 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
 
     /* Comunicación con el almacén de piezas. */
-    this->consultasAlmacen = Cola<consulta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
-    this->consultasAlmacen.obtener();
-    this->respuestasAlmacen = Cola<respuesta_almacen_piezas_t>(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
-    this->respuestasAlmacen.obtener();
+    this->colaEnvioOrdenProduccion = Cola<pedido_produccion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    this->colaEnvioOrdenProduccion.obtener();
     
     /* Comunicación con el almacén de productos terminados. */
     this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
@@ -36,7 +34,6 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     
     outputQueueDespacho = IPC::MsgQueue("outputQueueDespacho");
     outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
-    
     
     this->numVendedor = numVendedor;
 }
@@ -166,12 +163,12 @@ int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numProducto)
     consulta.mtype = 1;
     consulta.tipoProducto = (TipoProducto)numProducto;
     consulta.tipoConsulta = CANT_MINIMA_FABRICACION;
-    consultasAlmacen.enviar(consulta);
+    //consultasAlmacen.enviar(consulta);
     sprintf(mensajePantalla, "Vendedor #%ld consulta al almacén cantidad mínima de productos a producir.\n", numVendedor);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
 
     respuesta_almacen_piezas_t respuesta;
-    respuestasAlmacen.recibir(numVendedor, &respuesta);
+    //respuestasAlmacen.recibir(numVendedor, &respuesta);
     sprintf(mensajePantalla, "Vendedor #%ld recibe que la cantidad mínima de producción del producto %d es de %d.\n", numVendedor, numProducto, respuesta.cantidad);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     
@@ -179,21 +176,12 @@ int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numProducto)
 }
 
 void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion)
-{
-    consulta_almacen_piezas_t consulta;
-    consulta.emisor = numVendedor;
-    consulta.mtype = 1;
-    consulta.cantidad = pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido;
-    consulta.diferencia = pedidoProduccion.diferenciaMinimaProducto;
-    consulta.numOrdenCompra = pedidoProduccion.numOrdenCompra;
-    consulta.tipoProducto = pedidoProduccion.tipoProducto;
-    consulta.tipoConsulta = ORDEN_PRODUCCION;
-    
+{    
     char mensajePantalla[256];
-    sprintf(mensajePantalla, "Vendedor #%ld envía pedido de producción de %d unidades de producto %d al almacén de piezas.\n", numVendedor, consulta.cantidad, consulta.tipoProducto);
+    sprintf(mensajePantalla, "Vendedor #%ld envía pedido de producción de %d unidades de producto %d al almacén de piezas.\n", numVendedor, pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido, pedidoProduccion.tipoProducto);
     write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
     
-    consultasAlmacen.enviar(consulta);
+    colaEnvioOrdenProduccion.enviar(pedidoProduccion);
 }
 
 void ControladorVendedor::confirmarPedido(pedido_produccion_t pedidoProduccion, OrdenDeCompra ordenDeCompra)

@@ -27,20 +27,19 @@ class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
     public:
 	ControladorAlmacenPiezas();
 	virtual ~ControladorAlmacenPiezas();
-	consulta_almacen_piezas_t recibirConsulta();
+	pedido_produccion_t recibirPedidoDeProduccion();
 	int obtenerCantidadMinimaDeProduccion(int numProductoConsultado);
-	//int obtenerComposicion(int numProductoConsultado);
 	void responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor);
-	void enviarPedidoProduccionARobot5(consulta_almacen_piezas_t consulta);
-        
         void obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd piezasProductoActual);
         void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]);
         void recibirConfirmacionProduccion();
+        void enviarPedidoProduccionARobot5(pedido_produccion_t pedidoProduccion);
+
     
     private:
         char buffer[TAM_BUFFER];
-	Cola<consulta_almacen_piezas_t> consultasAlmacen;
-	Cola<respuesta_almacen_piezas_t> respuestasAlmacen;
+	Cola<pedido_produccion_t> colaReciboOrdenProduccion;
+        Cola<MensajePedidoProduccion> colaEnvioMensajePedidoProduccion;
         
         IPC::PedidosProduccionMessageQueue mensajesRobot5;
         IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
