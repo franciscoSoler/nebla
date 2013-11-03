@@ -107,3 +107,41 @@ void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t resp
     respuesta.mtype = numEmisor;
     respuestasAlmacen.enviar(respuesta);
 }
+
+void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd piezasProductoActual) {
+    ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
+    Parser parser;
+    
+    int ultimoNumeroProductoLeido = 0;
+    do
+    {
+	if(!parser.obtenerLineaSiguiente(stream))
+	    break;
+	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
+	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
+    } while(ultimoNumeroProductoLeido != tipoProducto);
+    parser.obtenerProximoValor();
+    parser.obtenerProximoValor();
+    string cantidadPiezasString = parser.obtenerProximoValor();
+    int cantPiezas = atoi(cantidadPiezasString.c_str());
+    piezas->cantPiezas = 0;
+    for (int i = 0; i < cantPiezas*2; i+=2) {
+        int id = atoi(parser.obtenerProximoValor().c_str());
+        int cantidad = atoi(parser.obtenerProximoValor().c_str());
+        if (id < PANTALLA_1) {
+            piezas->pieza[i].tipoPieza = static_cast<TipoProducto> (id);
+            piezas->pieza[i].cantidad = cantidad;
+            piezas->cantPiezas++;
+        }
+    }
+}
+
+void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoProducto tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) {
+    
+}
+
+void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {
+    
+    this->mensajesRobot5.recibir(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, );
+}

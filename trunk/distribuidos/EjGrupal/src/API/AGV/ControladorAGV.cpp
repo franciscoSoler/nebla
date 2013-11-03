@@ -65,7 +65,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
     }
 }
 
-TipoPieza ControladorAGV::atenderPedidos() {
+TipoProducto ControladorAGV::atenderPedidos() {
     try {
         sprintf(this->buffer, "AGV-%u - atenderPedidos:", id_AGV + 1);
         Logger::setProcessInformation(this->buffer);
@@ -84,7 +84,7 @@ TipoPieza ControladorAGV::atenderPedidos() {
     }
 }
 
-Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
+Canasto ControladorAGV::buscarPieza(TipoProducto tipoPieza) {
     try {
         sprintf(this->buffer, "AGV-%u - buscarPieza:", id_AGV + 1);
         Logger::setProcessInformation(this->buffer);

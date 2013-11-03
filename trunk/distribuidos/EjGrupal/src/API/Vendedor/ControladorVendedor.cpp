@@ -108,10 +108,10 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
 int ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t pedidoProduccion)
 {
     OrdenDeCompra ordenCompra;
-    ordenCompra.cliente = pedido.emisor;
-    ordenCompra.vendedor = numVendedor;
+    ordenCompra.idCliente_ = pedido.emisor;
+    ordenCompra.idVendedor_ = numVendedor;
     (*numeroOrdenCompra)++;
-    ordenCompra.numero = (*numeroOrdenCompra);
+    ordenCompra.idOrden_ = (*numeroOrdenCompra);
 
     OrdenDeProduccion ordenProduccion;
     if(pedidoProduccion.producidoVendido + pedidoProduccion.producidoParaStockear != 0)
@@ -143,7 +143,7 @@ int ControladorVendedor::reservarPedido(pedido_t pedido, pedido_produccion_t ped
     if(pedidoProduccion.vendidoStockeado > 0)
 	almacenProductosTerminados.asignarStockeados(ordenCompra, pedido.tipoProducto, pedidoProduccion.vendidoStockeado);
     
-    return ordenCompra.numero;
+    return ordenCompra.idOrden_;
 }
 
 pedido_produccion_t ControladorVendedor::realizarPedido(pedido_t pedido)

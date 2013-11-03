@@ -43,7 +43,7 @@ void ControladorRobot5::resolverPedido(ProductoEnProduccion prodEnProduccion, bo
     comunicacionMsgQueue.enviarGabinete(mensajeRespuesta);
 }
 
-Canasto ControladorRobot5::obtenerCanasto(TipoPieza tipoPieza) {
+Canasto ControladorRobot5::obtenerCanasto(TipoProducto tipoPieza) {
     Canasto canasto;
     canasto.tipoPieza = tipoPieza;
     canasto.cantidadPiezas = generateRandomNumber(0, MAX_PIEZAS_CANASTO);

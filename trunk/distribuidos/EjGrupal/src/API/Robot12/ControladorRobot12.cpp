@@ -178,7 +178,7 @@ bool ControladorRobot12::agregarConector(EspecifPiezaDeProd piezaDeProd) {
     }
 }
 
-void ControladorRobot12::pedirPiezaAlAGV(TipoPieza tipoPieza) {
+void ControladorRobot12::pedirPiezaAlAGV(TipoProducto tipoPieza) {
     try {
         sprintf(this->buffer, "Robot 12-%u - pedirPiezaAlAGV:", this->id_Robot + 1);
         Logger::setProcessInformation(this->buffer);
@@ -256,7 +256,7 @@ void ControladorRobot12::obtenerPiezasDelProducto(TipoProducto tipoProducto, Esp
         int id = atoi(parser.obtenerProximoValor().c_str());
         int cantidad = atoi(parser.obtenerProximoValor().c_str());
         if (id < PANTALLA_1) {
-            piezas->pieza[i].tipoPieza = static_cast<TipoPieza> (id);
+            piezas->pieza[i].tipoPieza = static_cast<TipoProducto> (id);
             piezas->pieza[i].cantidad = cantidad;
             piezas->cantPiezas++;
         }

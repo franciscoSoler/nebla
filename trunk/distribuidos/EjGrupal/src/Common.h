@@ -76,8 +76,10 @@
 #define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 	2 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
 #define TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5 3 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
 
+
 #define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
 #define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
+#define TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS	2 // Tipo utilizado entre robot 5 almacen de productos
 
 
 //constantes del sistema
@@ -91,6 +93,8 @@
 #define AMOUNT_CINTA_13                         2
 #define CINTA_13_CAPACITY                       3
 #define CINTA_15_CAPACITY                       5
+#define CANTIDAD_PRODUCTOS                      3
+
 
 /* Tipos de productos. */
 
@@ -134,11 +138,12 @@ typedef enum {
     PANTALLA_1 = 3,
     PANTALLA_2 = 4,
     PANTALLA_3
-} TipoPieza;
+} TipoProducto;
 
 typedef enum {
-    PRODUCTO_1 = 0,
-    PRODUCTO_2 = 1,
+    NULL_PRODUCT = 0,
+    PRODUCTO_1,
+    PRODUCTO_2,
     PRODUCTO_3
 } TipoProducto;
 
@@ -157,7 +162,7 @@ typedef enum {
 } EstadoEspacio;
 
 typedef struct {
-    TipoPieza tipoPieza;
+    TipoProducto tipoPieza;
     int cantidadPiezas;
 } Canasto;
 
@@ -170,7 +175,7 @@ typedef struct {
  */
 
 typedef struct {
-    TipoPieza tipoPieza;
+    TipoProducto tipoPieza;
     int idAgv;
 } PedidoCanastoAGV;
 
@@ -245,6 +250,10 @@ typedef struct {
     bool ultimo;
 } MensajeRespuestaGabinete;
 
+typedef struct {
+    long mtype; 
+} MensajeProximoPedidoProduccion;
+
 /*
  * Estructuras utilizadas entre AGVs, almacen de piezas, robot 11 y robot 12
  */
@@ -260,7 +269,7 @@ typedef struct {
  */
 
 typedef struct {
-    TipoPieza tipoPieza;
+    TipoProducto tipoPieza;
     int lugar;
 } PedidoCanastoRobotCitna6;
 
@@ -279,7 +288,7 @@ typedef struct {
 
 typedef struct
 {
-    TipoPieza tipoPieza;
+    TipoProducto tipoPieza;
     int cantidad;
 } EspecifPiezaDeProd;
 
@@ -308,16 +317,44 @@ public:
     bool fallado_;
 };
 
+
+// FIXME: Refactorizar esto
+class OrdenDeCompra {
+public:
+    OrdenDeCompra() :   idVendedor_(0),
+                        idCliente_(0),
+                        idOrden_(0) {}
+    
+    virtual ~OrdenDeCompra() {}
+  
+    void decrementarProducto(TipoProducto producto) {
+        if (cantidadPorProducto_[producto] <= 0 || producto > CANTIDAD_PRODUCTOS) {
+            //throw Exception("OrdenDeCompra Error: Tipo de producto inválido");
+        }
+
+        if (cantidadPorProducto_[producto-1] <= 0) {
+            //throw Exception("OrdenDeCompra Error: Producto agotado");
+        }
+
+        cantidadPorProducto_[producto-1]--;
+    }
+
+    bool estaVacia() const {
+        return idVendedor_ == 0 && idCliente_== 0 && idOrden_ == 0; 
+    }
+
+public:
+    long idVendedor_;
+    long idCliente_;
+    long idOrden_;
+    int cantidadPorProducto_[CANTIDAD_PRODUCTOS];
+
+};  
+
+
 /* 
  * Cliente - Vendedor - Almacen de piezas - Almacen productos terminados 
  */
-
-typedef struct _OrdenCompra
-{
-    int vendedor;
-    int cliente;
-    int numero;
-} OrdenDeCompra;
 
 typedef struct _OrdenProduccion
 {
