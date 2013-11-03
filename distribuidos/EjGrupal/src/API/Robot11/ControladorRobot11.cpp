@@ -37,8 +37,8 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semBufferCinta6 = IPC::Semaphore("semBufferCinta6");
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semMemCanastos = IPC::Semaphore("semMemCanastos");
-        this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
+        this->semBufferCanastos = IPC::Semaphore("semMemCanastos");
+        this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
@@ -182,7 +182,7 @@ bool ControladorRobot11::agregarPantalla(EspecifPiezaDeProd piezaDeProd) {
         int piezasRetiradas = std::min(rand() % 3 + 1, canastos.canastos[this->posicionPieza].cantidadPiezas);
         canastos.canastos[this->posicionPieza].cantidadPiezas -= piezasRetiradas;
         this->shMemBufferCanastos.writeInfo(&canastos);
-        this->semMemCanastos.signal(this->id_semMemCanastos);
+        this->semBufferCanastos.signal(this->id_semMemCanastos);
 
         usleep(rand() %100 + 1);
         return true;
@@ -259,7 +259,7 @@ bool ControladorRobot11::poseePieza(int id_pieza) {
         while (true) {
             
             Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de los canastos");
-            this->semMemCanastos.wait(this->id_semMemCanastos);
+            this->semBufferCanastos.wait(this->id_semMemCanastos);
             Logger::logMessage(Logger::TRACE, "tomo la memoria de los canastos");
 
             this->shMemBufferCanastos.readInfo(&canastos);
@@ -282,12 +282,12 @@ bool ControladorRobot11::poseePieza(int id_pieza) {
                 Logger::logMessage(Logger::TRACE, "no hay piezas en el canasto, aviso que posicion estare esperando y devuelvo mem canastos");
                 // me quede sin piezas en el canasto, aviso por que posicion voy a estar esperando
                 this->shMemBufferCanastos.writeInfo(&canastos);
-                this->semMemCanastos.signal(this->id_semMemCanastos);
+                this->semBufferCanastos.signal(this->id_semMemCanastos);
                 return false;  
             } else {
                 Logger::logMessage(Logger::TRACE, "canasto no presente, aviso que posicion espero, devuelvo mem canastos y me duermo");
                 this->shMemBufferCanastos.writeInfo(&canastos);
-                this->semMemCanastos.signal(this->id_semMemCanastos);
+                this->semBufferCanastos.signal(this->id_semMemCanastos);
 
                 this->semBloqueoRobot11.wait(this->id_Robot);
             }

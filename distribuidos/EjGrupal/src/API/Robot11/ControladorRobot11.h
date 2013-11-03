@@ -36,7 +36,7 @@ private:
     int id_Robot;
     int posicionPieza;
     IPC::Semaphore semBloqueoRobot11;
-    IPC::Semaphore semMemCanastos;
+    IPC::Semaphore semBufferCanastos;
     IPC::Semaphore semBufferCinta6;
     IPC::Semaphore semMemEstadoRobot5;
     IPC::Semaphore semBloqueoRobot5;
