@@ -9,8 +9,8 @@
 
 std::string Logger::m_ProcessInf = "Generic Process N°X:";
 std::string Logger::m_LogName = "Log.txt";
-std::string Logger::m_BackgroundColor[] = {"\e[1;0m", "\e[1;37m", "\e[1;35m", "\e[1;31m"};
-std::string Logger::m_ForegroundColor[] = {"\e[1;0m", "\e[1;0m", "\e[1;0m", "\e[1;43m"};
+std::string Logger::m_BackgroundColor[] = {"\033[1;0m", "\033[1;34m", "\033[1;35m", "\033[1;31m"};
+std::string Logger::m_ForegroundColor[] = {"\033[1;0m", "\033[1;0m", "\033[1;0m", "\033[1;43m"};
 
 Logger& Logger::getInstance() {
 	/* Variable instantiated in the first use, destroyed 
@@ -35,7 +35,7 @@ void Logger::logMessage(LogLevelEnum i_Level, std::string i_Msg) {
 	std::stringstream ss;
     ss << currentDateTime();
 	ss << m_ForegroundColor[i_Level] << m_BackgroundColor[i_Level]
-	<< m_ProcessInf << " " << i_Msg << "\e[1;0m" << std::endl;
+	<< m_ProcessInf << " " << i_Msg << "\033[1;0m" << std::endl;
 
 	file.takeLock();
 	file.writeToFile(ss.str().c_str(), ss.str().length()); 
