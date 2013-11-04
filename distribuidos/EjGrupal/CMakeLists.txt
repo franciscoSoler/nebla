@@ -3,6 +3,7 @@ project("Ejercicio 7")
 
 set(SRC_DIR src/)
 set(OUT_DIR out/)
+set(LIB_DIR lib/)
 
 file(MAKE_DIRECTORY ${OUT_DIR})
 
@@ -26,9 +27,7 @@ include_directories("${SRC_DIR}API/Despacho")
 include_directories("${SRC_DIR}API/Cliente")
 include_directories("${SRC_DIR}API/Vendedor")
 include_directories("${SRC_DIR}API/AlmacenPiezas")
-
 include_directories("${SRC_DIR}Exceptions")
-
 include_directories("${SRC_DIR}IPCs")
 include_directories("${SRC_DIR}IPCs/IPCObject")
 include_directories("${SRC_DIR}IPCs/IPCAbstractos")
@@ -39,9 +38,9 @@ include_directories("${SRC_DIR}IPCs/IPCAbstractos/SharedMemory")
 include_directories("${SRC_DIR}IPCs/IPCTemplate")
 include_directories("${SRC_DIR}IPCs/Barrios")
 include_directories("${SRC_DIR}IPCs/Semaphore")
-
 include_directories("${SRC_DIR}Logger")
 include_directories("${SRC_DIR}Parser")
+
 
 aux_source_directory("${SRC_DIR}API"                                     COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/Objects"                             COMMON_SRC)
@@ -57,21 +56,40 @@ aux_source_directory("${SRC_DIR}API/Despacho"                            DESPACH
 aux_source_directory("${SRC_DIR}API/Cliente"                             CLIENTE_SRC)
 aux_source_directory("${SRC_DIR}API/Vendedor"                            VENDEDOR_SRC)
 aux_source_directory("${SRC_DIR}API/AlmacenPiezas"                       ALMACEN_SRC)
+#aux_source_directory("${SRC_DIR}Exceptions"                              COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs"                                    COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/IPCObject"                          COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/IPCTemplate"                        COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos"                      COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/AbstractMessageQueue" COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/MessageQueue"         COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/AbstractSharedMemory" COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/SharedMemory"         COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/Semaphore"                          COMMON_SRC)
+#aux_source_directory("${SRC_DIR}IPCs/Barrios"                            COMMON_SRC)
+#aux_source_directory("${SRC_DIR}Logger"                                  COMMON_SRC)
+#aux_source_directory("${SRC_DIR}Parser"                                  COMMON_SRC)
 
-aux_source_directory("${SRC_DIR}Exceptions"                              COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs"                                    COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/IPCObject"                          COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/IPCTemplate"                        COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos"                      COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/AbstractMessageQueue" COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/MessageQueue"         COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/AbstractSharedMemory" COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/IPCAbstractos/SharedMemory"         COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/Semaphore"                          COMMON_SRC)
-aux_source_directory("${SRC_DIR}IPCs/Barrios"                            COMMON_SRC)
+add_library(IPCLibrary
+            SHARED
+            ${SRC_DIR}/IPCs/IPCObject/IPCObject.cpp
+            ${SRC_DIR}/IPCs/Semaphore/Semaphore.cpp
+            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.cpp
+            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.cpp
+            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.cpp
+            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.cpp
+            ${SRC_DIR}/IPCs/IPCAbstractos/AbstractSharedMemory/AbstractSharedMemory.cpp
+            ${SRC_DIR}/IPCs/IPCAbstractos/AbstractMessageQueue/AbstractMessageQueue.cpp
+            ${SRC_DIR}/IPCs/Barrios/MemoriaCompartida.cpp
+            ${SRC_DIR}/Logger/Logger.cpp
+            ${SRC_DIR}/Parser/Parser.cpp
+            ${SRC_DIR}/Logger/LockFile.cpp
+            ${SRC_DIR}/Exceptions/Exception.cpp)
 
-aux_source_directory("${SRC_DIR}Logger"                                  COMMON_SRC)
-aux_source_directory("${SRC_DIR}Parser"                                  COMMON_SRC)
+
+set_target_properties(IPCLibrary PROPERTIES 
+  LIBRARY_OUTPUT_DIRECTORY "${LIB_DIR}")
+             
 
 add_executable(${OUT_DIR}Launcher               ${SRC_DIR}Launcher.cpp                  ${COMMON_SRC})
 add_executable(${OUT_DIR}Terminator             ${SRC_DIR}Terminator.cpp                ${COMMON_SRC})
@@ -87,4 +105,19 @@ add_executable(${OUT_DIR}Despacho		        ${SRC_DIR}Despacho.cpp               
 add_executable(${OUT_DIR}Cliente		        ${SRC_DIR}Cliente.cpp                   ${COMMON_SRC} ${CLIENTE_SRC})
 add_executable(${OUT_DIR}Vendedor		        ${SRC_DIR}Vendedor.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC})
 add_executable(${OUT_DIR}AlmacenPiezas		    ${SRC_DIR}AlmacenPiezas.cpp             ${COMMON_SRC} ${ALMACEN_SRC})
+
+target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
+target_link_libraries(${OUT_DIR}Terminator                                  IPCLibrary)
+target_link_libraries(${OUT_DIR}AGV                                         IPCLibrary)
+target_link_libraries(${OUT_DIR}Robot5                                      IPCLibrary)
+target_link_libraries(${OUT_DIR}ControladorRobot5Agv                        IPCLibrary)
+target_link_libraries(${OUT_DIR}ControladorRobot5Cinta                      IPCLibrary)
+target_link_libraries(${OUT_DIR}Robot11                                     IPCLibrary)
+target_link_libraries(${OUT_DIR}Robot12                                     IPCLibrary)
+target_link_libraries(${OUT_DIR}Robot14                                     IPCLibrary)
+target_link_libraries(${OUT_DIR}Robot16                                     IPCLibrary)
+target_link_libraries(${OUT_DIR}Despacho                                    IPCLibrary)
+target_link_libraries(${OUT_DIR}Cliente                                     IPCLibrary)
+target_link_libraries(${OUT_DIR}Vendedor                                    IPCLibrary)
+target_link_libraries(${OUT_DIR}AlmacenPiezas                               IPCLibrary)
 
