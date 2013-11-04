@@ -185,7 +185,7 @@ void SmMemAlmacenProductosTerminados::anularReservas()
     {
 	if(almacenTerminados[numeroEspacio].esTemporal == true)
 	{
-	    almacenTerminados[numeroEspacio].esTemporal == false;
+	    almacenTerminados[numeroEspacio].esTemporal = false;
 	} 
     } 
 }

@@ -114,23 +114,6 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
 
 void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_produccion_t pedidoProduccion)
 {
-    OrdenDeProduccion ordenProduccion;
-    if(pedidoProduccion.producidoVendido + pedidoProduccion.producidoParaStockear != 0)
-    {
-	ordenProduccion.vendedor = numVendedor;
-	ordenProduccion.tipoProducto = pedido.tipoProducto;
-	
-	/*
-	consulta_almacen_piezas_t pedidoProduccion;
-	pedidoProduccion.tipoConsulta = ORDEN_PRODUCCION;
-	pedidoProduccion.cantidad = espacioNecesario;
-	pedidoProduccion.cliente = pedido.emisor;
-	pedidoProduccion.emisor = numVendedor;
-	pedidoProduccion.mtype = 1;
-	//consultasAlmacen.enviar(pedidoProduccion);
-	 * **/
-    }
-
     char mensajePantalla[1024];
     sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer "
     "otras %d de producto para vender y se stockean %d de tipo %d.\n", 

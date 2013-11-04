@@ -23,7 +23,7 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
     this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
     this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
         
-    this->shMemBufferCanastos[CANTIDAD_AGVS]; IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
+    this->shMemBufferCanastos[CANTIDAD_AGVS] = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
     this->shMemBufferCanastos[0].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
     this->shMemBufferCanastos[1].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
     this->shMemBufferCanastos[2].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
@@ -54,13 +54,6 @@ pedido_produccion_t ControladorAlmacenPiezas::recibirPedidoDeProduccion()
 {
     pedido_produccion_t buffer;
     this->colaReciboOrdenProduccion.recibir(1, &buffer);
-    
-    PedidoProduccion pedido;
-    pedido.cantidad = buffer.producidoParaStockear + buffer.producidoVendido;
-    pedido.diferenciaMinima = buffer.diferenciaMinimaProducto;
-    pedido.nroOrdenCompra = buffer.numOrdenCompra;
-    pedido.tipo = buffer.tipoProducto;
-    
     return buffer;
 }
 
@@ -166,7 +159,7 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
                     if (piezasReservadasTemporalmente[k].idProducto == NULL_PRODUCT)
                         continue;
                     // i = 1 ==> que estoy chequeando contra los robots 12, usan todas las piezas, los robots 11 solo usan la pantalla
-                    if (i = 1) {
+                    if (i == 1) {
                         int l = 0;
                         while (!canastoPresente && l < piezasReservadasTemporalmente[k].cantPiezas) {
                             canastoPresente = canastos.canastos[j].tipoPieza == piezasReservadasTemporalmente[k].pieza[l].tipoPieza;

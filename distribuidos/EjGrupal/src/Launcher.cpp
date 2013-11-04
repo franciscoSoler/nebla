@@ -35,7 +35,7 @@
 
 static char buffer[255];
 static char param1[20];
-static char param2[20];
+// static char param2[20];
 
 void createIPCs();
 void createDirectory(std::string directoryName);
