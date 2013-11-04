@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <unistd.h>
+#include <fstream>
 #include "../../IPCs/Barrios/Cola.h"
 #include "../../Parser/Parser.h"
 #include "../../Common.h"
