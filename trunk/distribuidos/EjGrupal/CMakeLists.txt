@@ -6,7 +6,7 @@ set(OUT_DIR out/)
 
 file(MAKE_DIRECTORY ${OUT_DIR})
 
-set(COMPILE_FLAGS "-g")
+set(COMPILE_FLAGS "-g -Wall -pedantic")
 add_definitions(${COMPILE_FLAGS})
 
 include_directories("${SRC_DIR}")

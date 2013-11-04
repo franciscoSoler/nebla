@@ -6,6 +6,7 @@
  */
 
 #include "ControladorVendedor.h"
+#include <Logger/Logger.h>
 
 ControladorVendedor::ControladorVendedor() {
 }
@@ -131,8 +132,11 @@ void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_produccion_t p
     }
 
     char mensajePantalla[1024];
-    sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer otras %d de producto para vender y se stockean %d de tipo %d.\n", pedidoProduccion.vendidoStockeado, pedidoProduccion.producidoVendido , pedidoProduccion.producidoParaStockear, pedido.tipoProducto);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer "
+    "otras %d de producto para vender y se stockean %d de tipo %d.\n", 
+    pedidoProduccion.vendidoStockeado, pedidoProduccion.producidoVendido , 
+    pedidoProduccion.producidoParaStockear, pedido.tipoProducto);
+    Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     if(pedidoProduccion.producidoParaStockear > 0)
 	almacenProductosTerminados.reservarVaciosComoDisponibles(pedidoProduccion.producidoParaStockear);
@@ -157,8 +161,10 @@ pedido_produccion_t ControladorVendedor::reservarPedido(pedido_t pedido)
 void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion)
 {    
     char mensajePantalla[256];
-    sprintf(mensajePantalla, "Vendedor #%ld envía pedido de producción de %d unidades de producto %d al almacén de piezas.\n", numVendedor, pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido, pedidoProduccion.tipoProducto);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    sprintf(mensajePantalla, "Vendedor #%ld envía pedido de producción de %d unidades de producto %d al "
+            "almacén de piezas.\n", numVendedor, pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido, 
+            pedidoProduccion.tipoProducto);
+    Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     colaEnvioOrdenProduccion.enviar(pedidoProduccion);
 }
@@ -222,7 +228,7 @@ int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)
     
     char mensajePantalla[256];
     sprintf(mensajePantalla, "La cantidad mínima de producción de producto %d es %d.\n", numeroProducto, cantMinimaProduccion);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     return cantMinimaProduccion;
 }

@@ -15,7 +15,7 @@
 #include <iostream>
 
 // Solo para debugging
-#include "../../Logger/Logger.h"
+#include <Logger/Logger.h>
 #include <string>
 
 template <class PACKAGE, unsigned int SIZE>
@@ -68,7 +68,7 @@ bool Cinta<PACKAGE, SIZE>::moverCinta() {
         PACKAGE auxArray[SIZE];
         
         // Muevo la cinta, literalmente 
-        for (int i = 0; i < SIZE; ++i) {
+        for (unsigned int i = 0; i < SIZE; ++i) {
             auxArray[(i+1) % SIZE] = array_[i];
         }
         
@@ -104,13 +104,13 @@ bool Cinta<PACKAGE, SIZE>::insertarPaquete(PACKAGE paquete) {
     }
     
     return false;
-};
+}
 
 template <class PACKAGE, unsigned int SIZE>
 std::string Cinta<PACKAGE, SIZE>::toString() {
     std::string cinta = "";
     
-    for (int i = 0; i < SIZE; i++) {
+    for (unsigned int i = 0; i < SIZE; i++) {
         cinta += "|";
         cinta += array_[i].estaVacio() ? "o" : "x";
     }

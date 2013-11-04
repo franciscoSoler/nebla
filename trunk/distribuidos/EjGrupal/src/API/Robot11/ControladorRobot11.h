@@ -17,6 +17,7 @@
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 #include "../Objects/DataSM_R11_R14.h"
 #include "../../IPCs/IPCTemplate/SharedMemory.h"
+#include <definedTypes.h>
 
 class ControladorRobot11 : public IControladorRobot11 {
 public:
@@ -34,7 +35,7 @@ public:
 private:
     char buffer[255];
     int id_Agv;
-    int nroCinta_;
+    uint nroCinta_;
     int id_semMemCanastos;
     int id_Robot;
     int posicionPieza;
