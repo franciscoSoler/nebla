@@ -11,11 +11,14 @@
 OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
 {
     OrdenDeCompra ordenDeCompra;
-    for(int i = 0; i < CANT_PRODUCTOS; i++)
-	ordenDeCompra.cantidadPorProducto_[i] = 0;
-    ordenDeCompra.idCliente_ = 0;
-    ordenDeCompra.idOrden_ = numOrdenCompra;
-    ordenDeCompra.idVendedor_ = numVendedor;
+    for(int i = 0; i < CANT_PRODUCTOS; i++) {
+        ordenDeCompra.cantidadPorProducto_[i] = 0;
+        ordenDeCompra.idCliente_ = 0;
+        ordenDeCompra.idOrden_ = numOrdenCompra;
+        ordenDeCompra.idVendedor_ = numVendedor;
+    }
+
+    return ordenDeCompra;
 }
 
 int main(int argc, char** argv)

@@ -91,7 +91,7 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
     try {
         sprintf(this->buffer, "AGV-%u - buscarPieza:", id_AGV + 1);
         Logger::setProcessInformation(this->buffer);
-        EstadoRobot5 estadoRobot5;
+        // EstadoRobot5 estadoRobot5;
         Canasto canasto;
 
         Logger::logMessage(Logger::TRACE, "realizo el pedido del canasto al robot 5");
