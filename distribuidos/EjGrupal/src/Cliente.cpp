@@ -12,12 +12,12 @@
 int main(int argc, char** argv)
 {
     srand(time(NULL) + getpid());
-    long numCliente = rand() % CANT_CLIENTES;
+    long numCliente = rand() % CANT_CLIENTES + 1;
     
     ControladorCliente controlador(numCliente);
     
     char mensajePantalla[256];
-    sprintf(mensajePantalla, "Se inicia el cliente #%ld.\n", numCliente);
+    sprintf(mensajePantalla, "Se inicia el cliente #%ld.", numCliente);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     controlador.contactarVendedores();
