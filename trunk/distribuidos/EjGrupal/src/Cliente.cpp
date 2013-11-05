@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     
     char mensajePantalla[256];
     sprintf(mensajePantalla, "Se inicia el cliente #%ld.\n", numCliente);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     controlador.contactarVendedores();
     

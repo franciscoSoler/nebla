@@ -14,24 +14,29 @@ ControladorVendedor::ControladorVendedor() {
 ControladorVendedor::ControladorVendedor(long numVendedor)
 {
     /* Comunicación con los clientes. */
-    this->vendedores = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
-    this->vendedores.obtener();
-    this->clientes = Cola<respuesta_pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
-    this->clientes.obtener();
-    this->pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
-    this->pedidos.obtener();
+    this->vendedores = IPC::VendedoresMessageQueue("Vendedor - VendedoresMsgQueue");
+    this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
+    
+    this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
+    this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
+    
+    this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
+    this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     
     /* Información sobre las órdenes de producción y compra. */
     this->shmemNumeroOrdenCompra = MemoriaCompartida(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
     this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
 
     /* Comunicación con el almacén de piezas. */
-    this->colaEnvioOrdenProduccion = Cola<pedido_produccion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    this->colaEnvioOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     this->colaEnvioOrdenProduccion.obtener();
     
     /* Comunicación con el almacén de productos terminados. */
     this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
     this->mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
+    
+    this->mutexOrdenDeCompra = IPC::Semaphore("mutexOrdenDeCompra");
+    this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
     
     outputQueueDespacho = IPC::MsgQueue("outputQueueDespacho");
     outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
@@ -41,37 +46,46 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
 
 ControladorVendedor::~ControladorVendedor() { }
 
-mensaje_inicial_t ControladorVendedor::recibirLlamadoTelefonico()
+long ControladorVendedor::recibirLlamadoTelefonico()
 {
     mensaje_inicial_t bufferMensajeInicial;
-    this->vendedores.recibir(CANT_VENDEDORES, &bufferMensajeInicial);
+    this->vendedores.recibirMensajeInicial(CANT_VENDEDORES, &bufferMensajeInicial);
 
     /* Arma el mensaje para contactar al cliente. */
     long numCliente = bufferMensajeInicial.emisor;
+
     respuesta_pedido_t respuesta;
     respuesta.emisor = numVendedor;
-    respuesta.mtype = numCliente;
-    clientes.enviar(respuesta);
     
-    mutexAlmacenTerminados.wait();        
-    return bufferMensajeInicial;
+    msg_respuesta_pedido_t mensajeRespuesta;
+    mensajeRespuesta.mtype = numCliente;
+    mensajeRespuesta.respuesta_pedido = respuesta;
+
+    clientes.enviarMensajeRespuesta(mensajeRespuesta);
+    
+    mutexAlmacenTerminados.wait();
+    return bufferMensajeInicial.emisor;
 }
 
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
 {
-    return *numeroOrdenCompra;
+    mutexAlmacenTerminados.wait();
+    int idOrdenDeCompra = *numeroOrdenCompra;
+    (*numeroOrdenCompra)++;
+    mutexAlmacenTerminados.signal();
+    return idOrdenDeCompra;
 }
 
 pedido_t ControladorVendedor::recibirPedido()
 {
-    pedido_t bufferPedido;
-    pedidos.recibir(numVendedor, &bufferPedido);
-    return bufferPedido;
+    msg_pedido_t msgPedido;
+    pedidos.recibirMensajePedido(numVendedor, &msgPedido);
+    return msgPedido.pedido;
 }
 
-pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido)
+pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido)
 {
-    pedido_produccion_t pedidoProduccion;
+    pedido_fabricacion_t pedidoProduccion;
     pedidoProduccion.tipoProducto = pedido.tipoProducto;
     
     int cantidadEspacioVacio = almacenProductosTerminados.obtenerEspaciosVacios();
@@ -112,7 +126,7 @@ pedido_produccion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedi
     return pedidoProduccion;
 }
 
-void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_produccion_t pedidoProduccion)
+void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion)
 {
     char mensajePantalla[1024];
     sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer "
@@ -132,16 +146,16 @@ void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_produccion_t p
 
 }
 
-pedido_produccion_t ControladorVendedor::reservarPedido(pedido_t pedido)
+pedido_fabricacion_t ControladorVendedor::reservarPedido(pedido_t pedido)
 {
     
-    pedido_produccion_t pedidoProduccion = calcularCantidadAProducir(pedido);
+    pedido_fabricacion_t pedidoProduccion = calcularCantidadAProducir(pedido);
     if(pedidoProduccion.ventaEsValida)
 	efectuarReserva(pedido, pedidoProduccion);
     return pedidoProduccion;
 }
 
-void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion)
+void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion)
 {    
     char mensajePantalla[256];
     sprintf(mensajePantalla, "Vendedor #%ld envía pedido de producción de %d unidades de producto %d al "
@@ -149,10 +163,13 @@ void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_produccion
             pedidoProduccion.tipoProducto);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
-    colaEnvioOrdenProduccion.enviar(pedidoProduccion);
+    mensaje_pedido_fabricacion_t mensaje;
+    mensaje.mtype = 1;
+    mensaje.pedidoFabricacion = pedidoProduccion;
+    colaEnvioOrdenProduccion.enviar(mensaje);
 }
 
-void ControladorVendedor::confirmarPedido(pedido_produccion_t pedidoProduccion, OrdenDeCompra ordenDeCompra)
+void ControladorVendedor::confirmarPedido(pedido_fabricacion_t pedidoProduccion, OrdenDeCompra ordenDeCompra)
 {
     if(pedidoProduccion.producidoParaStockear > 0)
 	almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion.producidoParaStockear);
@@ -181,6 +198,7 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     // Primero manda un mensaje avisando que hay una ODC
     PedidoDespacho pedido;
     pedido.idOrdenDeCompra_ = ordenDeCompra.idOrden_;
+    pedido.mtype = TIPO_PEDIDO_ODC_DESPACHO;
     outputQueueDespacho.send(pedido);
     
     // Luego se manda la ODC con el mtype = idOrden
@@ -190,13 +208,12 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     outputQueueDespacho.send(pedidoOrdenDeCompra);
 }
 
-void ControladorVendedor::enviarRespuestaDePedido(long numCliente, bool resultado)
+void ControladorVendedor::enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta)
 {
-    respuesta_pedido_t respuesta;
-    respuesta.mtype = numCliente;
-    respuesta.recepcionOK = resultado;
-    respuesta.emisor = numVendedor;
-    clientes.enviar(respuesta);
+    msg_respuesta_pedido_t mensaje;
+    mensaje.respuesta_pedido = respuesta;
+    mensaje.mtype = numCliente;
+    clientes.enviarMensajeRespuesta(mensaje);
 }
 
 int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)
@@ -229,4 +246,3 @@ void ControladorVendedor::buscarUbicacionDeProductoEnArchivo(Parser parser, ifst
 	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
     } while(continuaArchivo && ultimoNumeroProductoLeido != numeroProducto);
 }
-

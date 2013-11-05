@@ -104,6 +104,9 @@
 #define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
 #define TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS	2 // Tipo utilizado entre robot 5 almacen de productos
 
+#define TIPO_PEDIDO_DESPACHO            1
+#define TIPO_PEDIDO_ODC_DESPACHO        2
+
 
 //constantes del sistema
 #define TAM_BUFFER 				255
@@ -384,7 +387,7 @@ typedef enum {
 // Utilizado por las colas que intercambian info con el despacho
 class PedidoDespacho {
 public:
-    PedidoDespacho() :  mtype(1),
+    PedidoDespacho() :  mtype(TIPO_PEDIDO_DESPACHO),
                         tipoPedido_(PEDIDO_VACIO),
                         idProducto_(NULL_PRODUCT),
                         idCliente_(0),
@@ -407,7 +410,7 @@ typedef struct {
 class PedidoOrdenDeCompra {
 public:
     PedidoOrdenDeCompra() {
-        mtype = 1;   
+        mtype = TIPO_PEDIDO_DESPACHO;   
     }
 public:
     long mtype;
@@ -472,7 +475,12 @@ typedef struct _pedido_produccion
     int diferenciaMinimaProducto;
     int numOrdenCompra;
     TipoProducto tipoProducto;
-} pedido_produccion_t;
+} pedido_fabricacion_t;
+
+typedef struct {
+    long mtype;
+    pedido_fabricacion_t pedidoFabricacion; 
+} mensaje_pedido_fabricacion_t;
 
 /* 
  * Etructuras utilizadas entre el cliente y el vendedor
@@ -486,7 +494,6 @@ typedef struct _mensaje_inicial
 
 typedef struct _pedido
 {
-    long mtype; // receptor.
     long emisor;
     int numMensaje;
     TipoProducto tipoProducto;
@@ -494,11 +501,20 @@ typedef struct _pedido
     bool fin;
 } pedido_t;
 
+typedef struct {
+    long mtype; // receptor.
+    pedido_t pedido;
+} msg_pedido_t;
+
 typedef struct _respuesta_pedido
 {
-    long mtype;
     long emisor;
     bool recepcionOK;
 } respuesta_pedido_t;
+
+typedef struct {
+    long mtype;
+    respuesta_pedido_t respuesta_pedido;
+} msg_respuesta_pedido_t;
 
 #endif	/* COMMON_H */

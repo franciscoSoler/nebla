@@ -43,7 +43,7 @@ ControllerRobot16::ControllerRobot16() {
 PedidoDespacho ControllerRobot16::recibirPedido() {
     try {
         Logger::setProcessInformation("Robot16 - recibirPedido:");
-        outputQueueR16_.recv(0, pedido_);
+        outputQueueR16_.recv(TIPO_PEDIDO_DESPACHO, pedido_);
         
         obtener_shMem_R14_R16();
         if (pedido_.tipoPedido_ == PEDIDO_ROBOT16 && pedido_.idProducto_ == NULL_PRODUCT) {

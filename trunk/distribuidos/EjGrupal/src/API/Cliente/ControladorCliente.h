@@ -16,6 +16,11 @@
 
 #include "../../Common.h"
 #include "../../IPCs/Barrios/Cola.h"
+
+#include "../../IPCs/IPCAbstractos/MessageQueue/VendedoresMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
+
 #include <IPCs/IPCTemplate/MsgQueue.h>
 #include <Logger/Logger.h>
 
@@ -35,10 +40,11 @@ class ControladorCliente
     Caja obtenerProducto(int nroOrdenCompra);
         
     private:
-	Cola<mensaje_inicial_t> vendedores;
-	Cola<respuesta_pedido_t> clientes;
-	Cola<pedido_t> pedidos;
         
+    IPC::VendedoresMessageQueue vendedores;
+	IPC::ClientesMessageQueue clientes;
+    IPC::PedidosVendedorMessageQueue pedidos;
+	
     IPC::MsgQueue despacho;
     IPC::MsgQueue retiro;
 

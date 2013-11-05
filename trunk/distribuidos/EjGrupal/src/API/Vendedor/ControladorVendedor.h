@@ -13,8 +13,11 @@
 #include <cstring>
 #include <unistd.h>
 
-#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/VendedoresMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
+#include "../../IPCs/Semaphore/Semaphore.h"
 #include "../../IPCs/Barrios/Cola.h"
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
@@ -31,35 +34,36 @@ class ControladorVendedor
 	
 	int obtenerNumeroDeOrdenDeCompra();
 	
-	mensaje_inicial_t recibirLlamadoTelefonico();
+	long recibirLlamadoTelefonico();
 	pedido_t recibirPedido();
-	void enviarRespuestaDePedido(long numCliente, bool resultado);
+    void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);
 	
-	pedido_produccion_t reservarPedido(pedido_t pedido);
-	void enviarPedidoProduccionAAlmacenPiezas(pedido_produccion_t pedidoProduccion);
+	pedido_fabricacion_t reservarPedido(pedido_t pedido);
+	void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
 	void terminarLlamadoTelefonico();
         
         void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
         
-	void confirmarPedido(pedido_produccion_t pedidoProduccion, OrdenDeCompra ordenDeCompra);
+	void confirmarPedido(pedido_fabricacion_t pedidoProduccion, OrdenDeCompra ordenDeCompra);
 	void anularPedidos();
 	
     private:
 	long numVendedor;
-	Cola<mensaje_inicial_t> vendedores;
-	Cola<respuesta_pedido_t> clientes;
-	Cola<pedido_t> pedidos;
+	IPC::VendedoresMessageQueue vendedores;
+	IPC::ClientesMessageQueue clientes;
+    IPC::PedidosVendedorMessageQueue pedidos;
 	MemoriaCompartida shmemNumeroOrdenCompra;
 	int* numeroOrdenCompra;
-	Cola<pedido_produccion_t> colaEnvioOrdenProduccion;
+ 
+	Cola<mensaje_pedido_fabricacion_t> colaEnvioOrdenProduccion;
+
 	IPC::Semaphore mutexAlmacenTerminados;
+    IPC::Semaphore mutexOrdenDeCompra;
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
-        
-        IPC::MsgQueue outputQueueDespacho;
-	
+    IPC::MsgQueue outputQueueDespacho;
 	int obtenerCantidadMinimaDeProduccion(int numProducto);
-	pedido_produccion_t calcularCantidadAProducir(pedido_t pedido);
-	void efectuarReserva(pedido_t pedido, pedido_produccion_t pedidoProduccion);
+	pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido);
+	void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);
         
         void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
 };

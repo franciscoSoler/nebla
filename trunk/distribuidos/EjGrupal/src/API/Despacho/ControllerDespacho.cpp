@@ -27,7 +27,7 @@ ControllerDespacho::~ControllerDespacho() {
 PedidoDespacho ControllerDespacho::recibirPedido() {
     try {
         PedidoDespacho pedido;
-        outputQueueDespacho_.recv(0, pedido);
+        outputQueueDespacho_.recv(TIPO_PEDIDO_DESPACHO, pedido);
         Logger::logMessage(Logger::TRACE, "Recibe un Pedido");
         return pedido;
     }
@@ -40,7 +40,7 @@ PedidoDespacho ControllerDespacho::recibirPedido() {
 OrdenDeCompra ControllerDespacho::obtenerOrdenDeCompra(long idOrdenDeCompra) {
     try {
         PedidoOrdenDeCompra pedido;
-        outputQueueDespacho_.recv(idOrdenDeCompra, pedido);
+        outputQueueDespacho_.recv(TIPO_PEDIDO_ODC_DESPACHO, pedido);
         sprintf(buffer_, "Recibe Orden de Compra N°%lu", idOrdenDeCompra);
         Logger::logMessage(Logger::TRACE, buffer_);
 

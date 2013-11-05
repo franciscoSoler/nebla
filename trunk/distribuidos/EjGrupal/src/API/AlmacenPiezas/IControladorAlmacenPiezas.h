@@ -16,8 +16,8 @@ public:
     virtual void obtenerEspecificacionesDelProducto(TipoProducto tipoPieza, EspecifProd piezasProductoActual) = 0;
     virtual void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) = 0;
     virtual void recibirConfirmacionProduccion() = 0;
-    virtual pedido_produccion_t recibirPedidoDeProduccion() = 0;
-    virtual void enviarPedidoProduccionARobot5(pedido_produccion_t pedidoProduccion) = 0;
+    virtual pedido_fabricacion_t recibirPedidoDeFabricacion() = 0;
+    virtual void enviarPedidoProduccionARobot5(pedido_fabricacion_t pedidoFabricacion) = 0;
     virtual ~IControladorAlmacenPiezas() {};
 };
 

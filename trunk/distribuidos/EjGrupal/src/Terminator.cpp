@@ -17,6 +17,10 @@
 #include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
 
+#include "IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/VendedoresMessageQueue.h"
+
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
@@ -220,6 +224,17 @@ int main(int argc, char* argv[]) {
                 TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
         shMem_APT.liberar();
         Logger::logMessage(Logger::IMPORTANT, "IPC shMem_APT destruido");
+    
+    
+        IPC::VendedoresMessageQueue vendedores("Vendedores Msg Queue");
+        vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
+        vendedores.destroy();
+        IPC::ClientesMessageQueue clientes("Clientes Msg Queue");
+        clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
+        clientes.destroy();
+        IPC::PedidosVendedorMessageQueue pedidos("Pedidos Msg Queue");
+        pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
+        pedidos.destroy();
     }    
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -228,13 +243,6 @@ int main(int argc, char* argv[]) {
     }
     
     
-    Cola<mensaje_inicial_t> vendedores(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
-    vendedores.destruir();
-    Cola<mensaje_inicial_t> clientes(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
-    clientes.destruir();
-        
-    Cola<pedido_t> pedidos(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
-    pedidos.destruir();
 
     Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     consultasAlmacen.destruir();
@@ -249,5 +257,9 @@ int main(int argc, char* argv[]) {
     IPC::Semaphore mutexAlmacenTerminados("Mutex Almacen Terminados");
     mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
     mutexAlmacenTerminados.destroy();
+    
+    IPC::Semaphore mutexOrdenDeCompra("mutexOrdenDeCompra");
+    mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
+    mutexOrdenDeCompra.destroy();
 }
 
