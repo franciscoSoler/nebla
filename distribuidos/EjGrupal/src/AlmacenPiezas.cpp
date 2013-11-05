@@ -27,11 +27,11 @@ int main(int argc, char** argv)
 
     pedido_fabricacion_t pedidoFabricacion;
     EspecifProd piezasReservadasTemporalmente[2];
-    EspecifProd piezasProductoActual;
     piezasReservadasTemporalmente[0].idProducto = NULL_PRODUCT;
     piezasReservadasTemporalmente[1].idProducto = NULL_PRODUCT;
     
     while (true) {
+        EspecifProd piezasProductoActual;
         pedidoFabricacion = controladorAlmacenPiezas->recibirPedidoDeFabricacion();
 
         controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoFabricacion);

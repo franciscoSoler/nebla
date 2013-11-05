@@ -13,7 +13,7 @@
 class IControladorAlmacenPiezas
 {
 public:
-    virtual void obtenerEspecificacionesDelProducto(TipoProducto tipoPieza, EspecifProd piezasProductoActual) = 0;
+    virtual void obtenerEspecificacionesDelProducto(TipoProducto tipoPieza, EspecifProd &piezasProductoActual) = 0;
     virtual void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) = 0;
     virtual void recibirConfirmacionProduccion() = 0;
     virtual pedido_fabricacion_t recibirPedidoDeFabricacion() = 0;
