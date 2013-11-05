@@ -74,11 +74,6 @@ int main(int argc, char** argv)
 	    respuesta_pedido_t respuesta;
 	    respuesta.recepcionOK = true;
 	    controlador.confirmarOrdenDeCompraACliente(numCliente, respuesta);
-            for (int i = 0; i < cantPedidos; ++i) {
-                pedido_fabricacion_t nuevoPedido;
-                nuevoPedido = controlador.calcularCantidadAProducir(pedidos[i]);
-                controlador.enviarPedidoProduccionAAlmacenPiezas(nuevoPedido);
-            }
 	}
 	else
 	{

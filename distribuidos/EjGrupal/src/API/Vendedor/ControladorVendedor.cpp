@@ -8,6 +8,7 @@
 #include "ControladorVendedor.h"
 #include "LockFile.h"
 #include <Logger/Logger.h>
+#include <iostream>
 
 ControladorVendedor::ControladorVendedor() {
 }
@@ -164,13 +165,15 @@ void ControladorVendedor::confirmarPedidos(pedido_fabricacion_t pedidoProduccion
     for(int i = 0; i < cantProductos; i++)
     {
 	if(pedidoProduccion[i].producidoParaStockear > 0)
-	    almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion[i].producidoParaStockear);
+	    almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion[i].producidoParaStockear, pedidoProduccion[i].tipoProducto);
 
 	if(pedidoProduccion[i].producidoVendido > 0)
-	    almacenProductosTerminados.asignarVaciosAProduccion(ordenDeCompra, pedidoProduccion[i].producidoVendido);
+	    almacenProductosTerminados.asignarVaciosAProduccion(ordenDeCompra, pedidoProduccion[i].producidoVendido, pedidoProduccion[i].tipoProducto);
 
 	if(pedidoProduccion[i].vendidoStockeado > 0)
-	    almacenProductosTerminados.asignarStockeados(ordenDeCompra, pedidoProduccion[i].tipoProducto, pedidoProduccion[i].vendidoStockeado);
+	    almacenProductosTerminados.asignarStockeados(ordenDeCompra, pedidoProduccion[i].vendidoStockeado, pedidoProduccion[i].tipoProducto);
+   
+	this->enviarPedidoProduccionAAlmacenPiezas(pedidoProduccion[i]);
     }
     
     this->enviarOrdenDeCompraDespacho(ordenDeCompra);
