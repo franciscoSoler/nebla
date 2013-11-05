@@ -24,6 +24,8 @@ int main(int argc, char** argv)
     
     /* Envío los pedidos. */
     int cantPedidos = 1 + rand() % 3;
+    sprintf(mensajePantalla,"Comienzo a enviar pedidos: %d",cantPedidos);
+    Logger::getInstance().logMessage(Logger::TRACE,mensajePantalla);
     for(int i = 0; i < cantPedidos; i++)
     {
 	int cantUnidades = 1 + rand() % CANT_MAX_PEDIDOS;
@@ -35,6 +37,7 @@ int main(int argc, char** argv)
 	}
     }
     
+    controlador.finalizarEnvio(cantPedidos);
     bool pedidoEsValido = controlador.recibirResultado();
     if(!pedidoEsValido)
 	exit(-1);
