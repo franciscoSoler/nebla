@@ -18,6 +18,7 @@
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
 #include "../../IPCs/Semaphore/Semaphore.h"
+
 #include "../../IPCs/Barrios/Cola.h"
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
@@ -32,20 +33,17 @@ class ControladorVendedor
 	ControladorVendedor(long numVendedor);
 	virtual ~ControladorVendedor();
 	
+	long recibirLlamadoTelefonico();
 	int obtenerNumeroDeOrdenDeCompra();
 	
-	long recibirLlamadoTelefonico();
 	pedido_t recibirPedido();
-    void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);
+	void enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido);
 	
-	pedido_fabricacion_t reservarPedido(pedido_t pedido);
-	void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
-	void terminarLlamadoTelefonico();
-        
-        void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
-        
-	void confirmarPedido(pedido_fabricacion_t pedidoProduccion, OrdenDeCompra ordenDeCompra);
-	void anularPedidos();
+	bool realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompra* ordenDeCompra, int cantPedidos);
+	void confirmarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t respuesta);
+	void cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t respuesta);
+	
+	void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);
 	
     private:
 	long numVendedor;
@@ -58,14 +56,20 @@ class ControladorVendedor
 	Cola<mensaje_pedido_fabricacion_t> colaEnvioOrdenProduccion;
 
 	IPC::Semaphore mutexAlmacenTerminados;
-    IPC::Semaphore mutexOrdenDeCompra;
+	IPC::Semaphore mutexOrdenDeCompra;
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
-    IPC::MsgQueue outputQueueDespacho;
-	int obtenerCantidadMinimaDeProduccion(int numProducto);
+	IPC::MsgQueue outputQueueDespacho;
+
+	pedido_fabricacion_t reservarPedido(pedido_t pedido);
 	pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido);
 	void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);
-        
-        void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
+	int obtenerCantidadMinimaDeProduccion(int numProducto);
+	void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
+	
+	void confirmarPedidos(pedido_fabricacion_t pedidos[], OrdenDeCompra ordenDeCompra, int cantPedidos);
+	
+	void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
+	void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
 };
 
 #endif	/* CONTROLADORVENDEDOR_H */

@@ -36,68 +36,42 @@ int main(int argc, char** argv)
 	sprintf(mensajePantalla, "Vendedor #%ld espera clientes.\n", numVendedor);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
-	long idCliente = controlador.recibirLlamadoTelefonico();
+	long numCliente = controlador.recibirLlamadoTelefonico();
 	
-	sprintf(mensajePantalla, "Vendedor #%ld recibe mensaje del cliente %ld y establece una comunicación.\n", numVendedor, idCliente);
+	sprintf(mensajePantalla, "Vendedor #%ld recibe mensaje del cliente %ld y establece una comunicación.\n", numVendedor, numCliente);
 	Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
 	OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
-	ordenDeCompra.idCliente_ = idCliente;
-	//long numCliente = ordenDeCompra.idCliente_;
+	ordenDeCompra.idCliente_ = numCliente;
 	
 	pedido_t pedido;
-	bool pedidoEsValido = true;
-	pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
+	pedido_t pedidos[CANT_MAX_PEDIDOS];
 	int cantPedidos = 0;
-	
 	do
 	{
 	    pedido = controlador.recibirPedido();
-	    pedidosProduccion[cantPedidos] = controlador.reservarPedido(pedido);
-	    if(!pedidosProduccion[cantPedidos].ventaEsValida)
-	    {
-            respuesta_pedido_t respuesta;
-            respuesta.emisor = numVendedor;
-            respuesta.recepcionOK = pedidosProduccion[cantPedidos].ventaEsValida;
-            controlador.enviarRespuestaDePedido(idCliente, respuesta);
-            pedidoEsValido = false;
-            continue;
-	    }
-		
-	    if(pedido.fin)
+	    pedidos[cantPedidos] = pedido;
+	    respuesta_pedido_t respuesta;
+	    respuesta.recepcionOK = true;
+	    controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
+	    if(pedido.fin == true)
 		continue;
-	    
-	    ordenDeCompra.cantidadPorProducto_[pedido.tipoProducto] = pedido.cantidad;
-	    
-	    sprintf(mensajePantalla, "Vendedor #%ld recibe pedido del cliente %ld de %d unidades del producto %d.\n", numVendedor, pedido.emisor, pedido.cantidad, pedido.tipoProducto);
-        Logger::logMessage(Logger::TRACE, mensajePantalla);
-	    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
 	    cantPedidos++;
-            
-        respuesta_pedido_t respuesta;
-        respuesta.emisor = numVendedor;
-        respuesta.recepcionOK = pedidoEsValido;
-            controlador.enviarRespuestaDePedido(idCliente, respuesta);
-            
-	} while(!pedido.fin && pedidoEsValido);
+	} while(pedido.fin == false);
 	
+	bool pedidoEsValido = controlador.realizarOrdenDeCompra(pedidos, &ordenDeCompra, cantPedidos);
 	if(pedidoEsValido)
 	{
-	    for(int i = 0; i < cantPedidos + 1; i++)
-            {
-		if(pedidosProduccion[i].producidoParaStockear + pedidosProduccion[i].producidoVendido > 0)
-		    controlador.enviarPedidoProduccionAAlmacenPiezas(pedidosProduccion[i]);
-		controlador.confirmarPedido(pedidosProduccion[i], ordenDeCompra);
-	    }	
-
+	    respuesta_pedido_t respuesta;
+	    respuesta.recepcionOK = true;
+	    controlador.confirmarOrdenDeCompraACliente(numCliente, respuesta);
 	}
-
 	else
 	{
-	    controlador.anularPedidos();
+	    respuesta_pedido_t respuesta;
+	    respuesta.recepcionOK = false;
+	    controlador.cancelarOrdenDeCompraACliente(numCliente, respuesta);
 	}
-	
-	controlador.terminarLlamadoTelefonico();
 
     }  
     
