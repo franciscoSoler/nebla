@@ -26,7 +26,7 @@ ControladorCliente::ControladorCliente(long numCliente)
     this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     
     this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
-    this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
+    this->despacho.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_OUTPUT_ID);
     
     this->retiro = IPC::MsgQueue("retiro");
     this->retiro.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
@@ -106,7 +106,7 @@ bool ControladorCliente::recibirResultado()
 void ControladorCliente::retirarEncargo(TipoProducto & tipoProducto, int & nroOrdenCompra)
 {
     PedidoDespacho pedido;
-    despacho.recv(1, pedido);
+    despacho.recv(TIPO_PEDIDO_DESPACHO, pedido);
     
      sprintf(mensajePantalla, "Se le informa que el Producto %u fue terminado."
              "Procede a ir a la fábrica a buscarlo", tipoProducto);

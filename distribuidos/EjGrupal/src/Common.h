@@ -332,10 +332,15 @@ typedef struct
  */
 class Caja {
 public:
-    Caja() {ordenDeCompra_ = 0;};
-    Caja(long ordenDeCompra) { ordenDeCompra_ = ordenDeCompra;};
+    Caja() :   ordenDeCompra_(0)
+             , idProducto_(NULL_PRODUCT)
+             , fallado_(false) 
+    {}
+
+    // Caja(long ordenDeCompra) { ordenDeCompra_ = ordenDeCompra;};
     long getOrdenDeCompra() { return ordenDeCompra_;};
-    bool estaVacio() { return ordenDeCompra_ == 0; };
+    bool estaVacio() { return ordenDeCompra_ == 0 
+         && idProducto_ == NULL_PRODUCT && fallado_ == false; };
     
 public:
     long ordenDeCompra_;
