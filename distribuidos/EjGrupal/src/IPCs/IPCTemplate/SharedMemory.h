@@ -111,7 +111,7 @@ private:
         void *shmaddr = shmat(this->id, NULL, 0);
         if (shmaddr == (void *)-1)
         {
-            sprintf(buffer_, "Shared Memory %s Error - shmat: %s\n",
+            sprintf(buffer_, "Shared Memory %s Error - shmat: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
         }

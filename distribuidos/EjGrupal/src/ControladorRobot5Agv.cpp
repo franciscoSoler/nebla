@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
         iniciarIPC(colaComunicacionRobot5, colaPedidos, bufferCanasto, semaforoAccesoBufferAgv, semaforoBloqueoAgv);
     }
     catch (Exception const& ex) {
-        sprintf (buffer, "Error: %s\n", ex.what());
+        sprintf (buffer, "Error: %s", ex.what());
         Logger::getInstance().logMessage(Logger::ERROR, buffer);
         exit(-1);
     }
@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
             /* Me quedo esperando la respuesta del robot 5 */
             MensajeRespuestaCanasto mensajeRespuestaCanasto;
             colaComunicacionRobot5.recibirCanasto(TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5, &mensajeRespuestaCanasto);
-            sprintf(buffer, "Recibió la respuesta del robot 5 para el AGV %d.\n",mensajeRespuestaCanasto.idAgv);
+            sprintf(buffer, "Recibió la respuesta del robot 5 para el AGV %d.",mensajeRespuestaCanasto.idAgv);
             Logger::getInstance().logMessage(Logger::TRACE, buffer);
                        
             /* Una vez recibido el canasto requerido, se lo envio al agv correspondiente.
@@ -112,7 +112,7 @@ int main(int argc, char** argv) {
              */
             semaforoAccesoBufferAgv.wait(mensajeRespuestaCanasto.idAgv);
             {
-                sprintf(buffer, "Controlador Robot 5 - AGV: Accedo al buffer del canasto para el AGV: %d.\n",mensajeRespuestaCanasto.idAgv);
+                sprintf(buffer, "Controlador Robot 5 - AGV: Accedo al buffer del canasto para el AGV: %d.",mensajeRespuestaCanasto.idAgv);
                 Logger::getInstance().logMessage(Logger::TRACE, buffer);
                 
                 /* Una vez obtenido al acceso, dejo el canasto. */
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
             semaforoBloqueoAgv.signal(mensajeRespuestaCanasto.idAgv);
         }
         catch (Exception const& ex) {
-            sprintf(buffer, "Error: %s\n", ex.what());
+            sprintf(buffer, "Error: %s", ex.what());
             Logger::getInstance().logMessage(Logger::ERROR,buffer);
             exit(-1);
         }
