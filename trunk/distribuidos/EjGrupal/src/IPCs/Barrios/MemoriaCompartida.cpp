@@ -32,9 +32,7 @@ void MemoriaCompartida::liberar()
     this->obtener();
     shmdt((void *) this->ptrDatos);
 
-    int procAdosados = this->cantidadProcesosAdosados();
-    if(procAdosados == 0)
-	shmctl(this->shmId, IPC_RMID, NULL);
+    shmctl(this->shmId, IPC_RMID, NULL);
 }
 
 void* MemoriaCompartida::obtener()

@@ -45,7 +45,6 @@ class ControladorVendedor
 	
 	void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);
 	
-        
         void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
         pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido);
 
@@ -53,7 +52,7 @@ class ControladorVendedor
 	long numVendedor;
 	IPC::VendedoresMessageQueue vendedores;
 	IPC::ClientesMessageQueue clientes;
-    IPC::PedidosVendedorMessageQueue pedidos;
+	IPC::PedidosVendedorMessageQueue pedidos;
 	MemoriaCompartida shmemNumeroOrdenCompra;
 	int* numeroOrdenCompra;
  
