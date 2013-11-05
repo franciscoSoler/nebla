@@ -13,7 +13,7 @@
 ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
         colaEnvioMensajePedidoProduccion ("Mensage Robot 5 Msg Queue")
 { 
-    Logger::logMessage(Logger::TRACE, "AlmacenDePiezas:");
+    Logger::setProcessInformation("AlmacenDePiezas:");
     this->colaReciboOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     colaReciboOrdenProduccion.obtener();
     
@@ -45,7 +45,11 @@ void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(pedido_fabricacion_
     MensajePedidoProduccion mensaje;
     mensaje.pedidoProduccion = pedido;
     mensaje.mtype = TIPO_PEDIDO_PRODUCCION;
-    
+ 
+    char buffer[255];
+    sprintf(buffer, "Enviando pedido de Fabricación al Robot5: Cantidad:%d - Dif:%d - ODC:%d - Tipo:%d",
+    pedido.cantidad, pedido.diferenciaMinima, pedido.nroOrdenCompra, pedido.tipo);
+    Logger::logMessage(Logger::DEBUG, buffer);
     colaEnvioMensajePedidoProduccion.enviarPedidoProduccion(mensaje);
 }
 
@@ -53,6 +57,7 @@ pedido_fabricacion_t ControladorAlmacenPiezas::recibirPedidoDeFabricacion()
 {
     mensaje_pedido_fabricacion_t mensajePedido;
     this->colaReciboOrdenProduccion.recibir(1, &mensajePedido);
+    Logger::logMessage(Logger::TRACE, "Recibe pedido de fabricación");
     return mensajePedido.pedidoFabricacion;
 }
 
@@ -94,10 +99,12 @@ void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t resp
     //respuestasAlmacen.enviar(respuesta);
 }
 
-void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &piezas) {
+void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd & piezas) {
     ifstream stream;
     stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
     Parser parser;
+    sprintf(buffer, "Buscando especificaciones del producto %d", tipoProducto);
+    Logger::logMessage(Logger::TRACE, buffer);
     
     piezas.idProducto = tipoProducto;
     

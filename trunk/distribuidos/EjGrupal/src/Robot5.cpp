@@ -18,14 +18,14 @@ Canasto resolverPedidoCanasto(ControladorRobot5 &controladorRobot5, PedidoCanast
     // El robot va a buscar el canasto al almacen de piezas
     char buffer[TAM_BUFFER];
     int buscando = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Buscando durante %d segundos\n", buscando);
+    sprintf(buffer, "Buscando durante %d segundos", buscando);
     Logger::getInstance().logMessage(Logger::TRACE, buffer);
 
     usleep(buscando * 1000 * 1000);    
     Canasto canasto = controladorRobot5.obtenerCanasto(pedido.tipoPieza);
 
     int volviendo = rand() % MAX_DEMORA + 1;
-    sprintf(buffer, "Volviendo durante %d segundos\n", volviendo);
+    sprintf(buffer, "Volviendo durante %d segundos", volviendo);
     Logger::getInstance().logMessage(Logger::TRACE, buffer);
     usleep(volviendo * 1000 * 1000);
     
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
         controladorRobot5.iniciarControlador();
     }
     catch (std::exception ex) {
-        sprintf(buffer, "Error al iniciar el controlador: %s\n", ex.what());
+        sprintf(buffer, "Error al iniciar el controlador: %s", ex.what());
         Logger::getInstance().logMessage(Logger::ERROR, buffer);
         exit(-1);
     }
