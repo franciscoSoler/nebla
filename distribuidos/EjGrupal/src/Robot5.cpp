@@ -129,12 +129,12 @@ int main(int argc, char **argv) {
                     }
                     break;
                 case PEDIDO_CANASTO:
-                    Logger::getInstance().logMessage(Logger::TRACE, "Recibi un pedido de CANASTO.");
-
                     Canasto canasto;
+                    sprintf(buffer, "Recibi un pedido de CANASTO del agv %d y pieza %d.", pedido.pedidoCanastoAgv.idAgv, pedido.pedidoCanastoAgv.tipoPieza);
+                    Logger::getInstance().logMessage(Logger::TRACE, buffer);
                     canasto = resolverPedidoCanasto(controladorRobot5, pedido.pedidoCanastoAgv);
                     
-                    sprintf(buffer, "Robot 5: Enviando un CANASTO con %d piezas al AGV %d.\n", canasto.cantidadPiezas, pedido.pedidoCanastoAgv.idAgv);
+                    sprintf(buffer, "Enviando un CANASTO con %d piezas al AGV %d.", canasto.cantidadPiezas, pedido.pedidoCanastoAgv.idAgv);
                     Logger::getInstance().logMessage(Logger::TRACE, buffer);
                     
                     controladorRobot5.resolverPedido(canasto, pedido.pedidoCanastoAgv.idAgv);

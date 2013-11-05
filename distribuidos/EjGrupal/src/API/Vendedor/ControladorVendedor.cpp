@@ -6,6 +6,7 @@
  */
 
 #include "ControladorVendedor.h"
+#include "LockFile.h"
 #include <Logger/Logger.h>
 
 ControladorVendedor::ControladorVendedor() {
@@ -63,16 +64,15 @@ long ControladorVendedor::recibirLlamadoTelefonico()
 
     clientes.enviarMensajeRespuesta(mensajeRespuesta);
     
-    mutexAlmacenTerminados.wait();
     return bufferMensajeInicial.emisor;
 }
 
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
 {
-    mutexAlmacenTerminados.wait();
+    mutexOrdenDeCompra.wait();
     int idOrdenDeCompra = *numeroOrdenCompra;
     (*numeroOrdenCompra)++;
-    mutexAlmacenTerminados.signal();
+    mutexOrdenDeCompra.signal();
     return idOrdenDeCompra;
 }
 
@@ -192,12 +192,12 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     // Primero manda un mensaje avisando que hay una ODC
     PedidoDespacho pedido;
     pedido.idOrdenDeCompra_ = ordenDeCompra.idOrden_;
-    pedido.mtype = TIPO_PEDIDO_ODC_DESPACHO;
+    pedido.mtype = TIPO_PEDIDO_DESPACHO;
     outputQueueDespacho.send(pedido);
     
     // Luego se manda la ODC con el mtype = idOrden
     PedidoOrdenDeCompra pedidoOrdenDeCompra;
-    pedidoOrdenDeCompra.mtype = ordenDeCompra.idOrden_;
+    pedidoOrdenDeCompra.mtype = TIPO_PEDIDO_ODC_DESPACHO;
     pedidoOrdenDeCompra.ordenDeCompra_ = ordenDeCompra;
     outputQueueDespacho.send(pedidoOrdenDeCompra);
 }
@@ -280,7 +280,7 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
 	ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto] = pedidos[i].cantidad;
 
 	sprintf(mensajePantalla, "Vendedor #%ld reserva pedido de %d unidades del producto %d.\n", numVendedor, pedidos[i].cantidad, pedidos[i].tipoProducto);
-	write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+	Logger::getInstance().logMessage(Logger::DEBUG, mensajePantalla);
     }
     
     if(ordenDeCompraEsValida)

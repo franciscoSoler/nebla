@@ -25,8 +25,6 @@ ControladorCliente::ControladorCliente(long numCliente)
     this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
     this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     
-    
-    
     this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
     this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
     

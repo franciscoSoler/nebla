@@ -8,6 +8,7 @@
 #include "Common.h"
 #include "ControladorVendedor.h"
 #include "Logger.h"
+#include "LockFile.h"
 
 OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
 {
@@ -24,25 +25,30 @@ OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
 
 int main(int argc, char** argv)
 {
+    
     long numVendedor = atoi(argv[1]);
     ControladorVendedor controlador(numVendedor);
-    
     char mensajePantalla[256];
-    sprintf(mensajePantalla, "Se inicia el vendedor #%ld.\n", numVendedor);
+
+    sprintf(mensajePantalla,"Vendedor %ld",numVendedor);
+    Logger::getInstance().setProcessInformation(mensajePantalla);
+   
+    
+    sprintf(mensajePantalla, "Se inicia el vendedor.\n");
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     while(true)
     {
-	sprintf(mensajePantalla, "Vendedor #%ld espera clientes.\n", numVendedor);
-    Logger::logMessage(Logger::TRACE, mensajePantalla);
+	sprintf(mensajePantalla, "Espera clientes.\n");
+        Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
 	long numCliente = controlador.recibirLlamadoTelefonico();
 	
-	sprintf(mensajePantalla, "Vendedor #%ld recibe mensaje del cliente %ld y establece una comunicación.\n", numVendedor, numCliente);
+	sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicación.\n", numCliente);
 	Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
 	OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
-	ordenDeCompra.idCliente_ = numCliente;
+        ordenDeCompra.idCliente_ = numCliente;
 	
 	pedido_t pedido;
 	pedido_t pedidos[CANT_MAX_PEDIDOS];
@@ -59,15 +65,19 @@ int main(int argc, char** argv)
 	    cantPedidos++;
 	} while(pedido.fin == false);
 	
+        Logger::getInstance().logMessage(Logger::DEBUG, "3");
+        
 	bool pedidoEsValido = controlador.realizarOrdenDeCompra(pedidos, &ordenDeCompra, cantPedidos);
 	if(pedidoEsValido)
 	{
+            Logger::getInstance().logMessage(Logger::TRACE, "Pedido Valido");
 	    respuesta_pedido_t respuesta;
 	    respuesta.recepcionOK = true;
 	    controlador.confirmarOrdenDeCompraACliente(numCliente, respuesta);
 	}
 	else
 	{
+            Logger::getInstance().logMessage(Logger::TRACE, "Pedido Invalido");
 	    respuesta_pedido_t respuesta;
 	    respuesta.recepcionOK = false;
 	    controlador.cancelarOrdenDeCompraACliente(numCliente, respuesta);
