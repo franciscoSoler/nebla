@@ -7,6 +7,7 @@
 
 #include "ControladorAlmacenPiezas.h"
 #include "../../Logger/Logger.h"
+#include "LockFile.h"
 
 
 ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
@@ -93,7 +94,7 @@ void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t resp
     //respuestasAlmacen.enviar(respuesta);
 }
 
-void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd piezas) {
+void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &piezas) {
     ifstream stream;
     stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
     Parser parser;
@@ -125,8 +126,15 @@ void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto t
         if (id > PIEZA_3) {
             piezas.pieza[i].tipoPieza = static_cast<TipoPieza> (id);
             piezas.pieza[i].cantidad = cantidad;
+            
         }
     }
+    
+    for (int i = 0; i < cantPiezas*2; i+=2) {
+        sprintf(this->buffer, "Estado piezas: Tipo: %d Cantidad: %d",piezas.pieza[i].tipoPieza,piezas.pieza[i].cantidad);
+        Logger::getInstance().logMessage(Logger::ERROR,this->buffer);
+    }
+    
 }
 
 void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) {
@@ -171,6 +179,8 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
                     mensaje.mtype = i + 1;
                     mensaje.pedidoCanastoAgv.lugar = j;
                     mensaje.pedidoCanastoAgv.tipoPieza = tipoPieza;
+                    sprintf(this->buffer, "Canasto no presente, Pieza: %d",mensaje.pedidoCanastoAgv.tipoPieza);
+                    Logger::getInstance().logMessage(Logger::DEBUG, this->buffer);
                     this->colaPedidosCanastos.enviarPedidoCanasto(mensaje);
                     break;
                 }

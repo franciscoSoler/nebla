@@ -34,7 +34,7 @@ class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
 	pedido_fabricacion_t recibirPedidoDeFabricacion();
 	int obtenerCantidadMinimaDeProduccion(int numProductoConsultado);
 	void responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor);
-        void obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd piezasProductoActual);
+        void obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &piezasProductoActual);
         void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]);
         void recibirConfirmacionProduccion();
         void enviarPedidoProduccionARobot5(pedido_fabricacion_t pedidoFabricacion);
