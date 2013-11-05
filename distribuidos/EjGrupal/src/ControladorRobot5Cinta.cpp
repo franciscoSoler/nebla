@@ -224,7 +224,7 @@ int main(int argc, char** argv) {
             colaPedidosProduccion.enviarProximoPedidoProduccion(mensajeProximoPedido);
         }        
         catch (Exception const& ex) {
-            sprintf(buffer, "Error: %s\n", ex.what());
+            sprintf(buffer, "Error: %s", ex.what());
             Logger::getInstance().logMessage(Logger::ERROR, buffer);
             exit(-1);
         }
