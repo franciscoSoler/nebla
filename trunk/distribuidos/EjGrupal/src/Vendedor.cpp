@@ -34,17 +34,17 @@ int main(int argc, char** argv)
     Logger::getInstance().setProcessInformation(mensajePantalla);
    
     
-    sprintf(mensajePantalla, "Se inicia el vendedor.\n");
+    sprintf(mensajePantalla, "Se inicia el vendedor.");
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     while(true)
     {
-	sprintf(mensajePantalla, "Espera clientes.\n");
+	sprintf(mensajePantalla, "Espera clientes.");
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
 	long numCliente = controlador.recibirLlamadoTelefonico();
 	
-	sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicación.\n", numCliente);
+	sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicación.", numCliente);
 	Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
 	OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);

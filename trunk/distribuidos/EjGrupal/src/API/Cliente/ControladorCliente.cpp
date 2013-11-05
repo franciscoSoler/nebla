@@ -12,7 +12,7 @@ ControladorCliente::ControladorCliente() { }
 
 ControladorCliente::ControladorCliente(long numCliente)
 { 
-    sprintf(mensajePantalla, "Cliente #%ld:", numCliente);
+    sprintf(mensajePantalla, "Cliente N°%ld:", numCliente);
     Logger::setProcessInformation(mensajePantalla);
     
     /* Comunicacion con el vendedor */

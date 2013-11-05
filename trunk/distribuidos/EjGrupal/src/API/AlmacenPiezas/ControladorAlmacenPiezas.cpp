@@ -12,6 +12,7 @@
 ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
         colaEnvioMensajePedidoProduccion ("Mensage Robot 5 Msg Queue")
 { 
+    Logger::logMessage(Logger::TRACE, "AlmacenDePiezas:");
     this->colaReciboOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     colaReciboOrdenProduccion.obtener();
     
@@ -64,7 +65,7 @@ int ControladorAlmacenPiezas::obtenerCantidadMinimaDeProduccion(int numeroProduc
     int cantMinimaProduccion = atoi(cantMinimaProduccionString.c_str());
     
     char mensajePantalla[256];
-    sprintf(mensajePantalla, "Almacén dice que la cantidad mínima de producción de producto %d es %d.\n", numeroProducto, cantMinimaProduccion);
+    sprintf(mensajePantalla, "Almacén dice que la cantidad mínima de producción de producto %d es %d.", numeroProducto, cantMinimaProduccion);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     return cantMinimaProduccion;

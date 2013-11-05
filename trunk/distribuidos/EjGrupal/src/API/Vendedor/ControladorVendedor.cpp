@@ -15,6 +15,10 @@ ControladorVendedor::ControladorVendedor() {
 ControladorVendedor::ControladorVendedor(long numVendedor)
 {
     /* Comunicación con los clientes. */
+    char buffer[255];
+    sprintf(buffer, "Vendedor N°%ld:", numVendedor);
+    Logger::setProcessInformation(buffer);
+    
     this->vendedores = IPC::VendedoresMessageQueue("Vendedor - VendedoresMsgQueue");
     this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     
@@ -130,7 +134,7 @@ void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_fabricacion_t 
 {
     char mensajePantalla[1024];
     sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer "
-    "otras %d de producto para vender y se stockean %d de tipo %d.\n", 
+    "otras %d de producto para vender y se stockean %d de tipo %d.", 
     pedidoProduccion.vendidoStockeado, pedidoProduccion.producidoVendido , 
     pedidoProduccion.producidoParaStockear, pedido.tipoProducto);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
@@ -177,7 +181,7 @@ void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacio
 {    
     char mensajePantalla[256];
     sprintf(mensajePantalla, "Vendedor #%ld envía pedido de producción de %d unidades de producto %d al "
-            "almacén de piezas.\n", numVendedor, pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido, 
+            "almacén de piezas.", numVendedor, pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido, 
             pedidoProduccion.tipoProducto);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
@@ -241,7 +245,7 @@ int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)
     int cantMinimaProduccion = atoi(cantMinimaProduccionString.c_str());
     
     char mensajePantalla[256];
-    sprintf(mensajePantalla, "La cantidad mínima de producción de producto %d es %d.\n", numeroProducto, cantMinimaProduccion);
+    sprintf(mensajePantalla, "La cantidad mínima de producción de producto %d es %d.", numeroProducto, cantMinimaProduccion);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     return cantMinimaProduccion;
@@ -279,7 +283,7 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
 
 	ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto] = pedidos[i].cantidad;
 
-	sprintf(mensajePantalla, "Vendedor #%ld reserva pedido de %d unidades del producto %d.\n", numVendedor, pedidos[i].cantidad, pedidos[i].tipoProducto);
+	sprintf(mensajePantalla, "Vendedor #%ld reserva pedido de %d unidades del producto %d.", numVendedor, pedidos[i].cantidad, pedidos[i].tipoProducto);
 	Logger::getInstance().logMessage(Logger::DEBUG, mensajePantalla);
     }
     
