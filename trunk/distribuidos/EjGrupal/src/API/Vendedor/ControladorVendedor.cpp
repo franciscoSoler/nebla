@@ -155,6 +155,24 @@ pedido_fabricacion_t ControladorVendedor::reservarPedido(pedido_t pedido)
     return pedidoProduccion;
 }
 
+void ControladorVendedor::confirmarPedidos(pedido_fabricacion_t pedidoProduccion[], OrdenDeCompra ordenDeCompra, int cantProductos)
+{
+    for(int i = 0; i < cantProductos; i++)
+    {
+	if(pedidoProduccion[i].producidoParaStockear > 0)
+	    almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion[i].producidoParaStockear);
+
+	if(pedidoProduccion[i].producidoVendido > 0)
+	    almacenProductosTerminados.asignarVaciosAProduccion(ordenDeCompra, pedidoProduccion[i].producidoVendido);
+
+	if(pedidoProduccion[i].vendidoStockeado > 0)
+	    almacenProductosTerminados.asignarStockeados(ordenDeCompra, pedidoProduccion[i].tipoProducto, pedidoProduccion[i].vendidoStockeado);
+    }
+    
+    this->enviarOrdenDeCompraDespacho(ordenDeCompra);
+}
+
+
 void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion)
 {    
     char mensajePantalla[256];
@@ -167,30 +185,6 @@ void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacio
     mensaje.mtype = 1;
     mensaje.pedidoFabricacion = pedidoProduccion;
     colaEnvioOrdenProduccion.enviar(mensaje);
-}
-
-void ControladorVendedor::confirmarPedido(pedido_fabricacion_t pedidoProduccion, OrdenDeCompra ordenDeCompra)
-{
-    if(pedidoProduccion.producidoParaStockear > 0)
-	almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion.producidoParaStockear);
-    
-    if(pedidoProduccion.producidoVendido > 0)
-	almacenProductosTerminados.asignarVaciosAProduccion(ordenDeCompra, pedidoProduccion.producidoVendido);
-    
-    if(pedidoProduccion.vendidoStockeado > 0)
-	almacenProductosTerminados.asignarStockeados(ordenDeCompra, pedidoProduccion.tipoProducto, pedidoProduccion.vendidoStockeado);
-    
-    this->enviarOrdenDeCompraDespacho(ordenDeCompra);
-}
-
-void ControladorVendedor::anularPedidos()
-{
-    almacenProductosTerminados.anularReservas();
-}
-
-void ControladorVendedor::terminarLlamadoTelefonico()
-{
-    mutexAlmacenTerminados.signal();
 }
 
 void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra) {
@@ -208,12 +202,32 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     outputQueueDespacho.send(pedidoOrdenDeCompra);
 }
 
-void ControladorVendedor::enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta)
+void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido)
 {
-    msg_respuesta_pedido_t mensaje;
-    mensaje.respuesta_pedido = respuesta;
-    mensaje.mtype = numCliente;
-    clientes.enviarMensajeRespuesta(mensaje);
+    msg_respuesta_pedido_t msgRespuesta;
+    msgRespuesta.respuesta_pedido = pedido;
+    msgRespuesta.mtype = numCliente;
+    
+    clientes.enviarMensajeRespuesta(msgRespuesta);
+}
+
+void ControladorVendedor::confirmarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t pedido)
+{
+    msg_respuesta_pedido_t msgRespuesta;
+    msgRespuesta.respuesta_pedido = pedido;
+    msgRespuesta.mtype = numCliente;
+    
+    clientes.enviarMensajeRespuesta(msgRespuesta);
+}
+
+
+void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t pedido)
+{
+    msg_respuesta_pedido_t msgRespuesta;
+    msgRespuesta.respuesta_pedido = pedido;
+    msgRespuesta.mtype = numCliente;
+    
+    clientes.enviarMensajeRespuesta(msgRespuesta);
 }
 
 int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)
@@ -245,4 +259,35 @@ void ControladorVendedor::buscarUbicacionDeProductoEnArchivo(Parser parser, ifst
 	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
 	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
     } while(continuaArchivo && ultimoNumeroProductoLeido != numeroProducto);
+}
+
+bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompra* ordenDeCompra, int cantPedidos)
+{
+    char mensajePantalla[1024];
+    mutexAlmacenTerminados.wait();
+    bool ordenDeCompraEsValida = true;
+    pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
+    for(int i = 0; i < cantPedidos; i++)
+    {
+	pedido_fabricacion_t pedidoProduccion = reservarPedido(pedidos[i]);
+	pedidosProduccion[i] = pedidoProduccion;
+	if(!pedidoProduccion.ventaEsValida)
+	{
+	    ordenDeCompraEsValida = false;
+	    break;
+	}
+
+	ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto] = pedidos[i].cantidad;
+
+	sprintf(mensajePantalla, "Vendedor #%ld reserva pedido de %d unidades del producto %d.\n", numVendedor, pedidos[i].cantidad, pedidos[i].tipoProducto);
+	write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    }
+    
+    if(ordenDeCompraEsValida)
+	confirmarPedidos(pedidosProduccion, *ordenDeCompra, cantPedidos);
+    else
+	almacenProductosTerminados.anularReservas();
+    
+    mutexAlmacenTerminados.signal();
+    return ordenDeCompraEsValida;
 }

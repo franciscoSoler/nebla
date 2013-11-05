@@ -22,8 +22,6 @@ int main(int argc, char** argv)
     
     controlador.contactarVendedores();
     
-    bool pedidoEsValido = true;
-    
     /* Envío los pedidos. */
     int cantPedidos = 1 + rand() % 3;
     for(int i = 0; i < cantPedidos; i++)
@@ -33,13 +31,13 @@ int main(int argc, char** argv)
 	controlador.enviarPedido(cantUnidades, tipoProducto, i);
 	if(controlador.recibirResultado() == false)
 	{
-	    pedidoEsValido = false;
-	    break;
+	    exit(-1);
 	}
     }
     
-    if(pedidoEsValido)
-	controlador.finalizarEnvio(cantPedidos);
+    bool pedidoEsValido = controlador.recibirResultado();
+    if(!pedidoEsValido)
+	exit(-1);
     
     // Cliente espera una orden de pedidos terminada
     TipoProducto tipo;
