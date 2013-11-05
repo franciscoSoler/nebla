@@ -7,6 +7,7 @@
 #include <time.h>
 #include "Common.h"
 #include "ControladorVendedor.h"
+#include "Logger.h"
 
 OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
 {
@@ -28,25 +29,25 @@ int main(int argc, char** argv)
     
     char mensajePantalla[256];
     sprintf(mensajePantalla, "Se inicia el vendedor #%ld.\n", numVendedor);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     while(true)
     {
 	sprintf(mensajePantalla, "Vendedor #%ld espera clientes.\n", numVendedor);
-	write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
-	mensaje_inicial_t mensajeInicial = controlador.recibirLlamadoTelefonico();
+	long idCliente = controlador.recibirLlamadoTelefonico();
 	
-	sprintf(mensajePantalla, "Vendedor #%ld recibe mensaje del cliente %ld y establece una comunicación.\n", numVendedor, mensajeInicial.emisor);
-	write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+	sprintf(mensajePantalla, "Vendedor #%ld recibe mensaje del cliente %ld y establece una comunicación.\n", numVendedor, idCliente);
+	Logger::logMessage(Logger::TRACE, mensajePantalla);
 	
 	OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
-	ordenDeCompra.idCliente_ = mensajeInicial.emisor;
-	long numCliente = ordenDeCompra.idCliente_;
+	ordenDeCompra.idCliente_ = idCliente;
+	//long numCliente = ordenDeCompra.idCliente_;
 	
 	pedido_t pedido;
 	bool pedidoEsValido = true;
-	pedido_produccion_t pedidosProduccion[CANT_MAX_PEDIDOS];
+	pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
 	int cantPedidos = 0;
 	
 	do
@@ -55,9 +56,12 @@ int main(int argc, char** argv)
 	    pedidosProduccion[cantPedidos] = controlador.reservarPedido(pedido);
 	    if(!pedidosProduccion[cantPedidos].ventaEsValida)
 	    {
-		controlador.enviarRespuestaDePedido(numCliente, pedidosProduccion[cantPedidos].ventaEsValida);
-		pedidoEsValido = false;
-		continue;
+            respuesta_pedido_t respuesta;
+            respuesta.emisor = numVendedor;
+            respuesta.recepcionOK = pedidosProduccion[cantPedidos].ventaEsValida;
+            controlador.enviarRespuestaDePedido(idCliente, respuesta);
+            pedidoEsValido = false;
+            continue;
 	    }
 		
 	    if(pedido.fin)
@@ -66,10 +70,14 @@ int main(int argc, char** argv)
 	    ordenDeCompra.cantidadPorProducto_[pedido.tipoProducto] = pedido.cantidad;
 	    
 	    sprintf(mensajePantalla, "Vendedor #%ld recibe pedido del cliente %ld de %d unidades del producto %d.\n", numVendedor, pedido.emisor, pedido.cantidad, pedido.tipoProducto);
+        Logger::logMessage(Logger::TRACE, mensajePantalla);
 	    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
 	    cantPedidos++;
             
-            controlador.enviarRespuestaDePedido(numCliente, pedidoEsValido);
+        respuesta_pedido_t respuesta;
+        respuesta.emisor = numVendedor;
+        respuesta.recepcionOK = pedidoEsValido;
+            controlador.enviarRespuestaDePedido(idCliente, respuesta);
             
 	} while(!pedido.fin && pedidoEsValido);
 	

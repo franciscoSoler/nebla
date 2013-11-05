@@ -25,18 +25,18 @@ int main(int argc, char** argv)
 {
     std::auto_ptr<IControladorAlmacenPiezas> controladorAlmacenPiezas = std::auto_ptr<IControladorAlmacenPiezas>(new ControladorAlmacenPiezas());
 
-    pedido_produccion_t pedidoProduccion;
+    pedido_fabricacion_t pedidoFabricacion;
     EspecifProd piezasReservadasTemporalmente[2];
     EspecifProd piezasProductoActual;
     piezasReservadasTemporalmente[0].idProducto = NULL_PRODUCT;
     piezasReservadasTemporalmente[1].idProducto = NULL_PRODUCT;
     
     while (true) {
-        pedidoProduccion = controladorAlmacenPiezas->recibirPedidoDeProduccion();
+        pedidoFabricacion = controladorAlmacenPiezas->recibirPedidoDeFabricacion();
 
-        controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoProduccion);
+        controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoFabricacion);
         
-        controladorAlmacenPiezas->obtenerEspecificacionesDelProducto(pedidoProduccion.tipoProducto, piezasProductoActual);
+        controladorAlmacenPiezas->obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual);
         for (int j = 0; j < piezasProductoActual.cantPiezas; j++) 
             controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.pieza[j].tipoPieza, piezasReservadasTemporalmente);
         controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.tipoPantalla.tipoPieza, piezasReservadasTemporalmente);

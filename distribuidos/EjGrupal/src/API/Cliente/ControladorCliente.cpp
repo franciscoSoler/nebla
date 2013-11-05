@@ -15,13 +15,17 @@ ControladorCliente::ControladorCliente(long numCliente)
     sprintf(mensajePantalla, "Cliente #%ld:", numCliente);
     Logger::setProcessInformation(mensajePantalla);
     
-    this->vendedores = Cola<mensaje_inicial_t>(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
-    this->vendedores.obtener();
-    this->clientes = Cola<respuesta_pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
-    this->clientes.obtener();
+    /* Comunicacion con el vendedor */
+    this->vendedores = IPC::VendedoresMessageQueue("Vendedor - VendedoresMsgQueue");
+    this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     
-    this->pedidos = Cola<pedido_t>(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
-    this->pedidos.obtener();
+    this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
+    this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
+    
+    this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
+    this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
+    
+    
     
     this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
     this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
@@ -39,10 +43,12 @@ void ControladorCliente::contactarVendedores()
     mensaje.emisor = numCliente;
     mensaje.mtype = CANT_VENDEDORES;
     Logger::logMessage(Logger::TRACE, "Llama a algún vendedor.\n");
-    vendedores.enviar(mensaje);    
+    vendedores.enviarMensajeInicial(mensaje);    
     
-    respuesta_pedido_t respuesta;
-    clientes.recibir(numCliente, &respuesta);
+    
+    msg_respuesta_pedido_t mensajeRespuesta;
+    clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
+    respuesta_pedido_t respuesta = mensajeRespuesta.respuesta_pedido;
     long numVendedor = respuesta.emisor;
     Logger::logMessage(Logger::TRACE, "Recibe la respuesta del vendedor.\n");
         
@@ -54,15 +60,20 @@ void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo, int numMen
     pedido_t pedido;
     pedido.emisor = numCliente;
     pedido.cantidad = cantidadUnidades;
-    pedido.mtype = numVendedorAsociado;
     pedido.tipoProducto = (TipoProducto)tipo;
     pedido.fin = false;
     pedido.numMensaje = numMensaje + 1;
+    
     sprintf(mensajePantalla, "Envía al vendedor %ld un "
             "pedido por %d productos de tipo %d.\n", 
             numVendedorAsociado, pedido.cantidad, pedido.tipoProducto);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
-    pedidos.enviar(pedido);	    
+    
+    
+    msg_pedido_t mensajePedido;
+    mensajePedido.mtype = numVendedorAsociado;
+    mensajePedido.pedido = pedido;
+    pedidos.enviarMensajePedido(mensajePedido);	    
 }
 
 void ControladorCliente::finalizarEnvio(int cantPedidos)
@@ -73,22 +84,25 @@ void ControladorCliente::finalizarEnvio(int cantPedidos)
     pedido_t pedidoFinal;
     pedidoFinal.emisor = numCliente;
     pedidoFinal.cantidad = 0;
-    pedidoFinal.mtype = numVendedorAsociado;
     pedidoFinal.fin = true;
     pedidoFinal.numMensaje = cantPedidos + 1;
     sprintf(mensajePantalla, "Envía al vendedor %ld el mensaje de "
             "fin de pedido.\n", numVendedorAsociado);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
-    pedidos.enviar(pedidoFinal);
+    
+    msg_pedido_t mensajePedido;
+    mensajePedido.mtype = numVendedorAsociado;
+    mensajePedido.pedido = pedidoFinal;
+    pedidos.enviarMensajePedido(mensajePedido);
 }
 
 ControladorCliente::~ControladorCliente() { }
 
 bool ControladorCliente::recibirResultado()
 {
-    respuesta_pedido_t respuesta;
-    clientes.recibir(numCliente, &respuesta);
-    return respuesta.recepcionOK;
+    msg_respuesta_pedido_t msgRespuesta;
+    clientes.recibirMensajeRespuesta(numCliente, &msgRespuesta);
+    return msgRespuesta.respuesta_pedido.recepcionOK;
 }
 
 void ControladorCliente::retirarEncargo(TipoProducto & tipoProducto, int & nroOrdenCompra)

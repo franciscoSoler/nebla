@@ -1,10 +1,6 @@
 #ifndef COMUNICACIONROBOT5_MESSAGEQUEUE_H_
 #define COMUNICACIONROBOT5_MESSAGEQUEUE_H_
 
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
-
 #include "../AbstractMessageQueue/AbstractMessageQueue.h"
 
 #include "../../../Common.h"

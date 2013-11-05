@@ -10,15 +10,12 @@
 
 
 ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
-        mensajesRobot5 ("Mensage Robot 5 Msg Queue")
+        colaEnvioMensajePedidoProduccion ("Mensage Robot 5 Msg Queue")
 { 
-    this->colaReciboOrdenProduccion = Cola<pedido_produccion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    this->colaReciboOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     colaReciboOrdenProduccion.obtener();
     
-    this->colaEnvioMensajePedidoProduccion = Cola<MensajePedidoProduccion>(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
-    colaEnvioMensajePedidoProduccion.obtener();
-    
-    mensajesRobot5.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
+    colaEnvioMensajePedidoProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
     
     this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
     this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
@@ -35,26 +32,26 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
 ControladorAlmacenPiezas::~ControladorAlmacenPiezas() { }
 
 
-void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(pedido_produccion_t pedidoProduccion)
+void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(pedido_fabricacion_t pedidoFabricacion)
 {
     PedidoProduccion pedido;
-    pedido.cantidad = pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido;
-    pedido.diferenciaMinima = pedidoProduccion.diferenciaMinimaProducto;
-    pedido.nroOrdenCompra = pedidoProduccion.numOrdenCompra;
-    pedido.tipo = pedidoProduccion.tipoProducto;
+    pedido.cantidad = pedidoFabricacion.producidoParaStockear + pedidoFabricacion.producidoVendido;
+    pedido.diferenciaMinima = pedidoFabricacion.diferenciaMinimaProducto;
+    pedido.nroOrdenCompra = pedidoFabricacion.numOrdenCompra;
+    pedido.tipo = pedidoFabricacion.tipoProducto;
     
     MensajePedidoProduccion mensaje;
     mensaje.pedidoProduccion = pedido;
     mensaje.mtype = TIPO_PEDIDO_PRODUCCION;
     
-    colaEnvioMensajePedidoProduccion.enviar(mensaje);
+    colaEnvioMensajePedidoProduccion.enviarPedidoProduccion(mensaje);
 }
 
-pedido_produccion_t ControladorAlmacenPiezas::recibirPedidoDeProduccion()
+pedido_fabricacion_t ControladorAlmacenPiezas::recibirPedidoDeFabricacion()
 {
-    pedido_produccion_t buffer;
-    this->colaReciboOrdenProduccion.recibir(1, &buffer);
-    return buffer;
+    mensaje_pedido_fabricacion_t mensajePedido;
+    this->colaReciboOrdenProduccion.recibir(1, &mensajePedido);
+    return mensajePedido.pedidoFabricacion;
 }
 
 int ControladorAlmacenPiezas::obtenerCantidadMinimaDeProduccion(int numeroProducto)
@@ -68,7 +65,7 @@ int ControladorAlmacenPiezas::obtenerCantidadMinimaDeProduccion(int numeroProduc
     
     char mensajePantalla[256];
     sprintf(mensajePantalla, "Almacén dice que la cantidad mínima de producción de producto %d es %d.\n", numeroProducto, cantMinimaProduccion);
-    write(fileno(stdout), mensajePantalla, strlen(mensajePantalla));
+    Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     return cantMinimaProduccion;
 }
@@ -187,5 +184,5 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
 
 void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {
     MensajeProximoPedidoProduccion mensajeProximoPedido;
-    this->mensajesRobot5.recibirProximoPedidoProduccion(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, &mensajeProximoPedido);
+    this->colaEnvioMensajePedidoProduccion.recibirProximoPedidoProduccion(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, &mensajeProximoPedido);
 }

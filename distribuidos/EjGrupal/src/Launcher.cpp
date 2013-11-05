@@ -32,6 +32,9 @@
 
 #include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
+#include "VendedoresMessageQueue.h"
+#include "ClientesMessageQueue.h"
+#include "PedidosVendedorMessageQueue.h"
 
 static char buffer[255];
 static char param1[20];
@@ -258,13 +261,12 @@ void createIPCs() {
 	semR16.createSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
 	semR16.initializeSemaphore(0, 0);
         
-    Cola<mensaje_inicial_t> vendedores(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
-    vendedores.crear();
-    Cola<mensaje_inicial_t> clientes(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
-    clientes.crear();
-	
-    Cola<pedido_t> pedidos(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
-    pedidos.crear();
+    IPC::VendedoresMessageQueue vendedores("Vendedores Msg Queue");
+    vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
+    IPC::ClientesMessageQueue clientes("Clientes Msg Queue");
+    clientes.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
+    IPC::PedidosVendedorMessageQueue pedidos("Pedidos Msg Queue");
+    pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     
     Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     consultasAlmacen.crear();
@@ -274,7 +276,8 @@ void createIPCs() {
     MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     shmemAlmacenTerminados.crear();
     MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
-    shmemNumeroOrdenCompra.crear();
+    int* shMemData = reinterpret_cast<int*>(shmemNumeroOrdenCompra.crear());
+    
     
     IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");
     mutexAlmacenTerminados.createSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
@@ -312,6 +315,10 @@ void createIPCs() {
     MemoriaCompartida shMem_APT(DIRECTORY_APT, LETRA_SHMEM_ALMACEN_TERMINADOS, 
             TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     shMem_APT.crear();
+    
+    IPC::Semaphore mutexOrdenDeCompra("mutexOrdenDeCompra");
+    mutexOrdenDeCompra.createSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
+    mutexOrdenDeCompra.initializeSemaphore(0, 1);
 }
 
 void createProcess(std::string processName, int amountOfProcesses) {
