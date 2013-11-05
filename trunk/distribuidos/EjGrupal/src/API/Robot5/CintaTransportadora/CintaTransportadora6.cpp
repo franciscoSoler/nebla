@@ -8,6 +8,7 @@
 #include "CintaTransportadora6.h"
 
 #include "../../../Common.h"
+#include "Logger.h"
 
 CintaTransportadora6::CintaTransportadora6(int idCinta) 
         : idCinta(idCinta),
@@ -122,7 +123,8 @@ void CintaTransportadora6::mostrarEstadoCinta(CintaTransportadora_6 cintaTranspo
         }
     }
     strcat(buffer, "|\n");
-    write(fileno(stdout),buffer,strlen(buffer));
+    //write(fileno(stdout),buffer,strlen(buffer));
+    Logger::logMessage(Logger::DEBUG, buffer);
 }
 
 std::string CintaTransportadora6::obtenerMensajeEstado() {
