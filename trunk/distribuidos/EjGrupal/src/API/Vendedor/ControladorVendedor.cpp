@@ -108,7 +108,7 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
 	pedidoProduccion.producidoParaStockear = 0;
 	pedidoProduccion.producidoVendido = 0;
 	pedidoProduccion.vendidoStockeado = pedido.cantidad;
-	pedidoProduccion.diferenciaMinimaProducto = -1;
+	pedidoProduccion.diferenciaMinimaProducto = 0;
 	return pedidoProduccion;
     }
     
@@ -125,7 +125,7 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
     pedidoProduccion.vendidoStockeado = cantidadEnStock;
     pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock;
     pedidoProduccion.producidoParaStockear = cantidadAProducir - pedido.cantidad;
-    pedidoProduccion.diferenciaMinimaProducto = cantidadMinima > pedido.cantidad ? cantidadMinima : -1;
+    pedidoProduccion.diferenciaMinimaProducto = cantidadMinima > pedido.cantidad ? cantidadMinima : 0;
     
     return pedidoProduccion;
 }
