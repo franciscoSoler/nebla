@@ -38,38 +38,38 @@ int main(int argc, char** argv)
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     while(true)
-    {
-	sprintf(mensajePantalla, "Espera clientes.");
+        {
+        sprintf(mensajePantalla, "Espera clientes.");
         Logger::logMessage(Logger::TRACE, mensajePantalla);
-	
-	long numCliente = controlador.recibirLlamadoTelefonico();
-	
-	sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicación.", numCliente);
-	Logger::logMessage(Logger::TRACE, mensajePantalla);
-	
-	OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
-        ordenDeCompra.idCliente_ = numCliente;
-	
-	pedido_t pedido;
-	pedido_t pedidos[CANT_MAX_PEDIDOS];
-	int cantPedidos = 0;
-	do
-	{
-	    pedido = controlador.recibirPedido();
-	    pedidos[cantPedidos] = pedido;
-	    respuesta_pedido_t respuesta;
-	    respuesta.recepcionOK = true;
-	    controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
-	    if(pedido.fin == true)
-		continue;
-	    cantPedidos++;
-	} while(pedido.fin == false);
-	
+
+        long numCliente = controlador.recibirLlamadoTelefonico();
+
+        sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicación.", numCliente);
+        Logger::logMessage(Logger::TRACE, mensajePantalla);
+
+        OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
+            ordenDeCompra.idCliente_ = numCliente;
+
+        pedido_t pedido;
+        pedido_t pedidos[CANT_MAX_PEDIDOS];
+        int cantPedidos = 0;
+        do
+        {
+            pedido = controlador.recibirPedido();
+            pedidos[cantPedidos] = pedido;
+            respuesta_pedido_t respuesta;
+            respuesta.recepcionOK = true;
+            controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
+            if(pedido.fin == true)
+            continue;
+            cantPedidos++;
+        } while(pedido.fin == false);
+
         Logger::getInstance().logMessage(Logger::DEBUG, "3");
-        
-	bool pedidoEsValido = controlador.realizarOrdenDeCompra(pedidos, &ordenDeCompra, cantPedidos);
-	if(pedidoEsValido)
-	{
+
+        bool pedidoEsValido = controlador.realizarOrdenDeCompra(pedidos, &ordenDeCompra, cantPedidos);
+        if(pedidoEsValido)
+        {   
             Logger::getInstance().logMessage(Logger::TRACE, "Pedido Valido");
 	    respuesta_pedido_t respuesta;
 	    respuesta.recepcionOK = true;
@@ -83,10 +83,10 @@ int main(int argc, char** argv)
 	else
 	{
             Logger::getInstance().logMessage(Logger::TRACE, "Pedido Invalido");
-	    respuesta_pedido_t respuesta;
-	    respuesta.recepcionOK = false;
-	    controlador.cancelarOrdenDeCompraACliente(numCliente, respuesta);
-	}
+            respuesta_pedido_t respuesta;
+            respuesta.recepcionOK = false;
+            controlador.cancelarOrdenDeCompraACliente(numCliente, respuesta);
+        }
 
     }  
     
