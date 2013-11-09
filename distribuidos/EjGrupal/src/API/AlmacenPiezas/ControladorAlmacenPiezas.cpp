@@ -125,19 +125,23 @@ void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto t
         int id = atoi(parser.obtenerProximoValor().c_str());
         int cantidad = atoi(parser.obtenerProximoValor().c_str());
         if (id < PANTALLA_1) {
-            piezas.pieza[i].tipoPieza = static_cast<TipoPieza> (id);
-            piezas.pieza[i].cantidad = cantidad;
+            piezas.pieza[piezas.cantPiezas].tipoPieza = static_cast<TipoPieza> (id);
+            piezas.pieza[piezas.cantPiezas].cantidad = cantidad;
+            
+            sprintf(this->buffer, "cantPiezas %d: Pieza a guardar %d en la posicion  %d Cantidad: %d", cantPiezas, piezas.pieza[piezas.cantPiezas].tipoPieza, piezas.cantPiezas, piezas.pieza[piezas.cantPiezas].cantidad);
+            Logger::getInstance().logMessage(Logger::ERROR,this->buffer);
+            
             piezas.cantPiezas++;
             continue;
         }
-        if (id > PIEZA_3) {
-            piezas.pieza[i].tipoPieza = static_cast<TipoPieza> (id);
-            piezas.pieza[i].cantidad = cantidad;
+        if (id >= PANTALLA_1) {
+            piezas.tipoPantalla.tipoPieza = static_cast<TipoPieza> (id);
+            piezas.tipoPantalla.cantidad = cantidad;
             
         }
     }
     
-    for (int i = 0; i < cantPiezas*2; i+=2) {
+    for (int i = 0; i < piezas.cantPiezas; i++) {
         sprintf(this->buffer, "Estado piezas: Tipo: %d Cantidad: %d",piezas.pieza[i].tipoPieza,piezas.pieza[i].cantidad);
         Logger::getInstance().logMessage(Logger::ERROR,this->buffer);
     }
@@ -150,8 +154,12 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
         sprintf(this->buffer, "Almacen piezas -:");
         Logger::setProcessInformation(this->buffer);
         BufferCanastos canastos;
+        int posicionesPedidos[MAX_PIEZAS_POR_PRODUCTO];
+        int cantPedidosRealizados;
+        int posTemp;
         
         for (int i = 0; i < CANTIDAD_AGVS; i++) {
+            cantPedidosRealizados = 0;
             this->semMemCanastos.wait(i);
             this->shMemBufferCanastos[i].readInfo(&canastos);
             this->semMemCanastos.signal(i);
@@ -165,7 +173,8 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
             }
             if (canastoPresente)
                 continue;
-
+            // esta mal este buscar, no contempla los envios anteriores a los AGVs!!!!!!!!!!!!!!!
+            
             for (int j = 0; j < MAX_QUANTITY_CANASTOS; j++) {
                 // k es para comparar con ambos conjuntos de piezas utilizados anteriormente
                 for (int k = 0; k < 2; k++) {
@@ -180,15 +189,30 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
                         }
                     } else
                         canastoPresente = canastos.canastos[j].tipoPieza == piezasReservadasTemporalmente[k].tipoPantalla.tipoPieza;
-                }        
+                }
+                //chequea que la posicion del canasto que voy a pedir no la haya pedido previamente
+                posTemp = 0;
+                
+                
+                sprintf(this->buffer, "antes del while!!!!!  pos a pedir %d, cant pedidos %d", j, cantPedidosRealizados);
+                Logger::getInstance().logMessage(Logger::IMPORTANT, this->buffer);
+                while(!canastoPresente && posTemp < cantPedidosRealizados) {
+                    sprintf(this->buffer, "pos a pedir %d, pos pedida = %d", j, posicionesPedidos[posTemp]);
+                    Logger::getInstance().logMessage(Logger::DEBUG, this->buffer);
+                    
+                    canastoPresente = j == posicionesPedidos[posTemp];
+                    posTemp++;
+                }
                 if (!canastoPresente) {
                     MensajePedidoRobotCinta_6 mensaje;
                     mensaje.mtype = i + 1;
                     mensaje.pedidoCanastoAgv.lugar = j;
                     mensaje.pedidoCanastoAgv.tipoPieza = tipoPieza;
-                    sprintf(this->buffer, "Canasto no presente, Pieza: %d",mensaje.pedidoCanastoAgv.tipoPieza);
+                    sprintf(this->buffer, "cambio el canasto del buffer %d que tiene la pieza %d por Pieza: %d en el lugar %d", i, canastos.canastos[j].tipoPieza, mensaje.pedidoCanastoAgv.tipoPieza, mensaje.pedidoCanastoAgv.lugar);
                     Logger::getInstance().logMessage(Logger::DEBUG, this->buffer);
                     this->colaPedidosCanastos.enviarPedidoCanasto(mensaje);
+                    posicionesPedidos[cantPedidosRealizados] = j;
+                    cantPedidosRealizados++;
                     break;
                 }
             }
