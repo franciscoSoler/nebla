@@ -9,7 +9,6 @@
 #include "../../Logger/Logger.h"
 #include "LockFile.h"
 
-
 ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
         colaEnvioMensajePedidoProduccion ("Mensage Robot 5 Msg Queue")
 { 

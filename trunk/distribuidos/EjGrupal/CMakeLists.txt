@@ -71,24 +71,6 @@ aux_source_directory("${SRC_DIR}Parser"                                  LIBRARY
 
 add_library(IPCLibrary
             SHARED
-#            ${SRC_DIR}/IPCs/IPCObject/IPCObject.cpp
-#            ${SRC_DIR}/IPCs/Semaphore/Semaphore.cpp
-#            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.cpp
-#            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.cpp
-#            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.cpp
-#            ${SRC_DIR}/IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.cpp
-#            ${SRC_DIR}/IPCs/IPCAbstractos/AbstractSharedMemory/AbstractSharedMemory.cpp
-#            ${SRC_DIR}/IPCs/IPCAbstractos/AbstractMessageQueue/AbstractMessageQueue.cpp
-#            ${SRC_DIR}/IPCs/Barrios/MemoriaCompartida.cpp
-#            ${SRC_DIR}/Logger/Logger.cpp
-#            ${SRC_DIR}/Parser/Parser.cpp
-#            ${SRC_DIR}/Logger/LockFile.cpp
-#            ${SRC_DIR}/Exceptions/Exception.cpp
-#            ${SRC_DIR}/API/Objects/DataSM_R11_R14.cpp
-#            ${SRC_DIR}/API/Objects/DataSM_R14_R16.cpp
-#            ${SRC_DIR}/API/Objects/BufferODC.cpp
-#            ${SRC_DIR}/API/Objects/Util.cpp
-#            ${SRC_DIR}/API/Objects/SmMemAlmacenProductosTerminados.cpp)
             ${LIBRARY_SRC})
 
 
