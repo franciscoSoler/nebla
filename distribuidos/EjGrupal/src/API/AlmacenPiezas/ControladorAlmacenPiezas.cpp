@@ -32,26 +32,6 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
 
 ControladorAlmacenPiezas::~ControladorAlmacenPiezas() { }
 
-
-void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(pedido_fabricacion_t pedidoFabricacion)
-{
-    PedidoProduccion pedido;
-    pedido.cantidad = pedidoFabricacion.producidoParaStockear + pedidoFabricacion.producidoVendido;
-    pedido.diferenciaMinima = pedidoFabricacion.diferenciaMinimaProducto;
-    pedido.nroOrdenCompra = pedidoFabricacion.numOrdenCompra;
-    pedido.tipo = pedidoFabricacion.tipoProducto;
-    
-    MensajePedidoProduccion mensaje;
-    mensaje.pedidoProduccion = pedido;
-    mensaje.mtype = TIPO_PEDIDO_PRODUCCION;
- 
-    char buffer[255];
-    sprintf(buffer, "Enviando pedido de Fabricación al Robot5: Cantidad:%d - Dif:%d - ODC:%d - Tipo:%d",
-    pedido.cantidad, pedido.diferenciaMinima, pedido.nroOrdenCompra, pedido.tipo);
-    Logger::logMessage(Logger::DEBUG, buffer);
-    colaEnvioMensajePedidoProduccion.enviarPedidoProduccion(mensaje);
-}
-
 pedido_fabricacion_t ControladorAlmacenPiezas::recibirPedidoDeFabricacion()
 {
     mensaje_pedido_fabricacion_t mensajePedido;
@@ -60,93 +40,29 @@ pedido_fabricacion_t ControladorAlmacenPiezas::recibirPedidoDeFabricacion()
     return mensajePedido.pedidoFabricacion;
 }
 
-int ControladorAlmacenPiezas::obtenerCantidadMinimaDeProduccion(int numeroProducto)
+void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(PedidoProduccion pedidoProduccion)
 {
-    ifstream stream;
-    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
-    Parser parser;
-    this->buscarUbiacionDeProductoEnArchivo(parser, stream, numeroProducto);
-    string cantMinimaProduccionString = parser.obtenerProximoValor();
-    int cantMinimaProduccion = atoi(cantMinimaProduccionString.c_str());
-    
-    char mensajePantalla[256];
-    sprintf(mensajePantalla, "Almacén dice que la cantidad mínima de producción de producto %d es %d.", numeroProducto, cantMinimaProduccion);
-    Logger::logMessage(Logger::TRACE, mensajePantalla);
-    
-    return cantMinimaProduccion;
+    MensajePedidoProduccion mensaje;
+    mensaje.pedidoProduccion = pedidoProduccion;
+    mensaje.mtype = TIPO_PEDIDO_PRODUCCION;
+ 
+    sprintf(this->buffer, "Enviando pedido de Fabricación al Robot5: Cantidad:"
+            "%d - Dif:%d - ODC:%d - Tipo:%d", pedidoProduccion.cantidad, 
+            pedidoProduccion.diferenciaMinima, pedidoProduccion.nroOrdenCompra, 
+            pedidoProduccion.tipo);
+    Logger::logMessage(Logger::DEBUG, this->buffer);
+    colaEnvioMensajePedidoProduccion.enviarPedidoProduccion(mensaje);
 }
 
-void ControladorAlmacenPiezas::buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
-{
-    bool continuaArchivo = true;
-    int ultimoNumeroProductoLeido = 0;
-    do
-    {
-	continuaArchivo = parser.obtenerLineaSiguiente(stream);
-	if(!continuaArchivo)
-	    continue;
-	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
-	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
-    } while(continuaArchivo && ultimoNumeroProductoLeido != numeroProducto);
+BufferCanastos ControladorAlmacenPiezas::obtenerBufferCanastos(int numBufferCanasto) {
+    BufferCanastos canastos;
+    
+    this->semMemCanastos.wait(numBufferCanasto);
+    this->shMemBufferCanastos[numBufferCanasto].readInfo(&canastos);
+    this->semMemCanastos.signal(numBufferCanasto);
+    return canastos;
 }
-
-
-void ControladorAlmacenPiezas::responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor)
-{
-    respuesta.emisor = 0;
-    respuesta.mtype = numEmisor;
-    //respuestasAlmacen.enviar(respuesta);
-}
-
-void ControladorAlmacenPiezas::obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd & piezas) {
-    ifstream stream;
-    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
-    Parser parser;
-    sprintf(buffer, "Buscando especificaciones del producto %d", tipoProducto);
-    Logger::logMessage(Logger::TRACE, buffer);
-    
-    piezas.idProducto = tipoProducto;
-    
-    int ultimoNumeroProductoLeido = 0;
-    do
-    {
-	if(!parser.obtenerLineaSiguiente(stream))
-	    break;
-	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
-	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
-    } while (ultimoNumeroProductoLeido != tipoProducto);
-    parser.obtenerProximoValor();
-    parser.obtenerProximoValor();
-    string cantidadPiezasString = parser.obtenerProximoValor();
-    int cantPiezas = atoi(cantidadPiezasString.c_str());
-    piezas.cantPiezas = 0;
-    for (int i = 0; i < cantPiezas*2; i+=2) {
-        int id = atoi(parser.obtenerProximoValor().c_str());
-        int cantidad = atoi(parser.obtenerProximoValor().c_str());
-        if (id < PANTALLA_1) {
-            piezas.pieza[piezas.cantPiezas].tipoPieza = static_cast<TipoPieza> (id);
-            piezas.pieza[piezas.cantPiezas].cantidad = cantidad;
-            
-            sprintf(this->buffer, "cantPiezas %d: Pieza a guardar %d en la posicion  %d Cantidad: %d", cantPiezas, piezas.pieza[piezas.cantPiezas].tipoPieza, piezas.cantPiezas, piezas.pieza[piezas.cantPiezas].cantidad);
-            Logger::getInstance().logMessage(Logger::ERROR,this->buffer);
-            
-            piezas.cantPiezas++;
-            continue;
-        }
-        if (id >= PANTALLA_1) {
-            piezas.tipoPantalla.tipoPieza = static_cast<TipoPieza> (id);
-            piezas.tipoPantalla.cantidad = cantidad;
-            
-        }
-    }
-    
-    for (int i = 0; i < piezas.cantPiezas; i++) {
-        sprintf(this->buffer, "Estado piezas: Tipo: %d Cantidad: %d",piezas.pieza[i].tipoPieza,piezas.pieza[i].cantidad);
-        Logger::getInstance().logMessage(Logger::ERROR,this->buffer);
-    }
-    
-}
-
+/*
 void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) {
     try {
         Logger::getInstance();
@@ -221,6 +137,16 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
     }
+}
+*/
+void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(int numAGV, 
+        int posCanasto, TipoPieza tipoPieza) {
+    
+    MensajePedidoRobotCinta_6 mensaje;
+    mensaje.mtype = numAGV + 1;
+    mensaje.pedidoCanastoAgv.lugar = posCanasto;
+    mensaje.pedidoCanastoAgv.tipoPieza = tipoPieza;
+    colaPedidosCanastos.enviarPedidoCanasto(mensaje);
 }
 
 void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {

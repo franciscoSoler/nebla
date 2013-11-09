@@ -51,12 +51,6 @@ int main(int argc, char **argv) {
     }
     
     bool deboSeguir = true;
-    
-    /* El pedido de produccion consta de un tipo de producto a producir
-     * y una cantidad para el mismo.
-     */
-    PedidoProduccion productoAProducir;
-    productoAProducir.cantidad = 0;
 
     while (deboSeguir) {
         try {
