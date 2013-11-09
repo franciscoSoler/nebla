@@ -18,6 +18,7 @@
 #define DIRECTORY_VENDEDOR 	"./DVendedor"
 #define DIRECTORY_DESPACHO      "./DDespacho"
 #define DIRECTORY_APT           "./DAPT"
+#define DIRECTORY_APIEZAS	"./DAPiezas"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
@@ -93,6 +94,10 @@
 #define LETRA_SHMEM_ALMACEN_TERMINADOS  'a'
 #define SEM_MUTEX_SM_APT_ID             1
 
+// ipcs del APiezas (usar DIRECTORY_APIEZAS)
+#define LETRA_SHMEM_ALMACEN_PIEZAS	'r'
+#define LETRA_SEM_ALMACEN_PIEZAS	'c'
+
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
 #define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 	2 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
@@ -118,18 +123,21 @@
 #define CINTA_13_CAPACITY                       3
 #define CINTA_15_CAPACITY                       5
 #define CANTIDAD_PRODUCTOS                      3
-
+#define CANTIDAD_TIPOS_PIEZAS			3
+#define CANTIDAD_TIPOS_PANTALLAS		3
+#define CANTIDAD_MAXIMA_REPOSICION_PIEZAS	200
+#define CANTIDAD_MINIMA_REPOSICION_PIEZAS	100
 
 /* Tipos de productos. */
 
-#define CANT_MAX_PEDIDOS 10
-#define CANT_PRODUCTOS 3
+#define CANT_MAX_PEDIDOS			10
+#define CANT_PRODUCTOS				3
 
-#define CANT_VENDEDORES 10
-#define CANT_CLIENTES 50
-#define TAM_ALMACEN 30
+#define CANT_VENDEDORES				10
+#define CANT_CLIENTES				50
+#define TAM_ALMACEN				30
 
-#define CANT_MAX_COMPONENTES_PRODUCTO 10
+#define CANT_MAX_COMPONENTES_PRODUCTO		10
 
 // comunicación robot 5
 
@@ -314,6 +322,7 @@ public:
     TipoProducto idProducto_;
     bool fallado_;
 };
+
 
 // FIXME: Refactorizar esto
 class OrdenDeCompra {

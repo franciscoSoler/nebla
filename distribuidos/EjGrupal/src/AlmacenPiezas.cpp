@@ -33,7 +33,6 @@ int main(int argc, char** argv)
     while (true) {
         EspecifProd piezasProductoActual;
         pedidoFabricacion = controladorAlmacenPiezas->recibirPedidoDeFabricacion();
-
         controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoFabricacion);
         
         controladorAlmacenPiezas->obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual);

@@ -24,8 +24,11 @@
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/ShMemAlmacenDePiezas.h"
+
 #include "API/Objects/DataSM_R11_R14.h"
 #include "API/Objects/DataSM_R14_R16.h"
+
 #include "IPCs/IPCTemplate/SharedMemory.h"
 #include "IPCs/IPCTemplate/MsgQueue.h"
 
@@ -34,6 +37,7 @@
 #include "VendedoresMessageQueue.h"
 #include "ClientesMessageQueue.h"
 #include "PedidosVendedorMessageQueue.h"
+#include "ShMemAlmacenDePiezas.h"
 
 static char buffer[255];
 static char param1[20];
@@ -56,6 +60,7 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_CLIENTE);
         createDirectory(DIRECTORY_DESPACHO);
         createDirectory(DIRECTORY_APT);
+	createDirectory(DIRECTORY_APIEZAS);
                 
         createIPCs();
         
@@ -307,11 +312,12 @@ void createIPCs() {
     IPC::MsgQueue outputQueueVendedor("outputQueueVendedor");
     outputQueueVendedor.create(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_OUTPUT_ID);  
     
-    //IPCs de Fede    
+    /* almacén de productos terminados. */
     IPC::Semaphore semMutex_APT("semMutex_APT");
     semMutex_APT.createSemaphore(DIRECTORY_APT, SEM_MUTEX_SM_APT_ID, 1);
     semMutex_APT.initializeSemaphore(0, 1);
     
+    /* orden de compra */
     MemoriaCompartida shMem_APT(DIRECTORY_APT, LETRA_SHMEM_ALMACEN_TERMINADOS, 
             TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     shMem_APT.crear();
@@ -319,11 +325,21 @@ void createIPCs() {
     IPC::Semaphore mutexOrdenDeCompra("mutexOrdenDeCompra");
     mutexOrdenDeCompra.createSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
     mutexOrdenDeCompra.initializeSemaphore(0, 1);
-    
+        
     /* Setea la orden de compra en uno por ser la primera. */
     mutexOrdenDeCompra.wait();
-    *shMemData = 1;
+    {
+	*shMemData = 1;
+    }
     mutexOrdenDeCompra.signal();
+        
+    /* almacén de piezas */
+    IPC::Semaphore mutexAlmacenDePiezas("mutexAlmacenDePiezas");
+    mutexAlmacenDePiezas.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
+    mutexAlmacenDePiezas.initializeSemaphore(0, 1);
+    
+    IPC::ShMemAlmacenDePiezas shMemAlmacenDePiezas = IPC::ShMemAlmacenDePiezas("shMemAlmacenDePiezas");
+    shMemAlmacenDePiezas.createSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
 }
 
 void createProcess(std::string processName, int amountOfProcesses, int parameterOffset) {

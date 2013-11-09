@@ -24,6 +24,8 @@
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/ShMemAlmacenDePiezas.h"
+
 #include "API/Objects/DataSM_R11_R14.h"
 #include "API/Objects/DataSM_R14_R16.h"
 #include "IPCs/IPCTemplate/SharedMemory.h"
@@ -233,6 +235,14 @@ int main(int argc, char* argv[]) {
         IPC::PedidosVendedorMessageQueue pedidos("Pedidos Msg Queue");
         pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
         pedidos.destroy();
+	
+	IPC::Semaphore mutexAlmacenDePiezas("mutexAlmacenDePiezas");
+	mutexAlmacenDePiezas.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
+	mutexAlmacenDePiezas.destroy();
+
+	IPC::ShMemAlmacenDePiezas shMemAlmacenDePiezas = IPC::ShMemAlmacenDePiezas("shMemAlmacenDePiezas");
+	shMemAlmacenDePiezas.getSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
+	shMemAlmacenDePiezas.destroy();
     }    
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
