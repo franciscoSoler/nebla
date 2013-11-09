@@ -35,7 +35,8 @@ private:
     IPC::BufferCanastoEntre5yAGVSharedMemory bufferCanasto[CANTIDAD_AGVS]; 
     IPC::Semaphore semaforoAccesoBufferAgv; 
     IPC::Semaphore semaforoBloqueoAgv;
-     
+    IPC::Semaphore semaforoApiRobot5;
+    
     ControladorRobot5Agv(const ControladorRobot5Agv& orig);
     ControladorRobot5Agv& operator= (const ControladorRobot5Agv &p);
 };

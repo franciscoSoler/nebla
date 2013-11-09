@@ -7,17 +7,19 @@
 
 #include "ControladorRobot5Cinta.h"
 
+#include "../../Logger/Logger.h"
+#include "../../Parser/Parser.h"
 
 ControladorRobot5Cinta::ControladorRobot5Cinta() :
         colaPedidosProduccion("PedidosProduccionMessageQueue"),
         estadoRobot5("EstadoRobot5SharedMemory"),
         semaforoAccesoEstadoRobot5("AccesoEstadoRobot5"),
         semaforoBloqueoRobot5("BloqueoRobot5"),
-        semaforoBloqueoRobot11("BloqueoRobot11")
+        semaforoBloqueoRobot11("BloqueoRobot11"),
+        semaforoApiRobot5("ApiRobot5")
 {
         cintaTransportadora[0] = CintaTransportadora6(0);
         cintaTransportadora[1] = CintaTransportadora6(1);
-
 }
 
 ControladorRobot5Cinta::~ControladorRobot5Cinta() {
@@ -38,6 +40,9 @@ void ControladorRobot5Cinta::iniciarControlador() {
     semaforoBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
 
     semaforoBloqueoRobot11.getSemaphore(DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, CANTIDAD_CINTAS_6);
+    
+    /* Obtengo el semaforo para la api del robot 5 */
+    semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5,ID_SEM_API_ROBOT_5, 1);
 }
 
 PedidoProduccion ControladorRobot5Cinta::obtenerPedidoProduccion() {
@@ -67,6 +72,9 @@ void ControladorRobot5Cinta::leerEstadoCintas(EstadoCinta &estadoCinta0,EstadoCi
     
 void ControladorRobot5Cinta::obtenerPedidoGabinete() {
     
+    EstadoCinta estadoCinta0;
+    EstadoCinta estadoCinta1;
+    
     /* Obtengo los estados de ambas cintas para intentar depositar el primer gbainete */            
     Logger::getInstance().logMessage(Logger::TRACE, "Verificando estado de las cintas.");
     leerEstadoCintas(estadoCinta0, estadoCinta1);
@@ -90,6 +98,8 @@ void ControladorRobot5Cinta::obtenerPedidoGabinete() {
         bloqueadas = (estadoCinta0.ocupado && estadoCinta1.ocupado);
     }
     Logger::getInstance().logMessage(Logger::TRACE, "Se libero un lugar en alguna cinta, envio un pedido por un producto.");
+
+    semaforoApiRobot5.wait();
 }
 
 void ControladorRobot5Cinta::resolverPedidoGabinete(ProductoEnProduccion productoEnProduccion, int cintaAUtilizar) {
@@ -110,6 +120,8 @@ void ControladorRobot5Cinta::resolverPedidoGabinete(ProductoEnProduccion product
         semaforoBloqueoRobot11.signal(cintaAUtilizar);
         Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo marco como desbloqueado y lo desbloqueo.");
     }
+    
+    //semaforoApiRobot5.signal();
 }
 
 void ControladorRobot5Cinta::avisarProximoPedido() {
@@ -117,6 +129,8 @@ void ControladorRobot5Cinta::avisarProximoPedido() {
     MensajeProximoPedidoProduccion mensajeProximoPedido;
     mensajeProximoPedido.mtype = TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS;
     colaPedidosProduccion.enviarProximoPedidoProduccion(mensajeProximoPedido);
+
+    semaforoApiRobot5.signal();
 }
 
 Gabinete ControladorRobot5Cinta::obtenerGabinete(TipoProducto tipoPorudcto) {
@@ -147,5 +161,5 @@ ControladorRobot5Cinta::ControladorRobot5Cinta(const ControladorRobot5Cinta& ori
 }
 
 ControladorRobot5Cinta& ControladorRobot5Cinta::operator= (const ControladorRobot5Cinta &p) {
-    return this;
+    return *this;
 }

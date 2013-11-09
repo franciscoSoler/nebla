@@ -18,7 +18,6 @@
 #include "IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
-#include "IPCs/IPCAbstractos/MessageQueue/ComunicacionRobot5MessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
 
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
@@ -87,6 +86,11 @@ void createIPCs() {
     Logger::getInstance().createLog();
     Logger::getInstance().setProcessInformation("Launcher:");
     
+    // Robot 5
+    IPC::Semaphore semaforoApiRobot5("Api robot 5");
+    semaforoApiRobot5.createSemaphore(DIRECTORY_ROBOT_5, ID_SEM_API_ROBOT_5, 1);
+    semaforoApiRobot5.initializeSemaphore(0,1);
+
     // Robot 5 - Cinta
     IPC::PedidosProduccionMessageQueue colaPedidos("PedidosProduccionMessageQueue");
     colaPedidos.createMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_PEDIDOS_PRODUCCION);
@@ -171,12 +175,7 @@ void createIPCs() {
     // Do the same with the queues
     IPC::PedidosAgvMessageQueue colaPedidosAGV_5;
     colaPedidosAGV_5.createMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
-    
-    //exclusivo Robot 5
-    /* Creo la cola de comunicacion con el robot 5 con los dos procesos del controlador */
-    IPC::ComunicacionRobot5MessageQueue colaComunicacionRobot5 = IPC::ComunicacionRobot5MessageQueue("colaComunicacionRobot5");
-    colaComunicacionRobot5.createMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_API_ROBOT_5);
-    
+        
     // Robots cintas - AGV
     BufferCanastos canastos;
     for (int i = 0; i < MAX_QUANTITY_CANASTOS; i++) {
