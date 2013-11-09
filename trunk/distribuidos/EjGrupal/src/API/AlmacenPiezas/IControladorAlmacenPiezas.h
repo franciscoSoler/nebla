@@ -13,11 +13,13 @@
 class IControladorAlmacenPiezas
 {
 public:
-    virtual void obtenerEspecificacionesDelProducto(TipoProducto tipoPieza, EspecifProd &piezasProductoActual) = 0;
-    virtual void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) = 0;
+    //virtual void obtenerEspecificacionesDelProducto(TipoProducto tipoPieza, EspecifProd &piezasProductoActual) = 0;
+    virtual BufferCanastos obtenerBufferCanastos(int numBufferCanasto) = 0;
+    //virtual void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) = 0;
+    virtual void avisarAAGVQueAgregueCanasto(int numAGV, int posCanasto, TipoPieza tipoPieza) = 0;
     virtual void recibirConfirmacionProduccion() = 0;
     virtual pedido_fabricacion_t recibirPedidoDeFabricacion() = 0;
-    virtual void enviarPedidoProduccionARobot5(pedido_fabricacion_t pedidoFabricacion) = 0;
+    virtual void enviarPedidoProduccionARobot5(PedidoProduccion pedidoProduccion) = 0;
     virtual ~IControladorAlmacenPiezas() {};
 };
 

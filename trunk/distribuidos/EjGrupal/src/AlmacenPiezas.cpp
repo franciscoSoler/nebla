@@ -20,25 +20,199 @@
 #include "API/AlmacenPiezas/ControladorAlmacenPiezas.h"
 #include "API/AlmacenPiezas/IControladorAlmacenPiezas.h"
 #include "API/AGV/ControladorAGV.h" 
+#include "Logger/Logger.h"
+
+bool buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
+{
+    int ultimoNumeroProductoLeido = 0;
+    do
+    {
+	if(!parser.obtenerLineaSiguiente(stream))
+	    return false;
+	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
+	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
+    } while(ultimoNumeroProductoLeido != numeroProducto);
+    return true;
+}
+
+PedidoProduccion armarPedidoProduccion(pedido_fabricacion_t pedidoFabricacion) {
+    PedidoProduccion pedido;
+    pedido.cantidad = pedidoFabricacion.producidoParaStockear + pedidoFabricacion.producidoVendido;
+    pedido.diferenciaMinima = pedidoFabricacion.diferenciaMinimaProducto;
+    pedido.nroOrdenCompra = pedidoFabricacion.numOrdenCompra;
+    pedido.tipo = pedidoFabricacion.tipoProducto;
+    return pedido;
+}
+
+bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd & piezas) {
+    char buffer[TAM_BUFFER];
+    ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
+    Parser parser;
+    sprintf(buffer, "Buscando especificaciones del producto %d", tipoProducto);
+    Logger::logMessage(Logger::TRACE, buffer);
+    
+    piezas.idProducto = tipoProducto;
+    if (!buscarUbiacionDeProductoEnArchivo (parser, stream, tipoProducto))
+        return false;
+    
+    parser.obtenerProximoValor();
+    parser.obtenerProximoValor();
+    string cantidadPiezasString = parser.obtenerProximoValor();
+    int cantPiezas = atoi(cantidadPiezasString.c_str());
+    piezas.cantPiezas = 0;
+    for (int i = 0; i < cantPiezas; i++) {
+        int id = atoi(parser.obtenerProximoValor().c_str());
+        int cantidad = atoi(parser.obtenerProximoValor().c_str());
+        if (id < PANTALLA_1) {
+            piezas.pieza[piezas.cantPiezas].tipoPieza = static_cast<TipoPieza> (id);
+            piezas.pieza[piezas.cantPiezas].cantidad = cantidad;
+            
+            sprintf(buffer, "cantPiezas %d: Pieza a guardar %d en la posicion  %d Cantidad: %d", cantPiezas, piezas.pieza[piezas.cantPiezas].tipoPieza, piezas.cantPiezas, piezas.pieza[piezas.cantPiezas].cantidad);
+            Logger::getInstance().logMessage(Logger::ERROR, buffer);
+            
+            piezas.cantPiezas++;
+            continue;
+        }
+        if (id >= PANTALLA_1) {
+            piezas.tipoPantalla.tipoPieza = static_cast<TipoPieza> (id);
+            piezas.tipoPantalla.cantidad = cantidad;
+            
+        }
+    }
+    
+    for (int i = 0; i < piezas.cantPiezas; i++) {
+        sprintf(buffer, "Estado piezas: Tipo: %d Cantidad: %d",piezas.pieza[i].tipoPieza,piezas.pieza[i].cantidad);
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+    }
+    return true;
+}
+
+/**
+ * @param tipoPieza
+ * @param piezasReservadasTemporalmente
+ * @param numAGV
+ * @return position of the changed basket
+ */
+int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas> 
+        controladorAlmacenPiezas, TipoPieza tipoPieza, EspecifProd 
+        piezasReservadasTemporalmente[2], int numAGV, int cantPedidos, 
+        int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO]) {
+    char buffer[TAM_BUFFER];
+    
+    Logger::getInstance();
+    sprintf(buffer, "Almacen piezas -:");
+    Logger::setProcessInformation(buffer);
+    BufferCanastos canastos;
+    bool canastoPresente = false;
+    int posTemp;
+
+    canastos = controladorAlmacenPiezas->obtenerBufferCanastos(numAGV);
+    
+
+    // j recorre el buffer de los canastos
+    int j = 0;
+    while (!canastoPresente && j < MAX_QUANTITY_CANASTOS) {
+        canastoPresente = canastos.canastos[j].tipoPieza == tipoPieza;
+        j++;
+    }
+    if (canastoPresente)
+        return -1;
+    // esta mal este buscar, no contempla los envios anteriores a los AGVs!!!!!!!!!!!!!!!
+
+    for (int posCanasto = 0; posCanasto < MAX_QUANTITY_CANASTOS; posCanasto++) {
+        // k es para comparar con ambos conjuntos de piezas utilizados anteriormente
+        for (int k = 0; k < 2; k++) {
+            if (piezasReservadasTemporalmente[k].idProducto == NULL_PRODUCT)
+                continue;
+            // estoy chequeando contra los robots 12, usan todas las piezas, los robots 11 solo usan la pantalla
+            if (numAGV == 1) {
+                int posPiezaReservadaTemporalmente = 0;
+                while (!canastoPresente && posPiezaReservadaTemporalmente < piezasReservadasTemporalmente[k].cantPiezas) {
+                    canastoPresente = canastos.canastos[posCanasto].tipoPieza == piezasReservadasTemporalmente[k].pieza[posPiezaReservadaTemporalmente].tipoPieza;
+                    posPiezaReservadaTemporalmente++;
+                }
+            } else
+                canastoPresente = canastos.canastos[posCanasto].tipoPieza == piezasReservadasTemporalmente[k].tipoPantalla.tipoPieza;
+        }
+        
+        //chequea que la posicion del canasto que voy a pedir no la haya pedido previamente
+        if (numAGV == 1) {
+            posTemp = 0;
+            sprintf(buffer, "antes del while!!!!!  pos a pedir %d, cant pedidos %d", posCanasto, cantPedidos);
+            Logger::getInstance().logMessage(Logger::IMPORTANT, buffer);
+            while(!canastoPresente && posTemp < cantPedidos) {
+                sprintf(buffer, "pos a pedir %d, pos pedida = %d", posCanasto, posicionesYaPedidas[posTemp]);
+                Logger::getInstance().logMessage(Logger::DEBUG, buffer);
+
+                canastoPresente = posCanasto == posicionesYaPedidas[posTemp];
+                posTemp++;
+            }
+        }
+        if (!canastoPresente) {
+            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(numAGV, posCanasto, tipoPieza);
+            sprintf(buffer, "cambio el canasto del buffer %d que tiene la pieza"
+                    " %d por Pieza: %d en el lugar %d", numAGV, canastos
+                    .canastos[posCanasto].tipoPieza, tipoPieza, posCanasto);
+            Logger::getInstance().logMessage(Logger::DEBUG, buffer);
+            
+            if (numAGV == 1)
+                posicionesYaPedidas[cantPedidos] = posCanasto;
+            
+            return posCanasto;
+        }
+    }
+    return -1;
+}
+
+
+int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas> 
+        controladorAlmacenPiezas, TipoPieza tipoPieza, EspecifProd 
+        piezasReservadasTemporalmente[2], int numAGV) {
+    
+    int pos[MAX_PIEZAS_POR_PRODUCTO];
+    return avisarAAGVQueAgregueCanasto(controladorAlmacenPiezas, tipoPieza, piezasReservadasTemporalmente, numAGV, 0, pos);
+}
 
 int main(int argc, char** argv)
 {
     std::auto_ptr<IControladorAlmacenPiezas> controladorAlmacenPiezas = std::auto_ptr<IControladorAlmacenPiezas>(new ControladorAlmacenPiezas());
 
     pedido_fabricacion_t pedidoFabricacion;
+    PedidoProduccion pedidoProduccion;
+    EspecifProd piezasProductoActual;
     EspecifProd piezasReservadasTemporalmente[2];
     piezasReservadasTemporalmente[0].idProducto = NULL_PRODUCT;
     piezasReservadasTemporalmente[1].idProducto = NULL_PRODUCT;
+    int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO];
+    int posCanasto;
+    int cantCanastosPedidos;
     
     while (true) {
-        EspecifProd piezasProductoActual;
         pedidoFabricacion = controladorAlmacenPiezas->recibirPedidoDeFabricacion();
-        controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoFabricacion);
+        pedidoProduccion = armarPedidoProduccion (pedidoFabricacion);
+        controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoProduccion);
         
-        controladorAlmacenPiezas->obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual);
-        for (int j = 0; j < piezasProductoActual.cantPiezas; j++) 
-            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.pieza[j].tipoPieza, piezasReservadasTemporalmente);
-        controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(piezasProductoActual.tipoPantalla.tipoPieza, piezasReservadasTemporalmente);
+        if (!obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual))
+            abort();
+        
+        cantCanastosPedidos = 0;
+        for (int i = 0; i < piezasProductoActual.cantPiezas; i++) {
+            int numAGV = 1;
+            posCanasto = avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
+                    piezasProductoActual.pieza[i].tipoPieza, 
+                    piezasReservadasTemporalmente, numAGV, i, posicionesYaPedidas);
+            if (posCanasto != -1) {
+                posicionesYaPedidas[cantCanastosPedidos] = posCanasto;
+                cantCanastosPedidos++;
+            }
+        }
+        for (int numAGV = 0; numAGV < CANTIDAD_AGVS; numAGV +=2) {
+            avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
+                    piezasProductoActual.tipoPantalla.tipoPieza, 
+                    piezasReservadasTemporalmente, numAGV);
+        }
+        
         memcpy(piezasReservadasTemporalmente, piezasReservadasTemporalmente + 1, sizeof(EspecifProd));
         memcpy(piezasReservadasTemporalmente + 1, &piezasProductoActual, sizeof(EspecifProd));
         controladorAlmacenPiezas->recibirConfirmacionProduccion();
