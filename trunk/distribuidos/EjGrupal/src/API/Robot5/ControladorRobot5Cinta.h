@@ -8,6 +8,12 @@
 #ifndef CONTROLADORROBOT5CINTA_H
 #define	CONTROLADORROBOT5CINTA_H
 
+#include <cstdlib>
+#include <unistd.h>
+#include <iostream>
+#include <unistd.h>
+#include <fstream>
+
 #include "../CintaTransportadora/CintaTransportadora6.h"
 
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
@@ -38,6 +44,8 @@ private:
     ControladorRobot5Cinta(const ControladorRobot5Cinta& orig);
     ControladorRobot5Cinta& operator= (const ControladorRobot5Cinta &p);
 
+    void leerEstadoCintas(EstadoCinta &estadoCinta0,EstadoCinta &estadoCinta1);
+
     CintaTransportadora6 cintaTransportadora[2];
     
     IPC::PedidosProduccionMessageQueue colaPedidosProduccion;
@@ -46,6 +54,8 @@ private:
     IPC::Semaphore semaforoBloqueoRobot5;
 
     IPC::Semaphore semaforoBloqueoRobot11;
+    
+    IPC::Semaphore semaforoApiRobot5;
 };
 
 #endif	/* CONTROLADORROBOT5CINTA_H */

@@ -7,10 +7,13 @@
 
 #include "ControladorRobot5Agv.h"
 
+#include "Logger/Logger.h"
+
 ControladorRobot5Agv::ControladorRobot5Agv() : 
-                colaPedidos("PedidosAgvMessageQueue"),
-                semaforoAccesoBufferAgv("Acceso al buffer AGV - 5"),
-                semaforoBloqueoAgv("Bloqueo AGV")
+        colaPedidos("PedidosAgvMessageQueue"),
+        semaforoAccesoBufferAgv("Acceso al buffer AGV - 5"),
+        semaforoBloqueoAgv("Bloqueo AGV"),
+        semaforoApiRobot5("Api Robot 5")
 {
     char buffer[TAM_BUFFER];
     for (int i = 0; i < CANTIDAD_AGVS; ++i) {
@@ -19,12 +22,11 @@ ControladorRobot5Agv::ControladorRobot5Agv() :
     }
 }
 
-virtual ControladorRobot5Agv::~ControladorRobot5Agv() {
+ControladorRobot5Agv::~ControladorRobot5Agv() {
 
 }
 
 void ControladorRobot5Agv::iniciarControlador() {
-    char buffer[TAM_BUFFER];
 
     /* Obtengo la cola de pedidos */
     colaPedidos.getMessageQueue(DIRECTORY_AGV,ID_COLA_PEDIDOS_AGV_5);
@@ -39,6 +41,9 @@ void ControladorRobot5Agv::iniciarControlador() {
     
     /* Obtengo los semaforos de bloqueo de los Agv */
     semaforoBloqueoAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
+    
+    /* Obtengo el semaforo para la api del robot 5 */
+    semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5,ID_SEM_API_ROBOT_5, 1);
 }
     
 PedidoCanastoAGV ControladorRobot5Agv::obtenerPedidoCanasto() {
@@ -49,7 +54,8 @@ PedidoCanastoAGV ControladorRobot5Agv::obtenerPedidoCanasto() {
         
         /* Le envio el pedido al robot 5 Aplicacion */            
         Logger::getInstance().logMessage(Logger::TRACE , "Controlador Robot 5-Agv: Recibió un pedido de un AGV y lo envio al robot 5.");
-            
+        
+        semaforoApiRobot5.wait();
         return nuevoPedido.pedidoCanastoAgv;
     }
     catch (Exception const& ex) {
@@ -87,10 +93,14 @@ void ControladorRobot5Agv::resolverPedidoCanasto(Canasto canasto, int idAgvDesti
         Logger::getInstance().logMessage(Logger::ERROR,buffer);
         exit(-1);
     }
+    semaforoApiRobot5.signal();
 }
 
 Canasto ControladorRobot5Agv::obtenerCanasto(TipoPieza tipoPieza) {
-
+    Canasto canasto;
+    canasto.tipoPieza = tipoPieza;
+    canasto.cantidadPiezas = MAX_PIEZAS_CANASTO;
+    return canasto;
 }
     
 /* Metodos privados, sin implementacion, para evitar copias del objeto */
@@ -99,5 +109,5 @@ ControladorRobot5Agv::ControladorRobot5Agv(const ControladorRobot5Agv& orig) {
 }
 
 ControladorRobot5Agv& ControladorRobot5Agv::operator= (const ControladorRobot5Agv &p) {
-    return this;
+    return *this;
 }

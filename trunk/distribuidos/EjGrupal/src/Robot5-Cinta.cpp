@@ -12,6 +12,8 @@
 #include "Common.h"
 #include "Logger.h"
 
+#include "API/Robot5/ControladorRobot5Cinta.h"
+
 #define MAX_DEMORA 10 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
 
 Gabinete resolverPedidoGabinete(ControladorRobot5Cinta &controladorRobot5Cinta, TipoProducto tipoPorudcto) {

@@ -6,6 +6,7 @@
 #include <errno.h>
 
 #define NOMBRE_ARCHIVO_PRODUCTOS        "info_productos.csv"
+
 // Path utilizado para inicializar los semáforos a través de la función ftok()
 #define DIRECTORY_AGV 		"./DAGV"
 #define DIRECTORY_ROBOT_5 	"./DRobot5"
@@ -35,7 +36,7 @@
 
 
 //ipcs del Robot5 (usar DIRECTORY_ROBOT_5)
-#define ID_COLA_API_ROBOT_5 		1
+#define ID_SEM_API_ROBOT_5 		1
 
 //ipcs entre Robot5 y almacen de piezas (usar DIRECTORY_ROBOT_5)
 #define ID_COLA_PEDIDOS_PRODUCCION      2
@@ -92,13 +93,10 @@
 #define LETRA_SHMEM_ALMACEN_TERMINADOS  'a'
 #define SEM_MUTEX_SM_APT_ID             1
 
-
-
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
 #define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 	2 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
 #define TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5 3 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
-
 
 #define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
 #define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
@@ -144,12 +142,6 @@
 #define ID_COLA_CONSULTAS_ALMACEN_PIEZAS 'f'
 #define ID_ALMACEN_TERMINADOS 'c'
 #define ID_SHMEM_NRO_OC 'g'
-
-typedef enum {
-    PEDIDO_PRODUCCION = 0,
-    PEDIDO_GABINETE = 1,
-    PEDIDO_CANASTO
-} TipoPedidoRobot5;
 
 typedef enum {
     GABINETE_1 = 0,
@@ -210,6 +202,7 @@ typedef struct {
         PedidoCanastoAGV pedidoCanastoAgv;
 } MensajePedidoAgv_5;
 
+
 /*
  * Estrcuturas para la comunicacion entre el robot 5 y el robot 11.
  */
@@ -249,36 +242,10 @@ typedef struct {
     PedidoProduccion pedidoProduccion;    
 } MensajePedidoProduccion;
 
-/*
- * Estructuras utilizadas internamente por el robot 5
- */
-
-typedef struct {
-    TipoPedidoRobot5 tipo;
-    PedidoProduccion pedidoProduccion;
-    PedidoCanastoAGV pedidoCanastoAgv;
-} PedidoRobot5;
-
-typedef struct {
-    long mtype;
-    PedidoRobot5 pedidoRobot5;
-} MensajePedidoRobot5;
-
-typedef struct {
-    long mtype; // tipo = TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5
-    int idAgv;
-    Canasto canasto;
-} MensajeRespuestaCanasto;
-
-typedef struct {
-    long mtype; // tipo = TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5
-    ProductoEnProduccion productoEnProduccion;
-    bool ultimo;
-} MensajeRespuestaGabinete;
-
 typedef struct {
     long mtype; 
 } MensajeProximoPedidoProduccion;
+
 
 /*
  * Estructuras utilizadas entre AGVs, almacen de piezas, robot 11 y robot 12
@@ -347,7 +314,6 @@ public:
     TipoProducto idProducto_;
     bool fallado_;
 };
-
 
 // FIXME: Refactorizar esto
 class OrdenDeCompra {
