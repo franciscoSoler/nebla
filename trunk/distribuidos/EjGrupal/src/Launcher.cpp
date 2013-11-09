@@ -42,7 +42,7 @@ static char param1[20];
 
 void createIPCs();
 void createDirectory(std::string directoryName);
-void createProcess(std::string processName, int amountOfProcesses = 1);
+void createProcess(std::string processName, int amountOfProcesses = 1, int parameterOffset = 0);
 
 int main(int argc, char* argv[]) {
     try {
@@ -68,6 +68,7 @@ int main(int argc, char* argv[]) {
         createProcess("Robot11", 2);
         createProcess("Robot12", 2);
         createProcess("AGV", 3);
+	createProcess("Vendedor", 10, 1);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -276,8 +277,8 @@ void createIPCs() {
     MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     shmemAlmacenTerminados.crear();
     MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
-    int* shMemData = reinterpret_cast<int*>(shmemNumeroOrdenCompra.crear());
-    
+    shmemNumeroOrdenCompra.crear();
+    int* shMemData = (int*) shmemNumeroOrdenCompra.obtener();
     
     IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");
     mutexAlmacenTerminados.createSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
@@ -319,12 +320,17 @@ void createIPCs() {
     IPC::Semaphore mutexOrdenDeCompra("mutexOrdenDeCompra");
     mutexOrdenDeCompra.createSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
     mutexOrdenDeCompra.initializeSemaphore(0, 1);
+    
+    /* Setea la orden de compra en uno por ser la primera. */
+    mutexOrdenDeCompra.wait();
+    *shMemData = 1;
+    mutexOrdenDeCompra.signal();
 }
 
-void createProcess(std::string processName, int amountOfProcesses) {
+void createProcess(std::string processName, int amountOfProcesses, int parameterOffset) {
 	pid_t pid;
 
-    for (int i = 0; i < amountOfProcesses; i++) {
+    for (int i = parameterOffset; i < amountOfProcesses + parameterOffset; i++) {
         if ((pid = fork()) < 0) {
             sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
             Logger::getInstance().logMessage(Logger::ERROR, buffer);
@@ -342,4 +348,3 @@ void createProcess(std::string processName, int amountOfProcesses) {
         }
     }
 }
-

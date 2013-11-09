@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 
         long numCliente = controlador.recibirLlamadoTelefonico();
 
-        sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicación.", numCliente);
+        sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicacion.", numCliente);
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
         OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
             cantPedidos++;
         } while(pedido.fin == false);
 
-        Logger::getInstance().logMessage(Logger::DEBUG, "3");
+        Logger::getInstance().logMessage(Logger::TRACE, "Fin de recepcion de pedidos del cliente.");
 
         bool pedidoEsValido = controlador.realizarOrdenDeCompra(pedidos, &ordenDeCompra, cantPedidos);
         if(pedidoEsValido)
