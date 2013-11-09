@@ -12,7 +12,7 @@ ControladorCliente::ControladorCliente() { }
 
 ControladorCliente::ControladorCliente(long numCliente)
 { 
-    sprintf(mensajePantalla, "Cliente N°%ld:", numCliente);
+    sprintf(mensajePantalla, "Cliente #%ld:", numCliente);
     Logger::setProcessInformation(mensajePantalla);
     
     /* Comunicacion con el vendedor */
@@ -36,13 +36,14 @@ ControladorCliente::ControladorCliente(long numCliente)
 
 void ControladorCliente::contactarVendedores()
 {
-    /* Se establece la comunicación "en dos pasos". */
+    /* Se establece la comunicacion "en dos pasos". */
     mensaje_inicial_t mensaje;
     mensaje.emisor = numCliente;
     mensaje.mtype = CANT_VENDEDORES;
-    Logger::logMessage(Logger::TRACE, "Llama a algún vendedor.");
-    vendedores.enviarMensajeInicial(mensaje);    
-    
+    Logger::logMessage(Logger::TRACE, "Llama a algun vendedor.");
+    vendedores.enviarMensajeInicial(mensaje);
+    int tiempoRespuesta = (rand() % 20) * 100 * 1000; 
+    usleep(tiempoRespuesta);
     
     msg_respuesta_pedido_t mensajeRespuesta;
     clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
@@ -62,7 +63,7 @@ void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo, int numMen
     pedido.fin = false;
     pedido.numMensaje = numMensaje + 1;
     
-    sprintf(mensajePantalla, "Envía al vendedor %ld un "
+    sprintf(mensajePantalla, "Envia al vendedor %ld un "
             "pedido por %d productos de tipo %d.", 
             numVendedorAsociado, pedido.cantidad, pedido.tipoProducto);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
@@ -78,13 +79,13 @@ void ControladorCliente::finalizarEnvio(int cantPedidos)
 {
     this->cantidadProductos = cantPedidos;
     
-    /* Envío el mensaje final. */
+    /* Envio el mensaje final. */
     pedido_t pedidoFinal;
     pedidoFinal.emisor = numCliente;
     pedidoFinal.cantidad = 0;
     pedidoFinal.fin = true;
     pedidoFinal.numMensaje = cantPedidos + 1;
-    sprintf(mensajePantalla, "Envía al vendedor %ld el mensaje de "
+    sprintf(mensajePantalla, "Envia al vendedor %ld el mensaje de "
             "fin de pedido.", numVendedorAsociado);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
@@ -109,7 +110,7 @@ void ControladorCliente::retirarEncargo(TipoProducto & tipoProducto, int & nroOr
     despacho.recv(TIPO_PEDIDO_DESPACHO, pedido);
     
      sprintf(mensajePantalla, "Se le informa que el Producto %u fue terminado."
-             "Procede a ir a la fábrica a buscarlo", tipoProducto);
+             "Procede a ir a la fabrica a buscarlo", tipoProducto);
      Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     tipoProducto = pedido.idProducto_;
@@ -117,7 +118,6 @@ void ControladorCliente::retirarEncargo(TipoProducto & tipoProducto, int & nroOr
 }
 
 Caja ControladorCliente::obtenerProducto(int nroOrdenCompra) {
-    
     EnvioCajaCliente msgCaja;
     retiro.recv(1, msgCaja);
     return msgCaja.caja;

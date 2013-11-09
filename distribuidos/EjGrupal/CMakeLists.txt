@@ -110,6 +110,7 @@ add_executable(${OUT_DIR}Despacho		        ${SRC_DIR}Despacho.cpp               
 add_executable(${OUT_DIR}Cliente		        ${SRC_DIR}Cliente.cpp                   ${COMMON_SRC} ${CLIENTE_SRC})
 add_executable(${OUT_DIR}Vendedor		        ${SRC_DIR}Vendedor.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC})
 add_executable(${OUT_DIR}AlmacenPiezas		    ${SRC_DIR}AlmacenPiezas.cpp             ${COMMON_SRC} ${ALMACEN_SRC})
+add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp    ${COMMON_SRC}${VENDEDOR_SRC})
 
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}Terminator                                  IPCLibrary)
@@ -125,4 +126,4 @@ target_link_libraries(${OUT_DIR}Despacho                                    IPCL
 target_link_libraries(${OUT_DIR}Cliente                                     IPCLibrary)
 target_link_libraries(${OUT_DIR}Vendedor                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}AlmacenPiezas                               IPCLibrary)
-
+target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCLibrary)
