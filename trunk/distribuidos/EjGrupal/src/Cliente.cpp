@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 	int tipoProducto = rand() % CANT_PRODUCTOS + 1;
 	int retardo = rand() % MAX_DEMORA + 1;
 	usleep(retardo * 100 * 1000);
-	controlador.enviarPedido(cantUnidades, tipoProducto, i);
+	controlador.enviarPedido(cantUnidades, tipoProducto);
 	if(controlador.recibirResultado() == false)
 	    exit(-1);
     }

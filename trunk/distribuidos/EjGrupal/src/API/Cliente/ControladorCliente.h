@@ -32,7 +32,7 @@ class ControladorCliente
 	virtual ~ControladorCliente();
 	
 	void contactarVendedores();
-	void enviarPedido(int cantidadUnidades, int tipo, int numMensaje);
+	void enviarPedido(int cantidadUnidades, int tipo);
 	void finalizarEnvio(int cantPedidos);
 	bool recibirResultado();
         

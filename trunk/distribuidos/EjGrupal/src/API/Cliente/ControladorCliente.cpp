@@ -54,20 +54,18 @@ void ControladorCliente::contactarVendedores()
     this->numVendedorAsociado = numVendedor;
 }
 
-void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo, int numMensaje)
+void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo)
 {
     pedido_t pedido;
     pedido.emisor = numCliente;
     pedido.cantidad = cantidadUnidades;
     pedido.tipoProducto = (TipoProducto)tipo;
     pedido.fin = false;
-    pedido.numMensaje = numMensaje + 1;
-    
+        
     sprintf(mensajePantalla, "Envia al vendedor %ld un "
             "pedido por %d productos de tipo %d.", 
             numVendedorAsociado, pedido.cantidad, pedido.tipoProducto);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
-    
     
     msg_pedido_t mensajePedido;
     mensajePedido.mtype = numVendedorAsociado;
@@ -84,7 +82,6 @@ void ControladorCliente::finalizarEnvio(int cantPedidos)
     pedidoFinal.emisor = numCliente;
     pedidoFinal.cantidad = 0;
     pedidoFinal.fin = true;
-    pedidoFinal.numMensaje = cantPedidos + 1;
     sprintf(mensajePantalla, "Envia al vendedor %ld el mensaje de "
             "fin de pedido.", numVendedorAsociado);
     Logger::logMessage(Logger::TRACE, mensajePantalla);

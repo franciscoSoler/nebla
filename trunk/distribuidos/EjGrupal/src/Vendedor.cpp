@@ -73,7 +73,7 @@ int main(int argc, char** argv)
             Logger::getInstance().logMessage(Logger::TRACE, "Pedido Valido");
 	    respuesta_pedido_t respuesta;
 	    respuesta.recepcionOK = true;
-	    controlador.confirmarOrdenDeCompraACliente(numCliente, respuesta);
+	    controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
 	}
 	else
 	{

@@ -483,7 +483,6 @@ typedef struct _mensaje_inicial
 typedef struct _pedido
 {
     long emisor;
-    int numMensaje;
     TipoProducto tipoProducto;
     int cantidad;
     bool fin;
