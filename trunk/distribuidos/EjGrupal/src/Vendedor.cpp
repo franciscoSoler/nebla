@@ -19,7 +19,7 @@ OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
         ordenDeCompra.idOrden_ = numOrdenCompra;
         ordenDeCompra.idVendedor_ = numVendedor;
     }
-
+    
     return ordenDeCompra;
 }
 

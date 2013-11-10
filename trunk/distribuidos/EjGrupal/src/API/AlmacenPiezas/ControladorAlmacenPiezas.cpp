@@ -36,7 +36,11 @@ pedido_fabricacion_t ControladorAlmacenPiezas::recibirPedidoDeFabricacion()
 {
     mensaje_pedido_fabricacion_t mensajePedido;
     this->colaReciboOrdenProduccion.recibir(1, &mensajePedido);
-    Logger::logMessage(Logger::TRACE, "Recibe pedido de fabricación");
+    sprintf(this->buffer, "Recibe pedido de fabricación: Cantidad para stock:"
+            "%d - Dif:%d - ODC:%d - TipoProducto:%d", mensajePedido.pedidoFabricacion.producidoParaStockear, 
+            mensajePedido.pedidoFabricacion.diferenciaMinimaProducto, mensajePedido.pedidoFabricacion.numOrdenCompra, 
+            mensajePedido.pedidoFabricacion.tipoProducto);
+    Logger::logMessage(Logger::TRACE, this->buffer);
     return mensajePedido.pedidoFabricacion;
 }
 

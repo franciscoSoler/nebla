@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     controlador.contactarVendedores();
     
     /* Envio los pedidos. */
-    int cantPedidos = 1 + rand() % 3;
+    int cantPedidos = 1;// + rand() % 3;
     sprintf(mensajePantalla,"Comienzo a enviar sus %d pedidos.", cantPedidos);
     Logger::getInstance().logMessage(Logger::TRACE, mensajePantalla);
     for(int i = 0; i < cantPedidos; i++)

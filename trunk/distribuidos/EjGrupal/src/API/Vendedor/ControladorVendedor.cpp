@@ -10,9 +10,6 @@
 #include <Logger/Logger.h>
 #include <iostream>
 
-ControladorVendedor::ControladorVendedor() {
-}
-
 ControladorVendedor::ControladorVendedor(long numVendedor)
 {
     /* Comunicacion con los clientes. */
@@ -101,12 +98,14 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
     
     if(cantidadEspacioVacio + cantidadEnStock < pedido.cantidad)
     {
+        /* El pedido no entra en el almacen de productos terminados */
 	pedidoProduccion.ventaEsValida = false;
 	return pedidoProduccion;
     }
     
     if(cantidadEnStock >= pedido.cantidad)
     {
+        /* Me alcanza con lo que ya hay en el almacen de productos terminados */
 	pedidoProduccion.ventaEsValida = true;
 	pedidoProduccion.producidoParaStockear = 0;
 	pedidoProduccion.producidoVendido = 0;
@@ -118,6 +117,7 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
     int cantidadAProducir = pedido.cantidad - cantidadEnStock;
     if(cantidadMinima > cantidadAProducir && cantidadMinima > cantidadEspacioVacio)
     {
+        /* El pedido no entra en el almacen de productos terminados */
 	pedidoProduccion.ventaEsValida = false;
 	return pedidoProduccion;
     }
@@ -126,9 +126,9 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
     
     pedidoProduccion.ventaEsValida = true;
     pedidoProduccion.vendidoStockeado = cantidadEnStock;
-    pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock;
-    pedidoProduccion.producidoParaStockear = cantidadAProducir - pedido.cantidad;
-    pedidoProduccion.diferenciaMinimaProducto = cantidadMinima > pedido.cantidad ? cantidadMinima : 0;
+    pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock; // Cantidad final a producir
+    pedidoProduccion.producidoParaStockear = cantidadAProducir - pedidoProduccion.producidoVendido;
+    pedidoProduccion.diferenciaMinimaProducto = cantidadMinima < cantidadAProducir ? 0 : cantidadMinima - pedidoProduccion.producidoVendido;
     
     return pedidoProduccion;
 }
@@ -289,6 +289,7 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
     {
 	pedido_fabricacion_t pedidoProduccion = reservarPedido(pedidos[i]);
 	pedidosProduccion[i] = pedidoProduccion;
+        pedidosProduccion[i].numOrdenCompra = ordenDeCompra->idOrden_;
 	if(!pedidoProduccion.ventaEsValida)
 	{
 	    ordenDeCompraEsValida = false;
