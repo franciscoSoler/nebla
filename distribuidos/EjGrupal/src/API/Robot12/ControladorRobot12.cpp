@@ -74,15 +74,10 @@ CintaTransportadora_6 ControladorRobot12::esperarProximoGabinete() {
         
         this->cola11_A_12.receive(0, &messageBarrera);
 
-        Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de la cinta 6");
         this->semBufferCinta6.wait(this->id_Robot);
         Logger::logMessage(Logger::TRACE, "tome la memoria de la cinta 6");
         
         this->shMemBufferCinta6.readInfo(&ctrlCinta);
-        //TODO robar el archivo de fede que parsea el registro de disco!!!!!!!!!!! lee nomas un archivo
-        
-        //this->obtenerPiezasDelProducto(ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto, &especifProductoAux);
-        //especifProductoAux = ctrlCinta.especificacionesProd[ctrlCinta.puntoLectura];
         
         Logger::logMessage(Logger::TRACE, "devuelvo la mem de la cinta 6");
         this->semBufferCinta6.signal(this->id_Robot);
@@ -94,63 +89,6 @@ CintaTransportadora_6 ControladorRobot12::esperarProximoGabinete() {
         abort();
     }
 }
-/*
-bool ControladorRobot12::poseePieza(int id_pieza) {
-    try {
-        sprintf(this->buffer, "Robot 12-%u - poseePieza:", this->id_Robot);
-        Logger::setProcessInformation(this->buffer);
-        
-        BufferCanastos canastos;
-        while (true) {
-            
-            Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de los canastos");
-            this->semBufferCanastos.wait(this->id_semMemCanastos);
-            Logger::logMessage(Logger::TRACE, "tome la memoria de los canastos");
-            
-            this->shMemBufferCanastos.readInfo(&canastos);
-            this->buscarPosicionPieza(canastos, id_pieza);
-            
-            sprintf(this->buffer, "Robot 12-%u - poseePieza:", this->id_Robot);
-            Logger::setProcessInformation(this->buffer);
-
-            if (this->posicionPieza != -1) {
-                sprintf(this->buffer, "esta el canasto presente en la posicion %d", this->posicionPieza);
-                Logger::logMessage(Logger::TRACE, this->buffer);
-                if (canastos.canastos[this->posicionPieza].cantidadPiezas != 0)
-                    return true;
-                
-                Logger::logMessage(Logger::TRACE, "no hay piezas en el canasto, aviso que posicion estare esperando y devuelvo mem Canastos");
-                // me quede sin piezas en el canasto, aviso por que posicion voy a estar esperando
-                if (this->id_Robot == 0) {
-                    canastos.robotCinta1EsperaPorElLugarNumero = this->posicionPieza;
-                    this->posEsperaDelOtroRobot12 = canastos.robotCinta2EsperaPorElLugarNumero;
-                } else {
-                    canastos.robotCinta2EsperaPorElLugarNumero = this->posicionPieza;
-                    this->posEsperaDelOtroRobot12 = canastos.robotCinta1EsperaPorElLugarNumero;
-                }
-                this->shMemBufferCanastos.writeInfo(&canastos);
-
-                this->semBufferCanastos.signal(this->id_semMemCanastos);
-                return false;  
-            } else {
-                Logger::logMessage(Logger::TRACE, "canasto no presente, aviso que posicion espero, devuelvo mem canastos y me duermo");
-                if (this->id_Robot == 0)
-                    canastos.robotCinta1EsperaPorElLugarNumero = this->posicionPieza;
-                else
-                    canastos.robotCinta2EsperaPorElLugarNumero = this->posicionPieza;
-                this->shMemBufferCanastos.writeInfo(&canastos);
-                this->semBufferCanastos.signal(this->id_semMemCanastos);
-
-                this->semBloqueoRobot12.wait(this->id_Robot);
-            }
-        }
-    }
-    catch (Exception & e) {
-        Logger::logMessage(Logger::ERROR, e.get_error_description());
-        abort();
-    }
-}
- */
 
 BufferCanastos ControladorRobot12::obtenerBufferCanastos() {
     try {
@@ -215,36 +153,6 @@ void ControladorRobot12::posicionarCanasto(BufferCanastos canastos) {
     }
 }
 
-/*
-bool ControladorRobot12::agregarConector(EspecifPiezaDeProd piezaDeProd) {
-    try {
-        sprintf(this->buffer, "Robot 12-%u - agregarConector:", this->id_Robot);
-        Logger::setProcessInformation(this->buffer);
-        
-        if(!this->poseePieza(piezaDeProd.tipoPieza))
-            return false;
-
-        Logger::logMessage(Logger::TRACE, "posee pieza, saco pieza del canasto");
-        BufferCanastos canastos;
-        this->shMemBufferCanastos.readInfo(&canastos);
-        
-        sprintf(this->buffer, "la cantidad de piezas que hay en el canasto son %d", canastos.canastos[this->posicionPieza].cantidadPiezas);
-        Logger::logMessage(Logger::TRACE, this->buffer);
-        int piezasRetiradas = std::min(rand() % 3 + 1, canastos.canastos[this->posicionPieza].cantidadPiezas);
-        canastos.canastos[this->posicionPieza].cantidadPiezas -= piezasRetiradas;
-        this->shMemBufferCanastos.writeInfo(&canastos);
-        this->semBufferCanastos.signal(this->id_semMemCanastos);
-
-        usleep(rand() %100 + 1);
-        return true;
-    }
-    catch (Exception & e) {
-        Logger::logMessage(Logger::ERROR, e.get_error_description());
-        abort();
-    }
-}
- */
-
 void ControladorRobot12::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza) {
     try {
         sprintf(this->buffer, "Robot 12-%u - pedirPiezaAlAGV:", this->id_Robot);
@@ -282,34 +190,3 @@ void ControladorRobot12::finalizarEnsamble() {
         abort();
     }
 }
-
-/*
-void ControladorRobot12::obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
-    ifstream stream;
-    stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
-    Parser parser;
-    
-    int ultimoNumeroProductoLeido = 0;
-    do
-    {
-	if(!parser.obtenerLineaSiguiente(stream))
-	    break;
-	string ultimoNumeroProductoLeidoString = parser.obtenerProximoValor();
-	ultimoNumeroProductoLeido = atoi(ultimoNumeroProductoLeidoString.c_str());
-    } while(ultimoNumeroProductoLeido != tipoProducto);
-    parser.obtenerProximoValor();
-    parser.obtenerProximoValor();
-    string cantidadPiezasString = parser.obtenerProximoValor();
-    int cantPiezas = atoi(cantidadPiezasString.c_str());
-    piezas->cantPiezas = 0;
-    for (int i = 0; i < cantPiezas*2; i+=2) {
-        int id = atoi(parser.obtenerProximoValor().c_str());
-        int cantidad = atoi(parser.obtenerProximoValor().c_str());
-        if (id < PANTALLA_1) {
-            piezas->pieza[i].tipoPieza = static_cast<TipoPieza> (id);
-            piezas->pieza[i].cantidad = cantidad;
-            piezas->cantPiezas++;
-        }
-    }
-}
- */

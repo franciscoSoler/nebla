@@ -86,11 +86,11 @@ bool poseePieza(std::auto_ptr<IControladorRobot12>& controladorRobot12, int id_R
             if (canastos.canastos[posicionPieza].cantidadPiezas != 0)
                 return true;
 
-            Logger::logMessage(Logger::TRACE, "no hay piezas en el canasto, aviso que posicion estare esperando y devuelvo mem Canastos");
+            Logger::logMessage(Logger::TRACE, "pido piezas faltantes");
             controladorRobot12->pedirPiezaFaltante(id_Robot, canastos, posicionPieza);                                                                        
             return false;
         } else {
-            Logger::logMessage(Logger::TRACE, "canasto no presente, aviso que posicion espero, devuelvo mem canastos y me duermo");
+            Logger::logMessage(Logger::TRACE, "pido canasto faltante");
             controladorRobot12->pedirCanastoFaltante(id_Robot, canastos, -2);
         }
     }
