@@ -20,7 +20,7 @@ ControladorRobot11::~ControladorRobot11() {
 void ControladorRobot11::iniciarControlador(int numRobot) {
     try {
         Logger::getInstance();
-        sprintf(this->buffer, "Robot 11-%u:", numRobot + 1);
+        sprintf(this->buffer, "Robot 11-%u:", numRobot);
         Logger::setProcessInformation(this->buffer);
         
         this->id_Agv = numRobot * 2 + 1;
@@ -183,9 +183,26 @@ void ControladorRobot11::avanzarCinta() {
     }
 }
 
+BufferCanastos ControladorRobot11::obtenerBufferCanastos() {
+    try {
+        BufferCanastos canastos;
+        Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de los canastos");
+        this->semBufferCanastos.wait(this->id_semMemCanastos);
+        Logger::logMessage(Logger::TRACE, "tome la memoria de los canastos");
+
+        this->shMemBufferCanastos.readInfo(&canastos);
+        return canastos;
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
+/*
 bool ControladorRobot11::agregarPantalla(EspecifPiezaDeProd piezaDeProd) {
     try {
-        sprintf(this->buffer, "Robot 11-%u - agregarPantalla:", this->id_Robot + 1);
+        sprintf(this->buffer, "Robot 11-%u - agregarPantalla:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
         
         if(!this->poseePieza(piezaDeProd.tipoPieza))
@@ -210,16 +227,62 @@ bool ControladorRobot11::agregarPantalla(EspecifPiezaDeProd piezaDeProd) {
         abort();
     }
 }
+ */
 
-void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza) {
+void ControladorRobot11::posicionarCanasto(BufferCanastos canastos) {
     try {
-        sprintf(this->buffer, "Robot 11-%u - pedirPiezaAlAGV:", this->id_Robot + 1);
+        this->shMemBufferCanastos.writeInfo(&canastos);
+        this->semBufferCanastos.signal(this->id_semMemCanastos);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
+void ControladorRobot11::pedirPiezaFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza) {
+    try {
+        if (id_Robot == 0)
+            canastos.robotCinta1EsperaPorElLugarNumero = posicionPieza;
+        else
+            canastos.robotCinta2EsperaPorElLugarNumero = posicionPieza;
+
+        this->shMemBufferCanastos.writeInfo(&canastos);
+
+        this->semBufferCanastos.signal(this->id_semMemCanastos);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
+void ControladorRobot11::pedirCanastoFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza) {
+    try {
+        if (id_Robot == 0)
+            canastos.robotCinta1EsperaPorElLugarNumero = posicionPieza;
+        else
+            canastos.robotCinta2EsperaPorElLugarNumero = posicionPieza;
+        this->shMemBufferCanastos.writeInfo(&canastos);
+        this->semBufferCanastos.signal(this->id_semMemCanastos);
+
+        this->semBloqueoRobot11.wait(id_Robot);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
+void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza) {
+    try {
+        sprintf(this->buffer, "Robot 11-%u - pedirPiezaAlAGV:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
         Logger::logMessage(Logger::TRACE, "no podee la pieza, se la pido al agv por la cola");
         
         MensajePedidoRobotCinta_6 pedidoCanasto;
         pedidoCanasto.mtype = this->id_Agv;
-        pedidoCanasto.pedidoCanastoAgv.lugar = this->posicionPieza;
+        pedidoCanasto.pedidoCanastoAgv.lugar = posicionPieza;
         pedidoCanasto.pedidoCanastoAgv.tipoPieza = tipoPieza;
         this->colaPedidosCanastos.enviarPedidoCanasto(pedidoCanasto);
         this->semBloqueoRobot11.wait(this->id_Robot);
@@ -232,7 +295,7 @@ void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza) {
 
 Caja ControladorRobot11::cerrarYTomarCaja() {
     try {
-        sprintf(this->buffer, "Robot 11-%u - cerrarYTomarCaja:", this->id_Robot + 1);
+        sprintf(this->buffer, "Robot 11-%u - cerrarYTomarCaja:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
 
         CintaTransportadora_6 ctrlCinta;
@@ -267,7 +330,7 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
 }
 
 void ControladorRobot11::depositarCaja(Caja unaCaja) {
-    sprintf(this->buffer, "Robot 11-%u - depositarCaja:", this->id_Robot + 1);
+    sprintf(this->buffer, "Robot 11-%u - depositarCaja:", this->id_Robot);
     Logger::setProcessInformation(this->buffer);
     if (unaCaja.fallado_)
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba rotaaaa!!!!!!!!!!!!!!!!");
@@ -335,6 +398,7 @@ void ControladorRobot11::depositarCaja(Caja unaCaja) {
     }
 }
 
+/*
 bool ControladorRobot11::poseePieza(int id_pieza) {
     sprintf(this->buffer, "Robot 11-%u - poseePieza:", this->id_Robot + 1);
     Logger::setProcessInformation(this->buffer);
@@ -342,16 +406,13 @@ bool ControladorRobot11::poseePieza(int id_pieza) {
         BufferCanastos canastos;
         while (true) {
             
-            Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de los canastos");
-            this->semBufferCanastos.wait(this->id_semMemCanastos);
-            Logger::logMessage(Logger::TRACE, "tomo la memoria de los canastos");
-
-            this->shMemBufferCanastos.readInfo(&canastos);
+            // este metodo buscarPosicionPieza de usuario
             this->buscarPosicionPieza(canastos, id_pieza);
             
             sprintf(this->buffer, "Robot 11-%u - poseePieza:", this->id_Robot + 1);
             Logger::setProcessInformation(this->buffer);
 
+            // lo voy a duplicar dentro del if, no me sirve dejarlo aca, dado que voy a devolver los canastos!!!!!
             if (this->id_Robot == 0)
                 canastos.robotCinta1EsperaPorElLugarNumero = this->posicionPieza;
             else
@@ -382,25 +443,7 @@ bool ControladorRobot11::poseePieza(int id_pieza) {
         abort();
     }
 }
-
-void ControladorRobot11::buscarPosicionPieza(BufferCanastos canastos, int id_pieza) {
-    try {
-        sprintf(this->buffer, "Robot 11-%u - buscarPosicionPieza:", this->id_Robot + 1);
-        Logger::setProcessInformation(this->buffer);
-        Logger::logMessage(Logger::TRACE, "busco en que posicion esta la pieza");
-        for (int i = 0; i < MAX_QUANTITY_CANASTOS; i++)
-           if (canastos.canastos[i].tipoPieza == id_pieza) {
-               this->posicionPieza = i;
-               return;
-           }
-        this->posicionPieza = -1;
-        return;
-    }
-    catch (Exception & e) {
-        Logger::logMessage(Logger::ERROR, e.get_error_description());
-        abort();
-    }
-}
+ */
 
 void ControladorRobot11::obtenerPantallaDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
     ifstream stream;

@@ -28,7 +28,7 @@ public:
     void pedirCanastoFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza);
     void posicionarCanasto(BufferCanastos canastos);
     //bool agregarConector(EspecifPiezaDeProd piezaDeProd);
-    void pedirPiezaAlAGV(TipoPieza tipoPieza);
+    void pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza);
     void finalizarEnsamble();
     
 private:
@@ -36,7 +36,7 @@ private:
     int id_Agv;
     int id_semMemCanastos;
     int id_Robot;
-    int posicionPieza;
+    //int posicionPieza;
     int posEsperaDelOtroRobot12;
     IPC::Semaphore semBloqueoRobot12;
     IPC::Semaphore semBufferCinta6;
@@ -48,8 +48,8 @@ private:
     IPC::BufferCanastosSharedMemory shMemBufferCanastos;
     IPC::Cinta6SharedMemory shMemBufferCinta6;
     
-    bool poseePieza(int id_pieza);
-    void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
+    //bool poseePieza(int id_pieza);
+    //void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
     //void obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas);
 };
 

@@ -245,16 +245,16 @@ bool ControladorRobot12::agregarConector(EspecifPiezaDeProd piezaDeProd) {
 }
  */
 
-void ControladorRobot12::pedirPiezaAlAGV(TipoPieza tipoPieza) {
+void ControladorRobot12::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza) {
     try {
         sprintf(this->buffer, "Robot 12-%u - pedirPiezaAlAGV:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
         
-        if (this->posEsperaDelOtroRobot12 != this->posicionPieza) {
+        if (this->posEsperaDelOtroRobot12 != posicionPieza) {
             Logger::logMessage(Logger::TRACE, "el otro robot NO esta esperando la misma pieza, realizo el pedido al agv por la cola");
             MensajePedidoRobotCinta_6 pedidoCanasto;
             pedidoCanasto.mtype = this->id_Agv;
-            pedidoCanasto.pedidoCanastoAgv.lugar = this->posicionPieza;
+            pedidoCanasto.pedidoCanastoAgv.lugar = posicionPieza;
             pedidoCanasto.pedidoCanastoAgv.tipoPieza = tipoPieza;
             this->colaPedidosCanastos.enviarPedidoCanasto(pedidoCanasto);
         }    
@@ -282,24 +282,6 @@ void ControladorRobot12::finalizarEnsamble() {
     }
 }
 
-void ControladorRobot12::buscarPosicionPieza(BufferCanastos canastos, int id_pieza) {
-    try { 
-        sprintf(this->buffer, "Robot 12-%u - buscarPosicionPieza:", this->id_Robot);
-        Logger::setProcessInformation(this->buffer);
-        Logger::logMessage(Logger::TRACE, "busco en que posicion esta la pieza");
-        for (int i = 0; i < MAX_QUANTITY_CANASTOS; i++)
-            if (canastos.canastos[i].tipoPieza == id_pieza) {
-                this->posicionPieza = i;
-                return;
-            }
-        this->posicionPieza = -1;
-        return;
-    }
-    catch (Exception & e) {
-        Logger::logMessage(Logger::ERROR, e.get_error_description());
-        abort();
-    }
-}
 /*
 void ControladorRobot12::obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
     ifstream stream;
