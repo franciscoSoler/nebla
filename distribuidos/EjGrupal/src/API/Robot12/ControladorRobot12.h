@@ -22,8 +22,12 @@ public:
     virtual ~ControladorRobot12();
     
     void iniciarControlador(int numRobot);
-    EspecifProd esperarProximoGabinete();
-    bool agregarConector(EspecifPiezaDeProd piezaDeProd);
+    CintaTransportadora_6 esperarProximoGabinete();
+    BufferCanastos obtenerBufferCanastos();
+    void pedirPiezaFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza);
+    void pedirCanastoFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza);
+    void posicionarCanasto(BufferCanastos canastos);
+    //bool agregarConector(EspecifPiezaDeProd piezaDeProd);
     void pedirPiezaAlAGV(TipoPieza tipoPieza);
     void finalizarEnsamble();
     
@@ -46,7 +50,7 @@ private:
     
     bool poseePieza(int id_pieza);
     void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
-    void obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas);
+    //void obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas);
 };
 
 #endif	/* CONTROLADORROBOT12_H */
