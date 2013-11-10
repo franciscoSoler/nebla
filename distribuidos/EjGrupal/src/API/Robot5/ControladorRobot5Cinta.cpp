@@ -185,7 +185,10 @@ void ControladorRobot5Cinta::avisarProximoPedido()
 
 Gabinete ControladorRobot5Cinta::obtenerGabinete(TipoProducto tipoPorudcto) {
     try {
-	return almacen.obtenerGabinete(obtenerTipoGabinete(tipoPorudcto));
+        Gabinete gabinete;
+        gabinete.tipoGabinete = obtenerTipoGabinete(tipoPorudcto);
+	//return almacen.obtenerGabinete(obtenerTipoGabinete(tipoPorudcto));
+        return gabinete;
     }    
     catch(Exception &e)
     {

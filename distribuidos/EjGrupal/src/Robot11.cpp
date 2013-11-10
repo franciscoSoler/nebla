@@ -62,7 +62,7 @@ bool poseePieza(std::auto_ptr<IControladorRobot11>& controladorRobot11, int id_R
             return false;
         } else {
             Logger::logMessage(Logger::TRACE, "canasto no presente, aviso que posicion espero, devuelvo mem canastos y me duermo");
-            controladorRobot11->pedirCanastoFaltante(id_Robot, canastos, posicionPieza);
+            controladorRobot11->pedirCanastoFaltante(id_Robot, canastos, -2);
         }
     }
 }

@@ -213,7 +213,6 @@ typedef struct {
         PedidoCanastoAGV pedidoCanastoAgv;
 } MensajePedidoAgv_5;
 
-
 /*
  * Estrcuturas para la comunicacion entre el robot 5 y el robot 11.
  */

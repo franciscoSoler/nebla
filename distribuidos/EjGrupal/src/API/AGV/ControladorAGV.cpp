@@ -109,6 +109,9 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
         this->semBufferAGV_5.wait(this->id_AGV);
         this->shMemBuffer5yAGV.readInfo(&canasto);
         this->semBufferAGV_5.signal(this->id_AGV);
+        
+        sprintf(this->buffer, "canasto traido por robot 5 tiene la pieza %d, cantidad %d", canasto.tipoPieza, canasto.cantidadPiezas);
+        Logger::logMessage(Logger::TRACE, this->buffer);
 
         return canasto;
     }
@@ -126,12 +129,15 @@ void ControladorAGV::reponerCanasto(Canasto canasto) {
 
         Logger::logMessage(Logger::TRACE, "voy a obtener memoria de los canastos");
         this->semMemCanastos.wait(this->id_AGV);
-        Logger::logMessage(Logger::TRACE, "obtengo memoria de los canastos");
+        
         
         this->shMemBufferCanastos.readInfo(&canastos);
 
+        
         canastos.canastos[this->posicionCanasto] = canasto;
-
+        
+        sprintf(this->buffer, "guardo el canasto con la pieza %d, cantidad %d en la cinta %d", canasto.tipoPieza, canasto.cantidadPiezas, id_AGV);
+        Logger::logMessage(Logger::TRACE, this->buffer);
         // no me importa si el pedido es del deposito!!!
         /*
         if (this->pedidoDeDeposito) {
@@ -148,6 +154,15 @@ void ControladorAGV::reponerCanasto(Canasto canasto) {
         }
         if (this->posicionCanasto == canastos.robotCinta2EsperaPorElLugarNumero) {
             Logger::logMessage(Logger::TRACE, "despierto al robot de la cinta 2");
+            canastos.robotCinta2EsperaPorElLugarNumero = -1;
+            this->semRobotCinta.signal(1);
+        }
+        
+        if (canastos.robotCinta1EsperaPorElLugarNumero == -2) {
+            canastos.robotCinta1EsperaPorElLugarNumero = -1;
+            this->semRobotCinta.signal(0);
+        }
+        if (canastos.robotCinta2EsperaPorElLugarNumero == -2) {
             canastos.robotCinta2EsperaPorElLugarNumero = -1;
             this->semRobotCinta.signal(1);
         }
