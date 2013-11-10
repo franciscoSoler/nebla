@@ -108,7 +108,11 @@ void ControladorRobot5Agv::resolverPedidoCanasto(Canasto canasto, int idAgvDesti
 
 Canasto ControladorRobot5Agv::obtenerCanasto(TipoPieza tipoPieza) {
     try {
-	return almacen.obtenerCanastoConPiezas(tipoPieza);
+        Canasto canasto;
+        canasto.tipoPieza = tipoPieza;
+        canasto.cantidadPiezas = 15;
+	//return almacen.obtenerCanastoConPiezas(tipoPieza);
+        return canasto;
     }
     catch (Exception const& ex) {
 	char buffer[TAM_BUFFER];

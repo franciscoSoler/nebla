@@ -463,7 +463,7 @@ void ControladorRobot11::obtenerPantallaDelProducto(TipoProducto tipoProducto, E
     string cantidadPiezasString = parser.obtenerProximoValor();
     int cantPiezas = atoi(cantidadPiezasString.c_str());
     piezas->cantPiezas = 0;
-    for (int i = 0; i < cantPiezas*2; i+=2) {
+    for (int i = 0; i < cantPiezas; i++) {
         int id = atoi(parser.obtenerProximoValor().c_str());
         int cantidad = atoi(parser.obtenerProximoValor().c_str());
         if (id >= PANTALLA_1) {

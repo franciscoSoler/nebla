@@ -258,7 +258,8 @@ void ControladorRobot12::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza)
             pedidoCanasto.pedidoCanastoAgv.tipoPieza = tipoPieza;
             this->colaPedidosCanastos.enviarPedidoCanasto(pedidoCanasto);
         }    
-        Logger::logMessage(Logger::TRACE, "me duermo");
+        sprintf(this->buffer, "la posPieza es %d, la pos del otro robot 12 es %d, me duermo", posicionPieza, this->posEsperaDelOtroRobot12);
+        Logger::logMessage(Logger::TRACE, this->buffer);
         this->semBloqueoRobot12.wait(this->id_Robot);
     }
     catch (Exception & e) {
