@@ -29,7 +29,6 @@
 class ControladorVendedor
 {
     public:
-	ControladorVendedor();
 	ControladorVendedor(long numVendedor);
 	virtual ~ControladorVendedor();
 	
@@ -45,7 +44,6 @@ class ControladorVendedor
 	
 	void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);
 	
-        void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
         pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido);
 
     private:
@@ -71,6 +69,9 @@ class ControladorVendedor
 	void confirmarPedidos(pedido_fabricacion_t pedidos[], OrdenDeCompra ordenDeCompra, int cantPedidos);
 	
 	void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
+
+        void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
+
 };
 
 #endif	/* CONTROLADORVENDEDOR_H */

@@ -116,8 +116,11 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>
         canastoPresente = canastos.canastos[j].tipoPieza == tipoPieza;
         j++;
     }
-    if (canastoPresente)
+    if (canastoPresente) {
+        sprintf(buffer, "el canasto del tipo de pieza %d esta presente en la posicion %d", tipoPieza, j);
+        Logger::getInstance().logMessage(Logger::DEBUG, buffer);
         return -1;
+    }
     // esta mal este buscar, no contempla los envios anteriores a los AGVs!!!!!!!!!!!!!!!
 
     for (int posCanasto = 0; posCanasto < MAX_QUANTITY_CANASTOS; posCanasto++) {
@@ -150,18 +153,19 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>
             }
         }
         if (!canastoPresente) {
-            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(numAGV, posCanasto, tipoPieza);
             sprintf(buffer, "cambio el canasto del buffer %d que tiene la pieza"
                     " %d por Pieza: %d en el lugar %d", numAGV, canastos
                     .canastos[posCanasto].tipoPieza, tipoPieza, posCanasto);
             Logger::getInstance().logMessage(Logger::DEBUG, buffer);
-            
+            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(numAGV, posCanasto, tipoPieza);
             if (numAGV == 1)
                 posicionesYaPedidas[cantPedidos] = posCanasto;
             
             return posCanasto;
         }
     }
+    sprintf(buffer, "si llegue aca esta todo mallll");
+    Logger::getInstance().logMessage(Logger::DEBUG, buffer);
     return -1;
 }
 
@@ -187,6 +191,7 @@ int main(int argc, char** argv)
     int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO];
     int posCanasto;
     int cantCanastosPedidos;
+    char buffer[TAM_BUFFER];
     
     while (true) {
         pedidoFabricacion = controladorAlmacenPiezas->recibirPedidoDeFabricacion();
@@ -195,6 +200,13 @@ int main(int argc, char** argv)
         
         if (!obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual))
             abort();
+        
+        for (int i = 0; i < piezasProductoActual.cantPiezas; i++) {
+            sprintf(buffer, "pieza destinada a robot 12: %d, con cantidad %d", piezasProductoActual.pieza[i].tipoPieza, piezasProductoActual.pieza[i].cantidad);
+            Logger::getInstance().logMessage(Logger::DEBUG, buffer);
+        }
+        sprintf(buffer, "pieza destinada a robot 11: %d, con cantidad %d", piezasProductoActual.tipoPantalla.tipoPieza, piezasProductoActual.tipoPantalla.cantidad);
+        Logger::getInstance().logMessage(Logger::DEBUG, buffer);
         
         cantCanastosPedidos = 0;
         for (int i = 0; i < piezasProductoActual.cantPiezas; i++) {
