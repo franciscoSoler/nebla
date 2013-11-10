@@ -113,15 +113,10 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
     Logger::setProcessInformation(buffer);
     BufferCanastos canastos;
     bool canastoPresente = false;
+    bool posPedida = false;
     int posTemp;
 
-    
-    sprintf(buffer, "intento avisar algo al agv Nº %d", numAGV);
-    Logger::logMessage(Logger::DEBUG, buffer);
-        
-        
     canastos = controladorAlmacenPiezas->obtenerBufferCanastos(numAGV);
-    
 
     // j recorre el buffer de los canastos
     int j = 0;
@@ -135,8 +130,10 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
         return -1;
     }
     // esta mal este buscar, no contempla los envios anteriores a los AGVs!!!!!!!!!!!!!!!
-
-    for (int posCanasto = 0; posCanasto < MAX_QUANTITY_CANASTOS; posCanasto++) {
+    int posCanasto = 0;
+    while (!canastoPresente && posCanasto < MAX_QUANTITY_CANASTOS) {
+        posPedida = false;
+        //for (int posCanasto = 0; posCanasto < MAX_QUANTITY_CANASTOS; posCanasto++) {
         // k es para comparar con ambos conjuntos de piezas utilizados anteriormente
         for (int k = 0; k < 2; k++) {
             if (piezasReservadasTemporalmente[k].idProducto == NULL_PRODUCT)
@@ -155,17 +152,12 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
         //chequea que la posicion del canasto que voy a pedir no la haya pedido previamente
         if (numAGV == 1) {
             posTemp = 0;
-            sprintf(buffer, "antes del while!!!!!  pos a pedir %d, cant pedidos %d", posCanasto, cantPedidos);
-            Logger::getInstance().logMessage(Logger::IMPORTANT, buffer);
-            while(!canastoPresente && posTemp < cantPedidos) {
-                sprintf(buffer, "pos a pedir %d, pos pedida = %d", posCanasto, posicionesYaPedidas[posTemp]);
-                Logger::getInstance().logMessage(Logger::DEBUG, buffer);
-
-                canastoPresente = posCanasto == posicionesYaPedidas[posTemp];
+            while(!posPedida && posTemp < cantPedidos) {
+                posPedida = posCanasto == posicionesYaPedidas[posTemp];
                 posTemp++;
             }
         }
-        if (!canastoPresente) {
+        if (!canastoPresente && !posPedida) {
             sprintf(buffer, "cambio el canasto del buffer %d que tiene la pieza"
                     " %d por Pieza: %d en el lugar %d", numAGV, canastos
                     .canastos[posCanasto].tipoPieza, tipoPieza, posCanasto);
@@ -179,9 +171,8 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
             
             return posCanasto;
         }
+        posCanasto++;
     }
-    sprintf(buffer, "si llegue aca esta todo mallll");
-    Logger::getInstance().logMessage(Logger::DEBUG, buffer);
     return -1;
 }
 
@@ -207,7 +198,6 @@ int main(int argc, char** argv)
     int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO];
     int posCanasto;
     int cantCanastosPedidos;
-    char buffer[TAM_BUFFER];
     
     while (true) {
         pedidoFabricacion = controladorAlmacenPiezas->recibirPedidoDeFabricacion();
@@ -225,16 +215,11 @@ int main(int argc, char** argv)
             posCanasto = avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
                     piezasProductoActual.pieza[i].tipoPieza, 
                     piezasReservadasTemporalmente, numAGV, i, posicionesYaPedidas);
-            sprintf(buffer, "cantidad de piezas dentro del for de mierda %d!!!", piezasProductoActual.cantPiezas); 
-            Logger::logMessage(Logger::DEBUG, buffer);
             if (posCanasto != -1) {
                 posicionesYaPedidas[cantCanastosPedidos] = posCanasto;
                 cantCanastosPedidos++;
             }
         }
-        
-        
-        Logger::getInstance().logMessage(Logger::DEBUG, "paso a los AGV DEL MALL!!!");
         
         for (int numAGV = 0; numAGV < CANTIDAD_AGVS; numAGV +=2) {
             avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
