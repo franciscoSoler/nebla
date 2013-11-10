@@ -37,7 +37,7 @@ class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
         //void obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &piezasProductoActual);
         BufferCanastos obtenerBufferCanastos(int numBufferCanasto);
         //void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]);
-        void avisarAAGVQueAgregueCanasto(int numAGV, int posCanasto, TipoPieza tipoPieza);
+        void avisarAAGVQueAgregueCanasto(int numAGV, PedidoCanastoRobotCinta6 pedidoCanasto);
         void recibirConfirmacionProduccion();
         void enviarPedidoProduccionARobot5(PedidoProduccion pedidoProduccion);
 

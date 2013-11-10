@@ -100,11 +100,13 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
  * @param numAGV
  * @return position of the changed basket
  */
-int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas> 
+int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>& 
         controladorAlmacenPiezas, TipoPieza tipoPieza, EspecifProd 
         piezasReservadasTemporalmente[2], int numAGV, int cantPedidos, 
         int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO]) {
     char buffer[TAM_BUFFER];
+    
+    
     
     Logger::getInstance();
     sprintf(buffer, "Almacen piezas -:");
@@ -113,6 +115,11 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>
     bool canastoPresente = false;
     int posTemp;
 
+    
+    sprintf(buffer, "intento avisar algo al agv Nº %d", numAGV);
+    Logger::logMessage(Logger::DEBUG, buffer);
+        
+        
     canastos = controladorAlmacenPiezas->obtenerBufferCanastos(numAGV);
     
 
@@ -124,7 +131,7 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>
     }
     if (canastoPresente) {
         sprintf(buffer, "el canasto del tipo de pieza %d esta presente en la posicion %d", tipoPieza, j);
-        Logger::getInstance().logMessage(Logger::DEBUG, buffer);
+        Logger::logMessage(Logger::DEBUG, buffer);
         return -1;
     }
     // esta mal este buscar, no contempla los envios anteriores a los AGVs!!!!!!!!!!!!!!!
@@ -163,7 +170,10 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>
                     " %d por Pieza: %d en el lugar %d", numAGV, canastos
                     .canastos[posCanasto].tipoPieza, tipoPieza, posCanasto);
             Logger::getInstance().logMessage(Logger::DEBUG, buffer);
-            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(numAGV, posCanasto, tipoPieza);
+            PedidoCanastoRobotCinta6 pedidoCanasto;
+            pedidoCanasto.lugar = posCanasto;
+            pedidoCanasto.tipoPieza = tipoPieza;
+            controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(numAGV, pedidoCanasto);
             if (numAGV == 1)
                 posicionesYaPedidas[cantPedidos] = posCanasto;
             
@@ -176,7 +186,7 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>
 }
 
 
-int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas> 
+int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>& 
         controladorAlmacenPiezas, TipoPieza tipoPieza, EspecifProd 
         piezasReservadasTemporalmente[2], int numAGV) {
     
@@ -186,7 +196,7 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>
 
 int main(int argc, char** argv)
 {
-    std::auto_ptr<IControladorAlmacenPiezas> controladorAlmacenPiezas = std::auto_ptr<IControladorAlmacenPiezas>(new ControladorAlmacenPiezas());
+    std::auto_ptr<IControladorAlmacenPiezas> controladorAlmacenPiezas (new ControladorAlmacenPiezas());
 
     pedido_fabricacion_t pedidoFabricacion;
     PedidoProduccion pedidoProduccion;
@@ -204,27 +214,28 @@ int main(int argc, char** argv)
         pedidoProduccion = armarPedidoProduccion (pedidoFabricacion);
         controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoProduccion);
         
-        if (!obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual))
+        if (!obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual)) {
+            Logger::getInstance().logMessage(Logger::ERROR, "No se pudo obtener la especificacion... ABORTANDO!!!!");
             abort();
-        
-        for (int i = 0; i < piezasProductoActual.cantPiezas; i++) {
-            sprintf(buffer, "pieza destinada a robot 12: %d, con cantidad %d", piezasProductoActual.pieza[i].tipoPieza, piezasProductoActual.pieza[i].cantidad);
-            Logger::getInstance().logMessage(Logger::DEBUG, buffer);
         }
-        sprintf(buffer, "pieza destinada a robot 11: %d, con cantidad %d", piezasProductoActual.tipoPantalla.tipoPieza, piezasProductoActual.tipoPantalla.cantidad);
-        Logger::getInstance().logMessage(Logger::DEBUG, buffer);
-        
+
         cantCanastosPedidos = 0;
         for (int i = 0; i < piezasProductoActual.cantPiezas; i++) {
             int numAGV = 1;
             posCanasto = avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
                     piezasProductoActual.pieza[i].tipoPieza, 
                     piezasReservadasTemporalmente, numAGV, i, posicionesYaPedidas);
+            sprintf(buffer, "cantidad de piezas dentro del for de mierda %d!!!", piezasProductoActual.cantPiezas); 
+            Logger::logMessage(Logger::DEBUG, buffer);
             if (posCanasto != -1) {
                 posicionesYaPedidas[cantCanastosPedidos] = posCanasto;
                 cantCanastosPedidos++;
             }
         }
+        
+        
+        Logger::getInstance().logMessage(Logger::DEBUG, "paso a los AGV DEL MALL!!!");
+        
         for (int numAGV = 0; numAGV < CANTIDAD_AGVS; numAGV +=2) {
             avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
                     piezasProductoActual.tipoPantalla.tipoPieza, 

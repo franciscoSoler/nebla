@@ -66,9 +66,9 @@ void ControladorRepositor::reponerGabinetes(int numeroGabinete)
 	    Gabinete gabinete;
 	    gabinete.tipoGabinete = static_cast<TipoGabinete>(numeroGabinete);
 	    	
-	    int cantGabinetes = estructuraAlmacen.cantGabinetes[numeroGabinete - 1];
-	    estructuraAlmacen.gabinetes[numeroGabinete - 1][cantGabinetes] = gabinete;
-	    (estructuraAlmacen.cantGabinetes[cantGabinetes - 1])++;	    
+	    int cantGabinetes = estructuraAlmacen.cantGabinetes[numeroGabinete];
+	    estructuraAlmacen.gabinetes[numeroGabinete][cantGabinetes] = gabinete;
+	    (estructuraAlmacen.cantGabinetes[numeroGabinete])++;
 	}
 	this->almacenSharedMemory.writeInfo(&estructuraAlmacen);
         this->bloqueoControladorGabinetes.signal();

@@ -93,7 +93,7 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
 
 bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
     try {
-        sprintf(this->buffer, "Robot 11-%u - buscarProximoGabinete:", this->id_Robot + 1);
+        sprintf(this->buffer, "Robot 11-%u - buscarProximoGabinete:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
         
         CintaTransportadora_6 ctrlCinta;
@@ -148,7 +148,7 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
 
 void ControladorRobot11::avanzarCinta() {
     try {
-        sprintf(this->buffer, "Robot 11-%u - avanzarCinta:", this->id_Robot + 1);
+        sprintf(this->buffer, "Robot 11-%u - avanzarCinta:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
         CintaTransportadora_6 ctrlCinta;
         EstadoRobot5 estadoRobot5;

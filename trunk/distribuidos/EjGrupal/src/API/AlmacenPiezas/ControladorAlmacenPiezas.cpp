@@ -60,6 +60,8 @@ void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(PedidoProduccion pe
 
 BufferCanastos ControladorAlmacenPiezas::obtenerBufferCanastos(int numBufferCanasto) {
     BufferCanastos canastos;
+    sprintf(this->buffer,"Num buffer canasto: %d",numBufferCanasto);
+    Logger::logMessage(Logger::ERROR, this->buffer);
     
     this->semMemCanastos.wait(numBufferCanasto);
     this->shMemBufferCanastos[numBufferCanasto].readInfo(&canastos);
@@ -144,12 +146,11 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, 
 }
 */
 void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(int numAGV, 
-        int posCanasto, TipoPieza tipoPieza) {
+        PedidoCanastoRobotCinta6 pedidoCanasto) {
     
     MensajePedidoRobotCinta_6 mensaje;
     mensaje.mtype = numAGV + 1;
-    mensaje.pedidoCanastoAgv.lugar = posCanasto;
-    mensaje.pedidoCanastoAgv.tipoPieza = tipoPieza;
+    mensaje.pedidoCanastoAgv = pedidoCanasto;
     colaPedidosCanastos.enviarPedidoCanasto(mensaje);
 }
 
