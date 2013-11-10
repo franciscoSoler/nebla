@@ -25,7 +25,8 @@ class ControladorRepositor
 	
     private:
 	IPC::EspacioAlmacenPiezasSharedMemory almacenSharedMemory;
-	IPC::Semaphore bloqueoControlador;
+        IPC::Semaphore bloqueoControladorGabinetes;
+        IPC::Semaphore bloqueoControladorCanastos;
 	IPC::Semaphore mutex;
 };
 

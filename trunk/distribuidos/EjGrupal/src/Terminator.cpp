@@ -243,10 +243,14 @@ int main(int argc, char* argv[]) {
 	IPC::EspacioAlmacenPiezasSharedMemory shMemAlmacenDePiezas = IPC::EspacioAlmacenPiezasSharedMemory("shMemAlmacenDePiezas");
 	shMemAlmacenDePiezas.getSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
 	shMemAlmacenDePiezas.destroy();
-	
-	IPC::Semaphore esperaRepositor("semEsperaRepositor");
-	esperaRepositor.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR, 1);
-	esperaRepositor.destroy();
+
+        IPC::Semaphore esperaRepositorCanasto("Espera Repositor Canasto");
+        esperaRepositorCanasto.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_CANASTOS, 1);
+        esperaRepositorCanasto.destroy();
+
+        IPC::Semaphore esperaRepositorGabinete("Espera Repositor Gabinete");
+        esperaRepositorGabinete.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_GABINETES, 1);
+        esperaRepositorGabinete.destroy();
     }
     
     catch (Exception & e) {

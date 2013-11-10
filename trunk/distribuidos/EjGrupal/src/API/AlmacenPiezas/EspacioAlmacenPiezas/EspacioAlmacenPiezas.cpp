@@ -12,7 +12,8 @@
 EspacioAlmacenPiezas::EspacioAlmacenPiezas() :
 	espacioSharedMemory("Espacio Almacen de Piezas Sh Memory"),
 	mutex("Mutex espacio almacen de Piezas"),
-	bloqueoControladorAlmacenPiezas("Bloqueo controlador almacen de Piezas") 
+	bloqueoControladorAlmacenGabinetes("Bloqueo controlador almacen de Gabinetes"),
+        bloqueoControladorAlmacenCanastos("Bloqueo controlador almacen de  Canastos")
 { 
 }
 
@@ -20,7 +21,8 @@ void EspacioAlmacenPiezas::iniciarEspacioAlmacen()
 {
     this->espacioSharedMemory.getSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
     this->mutex.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
-    this->bloqueoControladorAlmacenPiezas.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR, 1);
+    this->bloqueoControladorAlmacenGabinetes.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_GABINETES, 1);
+    this->bloqueoControladorAlmacenCanastos.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_CANASTOS, 1);
 }
 
 Canasto EspacioAlmacenPiezas::obtenerCanastoConPiezas(TipoPieza numeroPieza)
@@ -39,7 +41,7 @@ Canasto EspacioAlmacenPiezas::obtenerCanastoConPiezas(TipoPieza numeroPieza)
 	    sprintf(buffer, "No se encuentran canastos con piezas de tipo %d.", numeroPieza);
 	    Logger::logMessage(Logger::IMPORTANT, buffer);
 	    this->mutex.signal();
-	    this->bloqueoControladorAlmacenPiezas.wait();
+	    this->bloqueoControladorAlmacenCanastos.wait();
 
 	    this->mutex.wait();
 	}
@@ -69,7 +71,7 @@ Gabinete EspacioAlmacenPiezas::obtenerGabinete(TipoGabinete numeroGabinete)
 	    sprintf(buffer, "No se encuentran gabinetes de tipo %d.", numeroGabinete);
 	    Logger::logMessage(Logger::IMPORTANT, buffer);
 	    this->mutex.signal();
-	    this->bloqueoControladorAlmacenPiezas.wait();
+	    this->bloqueoControladorAlmacenGabinetes.wait();
 
 	    this->mutex.wait();
 	}

@@ -338,9 +338,14 @@ void createIPCs() {
     mutexAlmacenDePiezas.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
     mutexAlmacenDePiezas.initializeSemaphore(0, 1);
     
-    IPC::Semaphore esperaRepositor("semEsperaRepositor");
-    esperaRepositor.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR, 1);
-    esperaRepositor.initializeSemaphore(0, 0);
+    IPC::Semaphore esperaRepositorCanasto("Espera Repositor Canasto");
+    esperaRepositorCanasto.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_CANASTOS, 1);
+    esperaRepositorCanasto.initializeSemaphore(0, 0);
+    
+    IPC::Semaphore esperaRepositorGabinete("Espera Repositor Gabinete");
+    esperaRepositorGabinete.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_GABINETES, 1);
+    esperaRepositorGabinete.initializeSemaphore(0, 0);
+    
     
     IPC::EspacioAlmacenPiezasSharedMemory shMemAlmacenDePiezas = IPC::EspacioAlmacenPiezasSharedMemory("shMemAlmacenDePiezas");
     shMemAlmacenDePiezas.createSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
