@@ -4,12 +4,12 @@
 StateR14_Trabajando::StateR14_Trabajando(ControllerRobot14* controlador) 
 : controlador_(controlador) {}
 
-bool StateR14_Trabajando::moverCinta() {
-    return controlador_->moverCintaEnEstadoTrabajando();
+bool StateR14_Trabajando::moverCinta(uint nroCinta) {
+    return controlador_->moverCintaEnEstadoTrabajando(nroCinta);
 }
 
-bool StateR14_Trabajando::tomarCaja(Caja & unaCaja) {
-    return controlador_->tomarCajaEnEstadoTrabajando(unaCaja);
+bool StateR14_Trabajando::tomarCaja(Caja & unaCaja, uint nroCinta) {
+    return controlador_->tomarCajaEnEstadoTrabajando(unaCaja, nroCinta);
 }
 
 void StateR14_Trabajando::depositarCaja(Caja unaCaja) {

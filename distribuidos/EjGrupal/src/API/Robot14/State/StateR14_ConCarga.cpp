@@ -4,11 +4,11 @@
 StateR14_ConCarga::StateR14_ConCarga(ControllerRobot14* controlador) 
 : controlador_(controlador) {}
 
-bool StateR14_ConCarga::moverCinta() {
+bool StateR14_ConCarga::moverCinta(uint nroCinta) {
     throw Exception("Acción Inválida. Estado:Robot14_ConCarga Accion:moverCinta"); 
 }
 
-bool StateR14_ConCarga::tomarCaja(Caja & unaCaja) {
+bool StateR14_ConCarga::tomarCaja(Caja & unaCaja, uint nroCinta) {
     throw Exception("Acción Inválida. Estado:Robot14_ConCarga Accion:tomcarCaja"); 
 }
 

@@ -51,7 +51,8 @@ class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
         IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
         IPC::Semaphore semMemCanastos;
 	
-	void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
+        void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
+        void imprimirEspecificacionProducto(EspecifProd especifProd);
 
 };
 

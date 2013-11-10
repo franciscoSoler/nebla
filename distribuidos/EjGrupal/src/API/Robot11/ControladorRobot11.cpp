@@ -50,22 +50,17 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semR11_Cinta13_ = IPC::Semaphore ("semR11_Cinta13");
         this->semR11_Cinta13_.getSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
         
-        this->semR14_ = IPC::Semaphore("semR14");
-        this->semR14_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_ID, 1);
+        this->semR14_Cinta13_ = IPC::Semaphore("semR14_Cinta13");
+        this->semR14_Cinta13_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA13_ID, 1);
         
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
-
-        
         
         this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
         this->shMemEstadoRobot5.getSharedMemory((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
-        
         this->shMem_R11_R14_ = IPC::SharedMemory<DataSM_R11_R14>("ShMem_R11_R14");
-        this->shMem_R11_R14_.getSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
-        
-        
+        this->shMem_R11_R14_.getSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);        
         
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         
@@ -315,7 +310,7 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         this->semBufferCinta6.signal(this->id_Robot);
 
         unaCaja.idProducto_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto;
-        unaCaja.ordenDeCompra_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
+        unaCaja.idOrdenDeCompra_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
         if (ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].falla || rand() % 100 > 98) {
             unaCaja.fallado_ = true;
         } else {
@@ -332,64 +327,66 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
 void ControladorRobot11::depositarCaja(Caja unaCaja) {
     sprintf(this->buffer, "Robot 11-%u - depositarCaja:", this->id_Robot);
     Logger::setProcessInformation(this->buffer);
-    if (unaCaja.fallado_)
+    if (unaCaja.fallado_) {
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba rotaaaa!!!!!!!!!!!!!!!!");
-    else
+    }
+    else {
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba sanaaaa!!!!!!!!!!!!!!!!");
-    //TODO agregar lo de ezequiel aca y en el .h!!!!!!!!!!!!!!
+    }
+
     try {
         bool cajaDepositada = false;
         while (! cajaDepositada) {
-            obtener_shMem_R11_R14();
+          obtener_shMem_R11_R14();
 
-            // Se intenta depositar la caja. Sino se puede, se intenta mover 
-            // la cinta. En caso negativo, el Robot se bloquea        
-            // TODO: Candidato para meter un ChainOfResponsability
-            if ( estaCintaLlena() ) {
-                Logger::logMessage(Logger::TRACE, "Cinta13 llena. Robot se bloquea.");
-                bloquearRobot();
-                continue;
-            }
-            else if (shMem_R11_R14_Data_->insertarCajaEnCinta(nroCinta_, unaCaja)) {
-                sprintf(this->buffer, "Caja depositada. Cinta13 N°%u: %s", nroCinta_, 
-                        shMem_R11_R14_Data_->cintaToString(nroCinta_).c_str());
-                Logger::logMessage(Logger::DEBUG, this->buffer);
-                cajaDepositada = true;
-            }
-            else if (estaRobot14TrabajandoEnEstaCinta()) {
-                Logger::logMessage(Logger::TRACE, "Robot14 trabajando en la "
-                "cinta. Robot se bloquea");
-                bloquearRobot();
-                continue;
-            }
-            else if (shMem_R11_R14_Data_->moverCinta(nroCinta_)) {
-                Logger::logMessage(Logger::TRACE, "Primer lugar ocupado. Mueve Cinta13");
-                
-                if (! shMem_R11_R14_Data_->insertarCajaEnCinta(nroCinta_, unaCaja) ) {
-                    throw Exception("Error en Cinta13. No se pudo colocar una "
-                        "caja después de haber avanzado la cinta");
-                }
-                
-                sprintf(this->buffer, "Caja depositada. Cinta13 N°%u: %s", nroCinta_, 
-                        shMem_R11_R14_Data_->cintaToString(nroCinta_).c_str());
-                Logger::logMessage(Logger::DEBUG, this->buffer);
-                cajaDepositada = true;
-            }
-            else {
-                Logger::logMessage(Logger::TRACE, "No se pudo mover Cinta13. Robot se bloquea");
-                bloquearRobot();
-                continue;
-            }
-            
-            // Si se logró colocar la caja, se despierta al Robot14 si este estaba
-            // bloqueado
-            if (shMem_R11_R14_Data_->estaRobot14Bloqueado()) {
-                shMem_R11_R14_Data_->setEstadoBloqueoRobot14(false);
-               Logger::logMessage(Logger::TRACE, "Robot14 despertado para trabajar en cinta");
-               semR14_.signal();
-            }
+          // Se intenta depositar la caja. Sino se puede, se intenta mover
+          // la cinta. En caso negativo, el Robot se bloquea
+          // TODO: Candidato para meter un ChainOfResponsability
+          if ( estaCintaLlena() ) {
+              Logger::logMessage(Logger::TRACE, "Cinta13 llena. Robot se bloquea.");
+              bloquearRobot();
+              continue;
+          }
+          else if (shMem_R11_R14_Data_->insertarCajaEnCinta(nroCinta_, unaCaja)) {
+              sprintf(buffer, "Caja depositada. Cinta13 N°%u: %s", nroCinta_,
+                      shMem_R11_R14_Data_->cintaToString(nroCinta_).c_str());
+              Logger::logMessage(Logger::DEBUG, buffer);
+              cajaDepositada = true;
+          }
+          else if (estaRobot14TrabajandoEnEstaCinta()) {
+              Logger::logMessage(Logger::TRACE, "Robot14 trabajando en la "
+              "cinta. Robot se bloquea");
+              bloquearRobot();
+              continue;
+          }
+          else if (shMem_R11_R14_Data_->moverCinta(nroCinta_)) {
+              Logger::logMessage(Logger::TRACE, "Primer lugar ocupado. Mueve Cinta13");
 
-            liberar_shMem_R11_R14();
+              if (! shMem_R11_R14_Data_->insertarCajaEnCinta(nroCinta_, unaCaja) ) {
+                  throw Exception("Error en Cinta13. No se pudo colocar una "
+                      "caja después de haber avanzado la cinta");
+              }
+
+              sprintf(buffer, "Caja depositada. Cinta13 N°%u: %s", nroCinta_,
+                      shMem_R11_R14_Data_->cintaToString(nroCinta_).c_str());
+              Logger::logMessage(Logger::DEBUG, buffer);
+              cajaDepositada = true;
+          }
+          else {
+              Logger::logMessage(Logger::TRACE, "No se pudo mover Cinta13. Robot se bloquea");
+              bloquearRobot();
+              continue;
+          }
+
+          // Si se logró colocar la caja, se despierta al Robot14 si este estaba
+          // bloqueado
+          if (shMem_R11_R14_Data_->estaRobot14Bloqueado()) {
+              // shMem_R11_R14_Data_->setEstadoBloqueoRobot14(false);
+             Logger::logMessage(Logger::TRACE, "Robot14 despertado para trabajar en cinta");
+             semR14_Cinta13_.signal();
+          }
+
+          liberar_shMem_R11_R14();
         }
     }
     catch (Exception & e) {

@@ -69,18 +69,19 @@
 #define ID_COLA_12_A_11_2               4
 
 //ipcs del robot 14 (usar DIRECTORY_ROBOT_14)
-#define SEM_R14_ID                      1
+#define SEM_R14_CINTA13_ID              1
+#define SEM_R14_CINTA15_ID              4
 #define SEM_MUTEX_SM_R14_R16_ID         2
 #define SM_R14_R16_ID                   2
 
 //ipcs del robot 16 (usar DIRECTORY_ROBOT_16)
-#define SEM_R16_ID                      1
-#define MSGQUEUE_ROBOT16_INPUT_ID       1
-#define MSGQUEUE_ROBOT16_OUTPUT_ID      2
+#define SEM_MUTEX_SINCRONISMO_R16_ID    1
+#define MSGQUEUE_R16_CINTA15_INPUT_ID   2
+#define MSGQUEUE_R16_DESPACHO_INPUT_ID  3
 #define MSGQUEUE_R16_CLIENT_ID          3
 
 // ipcs del despacho (usar DIRECTORY_DESPACHO)
-#define MSGQUEUE_DESPACHO_OUTPUT_ID     1
+#define MSGQUEUE_DESPACHO_INPUT_ID      1
 
 // ipcs del cliente (usar DIRECTORY_CLIENTE)
 #define MSGQUEUE_CLIENT_INPUT_ID        1
@@ -93,6 +94,7 @@
 // ipcs del APT (usar DIRECTORY_APT)
 #define LETRA_SHMEM_ALMACEN_TERMINADOS  'a'
 #define SEM_MUTEX_SM_APT_ID             1
+
 
 // ipcs del APiezas (usar DIRECTORY_APIEZAS)
 #define LETRA_SHMEM_ALMACEN_PIEZAS	'r'
@@ -307,20 +309,22 @@ typedef struct
 /*
  * Estructuras utilizadas entre robot 11, 14 y 16
  */
+
+// Clases y Estructuras generales
 class Caja {
 public:
-    Caja() :   ordenDeCompra_(0)
-             , idProducto_(NULL_PRODUCT)
-             , fallado_(false) 
-    {}
+    Caja() :  idOrdenDeCompra_(0)
+            , idVendedor_(0)
+            , idProducto_(NULL_PRODUCT)
+            , fallado_(false) {}
+    Caja(int ordenDeCompra) { idOrdenDeCompra_ = ordenDeCompra;};
+    long getOrdenDeCompra() { return idOrdenDeCompra_;}
+    bool estaVacio() { return idOrdenDeCompra_ == 0
+            && idVendedor_ == 0 && idProducto_ == NULL_PRODUCT; };
 
-    // Caja(long ordenDeCompra) { ordenDeCompra_ = ordenDeCompra;};
-    long getOrdenDeCompra() { return ordenDeCompra_;};
-    bool estaVacio() { return ordenDeCompra_ == 0 
-         && idProducto_ == NULL_PRODUCT && fallado_ == false; };
-    
 public:
-    long ordenDeCompra_;
+    long idOrdenDeCompra_;
+    long idVendedor_;
     TipoProducto idProducto_;
     bool fallado_;
 };
@@ -331,10 +335,17 @@ class OrdenDeCompra {
 public:
     OrdenDeCompra() :   idVendedor_(0),
                         idCliente_(0),
-                        idOrden_(0) {}
-    
+                        idOrden_(0) {
+
+        for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
+            productoTerminado_[i] = false;
+            cantidadPorProducto_[i] = false;
+        }
+
+    }
+
     virtual ~OrdenDeCompra() {}
-  
+
     void decrementarProducto(TipoProducto producto) {
         if (cantidadPorProducto_[producto] <= 0 || producto > CANTIDAD_PRODUCTOS) {
             //throw Exception("OrdenDeCompra Error: Tipo de producto inválido");
@@ -348,7 +359,7 @@ public:
     }
 
     bool estaVacia() const {
-        return idVendedor_ == 0 && idCliente_== 0 && idOrden_ == 0; 
+        return idVendedor_ == 0 && idCliente_== 0 && idOrden_ == 0;
     }
 
 public:
@@ -356,36 +367,12 @@ public:
     long idCliente_;
     long idOrden_;
     int cantidadPorProducto_[CANTIDAD_PRODUCTOS];
+    // Indica con true si la cantidad pedida ya se encontraba stockeada.
+    bool productoTerminado_[CANTIDAD_PRODUCTOS];
 
-};
-
-typedef enum {
-    PEDIDO_VACIO = 0,
-    PEDIDO_ODC = 1,
-    PEDIDO_CLIENTE,
-    PEDIDO_ROBOT16
-} TipoPedidoDespacho;
-
-// Utilizado por las colas que intercambian info con el despacho
-class PedidoDespacho {
-public:
-    PedidoDespacho() :  mtype(TIPO_PEDIDO_DESPACHO),
-                        tipoPedido_(PEDIDO_VACIO),
-                        idProducto_(NULL_PRODUCT),
-                        idCliente_(0),
-                        idOrdenDeCompra_(0)
-    {}
-    
-public:
-    long mtype;
-    TipoPedidoDespacho tipoPedido_;
-    TipoProducto idProducto_;
-    long idCliente_;
-    long idOrdenDeCompra_;
 };
 
 typedef struct {
-    long mtype;
     Caja caja;
 } EnvioCajaCliente;
 
@@ -397,6 +384,86 @@ public:
 public:
     long mtype;
     OrdenDeCompra ordenDeCompra_;
+};
+
+typedef enum {
+    PEDIDO_VACIO = 0,
+    PEDIDO_ODC = 1,
+    PEDIDO_CLIENTE,
+    PEDIDO_ROBOT16
+} TipoPedidoDespacho;
+
+
+class PedidoDespacho {
+public:
+    PedidoDespacho() :  tipoPedido_(PEDIDO_VACIO),
+                        idProducto_(NULL_PRODUCT),
+                        idCliente_(0),
+                        idOrdenDeCompra_(0)
+    {}
+
+public:
+    TipoPedidoDespacho tipoPedido_;
+    TipoProducto idProducto_;
+    long idCliente_;
+    long idOrdenDeCompra_;
+};
+
+
+/*** Mensajes de colas, con sus respectivos IDs de mensajes definidos ***/
+
+// Utilizado por las colas que intercambian info con el despacho
+#define MSG_PEDIDO_DESPACHO             1
+class Msg_PedidoDespacho {
+public:
+    Msg_PedidoDespacho() : mtype(MSG_PEDIDO_DESPACHO) {}
+
+public:
+    long mtype;
+    PedidoDespacho pedido_;
+};
+
+#define MSG_ENVIO_ODC_DESPACHO          2
+class Msg_EnvioODCDespacho {
+public:
+    Msg_EnvioODCDespacho() : mtype(MSG_ENVIO_ODC_DESPACHO) {}
+public:
+    long mtype;
+    OrdenDeCompra ordenDeCompra_;
+};
+
+
+// Mensaje del Robot14 al Robot16
+#define MSG_AVISO_CAJA_CINTA_15         1
+class Msg_AvisoCajaEnCinta15 {
+public:
+    Msg_AvisoCajaEnCinta15() : mtype(MSG_AVISO_CAJA_CINTA_15) {}
+public:
+    long mtype;
+};
+
+#define MSG_FIN_PRODUCTO_R16            4
+class Msg_FinProductoR16 {
+public:
+    Msg_FinProductoR16() : mtype(MSG_FIN_PRODUCTO_R16) {}
+public:
+    long mtype;
+    PedidoDespacho pedido_;
+};
+
+#define MSG_RETIRO_PRODUCTO             5
+class Msg_RetiroProducto {
+public:
+    Msg_RetiroProducto() : mtype(MSG_RETIRO_PRODUCTO) {}
+public:
+    long mtype;
+    PedidoDespacho datos_;
+};
+
+class Msg_EnvioCajaCliente {
+public:
+    long mtype;
+    EnvioCajaCliente envio_;
 };
 
 

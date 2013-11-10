@@ -10,8 +10,8 @@ class ControllerRobot14;
 class StateR14_Trabajando : public IStateR14 {
 public:
     StateR14_Trabajando(ControllerRobot14* controlador);
-    bool moverCinta();
-    bool tomarCaja(Caja & unaCaja);
+    bool moverCinta(uint nroCinta);
+    bool tomarCaja(Caja & unaCaja, uint nroCinta);
     void depositarCaja(Caja unaCaja);
     virtual ~StateR14_Trabajando();
 

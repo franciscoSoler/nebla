@@ -54,7 +54,7 @@ bool SmMemAlmacenProductosTerminados::depositarCaja(Caja caja)
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
-	if(almacenTerminados[numeroEspacio].ordenCompra.idOrden_ == caja.ordenDeCompra_)
+    if(almacenTerminados[numeroEspacio].ordenCompra.idOrden_ == caja.idOrdenDeCompra_)
 	{
 	    almacenTerminados[numeroEspacio].caja = caja;
 	    return true;
