@@ -24,7 +24,7 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         Logger::setProcessInformation(this->buffer);
         
         this->id_Agv = numRobot * 2 + 1;
-        this->nroCinta_ = this->id_Agv + 1;
+        this->nroCinta_ = numRobot + 1;
         this->id_semMemCanastos = numRobot * 2;
         srand (getpid());
         this->id_Robot = numRobot;
