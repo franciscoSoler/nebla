@@ -157,6 +157,8 @@ void ControladorRobot5Cinta::resolverPedidoGabinete(ProductoEnProduccion product
 	    semaforoBloqueoRobot11.signal(cintaAUtilizar);
 	    Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo marco como desbloqueado y lo desbloqueo.");
 	}
+        semaforoApiRobot5.signal();
+
     }   
     catch(Exception &e)
     {
@@ -173,7 +175,6 @@ void ControladorRobot5Cinta::avisarProximoPedido()
 	MensajeProximoPedidoProduccion mensajeProximoPedido;
 	mensajeProximoPedido.mtype = TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS;
 	colaPedidosProduccion.enviarProximoPedidoProduccion(mensajeProximoPedido);
-	semaforoApiRobot5.signal();
     }
     catch(Exception &e)
     {

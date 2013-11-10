@@ -39,7 +39,6 @@ class ControladorVendedor
 	void enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido);
 	
 	bool realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompra* ordenDeCompra, int cantPedidos);
-	void confirmarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t respuesta);
 	void cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t respuesta);
 	
 	void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);

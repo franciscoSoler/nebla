@@ -228,16 +228,6 @@ void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente,
     clientes.enviarMensajeRespuesta(msgRespuesta);
 }
 
-void ControladorVendedor::confirmarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t pedido)
-{
-    msg_respuesta_pedido_t msgRespuesta;
-    msgRespuesta.respuesta_pedido = pedido;
-    msgRespuesta.mtype = numCliente;
-    
-    clientes.enviarMensajeRespuesta(msgRespuesta);
-}
-
-
 void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t pedido)
 {
     msg_respuesta_pedido_t msgRespuesta;
