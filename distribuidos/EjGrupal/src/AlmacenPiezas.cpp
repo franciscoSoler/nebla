@@ -63,7 +63,6 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
     parser.obtenerProximoValor();
     string cantidadPiezasString = parser.obtenerProximoValor();
     int cantPiezas = atoi(cantidadPiezasString.c_str());
-    Logger::logMessage(Logger::ERROR, cantidadPiezasString);
     piezas.cantPiezas = 0;
     for (int i = 0; i < cantPiezas; i++) {
         int id = atoi(parser.obtenerProximoValor().c_str());
