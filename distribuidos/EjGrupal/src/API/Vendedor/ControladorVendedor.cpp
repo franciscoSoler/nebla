@@ -209,6 +209,7 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
 
     PedidoDespacho pedido;
     pedido.idOrdenDeCompra_ = ordenDeCompra.idOrden_;
+    pedido.tipoPedido_ = PEDIDO_ODC;
 
     Msg_PedidoDespacho mensaje_despacho;
     mensaje_despacho.mtype = MSG_PEDIDO_DESPACHO;
@@ -293,6 +294,7 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
 	    break;
 	}
 
+
 	ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto] = pedidos[i].cantidad;
 
 	sprintf(mensajePantalla, "Manda a producir %d unidades del producto %d.", 
@@ -301,9 +303,9 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
     }
     
     if(ordenDeCompraEsValida)
-	confirmarPedidos(pedidosProduccion, *ordenDeCompra, cantPedidos);
+        confirmarPedidos(pedidosProduccion, *ordenDeCompra, cantPedidos);
     else
-	almacenProductosTerminados.anularReservas();
+        almacenProductosTerminados.anularReservas();
     
     mutexAlmacenTerminados.signal();
     return ordenDeCompraEsValida;

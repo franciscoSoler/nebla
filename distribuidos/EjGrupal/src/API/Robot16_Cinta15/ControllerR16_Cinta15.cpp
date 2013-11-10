@@ -133,7 +133,7 @@ void ControllerR16_Cinta15::informarAlDespachoProductoTerminado(long idNroOrden,
         pedido.idProducto_ = tipo;
 
         Msg_FinProductoR16 mensaje;
-        mensaje.mtype = MSG_FIN_PRODUCTO_R16;
+        mensaje.mtype = MSG_PEDIDO_DESPACHO;
         mensaje.pedido_ = pedido;
 
         obtenerMutexSincronismo();

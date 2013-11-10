@@ -558,12 +558,14 @@ typedef struct _respuesta_pedido
 {
     long emisor;
     bool recepcionOK;
+    int cantidadDeProductos[CANTIDAD_PRODUCTOS];
 } respuesta_pedido_t;
 
 typedef struct {
     long mtype;
     respuesta_pedido_t respuesta_pedido;
 } msg_respuesta_pedido_t;
+
 
 
 typedef struct _espacio_almacen_piezas {

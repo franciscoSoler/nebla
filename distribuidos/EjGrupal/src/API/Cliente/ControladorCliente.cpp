@@ -30,6 +30,9 @@ ControladorCliente::ControladorCliente(long numCliente)
     
     this->retiro = IPC::MsgQueue("retiro");
     this->retiro.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
+
+    this->inputQueueCliente = IPC::MsgQueue("inputQueueCliente");
+    this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
     
     this->numCliente = numCliente;
 }
@@ -94,28 +97,47 @@ void ControladorCliente::finalizarEnvio(int cantPedidos)
 
 ControladorCliente::~ControladorCliente() { }
 
-bool ControladorCliente::recibirResultado()
+respuesta_pedido_t ControladorCliente::recibirResultado()
 {
     msg_respuesta_pedido_t msgRespuesta;
     clientes.recibirMensajeRespuesta(numCliente, &msgRespuesta);
-    return msgRespuesta.respuesta_pedido.recepcionOK;
+    return msgRespuesta.respuesta_pedido;
 }
 
-void ControladorCliente::retirarEncargo(TipoProducto & tipoProducto, int & nroOrdenCompra)
+void ControladorCliente::esperarPedido(TipoProducto & tipoProducto, int & nroOrdenCompra, int numCliente)
 {
-    PedidoDespacho pedido;
-    despacho.recv(TIPO_PEDIDO_DESPACHO, pedido);
+    Msg_PedidoDespacho mensaje;
+    this->inputQueueCliente.recv(numCliente, mensaje);
+    PedidoDespacho pedido = mensaje.pedido_;
     
      sprintf(mensajePantalla, "Se le informa que el Producto %u fue terminado."
-             "Procede a ir a la fabrica a buscarlo", tipoProducto);
+             "Procede a ir a la fabrica a buscarlo", pedido.idProducto_);
      Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     tipoProducto = pedido.idProducto_;
     nroOrdenCompra = pedido.idOrdenDeCompra_;
 }
 
-Caja ControladorCliente::obtenerProducto(int nroOrdenCompra) {
+void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden) {
+    char buffer[255];
+    sprintf(buffer, "Cliente va a retirar el producto N°%d de la ODC N°%d", tipo, nroOrden);
+    Logger::logMessage(Logger::TRACE, buffer);
+
+    PedidoDespacho pedido;
+    pedido.idOrdenDeCompra_ = nroOrden;
+    pedido.idProducto_ = tipo;
+    pedido.tipoPedido_ = PEDIDO_CLIENTE;
+
+    Msg_PedidoDespacho mensaje;
+    mensaje.mtype = MSGQUEUE_DESPACHO_INPUT_ID;
+    mensaje.pedido_ = pedido;
+
+    despacho.send(mensaje);
+}
+
+Caja ControladorCliente::obtenerProducto(int idCliente) {
     EnvioCajaCliente msgCaja;
-    retiro.recv(1, msgCaja);
+    retiro.recv(idCliente, msgCaja);
+    Logger::logMessage(Logger::IMPORTANT, "Recibe Caja de Robot16");
     return msgCaja.caja;
 }

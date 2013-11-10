@@ -30,29 +30,45 @@ int main(int argc, char** argv)
     int cantPedidos = 1;// + rand() % 3;
     sprintf(mensajePantalla,"Comienzo a enviar sus %d pedidos.", cantPedidos);
     Logger::getInstance().logMessage(Logger::TRACE, mensajePantalla);
+
     for(int i = 0; i < cantPedidos; i++)
     {
-	int cantUnidades = 1 + rand() % CANT_MAX_PEDIDOS;
-	int tipoProducto = PRODUCTO_3;// rand() % CANT_PRODUCTOS + 1;
-	int retardo = rand() % MAX_DEMORA + 1;
-	usleep(retardo * 100 * 1000);
-	controlador.enviarPedido(cantUnidades, tipoProducto);
-	if(controlador.recibirResultado() == false)
-	    exit(-1);
+        int cantUnidades = 1 + rand() % CANT_MAX_PEDIDOS;
+        int tipoProducto = PRODUCTO_3;// rand() % CANT_PRODUCTOS + 1;
+        int retardo = rand() % MAX_DEMORA + 1;
+        usleep(retardo * 100 * 1000);
+        controlador.enviarPedido(cantUnidades, tipoProducto);
+        if(controlador.recibirResultado().recepcionOK == false) {
+            Logger::logMessage(Logger::IMPORTANT, "APT lleno. No se pudo realizar el pedido");
+            exit(0);
+        }
     }
     
     controlador.finalizarEnvio(cantPedidos);
-    bool pedidoEsValido = controlador.recibirResultado();
-    if(!pedidoEsValido)
-	exit(-1);
-    
-    // Cliente espera una orden de pedidos terminada
+    respuesta_pedido_t respuesta = controlador.recibirResultado();
+
+    if(! respuesta.recepcionOK) {
+        Logger::logMessage(Logger::IMPORTANT, "APT lleno. No se pudo realizar el pedido");
+        exit(0);
+    }
+
+    // Cliente espera a que lo llamen por las Productos que se van terminando.
+    // Por cada uno de los Productos, recibe un mensaje, y lo va a buscar a la
+    // fábrica. En la misma, recibe las Cajas que representan a los productos,
+    // uno por uno
     TipoProducto tipo;
     int nroOrden;
-    controlador.retirarEncargo(tipo, nroOrden);
-    
+
     for (int i = 0; i < cantPedidos; ++i) {
-        controlador.obtenerProducto(nroOrden);
+
+        controlador.esperarPedido(tipo, nroOrden, numCliente);
+        // sleep();
+
+        controlador.retirarEncargo(tipo, nroOrden);
+
+        for (int j = 0; j < respuesta.cantidadDeProductos[tipo-1]; ++j) {
+            controlador.obtenerProducto(numCliente);
+        }
     }
 }
 

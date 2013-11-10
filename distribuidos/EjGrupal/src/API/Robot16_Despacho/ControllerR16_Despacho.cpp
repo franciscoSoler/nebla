@@ -73,7 +73,8 @@ void ControllerR16_Despacho::tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja
 
 void ControllerR16_Despacho::enviarCajaAlCliente(long idCliente, Caja caja) {
     try {
-        Logger::logMessage(Logger::TRACE, "Se envía Caja al cliente");
+        sprintf(buffer_, "Se envía Caja al cliente %ld", idCliente);
+        Logger::logMessage(Logger::TRACE, buffer_);
         EnvioCajaCliente envio;
         envio.caja = caja;
 
