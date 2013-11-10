@@ -29,7 +29,7 @@ bool buscarUbiacionDeProductoEnArchivo(Parser &parser, ifstream& stream, int num
     return true;
 }
 
-bool obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
+bool obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd & piezas) {
     ifstream stream;
     stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
     Parser parser;
@@ -41,14 +41,14 @@ bool obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
     parser.obtenerProximoValor();
     string cantidadPiezasString = parser.obtenerProximoValor();
     int cantPiezas = atoi(cantidadPiezasString.c_str());
-    piezas->cantPiezas = 0;
-    for (int i = 0; i < cantPiezas*2; i+=2) {
+    piezas.cantPiezas = 0;
+    for (int i = 0; i < cantPiezas; i++) {
         int id = atoi(parser.obtenerProximoValor().c_str());
         int cantidad = atoi(parser.obtenerProximoValor().c_str());
         if (id < PANTALLA_1) {
-            piezas->pieza[i].tipoPieza = static_cast<TipoPieza> (id);
-            piezas->pieza[i].cantidad = cantidad;
-            piezas->cantPiezas++;
+            piezas.pieza[piezas.cantPiezas].tipoPieza = static_cast<TipoPieza> (id);
+            piezas.pieza[piezas.cantPiezas].cantidad = cantidad;
+            piezas.cantPiezas++;
         }
     }
     return true;
@@ -133,7 +133,7 @@ int main(int argc, char** argv) {
     while (true) {
         ctrlCinta = controladorRobot12->esperarProximoGabinete(); 
         
-        obtenerPiezasDelProducto(ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto, &piezas);
+        obtenerPiezasDelProducto(ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto, piezas);
         
         for (int i = 0; i < piezas.cantPiezas; i++) {
             while (true) {
