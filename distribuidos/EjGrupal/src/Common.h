@@ -96,11 +96,12 @@
 
 // ipcs del APiezas (usar DIRECTORY_APIEZAS)
 #define LETRA_SHMEM_ALMACEN_PIEZAS	'r'
-#define LETRA_SHMEM_ALMACEN_GABINETES	'u'
+#define LETRA_SHMEM_ALMACEN_GABINETES	'e'
 #define LETRA_SEM_ALMACEN_PIEZAS	's'
 #define LETRA_SEM_ALMACEN_GABINETES	'h'
 
-#define LETRA_SEM_ESPERA_REPOSITOR	'i'
+#define LETRA_SEM_ESPERA_REPOSITOR_GABINETES 'i'
+#define LETRA_SEM_ESPERA_REPOSITOR_CANASTOS  'j'   
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo

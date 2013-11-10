@@ -27,7 +27,9 @@ private:
 
     IPC::EspacioAlmacenPiezasSharedMemory espacioSharedMemory;
     IPC::Semaphore mutex;  
-    IPC::Semaphore bloqueoControladorAlmacenPiezas;
+    
+    IPC::Semaphore bloqueoControladorAlmacenGabinetes;
+    IPC::Semaphore bloqueoControladorAlmacenCanastos;
     
 };
 

@@ -282,6 +282,7 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
 {
     char mensajePantalla[1024];
     mutexAlmacenTerminados.wait();
+    Logger::getInstance().logMessage(Logger::IMPORTANT, "Paso el mutex del almacen de terminados");
     bool ordenDeCompraEsValida = true;
     pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
     for(int i = 0; i < cantPedidos; i++)

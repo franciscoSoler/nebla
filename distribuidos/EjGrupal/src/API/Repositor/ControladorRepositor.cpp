@@ -9,7 +9,8 @@
 
 ControladorRepositor::ControladorRepositor() :
 	almacenSharedMemory("almacenPiezasShMemory"),
-	bloqueoControlador("semEsperaRepositor"),
+	bloqueoControladorGabinetes("Espera Repositor Gabinete"),
+	bloqueoControladorCanastos("Espera Repositor Canastos"),
 	mutex("mutexAlmacenDePiezas")
 { 
 }
@@ -19,7 +20,8 @@ ControladorRepositor::~ControladorRepositor() { }
 void ControladorRepositor::iniciarControlador () {
     this->almacenSharedMemory.getSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
     this->mutex.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
-    this->bloqueoControlador.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR, 1);
+    this->bloqueoControladorGabinetes.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_GABINETES, 1);
+    this->bloqueoControladorCanastos.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_CANASTOS, 1);
 }
 
 void ControladorRepositor::reponerCanastos(int numeroPieza)
@@ -45,6 +47,7 @@ void ControladorRepositor::reponerCanastos(int numeroPieza)
 	    (estructuraAlmacen.cantCanastos[numeroPieza - 1])++;
 	}
 	this->almacenSharedMemory.writeInfo(&estructuraAlmacen);
+        this->bloqueoControladorCanastos.signal();
     }
     mutex.signal();
 }
@@ -68,6 +71,8 @@ void ControladorRepositor::reponerGabinetes(int numeroGabinete)
 	    (estructuraAlmacen.cantGabinetes[cantGabinetes - 1])++;	    
 	}
 	this->almacenSharedMemory.writeInfo(&estructuraAlmacen);
+        this->bloqueoControladorGabinetes.signal();
+
     }
     mutex.signal();
 }
