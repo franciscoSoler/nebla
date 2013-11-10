@@ -43,8 +43,8 @@
 #define ID_COLA_PEDIDOS_PRODUCCION      2
 
 //ipcs entre robot 11 y robot 5 (usar DIRECTORY_ROBOT_5)
-#define ID_SEM_BLOQUEO_ROBOT_5         3
-#define ID_ESTADO_ROBOT_5              4 // Se utiliza el mismo para la sh mem y para el semaforo
+#define ID_SEM_BLOQUEO_ROBOT_5          3
+#define ID_ESTADO_ROBOT_5               4 // Se utiliza el mismo para la sh mem y para el semaforo
 
 // ipcs entre robot 5 y robot 11 (cinta transportadora 6, usar DIRECTORY_ROBOT_11)
 #define ID_SEM_CINTA_6                  1
@@ -96,7 +96,11 @@
 
 // ipcs del APiezas (usar DIRECTORY_APIEZAS)
 #define LETRA_SHMEM_ALMACEN_PIEZAS	'r'
-#define LETRA_SEM_ALMACEN_PIEZAS	'c'
+#define LETRA_SHMEM_ALMACEN_GABINETES	'u'
+#define LETRA_SEM_ALMACEN_PIEZAS	's'
+#define LETRA_SEM_ALMACEN_GABINETES	'h'
+
+#define LETRA_SEM_ESPERA_REPOSITOR	'i'
 
 //mtype colas
 #define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
@@ -123,10 +127,13 @@
 #define CINTA_13_CAPACITY                       3
 #define CINTA_15_CAPACITY                       5
 #define CANTIDAD_PRODUCTOS                      3
-#define CANTIDAD_TIPOS_PIEZAS			3
-#define CANTIDAD_TIPOS_PANTALLAS		3
+#define CANTIDAD_TIPOS_PIEZAS			6
+#define CANTIDAD_TIPOS_GABINETES		3
 #define CANTIDAD_MAXIMA_REPOSICION_PIEZAS	200
 #define CANTIDAD_MINIMA_REPOSICION_PIEZAS	100
+#define CANTIDAD_MAXIMA_ITEMS_REPOSICION	10
+#define CANTIDAD_MINIMA_ITEMS_REPOSICION	5
+#define CANTIDAD_MAXIMA_ITEMS_POR_TIPO_ALMACEN  15
 
 /* Tipos de productos. */
 
@@ -496,5 +503,13 @@ typedef struct {
     long mtype;
     respuesta_pedido_t respuesta_pedido;
 } msg_respuesta_pedido_t;
+
+
+typedef struct _espacio_almacen_piezas {
+    Canasto canastos[CANTIDAD_TIPOS_PIEZAS][CANTIDAD_MAXIMA_ITEMS_POR_TIPO_ALMACEN];
+    Gabinete gabinetes[CANTIDAD_TIPOS_GABINETES][CANTIDAD_MAXIMA_ITEMS_POR_TIPO_ALMACEN];
+    int cantCanastos[CANTIDAD_TIPOS_PIEZAS];
+    int cantGabinetes[CANTIDAD_TIPOS_GABINETES];
+} EstructuraAlmacenPiezas;
 
 #endif	/* COMMON_H */

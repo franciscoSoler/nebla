@@ -24,7 +24,7 @@
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "IPCs/IPCAbstractos/SharedMemory/ShMemAlmacenDePiezas.h"
+#include "IPCs/IPCAbstractos/SharedMemory/EspacioAlmacenPiezasSharedMemory.h"
 
 #include "API/Objects/DataSM_R11_R14.h"
 #include "API/Objects/DataSM_R14_R16.h"
@@ -240,10 +240,15 @@ int main(int argc, char* argv[]) {
 	mutexAlmacenDePiezas.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
 	mutexAlmacenDePiezas.destroy();
 
-	IPC::ShMemAlmacenDePiezas shMemAlmacenDePiezas = IPC::ShMemAlmacenDePiezas("shMemAlmacenDePiezas");
+	IPC::EspacioAlmacenPiezasSharedMemory shMemAlmacenDePiezas = IPC::EspacioAlmacenPiezasSharedMemory("shMemAlmacenDePiezas");
 	shMemAlmacenDePiezas.getSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
 	shMemAlmacenDePiezas.destroy();
-    }    
+	
+	IPC::Semaphore esperaRepositor("semEsperaRepositor");
+	esperaRepositor.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR, 1);
+	esperaRepositor.destroy();
+    }
+    
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
         e.get_error_description().c_str());

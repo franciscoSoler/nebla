@@ -43,6 +43,8 @@ void ControladorRobot5Cinta::iniciarControlador() {
     
     /* Obtengo el semaforo para la api del robot 5 */
     semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5,ID_SEM_API_ROBOT_5, 1);
+    
+    almacen.iniciarEspacioAlmacen();
 }
 
 PedidoProduccion ControladorRobot5Cinta::obtenerPedidoProduccion() {
@@ -120,8 +122,6 @@ void ControladorRobot5Cinta::resolverPedidoGabinete(ProductoEnProduccion product
         semaforoBloqueoRobot11.signal(cintaAUtilizar);
         Logger::getInstance().logMessage(Logger::TRACE, "Robot 11 bloqueado, lo marco como desbloqueado y lo desbloqueo.");
     }
-    
-    //semaforoApiRobot5.signal();
 }
 
 void ControladorRobot5Cinta::avisarProximoPedido() {
@@ -134,9 +134,7 @@ void ControladorRobot5Cinta::avisarProximoPedido() {
 }
 
 Gabinete ControladorRobot5Cinta::obtenerGabinete(TipoProducto tipoPorudcto) {
-    Gabinete gabinete;
-    gabinete.tipoGabinete = obtenerTipoGabinete(tipoPorudcto);
-    return gabinete;
+    return almacen.obtenerGabinete(obtenerTipoGabinete(tipoPorudcto));
 }
     
 TipoGabinete ControladorRobot5Cinta::obtenerTipoGabinete(TipoProducto tipoProducto) {

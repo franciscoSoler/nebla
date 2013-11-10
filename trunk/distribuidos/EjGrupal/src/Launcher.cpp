@@ -24,7 +24,7 @@
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "IPCs/IPCAbstractos/SharedMemory/ShMemAlmacenDePiezas.h"
+#include "IPCs/IPCAbstractos/SharedMemory/EspacioAlmacenPiezasSharedMemory.h"
 
 #include "API/Objects/DataSM_R11_R14.h"
 #include "API/Objects/DataSM_R14_R16.h"
@@ -37,7 +37,7 @@
 #include "VendedoresMessageQueue.h"
 #include "ClientesMessageQueue.h"
 #include "PedidosVendedorMessageQueue.h"
-#include "ShMemAlmacenDePiezas.h"
+
 
 static char buffer[255];
 static char param1[20];
@@ -338,7 +338,11 @@ void createIPCs() {
     mutexAlmacenDePiezas.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
     mutexAlmacenDePiezas.initializeSemaphore(0, 1);
     
-    IPC::ShMemAlmacenDePiezas shMemAlmacenDePiezas = IPC::ShMemAlmacenDePiezas("shMemAlmacenDePiezas");
+    IPC::Semaphore esperaRepositor("semEsperaRepositor");
+    esperaRepositor.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR, 1);
+    esperaRepositor.initializeSemaphore(0, 0);
+    
+    IPC::EspacioAlmacenPiezasSharedMemory shMemAlmacenDePiezas = IPC::EspacioAlmacenPiezasSharedMemory("shMemAlmacenDePiezas");
     shMemAlmacenDePiezas.createSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
 }
 

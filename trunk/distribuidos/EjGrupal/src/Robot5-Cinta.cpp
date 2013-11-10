@@ -113,6 +113,8 @@ int main(int argc, char **argv) {
              */
             controladorRobot5Cinta.resolverPedidoGabinete(productoEnProduccion, cintaAUtilizar);
         }
+	
+	controladorRobot5Cinta.avisarProximoPedido();
     }
     
     Logger::getInstance().logMessage(Logger::TRACE, "Finalizado");
