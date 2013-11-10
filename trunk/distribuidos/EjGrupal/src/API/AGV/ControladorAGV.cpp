@@ -105,7 +105,6 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
         Logger::logMessage(Logger::TRACE, "duermo hasta que robot 5 traiga el canasto");
         this->semBloqueoAGV.wait(this->id_AGV);
 
-        Logger::logMessage(Logger::TRACE, "busco el canasto traido por robot 5");
         this->semBufferAGV_5.wait(this->id_AGV);
         this->shMemBuffer5yAGV.readInfo(&canasto);
         this->semBufferAGV_5.signal(this->id_AGV);
