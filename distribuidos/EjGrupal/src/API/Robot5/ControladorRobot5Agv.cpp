@@ -26,30 +26,37 @@ ControladorRobot5Agv::~ControladorRobot5Agv() {
 
 }
 
-void ControladorRobot5Agv::iniciarControlador() {
+void ControladorRobot5Agv::iniciarControlador()
+{
+    try
+    {
+	/* Obtengo la cola de pedidos */
+	colaPedidos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
-    /* Obtengo la cola de pedidos */
-    colaPedidos.getMessageQueue(DIRECTORY_AGV,ID_COLA_PEDIDOS_AGV_5);
+	/* Obtengo el buffer para depositar los canastos */
+	bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+	bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
+	bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
 
-    /* Obtengo el buffer para depositar los canastos */    
-    bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
-    bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
-    bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
-    
-    /* Obtengo los semaforos de acceso a los buffer */    
-    semaforoAccesoBufferAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
-    
-    /* Obtengo los semaforos de bloqueo de los Agv */
-    semaforoBloqueoAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
-    
-    /* Obtengo el semaforo para la api del robot 5 */
-    semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5,ID_SEM_API_ROBOT_5, 1);
-    
-    almacen.iniciarEspacioAlmacen();
+	/* Obtengo los semaforos de acceso a los buffer */
+	semaforoAccesoBufferAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
+
+	/* Obtengo los semaforos de bloqueo de los Agv */
+	semaforoBloqueoAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
+
+	/* Obtengo el semaforo para la api del robot 5 */
+	semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_API_ROBOT_5, 1);
+
+	almacen.iniciarEspacioAlmacen();
+    }    
+    catch(Exception &e)
+    {
+	Logger::logMessage(Logger::TRACE, e.what());
+	exit(-1);
+    }
 }
     
 PedidoCanastoAGV ControladorRobot5Agv::obtenerPedidoCanasto() {
-    char buffer[TAM_BUFFER];
     try {
         MensajePedidoAgv_5 nuevoPedido;
         colaPedidos.recibirPedidoAgv(TIPO_PEDIDO_CANASTO, &nuevoPedido);
@@ -61,6 +68,7 @@ PedidoCanastoAGV ControladorRobot5Agv::obtenerPedidoCanasto() {
         return nuevoPedido.pedidoCanastoAgv;
     }
     catch (Exception const& ex) {
+	char buffer[TAM_BUFFER];
         sprintf(buffer, "Error: %s", ex.what());
         Logger::getInstance().logMessage(Logger::ERROR,buffer);
         exit(-1);
@@ -89,17 +97,25 @@ void ControladorRobot5Agv::resolverPedidoCanasto(Canasto canasto, int idAgvDesti
         }
         /* Libero el buffer del canasto */
         semaforoBloqueoAgv.signal(idAgvDestino);
+        semaforoApiRobot5.signal();
     }
     catch (Exception const& ex) {
         sprintf(buffer, "Error: %s", ex.what());
         Logger::getInstance().logMessage(Logger::ERROR,buffer);
         exit(-1);
     }
-    semaforoApiRobot5.signal();
 }
 
 Canasto ControladorRobot5Agv::obtenerCanasto(TipoPieza tipoPieza) {
-    return almacen.obtenerCanastoConPiezas(tipoPieza);
+    try {
+	return almacen.obtenerCanastoConPiezas(tipoPieza);
+    }
+    catch (Exception const& ex) {
+	char buffer[TAM_BUFFER];
+        sprintf(buffer, "Error: %s", ex.what());
+        Logger::getInstance().logMessage(Logger::ERROR,buffer);
+        exit(-1);
+    }
 }
     
 /* Metodos privados, sin implementacion, para evitar copias del objeto */

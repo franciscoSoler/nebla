@@ -190,8 +190,12 @@ void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacio
 {    
     char mensajePantalla[256];
     sprintf(mensajePantalla, "Envia pedido de produccion de %d unidades de producto %d al "
-            "almacen de piezas.", pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido, 
-            pedidoProduccion.tipoProducto);
+            "almacen de piezas. Dif minima: %d Orden de compra: %d", 
+	    pedidoProduccion.producidoParaStockear + pedidoProduccion.producidoVendido, 
+            pedidoProduccion.tipoProducto,
+    pedidoProduccion.diferenciaMinimaProducto,
+    pedidoProduccion.numOrdenCompra);
+    
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     mensaje_pedido_fabricacion_t mensaje;
