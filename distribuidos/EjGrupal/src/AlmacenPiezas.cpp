@@ -21,8 +21,9 @@
 #include "API/AlmacenPiezas/IControladorAlmacenPiezas.h"
 #include "API/AGV/ControladorAGV.h" 
 #include "Logger/Logger.h"
+#include "LockFile.h"
 
-bool buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
+bool buscarUbiacionDeProductoEnArchivo(Parser &parser, ifstream& stream, int numeroProducto)
 {
     int ultimoNumeroProductoLeido = 0;
     do
@@ -53,13 +54,16 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
     Logger::logMessage(Logger::TRACE, buffer);
     
     piezas.idProducto = tipoProducto;
-    if (!buscarUbiacionDeProductoEnArchivo (parser, stream, tipoProducto))
+    if (!buscarUbiacionDeProductoEnArchivo (parser, stream, tipoProducto)) {
+        Logger::logMessage(Logger::TRACE, "Error buscando especificaciones en el archivo");
         return false;
+    }
     
     parser.obtenerProximoValor();
     parser.obtenerProximoValor();
     string cantidadPiezasString = parser.obtenerProximoValor();
     int cantPiezas = atoi(cantidadPiezasString.c_str());
+    Logger::logMessage(Logger::ERROR, cantidadPiezasString);
     piezas.cantPiezas = 0;
     for (int i = 0; i < cantPiezas; i++) {
         int id = atoi(parser.obtenerProximoValor().c_str());
@@ -69,12 +73,14 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
             piezas.pieza[piezas.cantPiezas].cantidad = cantidad;
             
             sprintf(buffer, "cantPiezas %d: Pieza a guardar %d en la posicion  %d Cantidad: %d", cantPiezas, piezas.pieza[piezas.cantPiezas].tipoPieza, piezas.cantPiezas, piezas.pieza[piezas.cantPiezas].cantidad);
-            Logger::getInstance().logMessage(Logger::ERROR, buffer);
+            Logger::logMessage(Logger::ERROR, buffer);
             
             piezas.cantPiezas++;
             continue;
         }
         if (id >= PANTALLA_1) {
+            sprintf(buffer, "cantPiezas %d: Gabinete a guardar %d, Cantidad: %d", cantPiezas, id, cantidad);
+            Logger::logMessage(Logger::ERROR, buffer);
             piezas.tipoPantalla.tipoPieza = static_cast<TipoPieza> (id);
             piezas.tipoPantalla.cantidad = cantidad;
             

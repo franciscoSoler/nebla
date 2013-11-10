@@ -12,7 +12,7 @@
 #include "API/Robot11/ControladorRobot11.h"
 #include "Parser/Parser.h"
 
-bool buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
+bool buscarUbiacionDeProductoEnArchivo(Parser &parser, ifstream& stream, int numeroProducto)
 {
     int ultimoNumeroProductoLeido = 0;
     do

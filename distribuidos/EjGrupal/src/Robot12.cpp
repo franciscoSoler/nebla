@@ -16,7 +16,7 @@
 #include "Parser/Parser.h"
 #include "Logger/Logger.h"
 
-bool buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
+bool buscarUbiacionDeProductoEnArchivo(Parser &parser, ifstream& stream, int numeroProducto)
 {
     int ultimoNumeroProductoLeido = 0;
     do
