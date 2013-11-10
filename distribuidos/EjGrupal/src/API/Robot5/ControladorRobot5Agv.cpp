@@ -44,6 +44,8 @@ void ControladorRobot5Agv::iniciarControlador() {
     
     /* Obtengo el semaforo para la api del robot 5 */
     semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5,ID_SEM_API_ROBOT_5, 1);
+    
+    almacen.iniciarEspacioAlmacen();
 }
     
 PedidoCanastoAGV ControladorRobot5Agv::obtenerPedidoCanasto() {
@@ -97,10 +99,7 @@ void ControladorRobot5Agv::resolverPedidoCanasto(Canasto canasto, int idAgvDesti
 }
 
 Canasto ControladorRobot5Agv::obtenerCanasto(TipoPieza tipoPieza) {
-    Canasto canasto;
-    canasto.tipoPieza = tipoPieza;
-    canasto.cantidadPiezas = MAX_PIEZAS_CANASTO;
-    return canasto;
+    return almacen.obtenerCanastoConPiezas(tipoPieza);
 }
     
 /* Metodos privados, sin implementacion, para evitar copias del objeto */

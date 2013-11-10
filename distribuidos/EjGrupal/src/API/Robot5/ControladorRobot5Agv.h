@@ -14,6 +14,8 @@
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 
+#include "../AlmacenPiezas/EspacioAlmacenPiezas/EspacioAlmacenPiezas.h"
+
 class ControladorRobot5Agv {
 
 public:
@@ -36,6 +38,8 @@ private:
     IPC::Semaphore semaforoAccesoBufferAgv; 
     IPC::Semaphore semaforoBloqueoAgv;
     IPC::Semaphore semaforoApiRobot5;
+    
+    EspacioAlmacenPiezas almacen;
     
     ControladorRobot5Agv(const ControladorRobot5Agv& orig);
     ControladorRobot5Agv& operator= (const ControladorRobot5Agv &p);

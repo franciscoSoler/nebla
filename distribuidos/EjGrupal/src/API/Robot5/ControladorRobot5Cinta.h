@@ -20,6 +20,8 @@
 #include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 #include "../../IPCs/Semaphore/Semaphore.h"
 
+#include "../AlmacenPiezas/EspacioAlmacenPiezas/EspacioAlmacenPiezas.h"
+
 class ControladorRobot5Cinta {
 
 public:
@@ -56,6 +58,8 @@ private:
     IPC::Semaphore semaforoBloqueoRobot11;
     
     IPC::Semaphore semaforoApiRobot5;
+    
+    EspacioAlmacenPiezas almacen;
 };
 
 #endif	/* CONTROLADORROBOT5CINTA_H */
