@@ -54,10 +54,10 @@ bool obtenerPiezasDelProducto(TipoProducto tipoProducto, EspecifProd *piezas) {
     return true;
 }
 
-int buscarPosicionPieza(BufferCanastos canastos, int id_pieza) {
+int buscarPosicionPieza(int id_Robot, BufferCanastos canastos, int id_pieza) {
     char buffer[TAM_BUFFER];
     
-    sprintf(buffer, "Robot 12 - buscarPosicionPieza:");
+    sprintf(buffer, "Robot 12-%u - buscarPosicionPieza:", id_Robot);
     Logger::setProcessInformation(buffer);
     sprintf(buffer, "busco en que posicion esta la pieza %d", id_pieza);
     Logger::logMessage(Logger::TRACE, buffer);
@@ -76,7 +76,7 @@ bool poseePieza(std::auto_ptr<IControladorRobot12> controladorRobot12, int id_Ro
 
     while (true) {
         canastos = controladorRobot12->obtenerBufferCanastos();
-        posicionPieza = buscarPosicionPieza(canastos, id_pieza);
+        posicionPieza = buscarPosicionPieza(id_Robot, canastos, id_pieza);
 
         sprintf(buffer, "Robot 12-%u - poseePieza:", id_Robot);
         Logger::setProcessInformation(buffer);
@@ -96,13 +96,12 @@ bool poseePieza(std::auto_ptr<IControladorRobot12> controladorRobot12, int id_Ro
     }
 }
 
-bool agregarConector(std::auto_ptr<IControladorRobot12> controladorRobot12, int id_Robot, EspecifPiezaDeProd piezaDeProd) {
+bool agregarConector(std::auto_ptr<IControladorRobot12> controladorRobot12, int id_Robot, EspecifPiezaDeProd piezaDeProd, int& posicionPieza) {
     char buffer[TAM_BUFFER];
-    int posicionPieza;
+    BufferCanastos canastos;
     
     sprintf(buffer, "Robot 12-%u - agregarConector:", id_Robot);
     Logger::setProcessInformation(buffer);
-    BufferCanastos canastos;
     if(!poseePieza(controladorRobot12, id_Robot, piezaDeProd.tipoPieza, canastos, posicionPieza))
         return false;
 
@@ -130,6 +129,7 @@ int main(int argc, char** argv) {
     controladorRobot12->iniciarControlador(nroRobot);
     CintaTransportadora_6 ctrlCinta;
     EspecifProd piezas;
+    int posicionPieza;
     while (true) {
         ctrlCinta = controladorRobot12->esperarProximoGabinete(); 
         
@@ -138,8 +138,8 @@ int main(int argc, char** argv) {
         for (int i = 0; i < piezas.cantPiezas; i++) {
             while (true) {
                 //if (!controladorRobot12->agregarConector(piezas.pieza[i]))
-                if (!agregarConector(controladorRobot12, nroRobot, piezas.pieza[i]))
-                    controladorRobot12->pedirPiezaAlAGV(piezas.pieza[i].tipoPieza);
+                if (!agregarConector(controladorRobot12, nroRobot, piezas.pieza[i], posicionPieza))
+                    controladorRobot12->pedirPiezaAlAGV(piezas.pieza[i].tipoPieza, posicionPieza);
                 if (piezas.pieza[i].cantidad-- == 0)
                     break;
             }

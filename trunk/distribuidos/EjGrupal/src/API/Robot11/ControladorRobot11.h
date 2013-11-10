@@ -27,8 +27,12 @@ public:
     void iniciarControlador(int numRobot);
     bool buscarProximoGabinete(EspecifProd *piezas);
     void avanzarCinta();
-    bool agregarPantalla(EspecifPiezaDeProd piezaDeProd);
-    void pedirPiezaAlAGV(TipoPieza tipoPieza);
+    BufferCanastos obtenerBufferCanastos();
+    //bool agregarPantalla(EspecifPiezaDeProd piezaDeProd);
+    void posicionarCanasto(BufferCanastos canastos);
+    void pedirPiezaFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza);
+    void pedirCanastoFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza);
+    void pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza);
     Caja cerrarYTomarCaja();
     void depositarCaja(Caja unaCaja);
         
@@ -38,7 +42,7 @@ private:
     uint nroCinta_;
     int id_semMemCanastos;
     int id_Robot;
-    int posicionPieza;
+    //int posicionPieza;
     IPC::Semaphore semBloqueoRobot11;
     IPC::Semaphore semBufferCanastos;
     IPC::Semaphore semBufferCinta6;
@@ -59,7 +63,7 @@ private:
     IPC::Semaphore semR14_;
     
     bool poseePieza(int id_pieza);
-    void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
+    //void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
     void obtenerPantallaDelProducto(TipoProducto tipoProducto, EspecifProd *piezas);
     bool estaRobot14TrabajandoEnEstaCinta() const;
     bool estaCintaLlena() const;

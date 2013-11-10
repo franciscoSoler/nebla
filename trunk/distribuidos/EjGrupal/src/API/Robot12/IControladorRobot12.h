@@ -19,7 +19,7 @@ public:
     virtual void pedirCanastoFaltante(int id_Robot, BufferCanastos canastos, int posicionPieza) = 0;
     virtual void posicionarCanasto(BufferCanastos canastos) = 0;
     //virtual bool agregarConector(EspecifPiezaDeProd piezaDeProd) = 0;
-    virtual void pedirPiezaAlAGV(TipoPieza tipoPieza) = 0;
+    virtual void pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza) = 0;
     virtual void finalizarEnsamble() = 0;
     virtual ~IControladorRobot12 () {};
 };
