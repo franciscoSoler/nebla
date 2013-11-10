@@ -31,20 +31,23 @@ class ControladorCliente
 	ControladorCliente(long numCliente);
 	virtual ~ControladorCliente();
 	
-	void contactarVendedores();
+    void contactarVendedores();
+
 	void enviarPedido(int cantidadUnidades, int tipo);
 	void finalizarEnvio(int cantPedidos);
-	bool recibirResultado();
-        
-    void retirarEncargo(TipoProducto & tipoProducto, int & nroOrdenCompra);
-    Caja obtenerProducto(int nroOrdenCompra);
+    respuesta_pedido_t recibirResultado();
+    void esperarPedido(TipoProducto & tipoProducto, int & nroOrdenCompra, int numCliente);
+    void retirarEncargo(TipoProducto tipo, int nroOrden);
+
+    Caja obtenerProducto(int idCliente);
         
     private:
         
     IPC::VendedoresMessageQueue vendedores;
 	IPC::ClientesMessageQueue clientes;
     IPC::PedidosVendedorMessageQueue pedidos;
-	
+
+    IPC::MsgQueue inputQueueCliente;
     IPC::MsgQueue despacho;
     IPC::MsgQueue retiro;
 

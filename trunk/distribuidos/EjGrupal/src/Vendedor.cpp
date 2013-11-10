@@ -71,9 +71,14 @@ int main(int argc, char** argv)
         if(pedidoEsValido)
         {   
             Logger::getInstance().logMessage(Logger::TRACE, "Pedido Valido");
-	    respuesta_pedido_t respuesta;
-	    respuesta.recepcionOK = true;
-	    controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
+            respuesta_pedido_t respuesta;
+            respuesta.recepcionOK = true;
+
+            for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
+                respuesta.cantidadDeProductos[i] = ordenDeCompra.cantidadPorProducto_[i];
+            }
+
+            controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
 	}
 	else
 	{

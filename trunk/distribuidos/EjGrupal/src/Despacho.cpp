@@ -28,6 +28,7 @@ int main(int argc, char* argv[]) {
     autoPtrControllerDespacho controller ( new ControllerDespacho() );
     Dictionary<OrdenDeCompra> bufferODC;
     OrdenDeCompra* odc;
+    char buffer[255];
 
     while (1) {
         PedidoDespacho pedido = controller->recibirPedido();
@@ -40,6 +41,10 @@ int main(int argc, char* argv[]) {
             pedidoOrdenDeCompra(controller, pedido, bufferODC);
         }
         else if (pedido.tipoPedido_ == PEDIDO_ROBOT16) {
+            Logger::logMessage(Logger::IMPORTANT, "Despacho recibe mensaje de Robot16_Cinta15");
+
+            sprintf(buffer_, "")
+
             odc = bufferODC.get(pedido.idOrdenDeCompra_);
             if ( odc != NULL ) {
                 pedidoRobot16(controller, pedido, odc);    
@@ -62,6 +67,7 @@ int main(int argc, char* argv[]) {
 void pedidoCliente(autoPtrControllerDespacho & controller,
         PedidoDespacho pedido, Dictionary<OrdenDeCompra> & bufferODC) {
 
+
     OrdenDeCompra* odc = bufferODC.get(pedido.idOrdenDeCompra_);
     TipoProducto idProducto = pedido.idProducto_;
 
@@ -75,7 +81,7 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
         odc->productoTerminado_[idProducto-1] = true;
 
         for (int i = 0; i < cantidadDeProductos; ++i) {
-            controller->despacharProducto(idProducto, odc->idOrden_);
+            controller->despacharProducto(idProducto, odc->idOrden_, odc->idCliente_);
             sleep( Util::generateRandomNumber(1,5) );
         }
 
