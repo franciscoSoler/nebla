@@ -34,7 +34,7 @@ Canasto resolverPedidoCanasto(ControladorRobot5Agv &controladorRobot5Agv, Pedido
 
 int main(int argc, char **argv) {
     
-    Logger::getInstance().setProcessInformation("Robot 5 - AGV:");
+    Logger::getInstance().setProcessInformation("Robot 5-AGV:");
     
     char buffer[TAM_BUFFER];
     Logger::getInstance().logMessage(Logger::TRACE, "Iniciando Robot 5-AGV.");

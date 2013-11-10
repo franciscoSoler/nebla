@@ -64,9 +64,9 @@ int main(int argc, char* argv[]) {
                 
         createIPCs();
         
-        createProcess("Robot5", 1);
-        createProcess("ControladorRobot5Agv", 1);
-        createProcess("ControladorRobot5Cinta", 1);
+        createProcess("Robot5-Agv", 1);
+        createProcess("Robot5-Cinta", 1);
+
         createProcess("AlmacenPiezas", 1);
                                 
         createProcess("Robot11", 2);
