@@ -4,11 +4,11 @@
 StateR14_Durmiendo::StateR14_Durmiendo(ControllerRobot14* controlador) 
 : controlador_(controlador) {}
 
-bool StateR14_Durmiendo::moverCinta() {
-    return controlador_->moverCintaEnEstadoDurmiendo();
+bool StateR14_Durmiendo::moverCinta(uint nroCinta) {
+    return controlador_->moverCintaEnEstadoDurmiendo(nroCinta);
 }
 
-bool StateR14_Durmiendo::tomarCaja(Caja & unaCaja) {
+bool StateR14_Durmiendo::tomarCaja(Caja & unaCaja, uint nroCinta) {
     throw Exception("Acción Inválida. Estado:R14_Durmiendo - Acción:tomarCaja");
 }
 

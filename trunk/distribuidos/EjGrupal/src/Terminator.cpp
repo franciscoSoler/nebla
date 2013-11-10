@@ -138,7 +138,9 @@ int main(int argc, char* argv[]) {
         cola12_A_111.destroy();
         cola12_A_112.destroy();
         
-        //entre robots 11, 14 y 16
+
+        // IPCs Torres
+
         IPC::SharedMemory<DataSM_R11_R14> SM_R11_R14("SM_R11_R14");
         SM_R11_R14.getSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
         SM_R11_R14.destroy();
@@ -159,72 +161,54 @@ int main(int argc, char* argv[]) {
         semMutexSM_R14_R16.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_shMem_R14_R16 destruido");
 
+        IPC::Semaphore semMutex_sincronismo_R16("semMutex_sincronismo_R16");
+        semMutex_sincronismo_R16.getSemaphore(DIRECTORY_ROBOT_16, SEM_MUTEX_SINCRONISMO_R16_ID, 1);
+        semMutex_sincronismo_R16.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_sincronismo_R16 destruido");
+
         IPC::Semaphore semR11_Cinta13("semR11_Cinta13");
         semR11_Cinta13.getSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
         semR11_Cinta13.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC semR11_Cinta13 destruido");
 
-        IPC::Semaphore semR14("semR14");
-        semR14.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_ID, 1);
-        semR14.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC semR14 destruido");
-        
-        IPC::Semaphore semR16("semR16");
-        semR16.getSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
-        semR16.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC semR16 destruido");
-        
-        
-        IPC::MsgQueue outputQueueDespacho("outputQueueDespacho");
-        outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
-        outputQueueDespacho.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueDespacho destruido");
-        
-        IPC::MsgQueue inputQueueRobot16("inputQueueRobot16");
-        inputQueueRobot16.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_INPUT_ID);
-        inputQueueRobot16.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueRobot16 destruido");
-    
-        IPC::MsgQueue outputQueueRobot16("outputQueueRobot16");
-        outputQueueRobot16.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_OUTPUT_ID);
-        outputQueueRobot16.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueRobot16 destruido");
-        
+        IPC::Semaphore semR14_Cinta13("semR14_Cinta13");
+        semR14_Cinta13.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA13_ID, 1);
+        semR14_Cinta13.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC semR14_Cinta13 destruido");
+
+        IPC::Semaphore semR14_Cinta15("semR14_Cinta15");
+        semR14_Cinta15.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA15_ID, 1);
+        semR14_Cinta15.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC semR14_Cinta15 destruido");
+
+        /*** Queues ***/
+        IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
+        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+        inputQueueDespacho.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueDespacho destruido");
+
+        IPC::MsgQueue inputQueueR16_Cinta15("inputQueueR16_Cinta15");
+        inputQueueR16_Cinta15.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CINTA15_INPUT_ID);
+        inputQueueR16_Cinta15.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueR16_Cinta15 destruido");
+
+        IPC::MsgQueue inputQueueR16_Despacho("inputQueueR16_Despacho");
+        inputQueueR16_Despacho.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
+        inputQueueR16_Despacho.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueR16_Despacho Destruido");
+
         IPC::MsgQueue inputQueueCliente("inputQueueCliente");
         inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
         inputQueueCliente.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueCliente destruido");
-         
-        IPC::MsgQueue outputQueueCliente("outputQueueRobot16");
-        outputQueueRobot16.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_OUTPUT_ID);
-        outputQueueRobot16.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueRobot16 destruido");
-    
+
         IPC::MsgQueue R16_Cliente_Queue("R16_Cliente_Queue");
         R16_Cliente_Queue.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
         R16_Cliente_Queue.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC R16_Cliente_Queue destruido");
-        
-        IPC::MsgQueue inputQueueVendedor("inputQueueVendedor");
-        inputQueueVendedor.getMsgQueue(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_INPUT_ID);
-        inputQueueVendedor.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueVendedor destruido");
-   
-        IPC::MsgQueue outputQueueVendedor("outputQueueVendedor");
-        outputQueueVendedor.getMsgQueue(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_OUTPUT_ID);  
-        outputQueueVendedor.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC outputQueueVendedor destruido");
-    
-        IPC::Semaphore semMutex_APT("semMutex_APT");
-        semMutex_APT.getSemaphore(DIRECTORY_APT, SEM_MUTEX_SM_APT_ID, 1);
-        semMutex_APT.destroy();
-        Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_APT destruido");
-        
-        MemoriaCompartida shMem_APT(DIRECTORY_APT, LETRA_SHMEM_ALMACEN_TERMINADOS, 
-                TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
-        shMem_APT.liberar();
-        Logger::logMessage(Logger::IMPORTANT, "IPC shMem_APT destruido");
-    
+
+        // Fin IPCs Torres
+
     
         IPC::VendedoresMessageQueue vendedores("Vendedores Msg Queue");
         vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
@@ -236,13 +220,13 @@ int main(int argc, char* argv[]) {
         pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
         pedidos.destroy();
 	
-	IPC::Semaphore mutexAlmacenDePiezas("mutexAlmacenDePiezas");
-	mutexAlmacenDePiezas.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
-	mutexAlmacenDePiezas.destroy();
+        IPC::Semaphore mutexAlmacenDePiezas("mutexAlmacenDePiezas");
+        mutexAlmacenDePiezas.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
+        mutexAlmacenDePiezas.destroy();
 
-	IPC::EspacioAlmacenPiezasSharedMemory shMemAlmacenDePiezas = IPC::EspacioAlmacenPiezasSharedMemory("shMemAlmacenDePiezas");
-	shMemAlmacenDePiezas.getSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
-	shMemAlmacenDePiezas.destroy();
+        IPC::EspacioAlmacenPiezasSharedMemory shMemAlmacenDePiezas = IPC::EspacioAlmacenPiezasSharedMemory("shMemAlmacenDePiezas");
+        shMemAlmacenDePiezas.getSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
+        shMemAlmacenDePiezas.destroy();
 
         IPC::Semaphore esperaRepositorCanasto("Espera Repositor Canasto");
         esperaRepositorCanasto.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_CANASTOS, 1);

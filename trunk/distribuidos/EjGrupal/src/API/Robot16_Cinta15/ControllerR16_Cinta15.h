@@ -1,7 +1,7 @@
-#ifndef CONTROLLERROBOT16_H
-#define	CONTROLLERROBOT16_H
+#ifndef CONTROLLER_R16_CINTA_15_H
+#define	CONTROLLER_R16_CINTA_15_H
 
-#include <API/Robot16/IControllerRobot16.h>
+#include <API/Robot16_Cinta15/IControllerR16_Cinta15.h>
 #include <IPCs/Semaphore/Semaphore.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <IPCs/IPCTemplate/MsgQueue.h>
@@ -10,27 +10,25 @@
 #include <Common.h>
 
 // IPCs de Fede
-#include <Objects/SmMemAlmacenProductosTerminados.h>
+#include <API/Objects/SmMemAlmacenProductosTerminados.h>
 
-class ControllerRobot16 : public IControllerRobot16 {
+class ControllerR16_Cinta15 : public IControllerR16_Cinta15 {
     
 public:
-    ControllerRobot16();
-    PedidoDespacho recibirPedido();
+    ControllerR16_Cinta15();
+    void recibirOrdenParaMoverCaja();
     bool moverCinta();
     bool tomarCajaCinta15(Caja & unaCaja);
     bool depositarCajaEnAPT(Caja unaCaja, long & idNroOrdenAPT);
     void informarAlDespachoProductoTerminado(long idnroOrdenAPT, TipoProducto tipo);
-    void tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja);
-    void enviarCajaAlCliente(long idCliente, Caja unaCaja);
-    
-    bool avanzarCinta();
-    
-    virtual ~ControllerRobot16();
+    virtual ~ControllerR16_Cinta15();
     
 private:
     void obtener_shMem_R14_R16();
     void liberar_shMem_R14_R16();
+    void obtenerMutexSincronismo();
+    void liberarMutexSincronismo();
+    bool avanzarCinta();
     
 private:
     char buffer_[255];
@@ -40,13 +38,13 @@ private:
     
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
     IPC::Semaphore semMutex_shMem_R14_R16_;
-    IPC::Semaphore semR14_;
-    IPC::Semaphore semR16_;
-    IPC::Semaphore semMutex_shMem_APT;
-    IPC::MsgQueue outputQueueR16_;
-    IPC::MsgQueue outputQueueDespacho_;
-    IPC::MsgQueue R16_Cliente_Queue_;
-    PedidoDespacho pedido_;
+    IPC::Semaphore semMutex_shMem_APT_;
+    IPC::Semaphore semMutex_sincronismo_R16_;
+    IPC::Semaphore semR14_Cinta15_;
+
+    IPC::MsgQueue inputQueueR16_Cinta15_;
+    IPC::MsgQueue inputQueueDespacho_;
+    Msg_AvisoCajaEnCinta15 mensaje_;
 };
 
 #endif	/* CONTROLLERROBOT16_H */

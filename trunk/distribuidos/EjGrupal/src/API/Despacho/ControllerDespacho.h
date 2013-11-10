@@ -7,8 +7,6 @@
 #include <API/Despacho/IControllerDespacho.h>
 #include <Logger/Logger.h>
 
-// Include de Fede
-// #include <Objects/SmMemAlmacenProductosTerminados.h>
 
 class ControllerDespacho : public IControllerDespacho {
 
@@ -25,9 +23,12 @@ private:
     char buffer_[255];
     
     // Cola por la cual recibe mensajes de varios procesos
-    IPC::MsgQueue outputQueueDespacho_;
-    IPC::MsgQueue outputQueueCliente_;
-    IPC::MsgQueue outputQueueRobot16_;
+    IPC::MsgQueue inputQueueDespacho_;
+    // Cola con la cual le envía mensajes al cliente
+    IPC::MsgQueue inputQueueCliente_;
+    // Cola para avisarle al R16 que tiene que sacar
+    // cajas del APT para darselas al cliente
+    IPC::MsgQueue inputQueueR16_Despacho_;
 };
 
 #endif /* CONTROLLER_DESPACHO_ */

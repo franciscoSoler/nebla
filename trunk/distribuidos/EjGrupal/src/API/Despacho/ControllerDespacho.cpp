@@ -6,14 +6,14 @@ ControllerDespacho::ControllerDespacho() {
         // Util::getInstance();
         Logger::setProcessInformation("Despacho:");
 
-        outputQueueDespacho_ = IPC::MsgQueue("outputQueueDespacho");
-        outputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
+        inputQueueDespacho_ = IPC::MsgQueue("inputQueueDespacho");
+        inputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
-        outputQueueCliente_ = IPC::MsgQueue("outputQueueCliente");
-        outputQueueCliente_.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_OUTPUT_ID);
+        inputQueueCliente_ = IPC::MsgQueue("inputQueueCliente");
+        inputQueueCliente_.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
 
-        outputQueueRobot16_ = IPC::MsgQueue("outputQueueRobot16");
-        outputQueueRobot16_.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_ROBOT16_OUTPUT_ID);
+        inputQueueR16_Despacho_ = IPC::MsgQueue("inputQueueR16_Despacho");
+        inputQueueR16_Despacho_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -26,10 +26,10 @@ ControllerDespacho::~ControllerDespacho() {
 
 PedidoDespacho ControllerDespacho::recibirPedido() {
     try {
-        PedidoDespacho pedido;
-        outputQueueDespacho_.recv(TIPO_PEDIDO_DESPACHO, pedido);
+        Msg_PedidoDespacho pedido;
+        inputQueueDespacho_.recv(MSG_PEDIDO_DESPACHO, pedido);
         Logger::logMessage(Logger::TRACE, "Recibe un Pedido");
-        return pedido;
+        return pedido.pedido_;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -39,9 +39,9 @@ PedidoDespacho ControllerDespacho::recibirPedido() {
 
 OrdenDeCompra ControllerDespacho::obtenerOrdenDeCompra(long idOrdenDeCompra) {
     try {
-        PedidoOrdenDeCompra pedido;
-        outputQueueDespacho_.recv(TIPO_PEDIDO_ODC_DESPACHO, pedido);
-        sprintf(buffer_, "Recibe Orden de Compra N°%lu", idOrdenDeCompra);
+        Msg_EnvioODCDespacho pedido;
+        inputQueueDespacho_.recv(MSG_ENVIO_ODC_DESPACHO, pedido);
+        sprintf(buffer_, "Recibe Orden de Compra N°%lu", pedido.ordenDeCompra_.idOrden_);
         Logger::logMessage(Logger::TRACE, buffer_);
 
         return pedido.ordenDeCompra_;
@@ -59,7 +59,11 @@ void ControllerDespacho::despacharProducto(TipoProducto idProducto, long idOrden
         PedidoDespacho pedido;
         pedido.idProducto_ = idProducto;
         pedido.idOrdenDeCompra_ = idOrdenCompra;
-        outputQueueRobot16_.send(pedido);
+
+        Msg_FinProductoR16 msgPedido;
+        msgPedido.mtype = MSG_FIN_PRODUCTO_R16;
+        msgPedido.pedido_ = pedido;
+        inputQueueR16_Despacho_.send( msgPedido );
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -78,8 +82,12 @@ void ControllerDespacho::notificarAClienteProductoTerminado(long idCliente,
         pedido.idCliente_ = idCliente;
         pedido.idOrdenDeCompra_ = idOrdenCompra;
         pedido.idProducto_ = idProducto;
+
+        Msg_RetiroProducto msgACliente;
+        msgACliente.mtype = MSG_RETIRO_PRODUCTO;
+        msgACliente.datos_ = pedido;
         
-        outputQueueCliente_.send(pedido);
+        inputQueueCliente_.send( msgACliente );
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());   

@@ -60,7 +60,7 @@ private:
     IPC::SharedMemory<DataSM_R11_R14> shMem_R11_R14_;
     IPC::Semaphore semMutex_shMem_R11_R14_;
     IPC::Semaphore semR11_Cinta13_;
-    IPC::Semaphore semR14_;
+    IPC::Semaphore semR14_Cinta13_;
     
     bool poseePieza(int id_pieza);
     //void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);

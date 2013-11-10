@@ -229,44 +229,80 @@ void createIPCs() {
     cola12_A_111.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
     cola12_A_112.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
     
-    
-    // de robots 11, 14 y 16
+    /* IPCs Torres: R11-R14-R16-Despacho-Cliente-Vendedores */
     DataSM_R11_R14 dataSM_R11_R14;
     DataSM_R14_R16 dataSM_R14_R16;
-    
-	// Create and initialize ShMem
-	IPC::SharedMemory<DataSM_R11_R14> SM_R11_R14("SM_R11_R14");
-	SM_R11_R14.createSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
+
+    // Create and initialize ShMem
+    IPC::SharedMemory<DataSM_R11_R14> SM_R11_R14("SM_R11_R14");
+    SM_R11_R14.createSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
     SM_R11_R14.write( & dataSM_R11_R14 );
-    
+    Logger::logMessage(Logger::IMPORTANT, "IPC SM_R11_R14 creado");
+
     IPC::SharedMemory<DataSM_R14_R16> SM_R14_R16("SM_R14_R16");
-	SM_R14_R16.createSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
+    SM_R14_R16.createSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
     SM_R14_R16.write( & dataSM_R14_R16 );
-   
-	// Do the same with the semaphores
-	IPC::Semaphore semMutexSM_R11_R14("semMutexSM_R11_R14");
-	semMutexSM_R11_R14.createSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
-	semMutexSM_R11_R14.initializeSemaphore(0, 1);
-    
-	IPC::Semaphore semMutexSM_R14_R16("semMutexSM_R14_R16");
-	semMutexSM_R14_R16.createSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
-	semMutexSM_R14_R16.initializeSemaphore(0, 1);
-    
+    Logger::logMessage(Logger::IMPORTANT, "IPC SM_R14_R16 creado");
+
+    // Do the same with the semaphores
+    IPC::Semaphore semMutexSM_R11_R14("semMutexSM_R11_R14");
+    semMutexSM_R11_R14.createSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
+    semMutexSM_R11_R14.initializeSemaphore(0, 1);
+    Logger::logMessage(Logger::IMPORTANT, "IPC semMutexSM_R11_R14 creado");
+
+    IPC::Semaphore semMutexSM_R14_R16("semMutexSM_R14_R16");
+    semMutexSM_R14_R16.createSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
+    semMutexSM_R14_R16.initializeSemaphore(0, 1);
+    Logger::logMessage(Logger::IMPORTANT, "IPC semMutexSM_R14_R16 creado");
+
+    IPC::Semaphore semMutex_sincronismo_R16_("semMutex_sincronismo_R16");
+    semMutex_sincronismo_R16_.createSemaphore(DIRECTORY_ROBOT_16, SEM_MUTEX_SINCRONISMO_R16_ID, 1);
+    semMutex_sincronismo_R16_.initializeSemaphore(0, 1);
+    Logger::logMessage(Logger::IMPORTANT, "IPC semMutex_sincronismo_R16");
+
     IPC::Semaphore semR11_Cinta13("semR11_Cinta13");
-	semR11_Cinta13.createSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
+    semR11_Cinta13.createSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
     for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
-        semR11_Cinta13.initializeSemaphore(i, 0);    
+        semR11_Cinta13.initializeSemaphore(i, 0);
     }
-	
-    // TODO: Preguntar si con sólo este semáforo alcanza, o tengo que implementar
-    // uno para condición de bloqueo
-    IPC::Semaphore semR14("semR14");
-	semR14.createSemaphore(DIRECTORY_ROBOT_14, SEM_R14_ID, 1);
-	semR14.initializeSemaphore(0, 0);
-    
-    IPC::Semaphore semR16("semR16");
-	semR16.createSemaphore(DIRECTORY_ROBOT_16, SEM_R16_ID, 1);
-	semR16.initializeSemaphore(0, 0);
+    Logger::logMessage(Logger::IMPORTANT, "IPC semR11_Cinta13 creado");
+
+    IPC::Semaphore semR14_Cinta13("semR14_Cinta13");
+    semR14_Cinta13.createSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA13_ID, 1);
+    semR14_Cinta13.initializeSemaphore(0, 0);
+    Logger::logMessage(Logger::IMPORTANT, "IPC semR14_Cinta13 creado");
+
+    IPC::Semaphore semR14_Cinta15("semR14_Cinta15");
+    semR14_Cinta15.createSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA15_ID, 1);
+    semR14_Cinta15.initializeSemaphore(0, 0);
+    Logger::logMessage(Logger::IMPORTANT, "IPC semR14_Cinta15 creado");
+
+    /* NOTA: La notación para colas es que el input o output es respecto
+     * del nombre del proceso asociado a la cola. inputQueueClient por
+     * ejemplo indica que es la cola donde el cliente recibe mensajes
+     */
+    IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
+    inputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+    Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueDespacho creado");
+
+    IPC::MsgQueue inputQueueR16_Cinta15("inputQueueR16_Cinta15");
+    inputQueueR16_Cinta15.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CINTA15_INPUT_ID);
+    Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueR16_Cinta15 creado");
+
+    IPC::MsgQueue inputQueueR16_Despacho("inputQueueR16_Despacho");
+    inputQueueR16_Despacho.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
+    Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueR16_Despacho creado");
+
+    IPC::MsgQueue inputQueueCliente("inputQueueCliente");
+    inputQueueCliente.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
+    Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueCliente creado");
+
+    IPC::MsgQueue R16_Cliente_Queue("R16_Cliente_Queue");
+    R16_Cliente_Queue.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
+    Logger::logMessage(Logger::IMPORTANT, "IPC R16_Cliente_Queue creado");
+
+    /* Fin IPCs Torres */
+
         
     IPC::VendedoresMessageQueue vendedores("Vendedores Msg Queue");
     vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
@@ -289,40 +325,6 @@ void createIPCs() {
     IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");
     mutexAlmacenTerminados.createSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
     mutexAlmacenTerminados.initializeSemaphore(0,1);
-    
-    IPC::MsgQueue outputQueueDespacho("outputQueueDespacho");
-    outputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
-    
-    IPC::MsgQueue inputQueueRobot16("inputQueueRobot16");
-    inputQueueRobot16.create(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_INPUT_ID);
-    
-    IPC::MsgQueue outputQueueRobot16("outputQueueRobot16");
-    outputQueueRobot16.create(DIRECTORY_ROBOT_16, MSGQUEUE_ROBOT16_OUTPUT_ID);
-    
-    IPC::MsgQueue inputQueueCliente("inputQueueCliente");
-    inputQueueCliente.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
-    
-    IPC::MsgQueue outputQueueCliente("outputQueueRobot16");
-    outputQueueRobot16.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_OUTPUT_ID);
-    
-    IPC::MsgQueue R16_Cliente_Queue("R16_Cliente_Queue");
-    R16_Cliente_Queue.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
-    
-    IPC::MsgQueue inputQueueVendedor("inputQueueVendedor");
-    inputQueueVendedor.create(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_INPUT_ID);
-    
-    IPC::MsgQueue outputQueueVendedor("outputQueueVendedor");
-    outputQueueVendedor.create(DIRECTORY_VENDEDOR, MSGQUEUE_VENDOR_OUTPUT_ID);  
-    
-    /* almacén de productos terminados. */
-    IPC::Semaphore semMutex_APT("semMutex_APT");
-    semMutex_APT.createSemaphore(DIRECTORY_APT, SEM_MUTEX_SM_APT_ID, 1);
-    semMutex_APT.initializeSemaphore(0, 1);
-    
-    /* orden de compra */
-    MemoriaCompartida shMem_APT(DIRECTORY_APT, LETRA_SHMEM_ALMACEN_TERMINADOS, 
-            TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
-    shMem_APT.crear();
     
     IPC::Semaphore mutexOrdenDeCompra("mutexOrdenDeCompra");
     mutexOrdenDeCompra.createSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);

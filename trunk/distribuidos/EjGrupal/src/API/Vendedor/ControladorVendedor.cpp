@@ -42,7 +42,7 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
     
     outputQueueDespacho = IPC::MsgQueue("outputQueueDespacho");
-    outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_OUTPUT_ID);
+    outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
     
     this->numVendedor = numVendedor;
 }
@@ -205,18 +205,25 @@ void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacio
 }
 
 void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra) {
-    // TODO:LOG!!!
     // Primero manda un mensaje avisando que hay una ODC
+
     PedidoDespacho pedido;
     pedido.idOrdenDeCompra_ = ordenDeCompra.idOrden_;
-    pedido.mtype = TIPO_PEDIDO_DESPACHO;
-    outputQueueDespacho.send(pedido);
-    
-    // Luego se manda la ODC con el mtype = idOrden
-    PedidoOrdenDeCompra pedidoOrdenDeCompra;
-    pedidoOrdenDeCompra.mtype = TIPO_PEDIDO_ODC_DESPACHO;
-    pedidoOrdenDeCompra.ordenDeCompra_ = ordenDeCompra;
-    outputQueueDespacho.send(pedidoOrdenDeCompra);
+
+    Msg_PedidoDespacho mensaje_despacho;
+    mensaje_despacho.mtype = MSG_PEDIDO_DESPACHO;
+    mensaje_despacho.pedido_ = pedido;
+
+    Logger::logMessage(Logger::TRACE, "Envía mensaje avisando de envío de Orden de Compra");
+    outputQueueDespacho.send( mensaje_despacho );
+
+
+    Msg_EnvioODCDespacho mensaje_odc;
+    mensaje_odc.mtype = MSG_ENVIO_ODC_DESPACHO;
+    mensaje_odc.ordenDeCompra_ = ordenDeCompra;
+
+    Logger::logMessage(Logger::TRACE, "Envía Orden de Compra");
+    outputQueueDespacho.send( mensaje_odc );
 }
 
 void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido)

@@ -5,6 +5,8 @@
  * Created on November 2, 2013, 1:47 PM
  */
 
+#include <sstream>
+
 #include "ControladorAlmacenPiezas.h"
 #include "../../Logger/Logger.h"
 #include "LockFile.h"
@@ -60,6 +62,7 @@ void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(PedidoProduccion pe
 
 BufferCanastos ControladorAlmacenPiezas::obtenerBufferCanastos(int numBufferCanasto) {
     BufferCanastos canastos;
+
     sprintf(this->buffer,"Num buffer canasto: %d",numBufferCanasto);
     Logger::logMessage(Logger::ERROR, this->buffer);
     
@@ -70,14 +73,19 @@ BufferCanastos ControladorAlmacenPiezas::obtenerBufferCanastos(int numBufferCana
 }
 /*
 void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]) {
+    
     try {
-        Logger::getInstance();
-        sprintf(this->buffer, "Almacen piezas -:");
+        sprintf(this->buffer, "Almacen piezas");
         Logger::setProcessInformation(this->buffer);
         BufferCanastos canastos;
         int posicionesPedidos[MAX_PIEZAS_POR_PRODUCTO];
         int cantPedidosRealizados;
         int posTemp;
+        
+        Logger::logMessage(Logger::TRACE, "Impresión piezasReservadasTemporalmente1");
+        imprimirEspecificacionProducto(piezasReservadasTemporalmente[0]);
+        imprimirEspecificacionProducto(piezasReservadasTemporalmente[1]);
+        Logger::logMessage(Logger::TRACE, "Impresión piezasReservadasTemporalmente2");
         
         for (int i = 0; i < CANTIDAD_AGVS; i++) {
             cantPedidosRealizados = 0;
@@ -157,4 +165,15 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(int numAGV,
 void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {
     MensajeProximoPedidoProduccion mensajeProximoPedido;
     this->colaEnvioMensajePedidoProduccion.recibirProximoPedidoProduccion(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, &mensajeProximoPedido);
+}
+
+void ControladorAlmacenPiezas::imprimirEspecificacionProducto(EspecifProd especifProd) {
+    std::stringstream ss;
+    ss << "Tipo pantalla:" << especifProd.tipoPantalla.tipoPieza << std::endl;
+    ss << "Cantidad de Piezas: " << especifProd.cantPiezas << std::endl;
+    for (int i = 0; i < especifProd.cantPiezas-1; ++i) {
+        ss << "Tipo Pieza: " << especifProd.pieza[i].tipoPieza << 
+        " - Cantidad: " << especifProd.pieza[i].cantidad << std::endl;     
+    }
+    Logger::logMessage(Logger::IMPORTANT, ss.str());
 }
