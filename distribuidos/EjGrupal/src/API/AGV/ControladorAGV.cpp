@@ -137,15 +137,7 @@ void ControladorAGV::reponerCanasto(Canasto canasto) {
         
         sprintf(this->buffer, "guardo el canasto con la pieza %d, cantidad %d en la cinta %d", canasto.tipoPieza, canasto.cantidadPiezas, id_AGV);
         Logger::logMessage(Logger::TRACE, this->buffer);
-        // no me importa si el pedido es del deposito!!!
-        /*
-        if (this->pedidoDeDeposito) {
-            // esta mal, deberia despertar robots si estan durmiedno espernado a uqe se rellene esto!!!!
-            Logger::logMessage(Logger::TRACE, "el pedido vino del deposito");
-            this->shMemCanastos.writeInfo(&canastos);
-            this->semMemCanastos.signal(this->id_AGV);
-            //return;
-        }*/
+       
         if (this->posicionCanasto == canastos.robotCinta1EsperaPorElLugarNumero) {
             Logger::logMessage(Logger::TRACE, "despierto al robot de la cinta 1");
             canastos.robotCinta1EsperaPorElLugarNumero = -1;
