@@ -68,7 +68,7 @@ int buscarPosicionPieza(int id_Robot, BufferCanastos canastos, int id_pieza) {
     return -1;
 }
 
-bool poseePieza(std::auto_ptr<IControladorRobot12> controladorRobot12, int id_Robot, int id_pieza, BufferCanastos& canastos, int& posicionPieza) {
+bool poseePieza(std::auto_ptr<IControladorRobot12>& controladorRobot12, int id_Robot, int id_pieza, BufferCanastos& canastos, int& posicionPieza) {
     char buffer[TAM_BUFFER];
     
     sprintf(buffer, "Robot 12-%u - poseePieza:", id_Robot);
@@ -96,7 +96,7 @@ bool poseePieza(std::auto_ptr<IControladorRobot12> controladorRobot12, int id_Ro
     }
 }
 
-bool agregarConector(std::auto_ptr<IControladorRobot12> controladorRobot12, int id_Robot, EspecifPiezaDeProd piezaDeProd, int& posicionPieza) {
+bool agregarConector(std::auto_ptr<IControladorRobot12>& controladorRobot12, int id_Robot, EspecifPiezaDeProd piezaDeProd, int& posicionPieza) {
     char buffer[TAM_BUFFER];
     BufferCanastos canastos;
     
@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
     ss << argv[1];
     ss >> nroRobot;
     
-    std::auto_ptr<IControladorRobot12> controladorRobot12 = std::auto_ptr<IControladorRobot12>(new ControladorRobot12());
+    std::auto_ptr<IControladorRobot12> controladorRobot12 (new ControladorRobot12());
     controladorRobot12->iniciarControlador(nroRobot);
     CintaTransportadora_6 ctrlCinta;
     EspecifProd piezas;

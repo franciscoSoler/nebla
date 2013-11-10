@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     ss << argv[1];
     ss >> nroRobot;
     
-    std::auto_ptr<IControladorAGV> controladorAGV = std::auto_ptr<IControladorAGV>(new ControladorAGV());
+    std::auto_ptr<IControladorAGV> controladorAGV (new ControladorAGV());
     controladorAGV->iniciarControlador(nroRobot);
     while(true) {
         TipoPieza tipoPieza = controladorAGV->atenderPedidos();

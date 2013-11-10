@@ -18,7 +18,7 @@ ControladorAGV::~ControladorAGV() {
 void ControladorAGV::iniciarControlador(int id_AGV) {
     try {
         Logger::getInstance();
-        sprintf(this->buffer, "AGV-%u:", id_AGV + 1);
+        sprintf(this->buffer, "AGV-%u:", id_AGV);
         Logger::setProcessInformation(this->buffer);
 
         this->id_AGV = id_AGV;
@@ -70,7 +70,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
 
 TipoPieza ControladorAGV::atenderPedidos() {
     try {
-        sprintf(this->buffer, "AGV-%u - atenderPedidos:", id_AGV + 1);
+        sprintf(this->buffer, "AGV-%u - atenderPedidos:", id_AGV);
         Logger::setProcessInformation(this->buffer);
         
         MensajePedidoRobotCinta_6 pedidoCanasto;
@@ -89,7 +89,7 @@ TipoPieza ControladorAGV::atenderPedidos() {
 
 Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
     try {
-        sprintf(this->buffer, "AGV-%u - buscarPieza:", id_AGV + 1);
+        sprintf(this->buffer, "AGV-%u - buscarPieza:", id_AGV);
         Logger::setProcessInformation(this->buffer);
         // EstadoRobot5 estadoRobot5;
         Canasto canasto;
@@ -120,7 +120,7 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
 
 void ControladorAGV::reponerCanasto(Canasto canasto) {
     try {
-        sprintf(this->buffer, "AGV-%u - reponerCanasto:", id_AGV + 1);
+        sprintf(this->buffer, "AGV-%u - reponerCanasto:", id_AGV);
         Logger::setProcessInformation(this->buffer);
         BufferCanastos canastos;
 

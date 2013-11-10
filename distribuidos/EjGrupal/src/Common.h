@@ -96,17 +96,12 @@
 
 // ipcs del APiezas (usar DIRECTORY_APIEZAS)
 #define LETRA_SHMEM_ALMACEN_PIEZAS	'r'
-#define LETRA_SHMEM_ALMACEN_GABINETES	'e'
 #define LETRA_SEM_ALMACEN_PIEZAS	's'
-#define LETRA_SEM_ALMACEN_GABINETES	'h'
 
 #define LETRA_SEM_ESPERA_REPOSITOR_GABINETES 'i'
 #define LETRA_SEM_ESPERA_REPOSITOR_CANASTOS  'j'   
 
 //mtype colas
-#define TIPO_PEDIDO_ROBOT_5 			1 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
-#define TIPO_MENSAJE_RESPUESTA_CANASTO_ROBOT_5 	2 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
-#define TIPO_MENSAJE_RESPUESTA_GABINETE_ROBOT_5 3 // Tipo utilizado entre la api del robot 5 y los controladores del mismo
 
 #define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
 #define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
@@ -160,9 +155,9 @@
 #define ID_SHMEM_NRO_OC 'g'
 
 typedef enum {
-    GABINETE_1 = 0,
-    GABINETE_2 = 1,
-    GABINETE_3
+    GABINETE_1 = 1,
+    GABINETE_2 = 2,
+    GABINETE_3 = 3
 } TipoGabinete;
 
 typedef enum {
@@ -171,7 +166,7 @@ typedef enum {
     PIEZA_3 = 3,
     PANTALLA_1 = 4,
     PANTALLA_2 = 5,
-    PANTALLA_3
+    PANTALLA_3 = 6
 } TipoPieza;
 
 typedef enum {
@@ -280,11 +275,11 @@ typedef struct {
 typedef struct {
     TipoPieza tipoPieza;
     int lugar;
-} PedidoCanastoRobotCitna6;
+} PedidoCanastoRobotCinta6;
 
 typedef struct {
 	long mtype; // tipo = TIPO_PEDIDO_CANASTO
-	PedidoCanastoRobotCitna6 pedidoCanastoAgv;
+	PedidoCanastoRobotCinta6 pedidoCanastoAgv;
 } MensajePedidoRobotCinta_6;
 
 /*
