@@ -71,6 +71,10 @@ int main(int argc, char* argv[]) {
                                 
         createProcess("Robot11", 2);
         createProcess("Robot12", 2);
+        createProcess("Robot14");
+        createProcess("Robot16_Cinta15");
+        createProcess("Robot16_Despacho");
+        createProcess("Despacho");
         createProcess("AGV", 3);
 	createProcess("Vendedor", 10, 1);
     }
