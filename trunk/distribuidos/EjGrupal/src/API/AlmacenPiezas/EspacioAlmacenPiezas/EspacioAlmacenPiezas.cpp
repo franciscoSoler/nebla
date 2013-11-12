@@ -66,7 +66,7 @@ Gabinete EspacioAlmacenPiezas::obtenerGabinete(TipoGabinete numeroGabinete)
     {
 	EstructuraAlmacenPiezas almacen;
 	this->espacioSharedMemory.readInfo(&almacen);
-	if(almacen.cantGabinetes[numeroGabinete - 1] < 1)
+    if(almacen.cantGabinetes[numeroGabinete - 1] < 1)
 	{
 	    sprintf(buffer, "No se encuentran gabinetes de tipo %d.", numeroGabinete);
 	    Logger::logMessage(Logger::IMPORTANT, buffer);
@@ -76,9 +76,9 @@ Gabinete EspacioAlmacenPiezas::obtenerGabinete(TipoGabinete numeroGabinete)
 	    this->mutex.wait();
 	}
 
-	(almacen.cantGabinetes[numeroGabinete - 1])--;
-	int cantGabinetes = almacen.cantGabinetes[numeroGabinete - 1];
-	gabinete = almacen.gabinetes[numeroGabinete - 1][cantGabinetes];
+    (almacen.cantGabinetes[numeroGabinete - 1])--;
+    int cantGabinetes = almacen.cantGabinetes[numeroGabinete - 1];
+    gabinete = almacen.gabinetes[numeroGabinete - 1][cantGabinetes];
 	this->espacioSharedMemory.writeInfo(&almacen);
     }
     this->mutex.signal();

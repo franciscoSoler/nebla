@@ -181,11 +181,18 @@ void ControladorVendedor::confirmarPedidos(pedido_fabricacion_t pedidoProduccion
                                                          pedidoProduccion[i].tipoProducto);
 
         this->enviarPedidoProduccionAAlmacenPiezas(pedidoProduccion[i]);
+	    
+	if(pedidoProduccion[i].producidoVendido == 0 &&
+		   pedidoProduccion[i].producidoParaStockear == 0)
+	    ordenDeCompra.productoTerminado_[i] = true;
+	else
+	    ordenDeCompra.productoTerminado_[i] = false;
     }
     
     sprintf(mensajePantalla, "Envia orden de compra número %ld de cliente %ld a despacho.", 
 	    ordenDeCompra.idOrden_, ordenDeCompra.idCliente_);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
+
     this->enviarOrdenDeCompraDespacho(ordenDeCompra);
 }
 
@@ -298,8 +305,7 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
 	    break;
 	}
 
-
-    ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto-1] = pedidos[i].cantidad;
+	ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto-1] = pedidos[i].cantidad;
 
 	sprintf(mensajePantalla, "Manda a producir %d unidades del producto %d.", 
 		pedidosProduccion[i].producidoParaStockear + pedidosProduccion[i].producidoVendido, pedidos[i].tipoProducto);

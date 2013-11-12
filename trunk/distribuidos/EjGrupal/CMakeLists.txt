@@ -101,6 +101,7 @@ add_executable(${OUT_DIR}AlmacenPiezas                  ${SRC_DIR}AlmacenPiezas.
 add_executable(${OUT_DIR}RepositorCanastos              ${SRC_DIR}RepositorCanastos.cpp         ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorGabinetes             ${SRC_DIR}RepositorGabinetes.cpp        ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp    ${COMMON_SRC}${VENDEDOR_SRC})
+add_executable(${OUT_DIR}MonitorAlmacenPiezas           ${SRC_DIR}MonitorAlmacenPiezas.cpp    ${COMMON_SRC}${VENDEDOR_SRC})
 
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}Terminator                                  IPCLibrary)
@@ -116,6 +117,7 @@ target_link_libraries(${OUT_DIR}Despacho                                    IPCL
 target_link_libraries(${OUT_DIR}Cliente                                     IPCLibrary)
 target_link_libraries(${OUT_DIR}Vendedor                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}AlmacenPiezas                               IPCLibrary)
+target_link_libraries(${OUT_DIR}MonitorAlmacenPiezas                        IPCLibrary)
 target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)

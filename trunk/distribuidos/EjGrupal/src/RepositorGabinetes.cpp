@@ -33,6 +33,9 @@ int main(int argc, char** argv)
     int demoraReposicion = rand() % MAX_ESPERA_REPONEDOR + 1;
     usleep(demoraReposicion * 1000 * 1000);
     
+    sprintf(buffer, "DEBUG 1.");
+    Logger::logMessage(Logger::TRACE, buffer);
+
     controlador.reponerGabinetes(numeroGabinete);
     
     return 0;

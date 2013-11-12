@@ -6,6 +6,7 @@
  */
 
 #include "ControladorRepositor.h"
+#include "../../Logger/Logger.h"
 
 ControladorRepositor::ControladorRepositor() :
 	almacenSharedMemory("almacenPiezasShMemory"),
@@ -26,26 +27,42 @@ void ControladorRepositor::iniciarControlador () {
 
 void ControladorRepositor::reponerCanastos(int numeroPieza)
 {
+    char buffer[1024];
+
     mutex.wait();
     {
-	int cantCanastosAReponer = CANTIDAD_MINIMA_ITEMS_REPOSICION + 
-		    (rand() % (CANTIDAD_MAXIMA_ITEMS_REPOSICION - CANTIDAD_MINIMA_ITEMS_REPOSICION));
+        int cantCanastosAReponer = CANTIDAD_MINIMA_ITEMS_REPOSICION +
+                (rand() % (CANTIDAD_MAXIMA_ITEMS_REPOSICION - CANTIDAD_MINIMA_ITEMS_REPOSICION));
 
-	EstructuraAlmacenPiezas estructuraAlmacen;
-	this->almacenSharedMemory.readInfo(&estructuraAlmacen);
-	for(int i = 0; i < cantCanastosAReponer; i++)
-	{
+        sprintf(buffer, "Repositor de canastos.");
+        Logger::setProcessInformation(buffer);
+
+        sprintf(buffer, "Voy a reponer %d canastos de tipo %d.", cantCanastosAReponer, numeroPieza);
+        Logger::logMessage(Logger::TRACE, buffer);
+
+        EstructuraAlmacenPiezas estructuraAlmacen;
+        this->almacenSharedMemory.readInfo(&estructuraAlmacen);
+        for(int i = 0; i < cantCanastosAReponer; i++)
+        {
+
+            int cantidadPiezasReposicion = CANTIDAD_MINIMA_REPOSICION_PIEZAS +
+                (rand() % (CANTIDAD_MAXIMA_REPOSICION_PIEZAS - CANTIDAD_MINIMA_REPOSICION_PIEZAS));
+
+            sprintf(buffer, "El canasto %d tiene %d piezas.", i, cantidadPiezasReposicion);
+            Logger::logMessage(Logger::DEBUG, buffer);
+
+            Canasto canasto;
+            canasto.cantidadPiezas = cantidadPiezasReposicion;
+            canasto.tipoPieza = static_cast<TipoPieza>(numeroPieza);
+
+            int cantCanastos = estructuraAlmacen.cantCanastos[numeroPieza - 1];
+            estructuraAlmacen.canastos[numeroPieza - 1][cantCanastos] = canasto;
+            (estructuraAlmacen.cantCanastos[numeroPieza - 1])++;
 	    
-	    int cantidadPiezasReposicion = CANTIDAD_MINIMA_REPOSICION_PIEZAS + 
-		    (rand() % (CANTIDAD_MAXIMA_REPOSICION_PIEZAS - CANTIDAD_MINIMA_REPOSICION_PIEZAS));
-	    Canasto canasto;
-	    canasto.cantidadPiezas = cantidadPiezasReposicion;
-	    canasto.tipoPieza = static_cast<TipoPieza>(numeroPieza);
-	    
-	    int cantCanastos = estructuraAlmacen.cantCanastos[numeroPieza - 1];
-	    estructuraAlmacen.canastos[numeroPieza - 1][cantCanastos] = canasto;
-	    (estructuraAlmacen.cantCanastos[numeroPieza - 1])++;
-	}
+	    sprintf(buffer, "Repuse el canasto %d de tipo %d.", i, numeroPieza);
+	    Logger::logMessage(Logger::DEBUG, buffer);
+        }
+        
 	this->almacenSharedMemory.writeInfo(&estructuraAlmacen);
         this->bloqueoControladorCanastos.signal();
     }
@@ -54,25 +71,62 @@ void ControladorRepositor::reponerCanastos(int numeroPieza)
 
 void ControladorRepositor::reponerGabinetes(int numeroGabinete)
 {
+    char buffer[1024];
+
+    sprintf(buffer, "DEBUG 2.");
+    Logger::logMessage(Logger::TRACE, buffer);
+
     mutex.wait();
     {
-	int cantGabinetesAReponer = CANTIDAD_MINIMA_ITEMS_REPOSICION + 
-		    (rand() % (CANTIDAD_MAXIMA_ITEMS_REPOSICION - CANTIDAD_MINIMA_ITEMS_REPOSICION));
-	
-	EstructuraAlmacenPiezas estructuraAlmacen;
-	this->almacenSharedMemory.readInfo(&estructuraAlmacen);
-	for(int i = 0; i < cantGabinetesAReponer; i++)
-	{
-	    Gabinete gabinete;
-	    gabinete.tipoGabinete = static_cast<TipoGabinete>(numeroGabinete);
-	    	
-	    int cantGabinetes = estructuraAlmacen.cantGabinetes[numeroGabinete];
-	    estructuraAlmacen.gabinetes[numeroGabinete][cantGabinetes] = gabinete;
-	    (estructuraAlmacen.cantGabinetes[numeroGabinete])++;
-	}
-	this->almacenSharedMemory.writeInfo(&estructuraAlmacen);
-        this->bloqueoControladorGabinetes.signal();
+        int cantGabinetesAReponer = CANTIDAD_MINIMA_ITEMS_REPOSICION +
+                (rand() % (CANTIDAD_MAXIMA_ITEMS_REPOSICION - CANTIDAD_MINIMA_ITEMS_REPOSICION));
 
+        sprintf(buffer, "Repositor de gabinetes.");
+        Logger::setProcessInformation(buffer);
+
+        sprintf(buffer, "Voy a reponer %d gabinetes de tipo %d.", cantGabinetesAReponer, numeroGabinete);
+        Logger::logMessage(Logger::DEBUG, buffer);
+
+        EstructuraAlmacenPiezas estructuraAlmacen;
+        this->almacenSharedMemory.readInfo(&estructuraAlmacen);
+        
+	for(int i = 0; i < cantGabinetesAReponer; i++)
+        {
+            Gabinete gabinete;
+            gabinete.tipoGabinete = static_cast<TipoGabinete>(numeroGabinete);
+
+            int cantGabinetes = estructuraAlmacen.cantGabinetes[numeroGabinete - 1];
+	    
+	    sprintf(buffer, "Cantidad de gabinetes es %d.", cantGabinetes);
+	    Logger::logMessage(Logger::DEBUG, buffer);
+	    
+            estructuraAlmacen.gabinetes[numeroGabinete - 1][cantGabinetes] = gabinete;
+            (estructuraAlmacen.cantGabinetes[numeroGabinete - 1])++;
+	    
+	    sprintf(buffer, "Repuse el gabinete %d de tipo %d.", i, numeroGabinete);
+	    Logger::logMessage(Logger::DEBUG, buffer);
+        }
+        
+	this->almacenSharedMemory.writeInfo(&estructuraAlmacen);
+        //this->bloqueoControladorGabinetes.signal();
+	
+    }
+    //mutex.signal();
+
+    sprintf(buffer, "SEGUNDA PASADA!!!!");
+    Logger::logMessage(Logger::DEBUG, buffer);
+    
+    //mutex.wait();
+    {
+        EstructuraAlmacenPiezas estructuraAlmacen;
+        this->almacenSharedMemory.readInfo(&estructuraAlmacen);
+	
+	for(int i = 0; i < CANTIDAD_TIPOS_GABINETES; i++)
+        {
+	    sprintf(buffer, "Cantidad de gabinetes es %d.", estructuraAlmacen.cantGabinetes[i]);
+	    Logger::logMessage(Logger::DEBUG, buffer);	    
+	    
+	}
     }
     mutex.signal();
 }

@@ -359,7 +359,7 @@ void createIPCs() {
     shMemAlmacenDePiezas.createSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
     
     EstructuraAlmacenPiezas estructuraAlmacen;
-    for (int i = 0; i < CANTIDAD_TIPOS_PIEZAS; ++i) estructuraAlmacen.cantCanastos[i] = 0;
+    for (int i = 0; i < CANTIDAD_TIPOS_PIEZAS; ++i) estructuraAlmacen.cantCanastos[i] = 1;
     for (int i = 0; i < CANTIDAD_TIPOS_GABINETES; ++i) estructuraAlmacen.cantGabinetes[i] = 0;
     
     shMemAlmacenDePiezas.writeInfo(&estructuraAlmacen);
