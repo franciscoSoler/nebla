@@ -165,18 +165,22 @@ pedido_fabricacion_t ControladorVendedor::reservarPedido(pedido_t pedido)
 void ControladorVendedor::confirmarPedidos(pedido_fabricacion_t pedidoProduccion[], OrdenDeCompra ordenDeCompra, int cantProductos)
 {
     char mensajePantalla[1024];
+    long idOrdenDeCompra = ordenDeCompra.idOrden_;
     for(int i = 0; i < cantProductos; i++)
     {
-	if(pedidoProduccion[i].producidoParaStockear > 0)
-	    almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion[i].producidoParaStockear, pedidoProduccion[i].tipoProducto);
+        if(pedidoProduccion[i].producidoParaStockear > 0)
+            almacenProductosTerminados.asignarVaciosComoDisponibles(pedidoProduccion[i].producidoParaStockear,
+                                                                    pedidoProduccion[i].tipoProducto);
 
-	if(pedidoProduccion[i].producidoVendido > 0)
-	    almacenProductosTerminados.asignarVaciosAProduccion(ordenDeCompra, pedidoProduccion[i].producidoVendido, pedidoProduccion[i].tipoProducto);
+        if(pedidoProduccion[i].producidoVendido > 0)
+            almacenProductosTerminados.asignarVaciosAProduccion(idOrdenDeCompra,
+                                                                pedidoProduccion[i].producidoVendido, pedidoProduccion[i].tipoProducto);
 
-	if(pedidoProduccion[i].vendidoStockeado > 0)
-	    almacenProductosTerminados.asignarStockeados(ordenDeCompra, pedidoProduccion[i].vendidoStockeado, pedidoProduccion[i].tipoProducto);
-   
-	this->enviarPedidoProduccionAAlmacenPiezas(pedidoProduccion[i]);
+        if(pedidoProduccion[i].vendidoStockeado > 0)
+            almacenProductosTerminados.asignarStockeados(idOrdenDeCompra, pedidoProduccion[i].vendidoStockeado,
+                                                         pedidoProduccion[i].tipoProducto);
+
+        this->enviarPedidoProduccionAAlmacenPiezas(pedidoProduccion[i]);
     }
     
     sprintf(mensajePantalla, "Envia orden de compra número %ld de cliente %ld a despacho.", 

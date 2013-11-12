@@ -79,10 +79,6 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
         odc->cantidadPorProducto_[idProducto-1] = 0;
         odc->productoTerminado_[idProducto-1] = true;
 
-        std::stringstream ss;
-        ss << "Log de PedidoCliente: " << odc->cantidadPorProducto_[idProducto-1] << std::endl;
-        Logger::logMessage(Logger::IMPORTANT, ss.str());
-
         for (int i = 0; i < cantidadDeProductos; ++i) {
             controller->despacharProducto(idProducto, odc->idOrden_, odc->idCliente_);
             sleep( Util::generateRandomNumber(1,5) );
