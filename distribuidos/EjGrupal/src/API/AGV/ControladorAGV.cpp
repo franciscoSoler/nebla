@@ -74,9 +74,9 @@ TipoPieza ControladorAGV::atenderPedidos() {
         Logger::setProcessInformation(this->buffer);
         
         MensajePedidoRobotCinta_6 pedidoCanasto;
-        Logger::logMessage(Logger::TRACE, "recibo pedidos canastos de la cola");
 
         this->colaPedidosCanastos.recibirPedidoCanasto(this->id_AGV + 1, &pedidoCanasto);
+        Logger::logMessage(Logger::TRACE, "recibi un pedido para reponer un canasto");
         this->posicionCanasto = pedidoCanasto.pedidoCanastoAgv.lugar;
         //this->pedidoDeDeposito = pedidoCanasto.pedidoEsDeDeposito;
         return pedidoCanasto.pedidoCanastoAgv.tipoPieza;
@@ -94,22 +94,20 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
         // EstadoRobot5 estadoRobot5;
         Canasto canasto;
 
-        Logger::logMessage(Logger::TRACE, "realizo el pedido del canasto al robot 5");
-        
         MensajePedidoAgv_5 pedidoCanastoAGV;
         pedidoCanastoAGV.mtype = 1;
         pedidoCanastoAGV.pedidoCanastoAgv.idAgv = this->id_AGV;
         pedidoCanastoAGV.pedidoCanastoAgv.tipoPieza = tipoPieza;
         this->colaPedidosAGV_5.enviarPedidoAgv(pedidoCanastoAGV);
 
-        Logger::logMessage(Logger::TRACE, "duermo hasta que robot 5 traiga el canasto");
+        Logger::logMessage(Logger::TRACE, "realice el pedido del canasto al robot 5, duermo hasta que lo traiga");
         this->semBloqueoAGV.wait(this->id_AGV);
 
         this->semBufferAGV_5.wait(this->id_AGV);
         this->shMemBuffer5yAGV.readInfo(&canasto);
         this->semBufferAGV_5.signal(this->id_AGV);
         
-        sprintf(this->buffer, "canasto traido por robot 5 tiene la pieza %d, cantidad %d", canasto.tipoPieza, canasto.cantidadPiezas);
+        sprintf(this->buffer, "el canasto traido por robot 5 tiene la pieza %d, cantidad %d", canasto.tipoPieza, canasto.cantidadPiezas);
         Logger::logMessage(Logger::TRACE, this->buffer);
 
         return canasto;
@@ -126,12 +124,8 @@ void ControladorAGV::reponerCanasto(Canasto canasto) {
         Logger::setProcessInformation(this->buffer);
         BufferCanastos canastos;
 
-        Logger::logMessage(Logger::TRACE, "voy a obtener memoria de los canastos");
         this->semMemCanastos.wait(this->id_AGV);
-        
-        
         this->shMemBufferCanastos.readInfo(&canastos);
-
         
         canastos.canastos[this->posicionCanasto] = canasto;
         

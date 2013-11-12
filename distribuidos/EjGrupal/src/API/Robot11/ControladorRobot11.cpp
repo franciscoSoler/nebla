@@ -229,7 +229,7 @@ void ControladorRobot11::pedirCanastoFaltante(int id_Robot, BufferCanastos canas
 
 void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza) {
     try {
-        sprintf(this->buffer, "Robot 11-%u - pedirPiezaAlAGV:", this->id_Robot);
+        sprintf(this->buffer, "Robot 11-%u - pedzirPiezaAlAGV:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
         Logger::logMessage(Logger::TRACE, "no posee la pieza, se la pido al agv por la cola");
         
@@ -255,7 +255,6 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         message.mtype = 1;
         
         this->cola12_A_11.receive(1, &message);
-        Logger::logMessage(Logger::TRACE, "el robot 12 termino, puedo cerrar y tomar la caja");
         
         CintaTransportadora_6 ctrlCinta;
         Caja unaCaja;
@@ -275,7 +274,7 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         unaCaja.idProducto_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto;
         unaCaja.idOrdenDeCompra_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
 
-        sprintf(buffer, "Orden de compra de la caja: %ld", unaCaja.idOrdenDeCompra_);
+        sprintf(buffer, "el robot 12 termino, puedo cerrar y tomar la caja, la Orden de compra es: %ld", unaCaja.idOrdenDeCompra_);
         Logger::logMessage(Logger::IMPORTANT, buffer);
 
         if (ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].falla || rand() % 100 > 98) {

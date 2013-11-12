@@ -67,22 +67,19 @@ CintaTransportadora_6 ControladorRobot12::esperarProximoGabinete() {
     try {
         sprintf(this->buffer, "Robot 12-%u - esperarProximoGabinete:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
-        Logger::logMessage(Logger::TRACE, "espero a que el robot 11 me despierte");
+        
         CintaTransportadora_6 ctrlCinta;
         //EspecifProd especifProductoAux;
         MensajeBarrera messageBarrera;
         
         this->cola11_A_12.receive(0, &messageBarrera);
-
+        Logger::logMessage(Logger::TRACE, "hay gabinete posicionado, comienzo a trabajar");
+        
+        
         this->semBufferCinta6.wait(this->id_Robot);
-        // Logger::logMessage(Logger::TRACE, "tome la memoria de la cinta 6");
-        
         this->shMemBufferCinta6.readInfo(&ctrlCinta);
-        
-        // Logger::logMessage(Logger::TRACE, "devuelvo la mem de la cinta 6");
         this->semBufferCinta6.signal(this->id_Robot);
         return ctrlCinta;
-        //return especifProductoAux;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -93,10 +90,7 @@ CintaTransportadora_6 ControladorRobot12::esperarProximoGabinete() {
 BufferCanastos ControladorRobot12::obtenerBufferCanastos() {
     try {
         BufferCanastos canastos;
-        // Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de los canastos");
         this->semBufferCanastos.wait(this->id_semMemCanastos);
-        // Logger::logMessage(Logger::TRACE, "tome la memoria de los canastos");
-
         this->shMemBufferCanastos.readInfo(&canastos);
         return canastos;
     }
@@ -165,9 +159,7 @@ void ControladorRobot12::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza)
             pedidoCanasto.pedidoCanastoAgv.lugar = posicionPieza;
             pedidoCanasto.pedidoCanastoAgv.tipoPieza = tipoPieza;
             this->colaPedidosCanastos.enviarPedidoCanasto(pedidoCanasto);
-        }    
-        sprintf(this->buffer, "la posPieza es %d, la pos del otro robot 12 es %d, me duermo", posicionPieza, this->posEsperaDelOtroRobot12);
-        Logger::logMessage(Logger::TRACE, this->buffer);
+        }
         this->semBloqueoRobot12.wait(this->id_Robot);
     }
     catch (Exception & e) {
@@ -180,10 +172,10 @@ void ControladorRobot12::finalizarEnsamble() {
     try {
         sprintf(this->buffer, "Robot 12-%u - finalizarEnsamble:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
-        Logger::logMessage(Logger::TRACE, "envio mensaje que finalicé con el ensamble");
         MensajeBarrera message;
         message.mtype = 1;
         this->cola12_A_11.send(message);
+        Logger::logMessage(Logger::TRACE, "finalizó el ensamble");
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
