@@ -81,12 +81,11 @@ bool poseePieza(std::auto_ptr<IControladorRobot12>& controladorRobot12, int id_R
         sprintf(buffer, "Robot 12-%u - poseePieza:", id_Robot);
         Logger::setProcessInformation(buffer);
         if (posicionPieza != -1) {
-            sprintf(buffer, "esta el canasto presente en la posicion %d", posicionPieza);
-            Logger::logMessage(Logger::TRACE, buffer);
             if (canastos.canastos[posicionPieza].cantidadPiezas != 0)
                 return true;
 
-            Logger::logMessage(Logger::TRACE, "pido piezas faltantes");
+            sprintf(buffer, "esta el canasto presente en la posicion %d, no tiene piezas, las pido", posicionPieza);
+            Logger::logMessage(Logger::TRACE, buffer);
             controladorRobot12->pedirPiezaFaltante(id_Robot, canastos, posicionPieza);                                                                        
             return false;
         } else {
