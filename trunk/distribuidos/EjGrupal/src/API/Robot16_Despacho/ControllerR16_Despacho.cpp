@@ -75,12 +75,10 @@ void ControllerR16_Despacho::enviarCajaAlCliente(long idCliente, Caja caja) {
     try {
         sprintf(buffer_, "Se envía Caja al cliente %ld", idCliente);
         Logger::logMessage(Logger::TRACE, buffer_);
-        EnvioCajaCliente envio;
-        envio.caja = caja;
 
         Msg_EnvioCajaCliente mensaje;
         mensaje.mtype = idCliente;
-        mensaje.envio_ = envio;
+        mensaje.caja = caja;
         R16_Cliente_Queue_.send(mensaje);
     }
     catch (Exception & e) {

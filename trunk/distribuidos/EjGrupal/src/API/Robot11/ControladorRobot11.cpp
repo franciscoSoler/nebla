@@ -97,7 +97,7 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
 
         while (true) {
             this->semBufferCinta6.wait(this->id_Robot);
-            Logger::logMessage(Logger::TRACE, "obtengo mem cinta 6");
+            // Logger::logMessage(Logger::TRACE, "obtengo mem cinta 6");
             
             shMemBufferCinta6.readInfo(&ctrlCinta);
 
@@ -114,7 +114,7 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
             }
         }
         
-        sprintf(this->buffer, "cinta no vacia, veo si hay gabinete para trabajar en el punto de lectura = %d", ctrlCinta.puntoLectura);
+        // sprintf(this->buffer, "cinta no vacia, veo si hay gabinete para trabajar en el punto de lectura = %d", ctrlCinta.puntoLectura);
         Logger::logMessage(Logger::TRACE, this->buffer);
 
         if(!ctrlCinta.lugarVacio[ctrlCinta.puntoLectura]) {
@@ -141,7 +141,7 @@ void ControladorRobot11::avanzarCinta() {
         EstadoRobot5 estadoRobot5;
         
         this->semBufferCinta6.wait(this->id_Robot);
-        Logger::logMessage(Logger::TRACE, "tome memoria cinta 6");
+        // Logger::logMessage(Logger::TRACE, "tome memoria cinta 6");
         
         shMemBufferCinta6.readInfo(&ctrlCinta);    
 
@@ -150,7 +150,7 @@ void ControladorRobot11::avanzarCinta() {
         this->semBufferCinta6.signal(this->id_Robot);
 
         this->semMemEstadoRobot5.wait();
-        Logger::logMessage(Logger::TRACE, "tome memoria estado del robot 5");
+        // Logger::logMessage(Logger::TRACE, "tome memoria estado del robot 5");
         
         this->shMemEstadoRobot5.readInfo(&estadoRobot5);
         if (estadoRobot5.robot5Bloqueado) {
@@ -171,7 +171,7 @@ BufferCanastos ControladorRobot11::obtenerBufferCanastos() {
     try {
         BufferCanastos canastos;
         this->semBufferCanastos.wait(this->id_semMemCanastos);
-        Logger::logMessage(Logger::TRACE, "tome la memoria de los canastos");
+        // Logger::logMessage(Logger::TRACE, "tome la memoria de los canastos");
 
         this->shMemBufferCanastos.readInfo(&canastos);
         return canastos;
@@ -231,7 +231,7 @@ void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza)
     try {
         sprintf(this->buffer, "Robot 11-%u - pedirPiezaAlAGV:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
-        Logger::logMessage(Logger::TRACE, "no podee la pieza, se la pido al agv por la cola");
+        Logger::logMessage(Logger::TRACE, "no posee la pieza, se la pido al agv por la cola");
         
         MensajePedidoRobotCinta_6 pedidoCanasto;
         pedidoCanasto.mtype = this->id_Agv;
@@ -255,7 +255,7 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         Caja unaCaja;
         
         this->semBufferCinta6.wait(this->id_Robot);
-        Logger::logMessage(Logger::TRACE, "tome la memoria de la cinta 6 y armo la caja");
+        // Logger::logMessage(Logger::TRACE, "tome la memoria de la cinta 6 y armo la caja");
         
         shMemBufferCinta6.readInfo(&ctrlCinta);    
 
@@ -263,11 +263,15 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         ctrlCinta.lugarVacio[ctrlCinta.puntoLectura] = true;
         this->shMemBufferCinta6.writeInfo(&ctrlCinta);
         
-        Logger::logMessage(Logger::TRACE, "devuelvo mem cinta 6");
+        // Logger::logMessage(Logger::TRACE, "devuelvo mem cinta 6");
         this->semBufferCinta6.signal(this->id_Robot);
 
         unaCaja.idProducto_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto;
         unaCaja.idOrdenDeCompra_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
+
+        sprintf(buffer, "Orden de compra de la caja: %ld", unaCaja.idOrdenDeCompra_);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
         if (ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].falla || rand() % 100 > 98) {
             unaCaja.fallado_ = true;
         } else {
@@ -284,12 +288,14 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
 void ControladorRobot11::depositarCaja(Caja unaCaja) {
     sprintf(this->buffer, "Robot 11-%u - depositarCaja:", this->id_Robot);
     Logger::setProcessInformation(this->buffer);
-    if (unaCaja.fallado_) {
+
+    /*if (unaCaja.fallado_) {
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba rotaaaa!!!!!!!!!!!!!!!!");
     }
     else {
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba sanaaaa!!!!!!!!!!!!!!!!");
-    }
+    }*/
+
 
     try {
         bool cajaDepositada = false;

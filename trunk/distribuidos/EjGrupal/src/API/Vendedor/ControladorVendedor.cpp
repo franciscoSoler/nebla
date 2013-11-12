@@ -41,8 +41,8 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     this->mutexOrdenDeCompra = IPC::Semaphore("mutexOrdenDeCompra");
     this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
     
-    outputQueueDespacho = IPC::MsgQueue("outputQueueDespacho");
-    outputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+    inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho");
+    inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
     
     this->numVendedor = numVendedor;
 }
@@ -216,7 +216,7 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     mensaje_despacho.pedido_ = pedido;
 
     Logger::logMessage(Logger::TRACE, "Envía mensaje avisando de envío de Orden de Compra");
-    outputQueueDespacho.send( mensaje_despacho );
+    inputQueueDespacho.send( mensaje_despacho );
 
 
     Msg_EnvioODCDespacho mensaje_odc;
@@ -224,7 +224,7 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     mensaje_odc.ordenDeCompra_ = ordenDeCompra;
 
     Logger::logMessage(Logger::TRACE, "Envía Orden de Compra");
-    outputQueueDespacho.send( mensaje_odc );
+    inputQueueDespacho.send( mensaje_odc );
 }
 
 void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido)
@@ -295,7 +295,7 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
 	}
 
 
-	ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto] = pedidos[i].cantidad;
+    ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto-1] = pedidos[i].cantidad;
 
 	sprintf(mensajePantalla, "Manda a producir %d unidades del producto %d.", 
 		pedidosProduccion[i].producidoParaStockear + pedidosProduccion[i].producidoVendido, pedidos[i].tipoProducto);

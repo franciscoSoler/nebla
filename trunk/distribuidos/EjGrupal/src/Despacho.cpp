@@ -32,7 +32,6 @@ int main(int argc, char* argv[]) {
 
     while (1) {
         PedidoDespacho pedido = controller->recibirPedido();
-        
         if (pedido.tipoPedido_ == PEDIDO_CLIENTE) {
             pedidoCliente(controller, pedido, bufferODC);
 
@@ -41,9 +40,9 @@ int main(int argc, char* argv[]) {
             pedidoOrdenDeCompra(controller, pedido, bufferODC);
         }
         else if (pedido.tipoPedido_ == PEDIDO_ROBOT16) {
-            Logger::logMessage(Logger::IMPORTANT, "Despacho recibe mensaje de Robot16_Cinta15");
-
-            sprintf(buffer_, "")
+            sprintf(buffer, "Despacho recibe mensaje de Robot16_Cinta15 con ODC N°%ld",
+                    pedido.idOrdenDeCompra_);
+            Logger::logMessage(Logger::IMPORTANT, buffer);
 
             odc = bufferODC.get(pedido.idOrdenDeCompra_);
             if ( odc != NULL ) {
@@ -75,10 +74,14 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
         // Llego el cliente, ordeno al Robot16 que vaya sacando las cajas.
         int cantidadDeProductos = odc->cantidadPorProducto_[idProducto-1];
 
-        // Actualizo la orden de compra. Quito de la misma, el producto
+        // Actualizo la orden de compra. Quito de la misma el producto
         // a despachar
         odc->cantidadPorProducto_[idProducto-1] = 0;
         odc->productoTerminado_[idProducto-1] = true;
+
+        std::stringstream ss;
+        ss << "Log de PedidoCliente: " << odc->cantidadPorProducto_[idProducto-1] << std::endl;
+        Logger::logMessage(Logger::IMPORTANT, ss.str());
 
         for (int i = 0; i < cantidadDeProductos; ++i) {
             controller->despacharProducto(idProducto, odc->idOrden_, odc->idCliente_);
@@ -86,16 +89,20 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
         }
 
         // Si la orden de compra está satisfecha, se debe eliminar
-        bool ordenTerminada = false;
+        bool ordenTerminada = true;
         for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
-            if (odc->productoTerminado_[i] ) {
-                ordenTerminada = true;
+            if ( odc->productoTerminado_[i] ) {
+                ordenTerminada = false;
                 break;
             }
         }
 
         if ( ordenTerminada ) {
             // Se terminó la orden, la elimino del diccionario
+            char buffer[255];
+            sprintf(buffer, "ODC N°%ld terminada, la misma es eliminada",
+                    pedido.idOrdenDeCompra_);
+            Logger::logMessage(Logger::DEBUG, buffer);
             bufferODC.erase(pedido.idOrdenDeCompra_);
         }
     }
@@ -110,7 +117,10 @@ void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
                          PedidoDespacho pedido, Dictionary<OrdenDeCompra> & bufferODC) {
 
     OrdenDeCompra odc = controller->obtenerOrdenDeCompra(pedido.idOrdenDeCompra_);
-    bufferODC.insert(pedido.idOrdenDeCompra_, new OrdenDeCompra(odc) );
+
+    if (! bufferODC.insert(pedido.idOrdenDeCompra_, new OrdenDeCompra(odc) ) ) {
+
+    }
 }
 
 void pedidoRobot16(autoPtrControllerDespacho & controller, PedidoDespacho pedido,
