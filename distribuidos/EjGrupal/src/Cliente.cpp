@@ -15,11 +15,11 @@ int main(int argc, char** argv)
 {
     srand(time(NULL) + getpid());
     long numCliente = rand() % CANT_CLIENTES + 1;
-    
-    ControladorCliente controlador(numCliente);
     int llamando = rand() % MAX_DEMORA + 1;
-    
     char mensajePantalla[256];
+    ControladorCliente controlador(numCliente);
+    int cantidadDeProductosPorPedido[CANTIDAD_PRODUCTOS];
+
     sprintf(mensajePantalla, "Se inicia el cliente #%ld.", numCliente);
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     usleep(llamando * 1000 * 1000);
@@ -36,6 +36,9 @@ int main(int argc, char** argv)
         int cantUnidades = 1; //+ rand() % CANT_MAX_PEDIDOS;
         int tipoProducto = PRODUCTO_3;// rand() % CANT_PRODUCTOS + 1;
         int retardo = rand() % MAX_DEMORA + 1;
+
+        cantidadDeProductosPorPedido[tipoProducto-1] = cantUnidades;
+
         usleep(retardo * 100 * 1000);
         controlador.enviarPedido(cantUnidades, tipoProducto);
         if(controlador.recibirResultado().recepcionOK == false) {
@@ -62,13 +65,17 @@ int main(int argc, char** argv)
     for (int i = 0; i < cantPedidos; ++i) {
 
         controlador.esperarPedido(tipo, nroOrden, numCliente);
-        // sleep();
-
         controlador.retirarEncargo(tipo, nroOrden);
 
-        for (int j = 0; j < respuesta.cantidadDeProductos[tipo-1]; ++j) {
+        sprintf(mensajePantalla, "Cantidad de Productos N°%d a retirar:%d",
+                tipo, cantidadDeProductosPorPedido[tipo-1]);
+        Logger::logMessage(Logger::IMPORTANT, mensajePantalla);
+
+        for (int j = 0; j < cantidadDeProductosPorPedido[tipo-1]; ++j) {
             controlador.obtenerProducto(numCliente);
         }
     }
+
+    Logger::logMessage(Logger::IMPORTANT, "Abandona la planta luego de retirar su pedido");
 }
 

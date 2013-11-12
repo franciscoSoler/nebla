@@ -6,7 +6,7 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
     try {
         Logger::getInstance();
         // Util::getInstance();
-        Logger::setProcessInformation("Robot16:");
+        Logger::setProcessInformation("Robot16_Despacho:");
         shMem_R14_R16_Data_ = new DataSM_R14_R16();
              
         // Se crean los IPCs
@@ -35,7 +35,7 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
 
 PedidoDespacho ControllerR16_Despacho::recibirPedido() {
     try {
-        Logger::setProcessInformation("Robot16 - recibirPedido:");
+        Logger::setProcessInformation("Robot16_Despacho - recibirPedido:");
         inputQueueR16_Despacho_.recv(MSG_FIN_PRODUCTO_R16, mensaje_ );
 
         PedidoDespacho pedido_ = mensaje_.pedido_;
@@ -58,7 +58,7 @@ PedidoDespacho ControllerR16_Despacho::recibirPedido() {
 
 void ControllerR16_Despacho::tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja) {
     try {
-        Logger::setProcessInformation("Robot16 - tomarCajaDeAPT:");
+        Logger::setProcessInformation("Robot16_Despacho - tomarCajaDeAPT:");
         semMutex_shMem_APT_.wait();
         shMem_APT_.sacarCaja(unaCaja, pedido.idProducto_, pedido.idOrdenDeCompra_);
         Logger::logMessage(Logger::TRACE, "Saca Caja del APT");
@@ -73,8 +73,9 @@ void ControllerR16_Despacho::tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja
 
 void ControllerR16_Despacho::enviarCajaAlCliente(long idCliente, Caja caja) {
     try {
+        Logger::setProcessInformation("Robot16_Despacho - enviarCajaAlCliente:");
         sprintf(buffer_, "Se envía Caja al cliente %ld", idCliente);
-        Logger::logMessage(Logger::TRACE, buffer_);
+        Logger::logMessage(Logger::IMPORTANT, buffer_);
 
         Msg_EnvioCajaCliente mensaje;
         mensaje.mtype = idCliente;
