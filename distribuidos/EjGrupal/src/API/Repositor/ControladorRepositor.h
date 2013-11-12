@@ -15,19 +15,19 @@
 class ControladorRepositor
 {
     public:
-	ControladorRepositor();
-	virtual ~ControladorRepositor();
-	
-	void reponerCanastos(int numeroPieza);
-	void reponerGabinetes(int numeroGabinete);
-	
-	void iniciarControlador();
+        ControladorRepositor();
+        virtual ~ControladorRepositor();
+
+        void reponerCanastos(int numeroPieza);
+        void reponerGabinetes(int numeroGabinete);
+
+        void iniciarControlador();
 	
     private:
-	IPC::EspacioAlmacenPiezasSharedMemory almacenSharedMemory;
+        IPC::EspacioAlmacenPiezasSharedMemory almacenSharedMemory;
         IPC::Semaphore bloqueoControladorGabinetes;
         IPC::Semaphore bloqueoControladorCanastos;
-	IPC::Semaphore mutex;
+        IPC::Semaphore mutex;
 };
 
 #endif	/* CONTROLADORREPOSITOR_H */

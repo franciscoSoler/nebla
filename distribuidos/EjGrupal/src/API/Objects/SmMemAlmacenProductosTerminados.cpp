@@ -179,10 +179,10 @@ void SmMemAlmacenProductosTerminados::reservarStockeados(int tipo, int cantidad)
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
-    if((almacenTerminados[numeroEspacio].estado == RESERVADO_DISPONIBLE
-        || almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE)
-        && almacenTerminados[numeroEspacio].tipoProducto == tipo
-        && almacenTerminados[numeroEspacio].esTemporal == false)
+        if((almacenTerminados[numeroEspacio].estado == RESERVADO_DISPONIBLE
+	    || almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE)
+	    && almacenTerminados[numeroEspacio].tipoProducto == tipo
+	    && almacenTerminados[numeroEspacio].esTemporal == false)
 	{
 	    almacenTerminados[numeroEspacio].esTemporal = true;
 	    almacenTerminados[numeroEspacio].tipoProducto = tipo;
@@ -201,7 +201,7 @@ void SmMemAlmacenProductosTerminados::asignarVaciosComoDisponibles(int cantidad,
 	if(almacenTerminados[numeroEspacio].estado == VACIO &&
 		almacenTerminados[numeroEspacio].esTemporal == true)
 	{
-        almacenTerminados[numeroEspacio].idOrdenDeCompra = 0;
+            almacenTerminados[numeroEspacio].idOrdenDeCompra = 0;
 	    almacenTerminados[numeroEspacio].estado = RESERVADO_DISPONIBLE;
 	    almacenTerminados[numeroEspacio].esTemporal = false;
 	    almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
@@ -221,7 +221,7 @@ void SmMemAlmacenProductosTerminados::asignarVaciosAProduccion(long idOrdenCompr
 		almacenTerminados[numeroEspacio].esTemporal == true)
 	{
 	    almacenTerminados[numeroEspacio].estado = RESERVADO_VENDIDO;
-        almacenTerminados[numeroEspacio].idOrdenDeCompra = idOrdenCompra;
+	    almacenTerminados[numeroEspacio].idOrdenDeCompra = idOrdenCompra;
 	    almacenTerminados[numeroEspacio].esTemporal = false;
 	    almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
 	    cantidad--;
@@ -242,6 +242,17 @@ void SmMemAlmacenProductosTerminados::asignarStockeados(long idOrdenCompra, int 
         {
             almacenTerminados[numeroEspacio].idOrdenDeCompra = idOrdenCompra;
             almacenTerminados[numeroEspacio].estado = RESERVADO_VENDIDO;
+            almacenTerminados[numeroEspacio].esTemporal = false;
+            almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
+            cantidad--;
+        }
+	
+	else if(almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE &&
+            almacenTerminados[numeroEspacio].tipoProducto == tipoProducto &&
+            almacenTerminados[numeroEspacio].esTemporal == true)
+        {
+            almacenTerminados[numeroEspacio].idOrdenDeCompra = idOrdenCompra;
+            almacenTerminados[numeroEspacio].estado = PRODUCTO_PARA_ENTREGAR;
             almacenTerminados[numeroEspacio].esTemporal = false;
             almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
             cantidad--;
