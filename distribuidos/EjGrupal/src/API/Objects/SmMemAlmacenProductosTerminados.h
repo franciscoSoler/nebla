@@ -30,9 +30,9 @@ public:
 	void anularReservas();
 
     // FIXME: APT nunca necesita la orden de compra, solo el ID. La ODC se almacena en Despacho
-    void asignarVaciosAProduccion(OrdenDeCompra ordenCompra, int cantidad, int tipoProducto);
+    void asignarVaciosAProduccion(long idOrdenCompra, int cantidad, int tipoProducto);
     // FIXME: APT nunca necesita la orden de compra, solo el ID. La ODC se almacena en Despacho
-    void asignarStockeados(OrdenDeCompra ordenCompra, int cantidad, int tipoProducto);
+    void asignarStockeados(long idOrdenCompra, int cantidad, int tipoProducto);
 	
     /* Retorna true si la Caja depositada fue la última del pedido de la misma */
     bool depositarCaja(Caja caja, long & idOrdenDeCompra);

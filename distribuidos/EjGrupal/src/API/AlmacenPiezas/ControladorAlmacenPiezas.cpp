@@ -58,8 +58,8 @@ void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(PedidoProduccion pe
 BufferCanastos ControladorAlmacenPiezas::obtenerBufferCanastos(int numBufferCanasto) {
     BufferCanastos canastos;
 
-    sprintf(this->buffer,"Num buffer canasto: %d",numBufferCanasto);
-    Logger::logMessage(Logger::ERROR, this->buffer);
+    // sprintf(this->buffer,"Num buffer canasto: %d",numBufferCanasto);
+    // Logger::logMessage(Logger::ERROR, this->buffer);
     
     this->semMemCanastos.wait(numBufferCanasto);
     this->shMemBufferCanastos[numBufferCanasto].readInfo(&canastos);

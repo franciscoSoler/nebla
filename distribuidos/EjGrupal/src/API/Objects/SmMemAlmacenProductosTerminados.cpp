@@ -58,7 +58,11 @@ bool SmMemAlmacenProductosTerminados::depositarCaja(Caja caja, long & idOrdenDeC
 
     if ( caja.idOrdenDeCompra_ == 0) {
         almacenarProductoNoReservadoEnAlmacen(caja, idOrdenDeCompra);
-        return false;
+
+        if (! idOrdenDeCompra ) {
+            // El producto no cambió su condición durante el transcurso del ensamblaje
+            return false;
+        }
     }
     else {
         almacenarProductoReservadoEnAlmacen(caja);
@@ -87,7 +91,7 @@ void SmMemAlmacenProductosTerminados::almacenarProductoNoReservadoEnAlmacen(Caja
 
             almacenTerminados[i].caja = unaCaja;
             almacenTerminados[i].estado = PRODUCTO_PARA_ENTREGAR;
-            idOrdenDeCompra = almacenTerminados[i].ordenCompra.idOrden_;
+            idOrdenDeCompra = almacenTerminados[i].idOrdenDeCompra;
             return;
         }
     }
@@ -97,7 +101,7 @@ void SmMemAlmacenProductosTerminados::almacenarProductoReservadoEnAlmacen(Caja u
     for (int i = 0; i < TAM_ALMACEN; ++i) {
         if (almacenTerminados[i].estado == RESERVADO_VENDIDO
             && almacenTerminados[i].tipoProducto == unaCaja.idProducto_
-            && almacenTerminados[i].ordenCompra.idOrden_ == unaCaja.idOrdenDeCompra_) {
+            && almacenTerminados[i].idOrdenDeCompra == unaCaja.idOrdenDeCompra_) {
 
             almacenTerminados[i].caja = unaCaja;
             almacenTerminados[i].estado = PRODUCTO_PARA_ENTREGAR;
@@ -111,7 +115,7 @@ bool SmMemAlmacenProductosTerminados::pedidoFueCompletado(TipoProducto tipo, con
 
     for (int i = 0; i < TAM_ALMACEN; ++i) {
         if (almacenTerminados[i].tipoProducto == tipo
-            && almacenTerminados[i].ordenCompra.idOrden_ == idOrdenDeCompra) {
+            && almacenTerminados[i].idOrdenDeCompra == idOrdenDeCompra) {
 
             if (almacenTerminados[i].estado == RESERVADO_VENDIDO) {
                 pedidoCompletado = false;
@@ -127,7 +131,7 @@ bool SmMemAlmacenProductosTerminados::sacarCaja(Caja* caja, int idProducto, int 
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
-        if(almacenTerminados[numeroEspacio].ordenCompra.idOrden_ == idOrdenCompra &&
+        if(almacenTerminados[numeroEspacio].idOrdenDeCompra == idOrdenCompra &&
             almacenTerminados[numeroEspacio].tipoProducto == idProducto &&
                 almacenTerminados[numeroEspacio].estado == PRODUCTO_PARA_ENTREGAR)
         {
@@ -175,9 +179,10 @@ void SmMemAlmacenProductosTerminados::reservarStockeados(int tipo, int cantidad)
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
-	if((almacenTerminados[numeroEspacio].estado == RESERVADO_DISPONIBLE || almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE) &&
-		almacenTerminados[numeroEspacio].tipoProducto == tipo &&
-		almacenTerminados[numeroEspacio].esTemporal == false)
+    if((almacenTerminados[numeroEspacio].estado == RESERVADO_DISPONIBLE
+        || almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE)
+        && almacenTerminados[numeroEspacio].tipoProducto == tipo
+        && almacenTerminados[numeroEspacio].esTemporal == false)
 	{
 	    almacenTerminados[numeroEspacio].esTemporal = true;
 	    almacenTerminados[numeroEspacio].tipoProducto = tipo;
@@ -191,14 +196,12 @@ void SmMemAlmacenProductosTerminados::reservarStockeados(int tipo, int cantidad)
 
 void SmMemAlmacenProductosTerminados::asignarVaciosComoDisponibles(int cantidad, int tipoProducto)
 {
-    OrdenDeCompra ordenDeCompra;
-    ordenDeCompra.idOrden_ = 0;
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
 	if(almacenTerminados[numeroEspacio].estado == VACIO &&
 		almacenTerminados[numeroEspacio].esTemporal == true)
 	{
-	    almacenTerminados[numeroEspacio].ordenCompra = ordenDeCompra;
+        almacenTerminados[numeroEspacio].idOrdenDeCompra = 0;
 	    almacenTerminados[numeroEspacio].estado = RESERVADO_DISPONIBLE;
 	    almacenTerminados[numeroEspacio].esTemporal = false;
 	    almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
@@ -210,7 +213,7 @@ void SmMemAlmacenProductosTerminados::asignarVaciosComoDisponibles(int cantidad,
     }
 }
 
-void SmMemAlmacenProductosTerminados::asignarVaciosAProduccion(OrdenDeCompra ordenCompra, int cantidad, int tipoProducto)
+void SmMemAlmacenProductosTerminados::asignarVaciosAProduccion(long idOrdenCompra, int cantidad, int tipoProducto)
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
@@ -218,7 +221,7 @@ void SmMemAlmacenProductosTerminados::asignarVaciosAProduccion(OrdenDeCompra ord
 		almacenTerminados[numeroEspacio].esTemporal == true)
 	{
 	    almacenTerminados[numeroEspacio].estado = RESERVADO_VENDIDO;
-        almacenTerminados[numeroEspacio].ordenCompra = ordenCompra;
+        almacenTerminados[numeroEspacio].idOrdenDeCompra = idOrdenCompra;
 	    almacenTerminados[numeroEspacio].esTemporal = false;
 	    almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
 	    cantidad--;
@@ -229,7 +232,7 @@ void SmMemAlmacenProductosTerminados::asignarVaciosAProduccion(OrdenDeCompra ord
     }
 }
 
-void SmMemAlmacenProductosTerminados::asignarStockeados(OrdenDeCompra ordenCompra, int cantidad, int tipoProducto)
+void SmMemAlmacenProductosTerminados::asignarStockeados(long idOrdenCompra, int cantidad, int tipoProducto)
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
@@ -237,7 +240,7 @@ void SmMemAlmacenProductosTerminados::asignarStockeados(OrdenDeCompra ordenCompr
             almacenTerminados[numeroEspacio].tipoProducto == tipoProducto &&
             almacenTerminados[numeroEspacio].esTemporal == true)
         {
-            almacenTerminados[numeroEspacio].ordenCompra = ordenCompra;
+            almacenTerminados[numeroEspacio].idOrdenDeCompra = idOrdenCompra;
             almacenTerminados[numeroEspacio].estado = RESERVADO_VENDIDO;
             almacenTerminados[numeroEspacio].esTemporal = false;
             almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;

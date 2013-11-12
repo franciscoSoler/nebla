@@ -145,7 +145,7 @@ void ControladorRobot5Cinta::resolverPedidoGabinete(ProductoEnProduccion product
 
 	char buffer[TAM_BUFFER];
 	sprintf(buffer, "Estado cinta %d luego del deposito: %s", cintaAUtilizar, cintaTransportadora[cintaAUtilizar].obtenerMensajeEstado().c_str());
-	Logger::getInstance().logMessage(Logger::TRACE, buffer);
+    Logger::getInstance().logMessage(Logger::DEBUG, buffer);
 
 	/* Verifico si el robot 11 encargado de la cinta utilizada esta 
 	 * bloqueado 

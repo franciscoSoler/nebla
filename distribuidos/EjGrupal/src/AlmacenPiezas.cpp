@@ -72,14 +72,14 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
             piezas.pieza[piezas.cantPiezas].cantidad = cantidad;
             
             sprintf(buffer, "cantPiezas %d: Pieza a guardar %d en la posicion  %d Cantidad: %d", cantPiezas, piezas.pieza[piezas.cantPiezas].tipoPieza, piezas.cantPiezas, piezas.pieza[piezas.cantPiezas].cantidad);
-            Logger::logMessage(Logger::ERROR, buffer);
+            Logger::logMessage(Logger::DEBUG, buffer);
             
             piezas.cantPiezas++;
             continue;
         }
         if (id >= PANTALLA_1) {
             sprintf(buffer, "cantPiezas %d: Gabinete a guardar %d, Cantidad: %d", cantPiezas, id, cantidad);
-            Logger::logMessage(Logger::ERROR, buffer);
+            Logger::logMessage(Logger::DEBUG, buffer);
             piezas.tipoPantalla.tipoPieza = static_cast<TipoPieza> (id);
             piezas.tipoPantalla.cantidad = cantidad;
             
@@ -88,7 +88,7 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
     
     for (int i = 0; i < piezas.cantPiezas; i++) {
         sprintf(buffer, "Estado piezas: Tipo: %d Cantidad: %d",piezas.pieza[i].tipoPieza,piezas.pieza[i].cantidad);
-        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+        Logger::getInstance().logMessage(Logger::DEBUG, buffer);
     }
     return true;
 }

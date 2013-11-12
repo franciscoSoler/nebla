@@ -479,7 +479,7 @@ typedef struct _OrdenProduccion
 typedef struct _EspacioAlmacen
 {
     EstadoEspacio estado;
-    OrdenDeCompra ordenCompra;
+    long idOrdenDeCompra;
     int tipoProducto;
     Caja caja;
     bool esTemporal;

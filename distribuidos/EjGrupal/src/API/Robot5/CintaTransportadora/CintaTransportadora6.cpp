@@ -116,10 +116,10 @@ void CintaTransportadora6::mostrarEstadoCinta(CintaTransportadora_6 cintaTranspo
     sprintf(buffer, "Estado cinta %d: ", this->idCinta);
     for (int i = 0; i < BUFF_SIZE_CINTA_6; ++i) {
         if (cintaTransportadora.lugarVacio[i]) {
-            strcat(buffer, "|0");
+            strcat(buffer, "|o");
         }
         else {
-            strcat(buffer, "|X");
+            strcat(buffer, "|x");
         }
     }
     strcat(buffer, "|\n");
@@ -140,10 +140,10 @@ std::string CintaTransportadora6::obtenerMensajeEstado() {
     sprintf(buffer, "|");
     for (int i = BUFF_SIZE_CINTA_6-1; i >= 0; --i) {
         if (cintaTransportadora.lugarVacio[(cintaTransportadora.puntoLectura + i) % BUFF_SIZE_CINTA_6]) {
-            strcat(buffer, "0|");
+            strcat(buffer, "o|");
         }
         else {
-            strcat(buffer, "X|");
+            strcat(buffer, "x|");
         }
     }
     std::string retorno(buffer);
