@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 
     for(int i = 0; i < cantPedidos; i++)
     {
-        int cantUnidades = 1 + rand() % CANT_MAX_PEDIDOS;
+        int cantUnidades = 1; //+ rand() % CANT_MAX_PEDIDOS;
         int tipoProducto = PRODUCTO_3;// rand() % CANT_PRODUCTOS + 1;
         int retardo = rand() % MAX_DEMORA + 1;
         usleep(retardo * 100 * 1000);

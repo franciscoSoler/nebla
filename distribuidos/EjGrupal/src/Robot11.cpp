@@ -49,10 +49,8 @@ bool poseePieza(std::auto_ptr<IControladorRobot11>& controladorRobot11, int id_R
         canastos = controladorRobot11->obtenerBufferCanastos();
         posicionPieza = buscarPosicionPieza(id_Robot, canastos, id_pieza);
 
-        sprintf(buffer, "Robot 11-%u - poseePieza:", id_Robot);
-        Logger::setProcessInformation(buffer);
         if (posicionPieza != -1) {
-            sprintf(buffer, "esta el canasto presente en la posicion %d", posicionPieza);
+            sprintf(buffer, "El canasto está presente en la posicion %d", posicionPieza);
             Logger::logMessage(Logger::TRACE, buffer);
             if (canastos.canastos[posicionPieza].cantidadPiezas != 0)
                 return true;

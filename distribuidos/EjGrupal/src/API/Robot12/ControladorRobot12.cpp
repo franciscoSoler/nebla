@@ -75,11 +75,11 @@ CintaTransportadora_6 ControladorRobot12::esperarProximoGabinete() {
         this->cola11_A_12.receive(0, &messageBarrera);
 
         this->semBufferCinta6.wait(this->id_Robot);
-        Logger::logMessage(Logger::TRACE, "tome la memoria de la cinta 6");
+        // Logger::logMessage(Logger::TRACE, "tome la memoria de la cinta 6");
         
         this->shMemBufferCinta6.readInfo(&ctrlCinta);
         
-        Logger::logMessage(Logger::TRACE, "devuelvo la mem de la cinta 6");
+        // Logger::logMessage(Logger::TRACE, "devuelvo la mem de la cinta 6");
         this->semBufferCinta6.signal(this->id_Robot);
         return ctrlCinta;
         //return especifProductoAux;
@@ -93,9 +93,9 @@ CintaTransportadora_6 ControladorRobot12::esperarProximoGabinete() {
 BufferCanastos ControladorRobot12::obtenerBufferCanastos() {
     try {
         BufferCanastos canastos;
-        Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de los canastos");
+        // Logger::logMessage(Logger::TRACE, "voy a tomar la memoria de los canastos");
         this->semBufferCanastos.wait(this->id_semMemCanastos);
-        Logger::logMessage(Logger::TRACE, "tome la memoria de los canastos");
+        // Logger::logMessage(Logger::TRACE, "tome la memoria de los canastos");
 
         this->shMemBufferCanastos.readInfo(&canastos);
         return canastos;

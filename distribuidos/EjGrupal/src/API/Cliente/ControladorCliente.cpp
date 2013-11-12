@@ -39,41 +39,53 @@ ControladorCliente::ControladorCliente(long numCliente)
 
 void ControladorCliente::contactarVendedores()
 {
-    /* Se establece la comunicacion "en dos pasos". */
-    mensaje_inicial_t mensaje;
-    mensaje.emisor = numCliente;
-    mensaje.mtype = CANT_VENDEDORES;
-    Logger::logMessage(Logger::TRACE, "Llama a algun vendedor.");
-    vendedores.enviarMensajeInicial(mensaje);
-    int tiempoRespuesta = (rand() % 20) * 100 * 1000; 
-    usleep(tiempoRespuesta);
-    
-    msg_respuesta_pedido_t mensajeRespuesta;
-    clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
-    respuesta_pedido_t respuesta = mensajeRespuesta.respuesta_pedido;
-    long numVendedor = respuesta.emisor;
-    Logger::logMessage(Logger::TRACE, "Recibe la respuesta del vendedor.");
-        
-    this->numVendedorAsociado = numVendedor;
+    try {
+        /* Se establece la comunicacion "en dos pasos". */
+        mensaje_inicial_t mensaje;
+        mensaje.emisor = numCliente;
+        mensaje.mtype = CANT_VENDEDORES;
+        Logger::logMessage(Logger::TRACE, "Llama a algun vendedor.");
+        vendedores.enviarMensajeInicial(mensaje);
+        int tiempoRespuesta = (rand() % 20) * 100 * 1000;
+        usleep(tiempoRespuesta);
+
+        msg_respuesta_pedido_t mensajeRespuesta;
+        clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
+        respuesta_pedido_t respuesta = mensajeRespuesta.respuesta_pedido;
+        long numVendedor = respuesta.emisor;
+        Logger::logMessage(Logger::TRACE, "Recibe la respuesta del vendedor.");
+
+        this->numVendedorAsociado = numVendedor;
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
 }
 
 void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo)
 {
-    pedido_t pedido;
-    pedido.emisor = numCliente;
-    pedido.cantidad = cantidadUnidades;
-    pedido.tipoProducto = (TipoProducto)tipo;
-    pedido.fin = false;
-        
-    sprintf(mensajePantalla, "Envia al vendedor %ld un "
-            "pedido por %d productos de tipo %d.", 
-            numVendedorAsociado, pedido.cantidad, pedido.tipoProducto);
-    Logger::logMessage(Logger::TRACE, mensajePantalla);
-    
-    msg_pedido_t mensajePedido;
-    mensajePedido.mtype = numVendedorAsociado;
-    mensajePedido.pedido = pedido;
-    pedidos.enviarMensajePedido(mensajePedido);	    
+    try {
+        pedido_t pedido;
+        pedido.emisor = numCliente;
+        pedido.cantidad = cantidadUnidades;
+        pedido.tipoProducto = (TipoProducto)tipo;
+        pedido.fin = false;
+
+        sprintf(mensajePantalla, "Envia al vendedor %ld un "
+                "pedido por %d productos de tipo %d.",
+                numVendedorAsociado, pedido.cantidad, pedido.tipoProducto);
+        Logger::logMessage(Logger::TRACE, mensajePantalla);
+
+        msg_pedido_t mensajePedido;
+        mensajePedido.mtype = numVendedorAsociado;
+        mensajePedido.pedido = pedido;
+        pedidos.enviarMensajePedido(mensajePedido);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
 }
 
 void ControladorCliente::finalizarEnvio(int cantPedidos)
@@ -129,14 +141,15 @@ void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden) {
     pedido.tipoPedido_ = PEDIDO_CLIENTE;
 
     Msg_PedidoDespacho mensaje;
-    mensaje.mtype = MSGQUEUE_DESPACHO_INPUT_ID;
+
+    mensaje.mtype = MSG_PEDIDO_DESPACHO;
     mensaje.pedido_ = pedido;
 
     despacho.send(mensaje);
 }
 
 Caja ControladorCliente::obtenerProducto(int idCliente) {
-    EnvioCajaCliente msgCaja;
+    Msg_EnvioCajaCliente msgCaja;
     retiro.recv(idCliente, msgCaja);
     Logger::logMessage(Logger::IMPORTANT, "Recibe Caja de Robot16");
     return msgCaja.caja;

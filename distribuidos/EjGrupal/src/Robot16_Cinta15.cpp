@@ -19,9 +19,10 @@ int main(int argc, char* argv[]) {
         controller->tomarCajaCinta15(unaCaja);
         sleep( Util::getInstance().generateRandomNumber(1,2) );
 
-        if ( controller->depositarCajaEnAPT(unaCaja, unaCaja.idOrdenDeCompra_) ) {
+        long idOrdenDeCompra = 0;
+        if ( controller->depositarCajaEnAPT(unaCaja, idOrdenDeCompra) ) {
             // Se debe notificar al Despacho de que se termino el lote
-            controller->informarAlDespachoProductoTerminado(unaCaja.idOrdenDeCompra_,
+            controller->informarAlDespachoProductoTerminado(idOrdenDeCompra,
                     unaCaja.idProducto_);
         }
         sleep( Util::getInstance().generateRandomNumber(1,2) );

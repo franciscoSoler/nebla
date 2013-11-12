@@ -58,7 +58,7 @@ class ControladorVendedor
 	IPC::Semaphore mutexAlmacenTerminados;
 	IPC::Semaphore mutexOrdenDeCompra;
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
-	IPC::MsgQueue outputQueueDespacho;
+    IPC::MsgQueue inputQueueDespacho;
 
 	pedido_fabricacion_t reservarPedido(pedido_t pedido);
 	void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);

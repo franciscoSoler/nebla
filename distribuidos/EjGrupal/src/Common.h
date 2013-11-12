@@ -372,10 +372,6 @@ public:
 
 };
 
-typedef struct {
-    Caja caja;
-} EnvioCajaCliente;
-
 class PedidoOrdenDeCompra {
 public:
     PedidoOrdenDeCompra() {
@@ -463,8 +459,9 @@ public:
 class Msg_EnvioCajaCliente {
 public:
     long mtype;
-    EnvioCajaCliente envio_;
+    Caja caja;
 };
+
 
 
 /* 
