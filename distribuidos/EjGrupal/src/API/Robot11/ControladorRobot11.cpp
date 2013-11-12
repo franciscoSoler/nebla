@@ -115,7 +115,7 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
         }
         
         // sprintf(this->buffer, "cinta no vacia, veo si hay gabinete para trabajar en el punto de lectura = %d", ctrlCinta.puntoLectura);
-        Logger::logMessage(Logger::TRACE, this->buffer);
+        //Logger::logMessage(Logger::TRACE, this->buffer);
 
         if(!ctrlCinta.lugarVacio[ctrlCinta.puntoLectura]) {
             Logger::logMessage(Logger::TRACE, "hay gabinete, despierto robot 12");
@@ -250,7 +250,13 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
     try {
         sprintf(this->buffer, "Robot 11-%u - cerrarYTomarCaja:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
-
+        
+        MensajeBarrera message;
+        message.mtype = 1;
+        
+        this->cola12_A_11.receive(1, &message);
+        Logger::logMessage(Logger::TRACE, "el robot 12 termino, puedo cerrar y tomar la caja");
+        
         CintaTransportadora_6 ctrlCinta;
         Caja unaCaja;
         

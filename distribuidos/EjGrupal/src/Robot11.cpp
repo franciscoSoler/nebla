@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
     
     while (true) {
         while (controladorRobot11->buscarProximoGabinete(&piezas) == false)
-            controladorRobot11->avanzarCinta(); 
+            controladorRobot11->avanzarCinta();
             
         //for (int i = 0; i < piezas.cantPiezas; i++) {
             while (true) { // anteriormente tenia tipo de pieza
