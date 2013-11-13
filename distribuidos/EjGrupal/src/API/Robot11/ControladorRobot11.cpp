@@ -8,6 +8,7 @@
 #include "ControladorRobot11.h"
 #include "../../Logger/Logger.h"
 #include "../../Parser/Parser.h"
+#include <sstream>
 
 ControladorRobot11::ControladorRobot11() {
     this->shMem_R11_R14_Data_ = new DataSM_R11_R14();
@@ -146,6 +147,8 @@ void ControladorRobot11::avanzarCinta() {
         shMemBufferCinta6.readInfo(&ctrlCinta);    
 
         ctrlCinta.puntoLectura = (ctrlCinta.puntoLectura + 1) % BUFF_SIZE_CINTA_6;
+        imprimirCinta(ctrlCinta.lugarVacio, ctrlCinta.puntoLectura);
+
         this->shMemBufferCinta6.writeInfo(&ctrlCinta);
         this->semBufferCinta6.signal(this->id_Robot);
 
@@ -418,4 +421,16 @@ void ControladorRobot11::liberar_shMem_R11_R14() {
     shMem_R11_R14_.write(shMem_R11_R14_Data_);
     // Logger::logMessage(Logger::TRACE, "Libera memoria compartida R11-R14");
     semMutex_shMem_R11_R14_.signal();
+}
+
+void ControladorRobot11::imprimirCinta(bool lugarVacio[BUFF_SIZE_CINTA_6], int puntoFinal) {
+    std::stringstream ss;
+    int inicio = (puntoFinal + BUFF_SIZE_CINTA_6 - 1) % BUFF_SIZE_CINTA_6;
+
+    ss << "Cinta N°" << nroCinta_ << ": |";
+    for (int i = BUFF_SIZE_CINTA_6; i > 0; i--) {
+        ss << ( (lugarVacio[(inicio + i) % BUFF_SIZE_CINTA_6]) == false ? "x|" : "o|");
+    }
+
+    Logger::logMessage(Logger::DEBUG, ss.str());
 }

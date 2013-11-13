@@ -111,7 +111,8 @@ int main(int argc, char** argv) {
                 if (!agregarPantalla(controladorRobot11, nroRobot, piezas.tipoPantalla, posicionPieza))
                     controladorRobot11->pedirPiezaAlAGV(piezas.tipoPantalla.tipoPieza, posicionPieza);
                     //controladorRobot11->pedirPiezaAlAGV(piezas.tipoPantalla.tipoPieza);
-                if (piezas.tipoPantalla.cantidad-- == 0)
+                piezas.tipoPantalla.cantidad--;
+                if (piezas.tipoPantalla.cantidad == 0)
                     break;
             }            
         //}

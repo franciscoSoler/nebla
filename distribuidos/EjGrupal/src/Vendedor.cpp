@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     while(true)
-        {
+    {
         sprintf(mensajePantalla, "Espera clientes.");
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
         OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
-            ordenDeCompra.idCliente_ = numCliente;
+        ordenDeCompra.idCliente_ = numCliente;
 
         pedido_t pedido;
         pedido_t pedidos[CANT_MAX_PEDIDOS];

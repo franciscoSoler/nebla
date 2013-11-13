@@ -136,10 +136,19 @@ int main(int argc, char** argv) {
         
         for (int i = 0; i < piezas.cantPiezas; i++) {
             while (true) {
+                char buffer[255];
+
                 //if (!controladorRobot12->agregarConector(piezas.pieza[i]))
-                if (!agregarConector(controladorRobot12, nroRobot, piezas.pieza[i], posicionPieza))
+                if (!agregarConector(controladorRobot12, nroRobot, piezas.pieza[i], posicionPieza)) {
                     controladorRobot12->pedirPiezaAlAGV(piezas.pieza[i].tipoPieza, posicionPieza);
-                if (piezas.pieza[i].cantidad-- == 0)
+                }
+
+                piezas.pieza[i].cantidad--;
+                sprintf(buffer, "Pieza a pedir: %d - Posición: %d - Cantidad: %d",
+                        piezas.pieza[i].tipoPieza, posicionPieza, piezas.pieza[i].cantidad);
+                Logger::logMessage(Logger::ERROR, buffer);
+
+                if (piezas.pieza[i].cantidad == 0)
                     break;
             }
         }
