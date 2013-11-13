@@ -102,10 +102,12 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
 int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>& 
         controladorAlmacenPiezas, TipoPieza tipoPieza, EspecifProd 
         piezasReservadasTemporalmente[2], int numAGV, int cantPedidos, 
-        int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO]) {
+        int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO], EspecifProd 
+        piezasProductoActual) {
     char buffer[TAM_BUFFER];
     
-    
+    sprintf(buffer, "chequeando si el canasto con la pieza %d esta a los pies del AGV %d", tipoPieza, numAGV);
+    Logger::logMessage(Logger::DEBUG, buffer);
     
     Logger::getInstance();
     sprintf(buffer, "Almacen piezas -:");
@@ -124,7 +126,7 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
         j++;
     }
     if (canastoPresente) {
-        sprintf(buffer, "el canasto del tipo de pieza %d esta presente en la posicion %d", tipoPieza, j);
+        sprintf(buffer, "el canasto del tipo de pieza %d esta presente en la posicion %d", tipoPieza, j - 1);
         Logger::logMessage(Logger::DEBUG, buffer);
         return -1;
     }
@@ -132,11 +134,14 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
     int posCanasto = 0;
     while (!canastoPresente && posCanasto < MAX_QUANTITY_CANASTOS) {
         posPedida = false;
-        //for (int posCanasto = 0; posCanasto < MAX_QUANTITY_CANASTOS; posCanasto++) {
+        
         // k es para comparar con ambos conjuntos de piezas utilizados anteriormente
         for (int k = 0; k < 2; k++) {
-            if (piezasReservadasTemporalmente[k].idProducto == NULL_PRODUCT)
+            if (piezasReservadasTemporalmente[k].idProducto == NULL_PRODUCT) {
+                sprintf(buffer, "pedido anterior Nº %d, no fue realizado", k);
+                Logger::logMessage(Logger::DEBUG, buffer);
                 continue;
+            }
             // estoy chequeando contra los robots 12, usan todas las piezas, los robots 11 solo usan la pantalla
             if (numAGV == 1) {
                 int posPiezaReservadaTemporalmente = 0;
@@ -152,10 +157,21 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
         if (numAGV == 1) {
             posTemp = 0;
             while(!posPedida && posTemp < cantPedidos) {
+                sprintf(buffer, "posicion ya pedida %d en posicion %d, posicion a pedir %d, Cantidad Pedidos %d", posicionesYaPedidas[posTemp], posTemp, posCanasto, cantPedidos);
+                Logger::logMessage(Logger::DEBUG, buffer);
                 posPedida = posCanasto == posicionesYaPedidas[posTemp];
                 posTemp++;
             }
+            // falta chequear que la posicion pedida no posea piezas de las que voy a necesitar en la misma orden de compra
+            posTemp = 0;
+            while(!posPedida && posTemp < piezasProductoActual.cantPiezas) {
+                sprintf(buffer, "tipo de pieza a reemplazar %d en la posicion %d de los canastos %d, pieza a agregar %d", canastos.canastos[posCanasto].tipoPieza, posCanasto, numAGV, piezasProductoActual.pieza[posTemp].tipoPieza);
+                Logger::logMessage(Logger::DEBUG, buffer);
+                posPedida = (canastos.canastos[posCanasto].tipoPieza == piezasProductoActual.pieza[posTemp].tipoPieza);
+                posTemp++;
+            }
         }
+        
         if (!canastoPresente && !posPedida) {
             sprintf(buffer, "cambio el canasto del buffer %d que tiene la pieza"
                     " %d por Pieza: %d en el lugar %d", numAGV, canastos
@@ -181,7 +197,8 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
         piezasReservadasTemporalmente[2], int numAGV) {
     
     int pos[MAX_PIEZAS_POR_PRODUCTO];
-    return avisarAAGVQueAgregueCanasto(controladorAlmacenPiezas, tipoPieza, piezasReservadasTemporalmente, numAGV, 0, pos);
+    EspecifProd piezasProd;
+    return avisarAAGVQueAgregueCanasto(controladorAlmacenPiezas, tipoPieza, piezasReservadasTemporalmente, numAGV, 0, pos, piezasProd);
 }
 
 int main(int argc, char** argv)
@@ -213,7 +230,7 @@ int main(int argc, char** argv)
             int numAGV = 1;
             posCanasto = avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
                     piezasProductoActual.pieza[i].tipoPieza, 
-                    piezasReservadasTemporalmente, numAGV, i, posicionesYaPedidas);
+                    piezasReservadasTemporalmente, numAGV, i, posicionesYaPedidas, piezasProductoActual);
             if (posCanasto != -1) {
                 posicionesYaPedidas[cantCanastosPedidos] = posCanasto;
                 cantCanastosPedidos++;

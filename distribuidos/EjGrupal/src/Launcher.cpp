@@ -189,7 +189,8 @@ void createIPCs() {
     BufferCanastos canastos;
     for (int i = 0; i < MAX_QUANTITY_CANASTOS; i++) {
         canastos.canastos[i].cantidadPiezas = 0;
-        canastos.canastos[i].tipoPieza = PIEZA_2;
+        canastos.canastos[i].tipoPieza = NULL_PIEZA;
+        canastos.canastos[5].tipoPieza = PIEZA_2;
         canastos.robotCinta1EsperaPorElLugarNumero = -1;
         canastos.robotCinta2EsperaPorElLugarNumero = -1;
     }
