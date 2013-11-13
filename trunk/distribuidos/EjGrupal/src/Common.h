@@ -163,6 +163,7 @@ typedef enum {
 } TipoGabinete;
 
 typedef enum {
+    NULL_PIEZA = 0,
     PIEZA_1 = 1,
     PIEZA_2 = 2,
     PIEZA_3 = 3,
