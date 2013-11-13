@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_CLIENTE);
         createDirectory(DIRECTORY_DESPACHO);
         createDirectory(DIRECTORY_APT);
-	createDirectory(DIRECTORY_APIEZAS);
+        createDirectory(DIRECTORY_APIEZAS);
                 
         createIPCs();
         
@@ -76,7 +76,8 @@ int main(int argc, char* argv[]) {
         createProcess("Robot16_Despacho");
         createProcess("Despacho");
         createProcess("AGV", 3);
-	createProcess("Vendedor", 10, 1);
+        createProcess("Vendedor", 5, 1);
+        createProcess("Cliente", 3, 1);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 

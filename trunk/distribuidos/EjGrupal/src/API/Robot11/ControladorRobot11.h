@@ -70,6 +70,8 @@ private:
     void bloquearRobot();
     void obtener_shMem_R11_R14();
     void liberar_shMem_R11_R14();
+
+    void imprimirCinta(bool lugarVacio[BUFF_SIZE_CINTA_6], int puntoFinal);
 };
 
 #endif	/* CONTROLADORROBOT11_H */

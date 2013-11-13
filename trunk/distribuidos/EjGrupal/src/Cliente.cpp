@@ -5,17 +5,50 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+#include <sstream>
 
 #include "../../Common.h"
 #include "ControladorCliente.h"
+#include <API/Objects/Util.h>
 
 #define MAX_DEMORA 5
 
+int generarNumeroDeTipoDeProducto() {
+    static int pedidosRealizados[CANTIDAD_PRODUCTOS];
+    static int cantidadPedidosRealizados = 0;
+
+    bool existeNumeroGenerado = true;
+    int numeroAleatorio = Util::getInstance().generateRandomNumber(0, CANTIDAD_PRODUCTOS);
+
+    while( existeNumeroGenerado ) {
+        existeNumeroGenerado = false;
+        numeroAleatorio = Util::getInstance().generateRandomNumber(0, CANTIDAD_PRODUCTOS);
+
+        for (int i = 0; i < cantidadPedidosRealizados; ++i) {
+            if (numeroAleatorio == pedidosRealizados[i]) {
+                existeNumeroGenerado = true;
+                break;
+            }
+        }
+        // Espera para darle tiempo al sleep que calcule otro número
+        sleep(1);
+    }
+
+    pedidosRealizados[cantidadPedidosRealizados] = numeroAleatorio;
+    cantidadPedidosRealizados++;
+    return numeroAleatorio+1;
+}
+
 int main(int argc, char** argv)
 {
-    srand(time(NULL) + getpid());
-    long numCliente = rand() % CANT_CLIENTES + 1;
-    int llamando = rand() % MAX_DEMORA + 1;
+    std::stringstream ss;
+    long numCliente = 0;
+
+    ss << argv[1];
+    ss >> numCliente;
+
+
+    int llamando = Util::getInstance().generateRandomNumber(1, MAX_DEMORA);
     char mensajePantalla[256];
     ControladorCliente controlador(numCliente);
     int cantidadDeProductosPorPedido[CANTIDAD_PRODUCTOS];
@@ -27,17 +60,20 @@ int main(int argc, char** argv)
     controlador.contactarVendedores();
     
     /* Envio los pedidos. */
-    int cantPedidos = 1;// + rand() % 3;
+    int cantPedidos = Util::getInstance().generateRandomNumber(1, 3);
     sprintf(mensajePantalla,"Comienzo a enviar sus %d pedidos.", cantPedidos);
     Logger::getInstance().logMessage(Logger::TRACE, mensajePantalla);
 
     for(int i = 0; i < cantPedidos; i++)
     {
-        int cantUnidades = 1; //+ rand() % CANT_MAX_PEDIDOS;
-        int tipoProducto = PRODUCTO_3;// rand() % CANT_PRODUCTOS + 1;
+        int cantUnidades = Util::getInstance().generateRandomNumber(1, 5);
+        int tipoProducto = generarNumeroDeTipoDeProducto();
         int retardo = rand() % MAX_DEMORA + 1;
-
         cantidadDeProductosPorPedido[tipoProducto-1] = cantUnidades;
+
+        sprintf(mensajePantalla, "Cliente realiza pedido - TipoProducto: %d - Cantidad: %d",
+                tipoProducto, cantUnidades);
+        Logger::logMessage(Logger::IMPORTANT, mensajePantalla);
 
         usleep(retardo * 100 * 1000);
         controlador.enviarPedido(cantUnidades, tipoProducto);
@@ -63,6 +99,7 @@ int main(int argc, char** argv)
     int nroOrden;
 
     for (int i = 0; i < cantPedidos; ++i) {
+        Logger::logMessage(Logger::IMPORTANT, "Procede a retirar un pedido");
 
         controlador.esperarPedido(tipo, nroOrden, numCliente);
         controlador.retirarEncargo(tipo, nroOrden);

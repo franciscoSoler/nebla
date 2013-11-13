@@ -62,7 +62,7 @@ PedidoProduccion ControladorRobot5Cinta::obtenerPedidoProduccion() {
 	colaPedidosProduccion.recibirPedidoProduccion(TIPO_PEDIDO_PRODUCCION, &mensajePedidoProduccion);
 
 	char buffer[TAM_BUFFER];
-	sprintf(buffer, "Recibí un pedido de produccion:\n\tOrden de compra: %d Tipo producto: %d Cantidad: %d Diferencia: %d",
+    sprintf(buffer, "Recibí un pedido de produccion: Orden de compra: %d Tipo producto: %d Cantidad: %d Diferencia: %d",
 		mensajePedidoProduccion.pedidoProduccion.nroOrdenCompra,
 		mensajePedidoProduccion.pedidoProduccion.tipo,
 		mensajePedidoProduccion.pedidoProduccion.cantidad,

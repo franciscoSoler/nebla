@@ -129,8 +129,8 @@ void ControladorAGV::reponerCanasto(Canasto canasto) {
         
         canastos.canastos[this->posicionCanasto] = canasto;
         
-        sprintf(this->buffer, "guardo el canasto con la pieza %d, cantidad %d en la cinta %d", canasto.tipoPieza, canasto.cantidadPiezas, id_AGV);
-        Logger::logMessage(Logger::TRACE, this->buffer);
+        sprintf(this->buffer, "guardo el canasto en la posicion %d, con la pieza %d, cantidad %d en la cinta %d", this->posicionCanasto, canasto.tipoPieza, canasto.cantidadPiezas, id_AGV);
+        Logger::logMessage(Logger::IMPORTANT, this->buffer);
        
         if (this->posicionCanasto == canastos.robotCinta1EsperaPorElLugarNumero) {
             Logger::logMessage(Logger::TRACE, "despierto al robot de la cinta 1");
