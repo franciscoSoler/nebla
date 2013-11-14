@@ -144,17 +144,23 @@
 
 #define CANT_MAX_COMPONENTES_PRODUCTO		10
 
-// comunicación robot 5
-
 /* Constantes IPC internas. */
 // User DIRECTORY_VENDEDOR
 #define ID_COLA_VENDEDORES 'b'
 #define ID_COLA_CLIENTES 'i'
 #define ID_COLA_PEDIDOS 'j'
+
+#define ID_COLA_VENDEDORES_C 'y'
+#define ID_COLA_CLIENTES_C 'x'
+#define ID_COLA_PEDIDOS_C 'z'
+
 #define ID_COLA_RESPUESTAS_ALMACEN_PIEZAS 'e'
 #define ID_COLA_CONSULTAS_ALMACEN_PIEZAS 'f'
 #define ID_ALMACEN_TERMINADOS 'c'
 #define ID_SHMEM_NRO_OC 'g'
+
+#define TIPO_BUSCANDO_VENDEDOR 1
+#define TIPO_VENDEDOR_LIBRE 2
 
 typedef enum {
     GABINETE_1 = 1,
@@ -549,11 +555,11 @@ typedef struct _pedido
 
 typedef struct {
     long mtype; // receptor.
+    int tipo; // indica si se debe terminar la comunicacion
     pedido_t pedido;
 } msg_pedido_t;
 
-typedef struct _respuesta_pedido
-{
+typedef struct _respuesta_pedido {
     long emisor;
     bool recepcionOK;
     int cantidadDeProductos[CANTIDAD_PRODUCTOS];
@@ -561,10 +567,9 @@ typedef struct _respuesta_pedido
 
 typedef struct {
     long mtype;
+    int tipo;
     respuesta_pedido_t respuesta_pedido;
 } msg_respuesta_pedido_t;
-
-
 
 typedef struct _espacio_almacen_piezas {
     Canasto canastos[CANTIDAD_TIPOS_PIEZAS][CANTIDAD_MAXIMA_ITEMS_POR_TIPO_ALMACEN];
@@ -572,5 +577,27 @@ typedef struct _espacio_almacen_piezas {
     int cantCanastos[CANTIDAD_TIPOS_PIEZAS];
     int cantGabinetes[CANTIDAD_TIPOS_GABINETES];
 } EstructuraAlmacenPiezas;
+
+/* Comunicacion de red entre clientes y vendedores */
+
+typedef struct {
+    int numero;
+} StartComunicationMessage;
+
+typedef struct {
+    int origen;  // Unused
+    int destino; // Unused
+    int tipo;    //Utilizado para indicar cuando finalizar la comunicacion
+    size_t size; // Unused
+    msg_respuesta_pedido_t mensaje;
+} net_msg_respuesta_pedido_t;
+
+typedef struct {
+    int origen;  // Unused
+    int destino; // Unused
+    int tipo;    //Utilizado para indicar cuando finalizar la comunicacion
+    size_t size; // Unused
+    msg_pedido_t mensaje;
+} net_msg_pedido_t;
 
 #endif	/* COMMON_H */
