@@ -23,6 +23,16 @@
 #include "Logger/Logger.h"
 #include "LockFile.h"
 
+#define CANTIDAD_TIPO_PIEZAS_RESERVADAS         3
+
+typedef struct {
+    EspecifProd piezasUtilizadas[CANTIDAD_TIPO_PIEZAS_RESERVADAS];
+    int cantPiezasPedidas[CANTIDAD_TIPO_PIEZAS_RESERVADAS];
+    int posicionesPiezasPedidas[CANTIDAD_TIPO_PIEZAS_RESERVADAS][MAX_PIEZAS_POR_PRODUCTO];
+    int posicionesGabinetesPedidas[CANTIDAD_TIPO_PIEZAS_RESERVADAS];
+} PedidosRealizados;
+
+
 bool buscarUbiacionDeProductoEnArchivo(Parser &parser, ifstream& stream, int numeroProducto)
 {
     int ultimoNumeroProductoLeido = 0;
@@ -100,13 +110,11 @@ bool obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &
  * @return position of the changed basket
  */
 int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>& 
-        controladorAlmacenPiezas, TipoPieza tipoPieza, EspecifProd 
-        piezasReservadasTemporalmente[2], int numAGV, int cantPedidos, 
-        int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO], EspecifProd 
-        piezasProductoActual) {
+        controladorAlmacenPiezas, TipoPieza piezaAGuardar, 
+        PedidosRealizados pedidosRealizados, int posProductoParaArmar, int numAGV) {
     char buffer[TAM_BUFFER];
     
-    sprintf(buffer, "chequeando si el canasto con la pieza %d esta a los pies del AGV %d", tipoPieza, numAGV);
+    sprintf(buffer, "chequeando si el canasto con la pieza %d esta a los pies del AGV %d", piezaAGuardar, numAGV);
     Logger::logMessage(Logger::DEBUG, buffer);
     
     Logger::getInstance();
@@ -115,90 +123,122 @@ int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>&
     BufferCanastos canastos;
     bool canastoPresente = false;
     bool posPedida = false;
-    int posTemp;
 
     canastos = controladorAlmacenPiezas->obtenerBufferCanastos(numAGV);
 
     // j recorre el buffer de los canastos
     int j = 0;
     while (!canastoPresente && j < MAX_QUANTITY_CANASTOS) {
-        canastoPresente = canastos.canastos[j].tipoPieza == tipoPieza;
+        canastoPresente = canastos.canastos[j].tipoPieza == piezaAGuardar;
         j++;
     }
     if (canastoPresente) {
-        sprintf(buffer, "el canasto del tipo de pieza %d esta presente en la posicion %d", tipoPieza, j - 1);
+        sprintf(buffer, "el canasto del tipo de pieza %d esta presente en la posicion %d", piezaAGuardar, j - 1);
         Logger::logMessage(Logger::DEBUG, buffer);
         return -1;
     }
-    // esta mal este buscar, no contempla los envios anteriores a los AGVs!!!!!!!!!!!!!!!
+    
+    sprintf(buffer, "el canasto del tipo de pieza %d no esta en los canastos, chequeo que no haya sido pedido con anterioridad", piezaAGuardar);
+    Logger::logMessage(Logger::DEBUG, buffer);
+    
+    //chequear que no fue pedido anteriormente el canasto en los pedidos anteriores
+    int k = 0;
+    while (!canastoPresente && k < CANTIDAD_TIPO_PIEZAS_RESERVADAS) {
+        if (pedidosRealizados.piezasUtilizadas[k].idProducto == NULL_PRODUCT) {
+            sprintf(buffer, "pedido Nº %d, no fue realizado", k);
+            Logger::logMessage(Logger::DEBUG, buffer);
+            k++;
+            continue;
+        }
+        if (k == posProductoParaArmar) {
+            k++;
+            continue;
+        }
+
+        if (numAGV == 1) {
+            j = 0;
+            while (!canastoPresente && j < pedidosRealizados.piezasUtilizadas[k].cantPiezas) {
+                canastoPresente = piezaAGuardar == pedidosRealizados.piezasUtilizadas[k].pieza[j].tipoPieza;
+                j++;
+            }
+        } else
+            canastoPresente = piezaAGuardar == pedidosRealizados.piezasUtilizadas[k].tipoPantalla.tipoPieza;
+        k++;
+    }
+    if (!canastoPresente) {
+        sprintf(buffer, "el canasto del tipo de pieza %d no fue pedido con anterioridad, busco posicion a reemplazar", piezaAGuardar);
+        Logger::logMessage(Logger::DEBUG, buffer);
+    }
+    
+    /* ahora hay que chequear las posiciones elegidas, tienen que cumplir las siguientes restricciones:
+     *  posicionElegida != posicionYaElegida
+     *  canasto de posicionElegida != piezas en productoParaArmar
+     * */
     int posCanasto = 0;
     while (!canastoPresente && posCanasto < MAX_QUANTITY_CANASTOS) {
         posPedida = false;
         
-        // k es para comparar con ambos conjuntos de piezas utilizados anteriormente
-        for (int k = 0; k < 2; k++) {
-            if (piezasReservadasTemporalmente[k].idProducto == NULL_PRODUCT) {
-                sprintf(buffer, "pedido anterior Nº %d, no fue realizado", k);
+        // primero busco un canasto que no pertenezca al productoActual
+        if (numAGV == 1) {
+            j = 0;
+            while (!posPedida && j < pedidosRealizados.piezasUtilizadas[posProductoParaArmar].cantPiezas) {
+                posPedida = canastos.canastos[posCanasto].tipoPieza == pedidosRealizados.piezasUtilizadas[posProductoParaArmar].pieza[j].tipoPieza;
+                j++;
+            }
+        } else
+            posPedida = canastos.canastos[posCanasto].tipoPieza == pedidosRealizados.piezasUtilizadas[posProductoParaArmar].tipoPantalla.tipoPieza;
+        
+        // chequeo que la posicion no haya sido pedida con anterioridad
+        k = 0;
+        while (!posPedida && k < CANTIDAD_TIPO_PIEZAS_RESERVADAS) {
+            if (pedidosRealizados.piezasUtilizadas[k].idProducto == NULL_PRODUCT) {
+                sprintf(buffer, "en chequear posiciones, pedido Nº %d, no fue realizado", k);
                 Logger::logMessage(Logger::DEBUG, buffer);
+                k++;
                 continue;
             }
-            // estoy chequeando contra los robots 12, usan todas las piezas, los robots 11 solo usan la pantalla
+            
+            
             if (numAGV == 1) {
                 int posPiezaReservadaTemporalmente = 0;
-                while (!canastoPresente && posPiezaReservadaTemporalmente < piezasReservadasTemporalmente[k].cantPiezas) {
-                    canastoPresente = canastos.canastos[posCanasto].tipoPieza == piezasReservadasTemporalmente[k].pieza[posPiezaReservadaTemporalmente].tipoPieza;
+                while (!posPedida && posPiezaReservadaTemporalmente < pedidosRealizados.cantPiezasPedidas[k]) {
+                    sprintf(buffer, "pedido Nº %d: tipo de pieza a reemplazar %d"
+                            " en la posicion %d de los canastos %d, pieza a "
+                            "agregar %d", k, canastos.canastos[posCanasto].
+                            tipoPieza, posCanasto, numAGV, piezaAGuardar);
+                    Logger::logMessage(Logger::DEBUG, buffer);
+                    
+                    posPedida = posCanasto == pedidosRealizados.posicionesPiezasPedidas[k][posPiezaReservadaTemporalmente];
                     posPiezaReservadaTemporalmente++;
                 }
-            } else
-                canastoPresente = canastos.canastos[posCanasto].tipoPieza == piezasReservadasTemporalmente[k].tipoPantalla.tipoPieza;
+            } else {
+                sprintf(buffer, "pedido Nº %d: tipo de pieza a reemplazar %d"
+                            " en la posicion %d de los canastos %d, pieza a "
+                            "agregar %d", k, canastos.canastos[posCanasto].
+                            tipoPieza, posCanasto, numAGV, piezaAGuardar);
+                    Logger::logMessage(Logger::DEBUG, buffer);
+                posPedida = posCanasto == pedidosRealizados.posicionesGabinetesPedidas[k];
+            }
+            
+            k++;
         }
         
-        //chequea que la posicion del canasto que voy a pedir no la haya pedido previamente
-        if (numAGV == 1) {
-            posTemp = 0;
-            while(!posPedida && posTemp < cantPedidos) {
-                sprintf(buffer, "posicion ya pedida %d en posicion %d, posicion a pedir %d, Cantidad Pedidos %d", posicionesYaPedidas[posTemp], posTemp, posCanasto, cantPedidos);
-                Logger::logMessage(Logger::DEBUG, buffer);
-                posPedida = posCanasto == posicionesYaPedidas[posTemp];
-                posTemp++;
-            }
-            // falta chequear que la posicion pedida no posea piezas de las que voy a necesitar en la misma orden de compra
-            posTemp = 0;
-            while(!posPedida && posTemp < piezasProductoActual.cantPiezas) {
-                sprintf(buffer, "tipo de pieza a reemplazar %d en la posicion %d de los canastos %d, pieza a agregar %d", canastos.canastos[posCanasto].tipoPieza, posCanasto, numAGV, piezasProductoActual.pieza[posTemp].tipoPieza);
-                Logger::logMessage(Logger::DEBUG, buffer);
-                posPedida = (canastos.canastos[posCanasto].tipoPieza == piezasProductoActual.pieza[posTemp].tipoPieza);
-                posTemp++;
-            }
-        }
-        
-        if (!canastoPresente && !posPedida) {
+        if (!posPedida) {
             sprintf(buffer, "cambio el canasto del buffer %d que tiene la pieza"
                     " %d por Pieza: %d en el lugar %d", numAGV, canastos
-                    .canastos[posCanasto].tipoPieza, tipoPieza, posCanasto);
+                    .canastos[posCanasto].tipoPieza, piezaAGuardar, posCanasto);
             Logger::getInstance().logMessage(Logger::DEBUG, buffer);
             PedidoCanastoRobotCinta6 pedidoCanasto;
             pedidoCanasto.lugar = posCanasto;
-            pedidoCanasto.tipoPieza = tipoPieza;
+            pedidoCanasto.tipoPieza = piezaAGuardar;
             controladorAlmacenPiezas->avisarAAGVQueAgregueCanasto(numAGV, pedidoCanasto);
-            if (numAGV == 1)
-                posicionesYaPedidas[cantPedidos] = posCanasto;
-            
             return posCanasto;
         }
         posCanasto++;
     }
+    sprintf(buffer, "el canasto del tipo de pieza %d ya fue pedido con anterioridad", piezaAGuardar);
+    Logger::logMessage(Logger::DEBUG, buffer);
     return -1;
-}
-
-
-int avisarAAGVQueAgregueCanasto(std::auto_ptr<IControladorAlmacenPiezas>& 
-        controladorAlmacenPiezas, TipoPieza tipoPieza, EspecifProd 
-        piezasReservadasTemporalmente[2], int numAGV) {
-    
-    int pos[MAX_PIEZAS_POR_PRODUCTO];
-    EspecifProd piezasProd;
-    return avisarAAGVQueAgregueCanasto(controladorAlmacenPiezas, tipoPieza, piezasReservadasTemporalmente, numAGV, 0, pos, piezasProd);
 }
 
 int main(int argc, char** argv)
@@ -207,45 +247,48 @@ int main(int argc, char** argv)
 
     pedido_fabricacion_t pedidoFabricacion;
     PedidoProduccion pedidoProduccion;
-    EspecifProd piezasProductoActual;
-    EspecifProd piezasReservadasTemporalmente[2];
-    piezasReservadasTemporalmente[0].idProducto = NULL_PRODUCT;
-    piezasReservadasTemporalmente[1].idProducto = NULL_PRODUCT;
-    int posicionesYaPedidas[MAX_PIEZAS_POR_PRODUCTO];
-    int posCanasto;
-    int cantCanastosPedidos;
     
+    PedidosRealizados pedidosRealizados;
+    pedidosRealizados.piezasUtilizadas[0].idProducto = NULL_PRODUCT;
+    pedidosRealizados.piezasUtilizadas[1].idProducto = NULL_PRODUCT;
+    pedidosRealizados.piezasUtilizadas[2].idProducto = NULL_PRODUCT;
+    
+    int posCanasto;
+    int numPedido = 0;
     while (true) {
         pedidoFabricacion = controladorAlmacenPiezas->recibirPedidoDeFabricacion();
         pedidoProduccion = armarPedidoProduccion (pedidoFabricacion);
         controladorAlmacenPiezas->enviarPedidoProduccionARobot5(pedidoProduccion);
         
-        if (!obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, piezasProductoActual)) {
+        pedidosRealizados.piezasUtilizadas[numPedido].idProducto = pedidoFabricacion.tipoProducto;
+        pedidosRealizados.cantPiezasPedidas[numPedido] = 0;
+        if (!obtenerEspecificacionesDelProducto(pedidoFabricacion.tipoProducto, pedidosRealizados.piezasUtilizadas[numPedido])) {
             Logger::getInstance().logMessage(Logger::ERROR, "No se pudo obtener la especificacion... ABORTANDO!!!!");
             abort();
         }
-
-        cantCanastosPedidos = 0;
-        for (int i = 0; i < piezasProductoActual.cantPiezas; i++) {
+        
+        for (int i = 0; i < pedidosRealizados.piezasUtilizadas[numPedido].cantPiezas; i++) {
             int numAGV = 1;
             posCanasto = avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
-                    piezasProductoActual.pieza[i].tipoPieza, 
-                    piezasReservadasTemporalmente, numAGV, i, posicionesYaPedidas, piezasProductoActual);
+                    pedidosRealizados.piezasUtilizadas[numPedido].pieza[i].tipoPieza, 
+                    pedidosRealizados, numPedido, numAGV); 
             if (posCanasto != -1) {
-                posicionesYaPedidas[cantCanastosPedidos] = posCanasto;
-                cantCanastosPedidos++;
+                pedidosRealizados.posicionesPiezasPedidas[numPedido][pedidosRealizados.cantPiezasPedidas[numPedido]] = posCanasto;
+                pedidosRealizados.cantPiezasPedidas[numPedido]++;
             }
         }
         
         for (int numAGV = 0; numAGV < CANTIDAD_AGVS; numAGV +=2) {
-            avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
-                    piezasProductoActual.tipoPantalla.tipoPieza, 
-                    piezasReservadasTemporalmente, numAGV);
+            posCanasto = avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
+                    pedidosRealizados.piezasUtilizadas[numPedido].tipoPantalla.tipoPieza, 
+                    pedidosRealizados, numPedido, numAGV);
+            if (posCanasto != -1) {
+                pedidosRealizados.posicionesGabinetesPedidas[numPedido] = posCanasto;
+            }
         }
-        
-        memcpy(piezasReservadasTemporalmente, piezasReservadasTemporalmente + 1, sizeof(EspecifProd));
-        memcpy(piezasReservadasTemporalmente + 1, &piezasProductoActual, sizeof(EspecifProd));
         controladorAlmacenPiezas->recibirConfirmacionProduccion();
+        
+        numPedido = (numPedido + 1) % CANTIDAD_TIPO_PIEZAS_RESERVADAS;
     } 
 }
 
