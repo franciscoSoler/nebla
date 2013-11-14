@@ -43,11 +43,9 @@ void ControladorCliente::contactarVendedores()
         /* Se establece la comunicacion "en dos pasos". */
         mensaje_inicial_t mensaje;
         mensaje.emisor = numCliente;
-        mensaje.mtype = CANT_VENDEDORES;
+        mensaje.mtype = TIPO_BUSCANDO_VENDEDOR;
         Logger::logMessage(Logger::TRACE, "Llama a algun vendedor.");
         vendedores.enviarMensajeInicial(mensaje);
-        int tiempoRespuesta = (rand() % 20) * 100 * 1000;
-        usleep(tiempoRespuesta);
 
         msg_respuesta_pedido_t mensajeRespuesta;
         clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
@@ -80,6 +78,7 @@ void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo)
         msg_pedido_t mensajePedido;
         mensajePedido.mtype = numVendedorAsociado;
         mensajePedido.pedido = pedido;
+        mensajePedido.tipo = 0;
         pedidos.enviarMensajePedido(mensajePedido);
     }
     catch (Exception & e) {
@@ -104,6 +103,7 @@ void ControladorCliente::finalizarEnvio(int cantPedidos)
     msg_pedido_t mensajePedido;
     mensajePedido.mtype = numVendedorAsociado;
     mensajePedido.pedido = pedidoFinal;
+    mensajePedido.tipo = 1; // Tipo != 0 fin de la comunicacion
     pedidos.enviarMensajePedido(mensajePedido);
 }
 

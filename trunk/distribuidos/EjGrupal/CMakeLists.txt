@@ -41,6 +41,8 @@ include_directories("${SRC_DIR}IPCs/Semaphore")
 include_directories("${SRC_DIR}Logger")
 include_directories("${SRC_DIR}Parser")
 
+include_directories("${SRC_DIR}Socket")
+include_directories("${SRC_DIR}Comunicaciones")
 
 aux_source_directory("${SRC_DIR}API"                                     COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/AGV"                                 AGV_SRC)
@@ -73,6 +75,7 @@ aux_source_directory("${SRC_DIR}IPCs/Semaphore"                          LIBRARY
 aux_source_directory("${SRC_DIR}IPCs/Barrios"                            LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Logger"                                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Parser"                                  LIBRARY_SRC)
+aux_source_directory("${SRC_DIR}Socket"                                  LIBRARY_SRC)
 
 add_library(IPCLibrary
             SHARED
@@ -103,6 +106,16 @@ add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorG
 add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC}${VENDEDOR_SRC})
 #add_executable(${OUT_DIR}MonitorAlmacenPiezas               ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC}${VENDEDOR_SRC})
 
+add_executable(${OUT_DIR}CanalEntradaCliente            ${SRC_DIR}Comunicaciones/CanalEntradaCliente.cpp       ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaCliente             ${SRC_DIR}Comunicaciones/CanalSalidaCliente.cpp        ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaVendedor           ${SRC_DIR}Comunicaciones/CanalEntradaVendedor.cpp      ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaVendedor            ${SRC_DIR}Comunicaciones/CanalSalidaVendedor.cpp       ${COMMON_SRC})
+
+add_executable(${OUT_DIR}CreadorCanalesCliente          ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
+add_executable(${OUT_DIR}ServidorVendedorEntrada        ${SRC_DIR}Comunicaciones/ServidorVendedorEntrada.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}ServidorVendedorSalida         ${SRC_DIR}Comunicaciones/ServidorVendedorSalida.cpp    ${COMMON_SRC})
+
+
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}Terminator                                  IPCLibrary)
 target_link_libraries(${OUT_DIR}AGV                                         IPCLibrary)
@@ -121,3 +134,12 @@ target_link_libraries(${OUT_DIR}AlmacenPiezas                               IPCL
 target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)
+
+target_link_libraries(${OUT_DIR}CanalEntradaCliente                         IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalSalidaCliente                          IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalEntradaVendedor                        IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalSalidaVendedor                         IPCLibrary)
+
+target_link_libraries(${OUT_DIR}CreadorCanalesCliente                          IPCLibrary)
+target_link_libraries(${OUT_DIR}ServidorVendedorEntrada                          IPCLibrary)
+target_link_libraries(${OUT_DIR}ServidorVendedorSalida                          IPCLibrary)
