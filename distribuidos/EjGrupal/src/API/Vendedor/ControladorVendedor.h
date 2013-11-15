@@ -28,7 +28,7 @@
 
 class ControladorVendedor
 {
-    public:
+public:
 	ControladorVendedor(long numVendedor);
 	virtual ~ControladorVendedor();
 	
@@ -43,9 +43,9 @@ class ControladorVendedor
 	
 	void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);
 	
-        pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido);
+    pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido, bool* pedidoEnStock);
 
-    private:
+private:
 	long numVendedor;
 	IPC::VendedoresMessageQueue vendedores;
 	IPC::ClientesMessageQueue clientes;
@@ -60,7 +60,7 @@ class ControladorVendedor
 	SmMemAlmacenProductosTerminados almacenProductosTerminados;
     IPC::MsgQueue inputQueueDespacho;
 
-	pedido_fabricacion_t reservarPedido(pedido_t pedido);
+    pedido_fabricacion_t reservarPedido(pedido_t pedido, bool* pedidoEnStock);
 	void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);
 	int obtenerCantidadMinimaDeProduccion(int numProducto);
 	void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
@@ -69,7 +69,7 @@ class ControladorVendedor
 	
 	void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
 
-        void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
+    void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
 
 };
 

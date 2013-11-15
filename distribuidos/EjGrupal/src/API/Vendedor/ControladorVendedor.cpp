@@ -52,7 +52,7 @@ ControladorVendedor::~ControladorVendedor() { }
 long ControladorVendedor::recibirLlamadoTelefonico()
 {
     mensaje_inicial_t bufferMensajeInicial;
-    this->vendedores.recibirMensajeInicial(CANT_VENDEDORES, &bufferMensajeInicial);
+    this->vendedores.recibirMensajeInicial(TIPO_BUSCANDO_VENDEDOR, &bufferMensajeInicial);
     int tiempoRespuesta = (rand() % 20) * 100 * 1000; 
     usleep(tiempoRespuesta);
 
@@ -87,7 +87,7 @@ pedido_t ControladorVendedor::recibirPedido()
     return msgPedido.pedido;
 }
 
-pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido)
+pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido, bool* pedidoEnStock)
 {
     pedido_fabricacion_t pedidoProduccion;
     pedidoProduccion.tipoProducto = pedido.tipoProducto;
@@ -99,19 +99,20 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
     if(cantidadEspacioVacio + cantidadEnStock < pedido.cantidad)
     {
         /* El pedido no entra en el almacen de productos terminados */
-	pedidoProduccion.ventaEsValida = false;
-	return pedidoProduccion;
+        pedidoProduccion.ventaEsValida = false;
+        return pedidoProduccion;
     }
     
     if(cantidadEnStock >= pedido.cantidad)
     {
         /* Me alcanza con lo que ya hay en el almacen de productos terminados */
-	pedidoProduccion.ventaEsValida = true;
-	pedidoProduccion.producidoParaStockear = 0;
-	pedidoProduccion.producidoVendido = 0;
-	pedidoProduccion.vendidoStockeado = pedido.cantidad;
-	pedidoProduccion.diferenciaMinimaProducto = 0;
-	return pedidoProduccion;
+        *pedidoEnStock = true;
+        pedidoProduccion.ventaEsValida = true;
+        pedidoProduccion.producidoParaStockear = 0;
+        pedidoProduccion.producidoVendido = 0;
+        pedidoProduccion.vendidoStockeado = pedido.cantidad;
+        pedidoProduccion.diferenciaMinimaProducto = 0;
+        return pedidoProduccion;
     }
     
     int cantidadAProducir = pedido.cantidad - cantidadEnStock;
@@ -153,10 +154,10 @@ void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_fabricacion_t 
 
 }
 
-pedido_fabricacion_t ControladorVendedor::reservarPedido(pedido_t pedido)
+pedido_fabricacion_t ControladorVendedor::reservarPedido(pedido_t pedido, bool* pedidoEnStock)
 {
     
-    pedido_fabricacion_t pedidoProduccion = calcularCantidadAProducir(pedido);
+    pedido_fabricacion_t pedidoProduccion = calcularCantidadAProducir(pedido, pedidoEnStock);
     if(pedidoProduccion.ventaEsValida)
 	efectuarReserva(pedido, pedidoProduccion);
     return pedidoProduccion;
@@ -296,20 +297,22 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
     pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
     for(int i = 0; i < cantPedidos; i++)
     {
-	pedido_fabricacion_t pedidoProduccion = reservarPedido(pedidos[i]);
-	pedidosProduccion[i] = pedidoProduccion;
+        bool* pedidoEnStock = &(ordenDeCompra->productoTerminado_[pedidos[i].tipoProducto]);
+        pedido_fabricacion_t pedidoProduccion = reservarPedido(pedidos[i], pedidoEnStock);
+        pedidosProduccion[i] = pedidoProduccion;
         pedidosProduccion[i].numOrdenCompra = ordenDeCompra->idOrden_;
-	if(!pedidoProduccion.ventaEsValida)
-	{
-	    ordenDeCompraEsValida = false;
-	    break;
-	}
 
-	ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto-1] = pedidos[i].cantidad;
+        if ( !pedidoProduccion.ventaEsValida )
+        {
+            ordenDeCompraEsValida = false;
+            break;
+        }
 
-	sprintf(mensajePantalla, "Manda a producir %d unidades del producto %d.", 
-		pedidosProduccion[i].producidoParaStockear + pedidosProduccion[i].producidoVendido, pedidos[i].tipoProducto);
-	Logger::getInstance().logMessage(Logger::DEBUG, mensajePantalla);
+        ordenDeCompra->cantidadPorProducto_[pedidoProduccion.tipoProducto-1] = pedidos[i].cantidad;
+
+        sprintf(mensajePantalla, "Manda a producir %d unidades del producto %d.",
+        pedidosProduccion[i].producidoParaStockear + pedidosProduccion[i].producidoVendido, pedidos[i].tipoProducto);
+        Logger::getInstance().logMessage(Logger::DEBUG, mensajePantalla);
     }
     
     if(ordenDeCompraEsValida)

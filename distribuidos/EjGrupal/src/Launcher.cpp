@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
         createProcess("Despacho");
         createProcess("AGV", 3);
         createProcess("Vendedor", 5, 1);
-        createProcess("Cliente", 3, 1);
+        createProcess("Cliente", 1, 1);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
