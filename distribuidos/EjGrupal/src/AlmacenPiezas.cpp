@@ -282,9 +282,10 @@ int main(int argc, char** argv)
             posCanasto = avisarAAGVQueAgregueCanasto (controladorAlmacenPiezas, 
                     pedidosRealizados.piezasUtilizadas[numPedido].tipoPantalla.tipoPieza, 
                     pedidosRealizados, numPedido, numAGV);
-            if (posCanasto != -1) {
-                pedidosRealizados.posicionesGabinetesPedidas[numPedido] = posCanasto;
-            }
+           
+        }
+         if (posCanasto != -1) {
+            pedidosRealizados.posicionesGabinetesPedidas[numPedido] = posCanasto;
         }
         controladorAlmacenPiezas->recibirConfirmacionProduccion();
         
