@@ -79,9 +79,9 @@ int main(int argc, char** argv)
             }
 
             controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
-	}
-	else
-	{
+        }
+        else
+        {
             Logger::getInstance().logMessage(Logger::TRACE, "Pedido Invalido");
             respuesta_pedido_t respuesta;
             respuesta.recepcionOK = false;

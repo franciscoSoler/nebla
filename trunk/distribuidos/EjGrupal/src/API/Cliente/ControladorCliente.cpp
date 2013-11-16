@@ -122,7 +122,7 @@ void ControladorCliente::esperarPedido(TipoProducto & tipoProducto, int & nroOrd
     this->inputQueueCliente.recv(numCliente, mensaje);
     PedidoDespacho pedido = mensaje.pedido_;
     
-     sprintf(mensajePantalla, "Se le informa que el Producto %u fue terminado."
+     sprintf(mensajePantalla, "Se le informa que el Producto %u fue terminado. "
              "Procede a ir a la fabrica a buscarlo", pedido.idProducto_);
      Logger::logMessage(Logger::TRACE, mensajePantalla);
     

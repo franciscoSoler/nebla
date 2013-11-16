@@ -98,14 +98,14 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
     
     if(cantidadEspacioVacio + cantidadEnStock < pedido.cantidad)
     {
-        /* El pedido no entra en el almacen de productos terminados */
+        /* El pedido no entra en el APT */
         pedidoProduccion.ventaEsValida = false;
         return pedidoProduccion;
     }
     
     if(cantidadEnStock >= pedido.cantidad)
     {
-        /* Me alcanza con lo que ya hay en el almacen de productos terminados */
+        /* Pedido es satisfecho con productos stockeados */
         *pedidoEnStock = true;
         pedidoProduccion.ventaEsValida = true;
         pedidoProduccion.producidoParaStockear = 0;
@@ -118,9 +118,9 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
     int cantidadAProducir = pedido.cantidad - cantidadEnStock;
     if(cantidadMinima > cantidadAProducir && cantidadMinima > cantidadEspacioVacio)
     {
-        /* El pedido no entra en el almacen de productos terminados */
-	pedidoProduccion.ventaEsValida = false;
-	return pedidoProduccion;
+        /* Pedido no entra en APT. Es rechazado */
+        pedidoProduccion.ventaEsValida = false;
+        return pedidoProduccion;
     }
     
     cantidadAProducir = std::max(cantidadAProducir, cantidadMinima);
@@ -139,27 +139,28 @@ void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_fabricacion_t 
     char mensajePantalla[1024];
     sprintf(mensajePantalla, "Se venden %d unidades ya producidas, se mandan a hacer "
 		"otras %d de producto para vender y se stockean %d de tipo %d.", 
-    pedidoProduccion.vendidoStockeado, pedidoProduccion.producidoVendido , 
-    pedidoProduccion.producidoParaStockear, pedido.tipoProducto);
-    Logger::logMessage(Logger::TRACE, mensajePantalla);
-    
-    if(pedidoProduccion.producidoParaStockear > 0)
-	almacenProductosTerminados.reservarVaciosComoDisponibles(pedidoProduccion.producidoParaStockear);
-    
-    if(pedidoProduccion.producidoVendido > 0)
-	almacenProductosTerminados.reservarVaciosAProduccion(pedidoProduccion.producidoVendido);
-    
-    if(pedidoProduccion.vendidoStockeado > 0)
-	almacenProductosTerminados.reservarStockeados(pedido.tipoProducto, pedidoProduccion.vendidoStockeado);
+            pedidoProduccion.vendidoStockeado, pedidoProduccion.producidoVendido ,
+            pedidoProduccion.producidoParaStockear, pedido.tipoProducto);
+            Logger::logMessage(Logger::TRACE, mensajePantalla);
 
-}
+            if(pedidoProduccion.producidoParaStockear > 0)
+            almacenProductosTerminados.reservarVaciosComoDisponibles(pedidoProduccion.producidoParaStockear);
+
+            if(pedidoProduccion.producidoVendido > 0)
+            almacenProductosTerminados.reservarVaciosAProduccion(pedidoProduccion.producidoVendido);
+
+            if(pedidoProduccion.vendidoStockeado > 0)
+            almacenProductosTerminados.reservarStockeados(pedido.tipoProducto, pedidoProduccion.vendidoStockeado);
+
+        }
 
 pedido_fabricacion_t ControladorVendedor::reservarPedido(pedido_t pedido, bool* pedidoEnStock)
 {
-    
+
     pedido_fabricacion_t pedidoProduccion = calcularCantidadAProducir(pedido, pedidoEnStock);
-    if(pedidoProduccion.ventaEsValida)
-	efectuarReserva(pedido, pedidoProduccion);
+    if(pedidoProduccion.ventaEsValida) {
+        efectuarReserva(pedido, pedidoProduccion);
+    }
     return pedidoProduccion;
 }
 
@@ -182,12 +183,6 @@ void ControladorVendedor::confirmarPedidos(pedido_fabricacion_t pedidoProduccion
                                                          pedidoProduccion[i].tipoProducto);
 
         this->enviarPedidoProduccionAAlmacenPiezas(pedidoProduccion[i]);
-	    
-	if(pedidoProduccion[i].producidoVendido == 0 &&
-		   pedidoProduccion[i].producidoParaStockear == 0)
-	    ordenDeCompra.productoTerminado_[i] = true;
-	else
-	    ordenDeCompra.productoTerminado_[i] = false;
     }
     
     sprintf(mensajePantalla, "Envia orden de compra número %ld de cliente %ld a despacho.", 
@@ -295,10 +290,13 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
     Logger::getInstance().logMessage(Logger::IMPORTANT, "Paso el mutex del almacen de terminados");
     bool ordenDeCompraEsValida = true;
     pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
+
     for(int i = 0; i < cantPedidos; i++)
     {
-        bool* pedidoEnStock = &(ordenDeCompra->productoTerminado_[pedidos[i].tipoProducto]);
+        bool* pedidoEnStock = &(ordenDeCompra->productoTerminado_[pedidos[i].tipoProducto-1]);
+
         pedido_fabricacion_t pedidoProduccion = reservarPedido(pedidos[i], pedidoEnStock);
+
         pedidosProduccion[i] = pedidoProduccion;
         pedidosProduccion[i].numOrdenCompra = ordenDeCompra->idOrden_;
 
@@ -321,5 +319,6 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
         almacenProductosTerminados.anularReservas();
     
     mutexAlmacenTerminados.signal();
+
     return ordenDeCompraEsValida;
 }

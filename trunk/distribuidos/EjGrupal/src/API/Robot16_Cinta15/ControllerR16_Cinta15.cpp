@@ -107,7 +107,9 @@ bool ControllerR16_Cinta15::depositarCajaEnAPT(Caja unaCaja, long & idNroOrdenAP
         obtenerMutexSincronismo();
         semMutex_shMem_APT_.wait();
         
-        Logger::logMessage(Logger::TRACE, "Deposita Caja en APT");
+        sprintf(buffer_, "Deposita Caja en APT - TipoProducto: %d", unaCaja.idProducto_);
+        Logger::logMessage(Logger::TRACE, buffer_);
+
         bool resultado = shMem_APT_.depositarCaja(unaCaja, idNroOrdenAPT);
         semMutex_shMem_APT_.signal();
 

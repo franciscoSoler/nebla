@@ -18,11 +18,11 @@ int generarNumeroDeTipoDeProducto() {
     static int cantidadPedidosRealizados = 0;
 
     bool existeNumeroGenerado = true;
-    int numeroAleatorio = Util::getInstance().generateRandomNumber(0, CANTIDAD_PRODUCTOS);
+    int numeroAleatorio = Util::getInstance().generateRandomNumber(0, CANTIDAD_PRODUCTOS-1);
 
     while( existeNumeroGenerado ) {
         existeNumeroGenerado = false;
-        numeroAleatorio = Util::getInstance().generateRandomNumber(0, CANTIDAD_PRODUCTOS);
+        numeroAleatorio = Util::getInstance().generateRandomNumber(0, CANTIDAD_PRODUCTOS-1);
 
         for (int i = 0; i < cantidadPedidosRealizados; ++i) {
             if (numeroAleatorio == pedidosRealizados[i]) {
