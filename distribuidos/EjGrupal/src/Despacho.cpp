@@ -116,26 +116,16 @@ void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
 
     // Al recibir la ODC, se verifica si algun pedido se encuentra en stock, y se
     // envia mensaje al cliente para que venga a retirar el mismo
-    bool ordenCompleta = true;
 
     for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
         if ( odc.productoTerminado_[i] == true ) {
             odc.productoTerminado_[i] = false;
             controller->notificarAClienteProductoTerminado(odc.idCliente_,
-            pedido.idOrdenDeCompra_, pedido.idProducto_);
-        }
-        else {
-            if (odc.cantidadPorProducto_[i] != 0) {
-                ordenCompleta = false;
-            }
+                        odc.idOrden_, static_cast<TipoProducto>(i+1));
         }
     }
-
-    // Si la ODC poseia todos los pedidos en Stock, no se almacena la misma
-    if ( ! ordenCompleta ) {
-        if (! bufferODC.insert(pedido.idOrdenDeCompra_, new OrdenDeCompra(odc) ) ) {
+    if (! bufferODC.insert(pedido.idOrdenDeCompra_, new OrdenDeCompra(odc) ) ) {
             Logger::logMessage(Logger::ERROR, "Existe mas de una ODC con el mismo identificador");
-        }
     }
 }
 

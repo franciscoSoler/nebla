@@ -13,7 +13,7 @@ Util & Util::getInstance() {
 
 long Util::generateRandomNumber(long minValue, long maxValue) {
     srand( time(NULL) + getpid() );
-     return minValue + rand() % ( (abs(maxValue - minValue)) );
+     return minValue + rand() % ( (abs(maxValue - minValue) + 1) );
 }
 
 Util::Util(const Util& orig) {
