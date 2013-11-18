@@ -17,7 +17,7 @@
 #include "../../Common.h"
 #include "../../IPCs/Barrios/Cola.h"
 
-#include "../../IPCs/IPCAbstractos/MessageQueue/VendedoresMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/VendedorLibreMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
@@ -43,7 +43,7 @@ class ControladorCliente
         
     private:
         
-    IPC::VendedoresMessageQueue vendedores;
+    IPC::VendedorLibreMessageQueue vendedores;
 	IPC::ClientesMessageQueue clientes;
     IPC::PedidosVendedorMessageQueue pedidos;
 

@@ -16,14 +16,14 @@ ControladorCliente::ControladorCliente(long numCliente)
     Logger::setProcessInformation(mensajePantalla);
     
     /* Comunicacion con el vendedor */
-    this->vendedores = IPC::VendedoresMessageQueue("Vendedor - VendedoresMsgQueue");
-    this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
+    this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedorLibreMsgQueue");
+    this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
     
     this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
-    this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
+    this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES_C);
     
     this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
-    this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
+    this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
     
     this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
     this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);

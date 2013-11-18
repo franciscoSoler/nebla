@@ -30,8 +30,10 @@ int main(int argc, char **argv) {
     input >> puertoEntrada;
     input.close();
 
+    std::cout << server << " - " << puertoEntrada << std::endl;
+
     sprintf(buffer, "Levantando server: %s en puerto entrada %d.", server, puertoEntrada);
-    Logger::logMessage(Logger::TRACE, buffer);
+    Logger::logMessage(Logger::COMM, buffer);
 
     int socketEntradaPasivo;
     int socketEntrada; /* socket conectado al cliente */
@@ -43,8 +45,8 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    sprintf(buffer, "Se hizo el open pasivo, socket %d\n", socketEntradaPasivo);
-    Logger::logMessage(Logger::TRACE, buffer);
+    sprintf(buffer, "Se hizo el open pasivo, socket %d", socketEntradaPasivo);
+    Logger::logMessage(Logger::COMM, buffer);
     
     while (true) {
         clilen = sizeof (cli_addr);
@@ -58,8 +60,8 @@ int main(int argc, char **argv) {
         pid_t pid = fork();
         if (pid == 0) {
             close(socketEntradaPasivo);
-            execlp("./canalEntradaVendedor", "canalEntradaVendedor", socketEntradaChar, (char *) 0);
-            sprintf(buffer, "Execlp ./canalEntradaVendedor error: %s\n", strerror(errno));
+            execlp("./CanalEntradaVendedor", "CanalEntradaVendedor", socketEntradaChar, (char *) 0);
+            sprintf(buffer, "execlp ./CanalEntradaVendedor error: %s", strerror(errno));
             Logger::logMessage(Logger::ERROR, buffer);
         }
     }

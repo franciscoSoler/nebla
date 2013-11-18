@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     sprintf(buffer, "Canal Salida Cliente %d", nroCliente);
     Logger::getInstance().setProcessInformation(buffer);
     
-    Logger::logMessage(Logger::TRACE, "Conectando canal de salida");
+    Logger::logMessage(Logger::COMM, "Conectando canal de salida");
 
     char server[TAM_BUFFER];
     int puertoEntrada = 0;
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
     int socketSalida = tcpopact(server, puertoEntrada);
 
     sprintf(buffer, "Conectado al socket: %d", socketSalida);
-    Logger::logMessage(Logger::TRACE, buffer);
+    Logger::logMessage(Logger::COMM, buffer);
 	
     // Recibo el numero de vendedor
     char nroVendedorChar[TAM_BUFFER];
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     int nroVendedor = startMsg.numero;
     
     sprintf(buffer, "Obtuvo vendedor: %d", nroVendedor);
-    Logger::logMessage(Logger::TRACE,buffer);
+    Logger::logMessage(Logger::COMM,buffer);
 	
     try {
         // Le envio el nro vendedor por la cola al cliente	
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
             msg_pedido_t mensajePedido;
             pedidosMessageQueue.recibirMensajePedido(nroVendedor, &mensajePedido);
             sprintf(buffer, "Recibió un pedido. Mtype: %ld", mensajePedido.mtype);		
-            Logger::logMessage(Logger::TRACE, buffer);
+            Logger::logMessage(Logger::COMM, buffer);
                 
             net_msg_pedido_t netMsg;
             netMsg.mensaje = mensajePedido;
@@ -97,20 +97,20 @@ int main(int argc, char **argv) {
             netMsg.size = sizeof(net_msg_pedido_t);
 		    
             if (mensajePedido.tipo != 0) {
-		deboSeguir = false;
+                deboSeguir = false;
             }
 	   
             memcpy(buffer, &netMsg, sizeof(net_msg_pedido_t));
 	
             if (enviar(socketSalida, buffer, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar un pedido,");
-		close(socketSalida);
-		exit(-1);
-		}
-	}
+                close(socketSalida);
+                exit(-1);
+            }
+        }
 	
-        Logger::logMessage(Logger::TRACE, "Finalizando.");
-	close(socketSalida);    
+        Logger::logMessage(Logger::COMM, "Finalizando.");
+        close(socketSalida);
     }   
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

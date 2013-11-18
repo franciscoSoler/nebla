@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
       
-    Logger::logMessage(Logger::TRACE, "Conectando canal de salida");
+    Logger::logMessage(Logger::COMM, "Conectando canal de salida");
     
     int socketSalida;
     sscanf(argv[1], "%d", &socketSalida);
@@ -44,8 +44,8 @@ int main(int argc, char **argv) {
     memcpy(&startMsg, nroClienteChar, sizeof(StartComunicationMessage));	
     int nroCliente = startMsg.numero;
 
-    sprintf(buffer, "Recibi un cliente: %d\n", nroCliente);
-    Logger::logMessage(Logger::TRACE, buffer);
+    sprintf(buffer, "Recibi un cliente: %d", nroCliente);
+    Logger::logMessage(Logger::COMM, buffer);
     
     try {
         IPC::ClientesMessageQueue clientesMsgQueue = IPC::ClientesMessageQueue("ClientesMessageQueue");
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
             clientesMsgQueue.recibirMensajeRespuesta(nroCliente, &respuesta);
             
             net_msg_respuesta_pedido_t netMsg;
-	    netMsg.mensaje = respuesta;
+            netMsg.mensaje = respuesta;
             netMsg.destino = nroCliente;
             netMsg.tipo = respuesta.tipo;	
             netMsg.size = sizeof(net_msg_respuesta_pedido_t);
@@ -66,12 +66,12 @@ int main(int argc, char **argv) {
             memcpy(buffer, &netMsg, sizeof(net_msg_respuesta_pedido_t));
 		
             if (enviar(socketSalida, buffer, TAM_BUFFER) != TAM_BUFFER) {
-		Logger::logMessage(Logger::ERROR, "Error al enviar un resultado.");
+                Logger::logMessage(Logger::ERROR, "Error al enviar un resultado.");
                 exit(-1);
             }
 
-	    if (respuesta.tipo != 0) deboSeguir = false;
-	}
+            if (respuesta.tipo != 0) deboSeguir = false;
+        }
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
-    Logger::logMessage(Logger::TRACE, "Finalizado.");
+    Logger::logMessage(Logger::COMM, "Finalizado.");
     close(socketSalida);    
 }
 

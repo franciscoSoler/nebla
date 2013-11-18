@@ -18,7 +18,7 @@
 
 #include "IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 #include "IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
-#include "IPCs/IPCAbstractos/MessageQueue/VendedoresMessageQueue.h"
+#include "IPCs/IPCAbstractos/MessageQueue/VendedorLibreMessageQueue.h"
 
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 #include "IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
@@ -210,7 +210,7 @@ int main(int argc, char* argv[]) {
         // Fin IPCs Torres
 
     
-        IPC::VendedoresMessageQueue vendedores("Vendedores Msg Queue");
+        IPC::VendedorLibreMessageQueue vendedores("Vendedores Msg Queue");
         vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
         vendedores.destroy();
         IPC::ClientesMessageQueue clientes("Clientes Msg Queue");

@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
     input.close();
 
     sprintf(buffer, "Levantando server: %s en puerto salida %d", server, puertoSalida);
-    Logger::logMessage(Logger::TRACE, buffer);
+    Logger::logMessage(Logger::COMM, buffer);
 
     int socketSalidaPasivo;
     int socketSalida; /* socket conectado al cliente */
@@ -45,23 +45,27 @@ int main(int argc, char **argv) {
         exit(1);
     }
     
-    sprintf(buffer, "Se hizo el open pasivo, socket %d\n", socketSalidaPasivo);
-    Logger::logMessage(Logger::TRACE, buffer);
+    sprintf(buffer, "Se hizo el open pasivo, socket %d", socketSalidaPasivo);
+    Logger::logMessage(Logger::COMM, buffer);
     
     while (true) {
         clilen = sizeof (cli_addr);
 
         socketSalida = accept(socketSalidaPasivo, (struct sockaddr *) &cli_addr, &clilen);
+        if (socketSalida == -1) {
+            Logger::logMessage(Logger::ERROR, "Error en accept. Abortando Servidor");
+            abort();
+        }
 
-        Logger::logMessage(Logger::TRACE, "Se conecto un cliente al socket.");
+        Logger::logMessage(Logger::COMM, "Se conecto un cliente al socket.");
 
-        sprintf(socketSalidaChar, "%d\n", socketSalida); /* Pasarle el socket al hijo que atiende */
+        sprintf(socketSalidaChar, "%d", socketSalida); /* Pasarle el socket al hijo que atiende */
 
         pid_t pid = fork();
         if (pid == 0) {
             close(socketSalidaPasivo);
-            execlp("./canalSalidaVendedor", "canalSalidaVendedor", socketSalidaChar, (char *) 0);
-            sprintf(buffer, "Execlp ./canalSalidaVendedor error: %s\n", strerror(errno));
+            execlp("./CanalSalidaVendedor", "CanalSalidaVendedor", socketSalidaChar, (char *) 0);
+            sprintf(buffer, "Execlp ./CanalSalidaVendedor error: %s", strerror(errno));
             Logger::logMessage(Logger::ERROR, buffer);
         }
     }

@@ -9,8 +9,8 @@
 
 std::string Logger::m_ProcessInf = "Generic Process N°X:";
 std::string Logger::m_LogName = "Log.txt";
-std::string Logger::m_BackgroundColor[] = {"\033[1;0m", "\033[1;34m", "\033[1;35m", "\033[1;31m"};
-std::string Logger::m_ForegroundColor[] = {"\033[1;0m", "\033[1;0m", "\033[1;0m", "\033[1;43m"};
+std::string Logger::m_BackgroundColor[] = {"\033[1;0m", "\033[1;34m", "\033[1;35m", "\033[1;33m", "\033[1;31m"};
+std::string Logger::m_ForegroundColor[] = {"\033[1;0m", "\033[1;0m", "\033[1;0m", "\033[1;0m", "\033[1;43m"};
 
 Logger& Logger::getInstance() {
 	/* Variable instantiated in the first use, destroyed 
