@@ -13,7 +13,7 @@
 #include <cstring>
 #include <unistd.h>
 
-#include "../../IPCs/IPCAbstractos/MessageQueue/VendedoresMessageQueue.h"
+#include "../../IPCs/IPCAbstractos/MessageQueue/VendedorLibreMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
@@ -32,7 +32,7 @@ public:
 	ControladorVendedor(long numVendedor);
 	virtual ~ControladorVendedor();
 	
-	long recibirLlamadoTelefonico();
+    void recibirLlamadoTelefonico();
 	int obtenerNumeroDeOrdenDeCompra();
 	
 	pedido_t recibirPedido();
@@ -47,7 +47,7 @@ public:
 
 private:
 	long numVendedor;
-	IPC::VendedoresMessageQueue vendedores;
+	IPC::VendedorLibreMessageQueue vendedores;
 	IPC::ClientesMessageQueue clientes;
 	IPC::PedidosVendedorMessageQueue pedidos;
 	MemoriaCompartida shmemNumeroOrdenCompra;

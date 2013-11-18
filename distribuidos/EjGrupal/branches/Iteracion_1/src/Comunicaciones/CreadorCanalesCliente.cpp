@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "../IPCs/IPCAbstractos/MessageQueue/VendedoresMessageQueue.h"
+#include "../IPCs/IPCAbstractos/MessageQueue/VendedorLibreMessageQueue.h"
 #include "../Logger/Logger.h"
 #include "../Common.h"
 
@@ -12,19 +12,19 @@ extern int tcpopact(char *, int);
 int main(int argc, char **argv) {
 	static char numClienteString[10];
 
-        Logger::setProcessInformation("Creador Canales Cliente");
+    Logger::setProcessInformation("Creador Canales Cliente");
         
 	char buffer[TAM_BUFFER];
 
-        IPC::VendedoresMessageQueue getVendedorQueue;
-        try {
-            getVendedorQueue = IPC::VendedoresMessageQueue("VendedoresMessageQueue");
-            getVendedorQueue.createMessageQueue((char*)DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
-        }
-        catch (Exception & e) {
-            Logger::logMessage(Logger::ERROR, e.get_error_description());
-            exit(-1);
-        }
+    IPC::VendedorLibreMessageQueue getVendedorQueue;
+    try {
+        getVendedorQueue = IPC::VendedorLibreMessageQueue("VendedoresMessageQueue");
+        getVendedorQueue.getMessageQueue((char*)DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        exit(-1);
+    }
 	
 	while (true) {
         mensaje_inicial_t handShake;
@@ -36,22 +36,22 @@ int main(int argc, char **argv) {
         }
 
         sprintf(buffer, "Llego el cliente: %ld.", handShake.emisor);
-        Logger::logMessage(Logger::TRACE, buffer);
+        Logger::logMessage(Logger::COMM, buffer);
 
         sprintf(numClienteString, "%ld", handShake.emisor);
 
         pid_t pid = fork();
         if (pid == 0) {
-            execlp("./canalSalidaCliente", "canalSalidaCliente", numClienteString, (char *) 0);
-            sprintf(buffer, "CreadorCanalesCliente: Execlp ./canalSalidaCliente error: %s\n", strerror(errno));
+            execlp("./CanalSalidaCliente", "CanalSalidaCliente", numClienteString, (char *) 0);
+            sprintf(buffer, "CreadorCanalesCliente: Execlp ./CanalSalidaCliente error: %s", strerror(errno));
             write(fileno(stdout), buffer, strlen(buffer));
             exit(-1);
         }
 
         pid_t pid2 = fork();
         if (pid2 == 0) {
-            execlp("./canalEntradaCliente", "canalEntradaCliente", numClienteString, (char *) 0);
-            sprintf(buffer, "Creador Canales Cliente: Execlp ./canalEntradaCliente error: %s\n", strerror(errno));
+            execlp("./CanalEntradaCliente", "CanalEntradaCliente", numClienteString, (char *) 0);
+            sprintf(buffer, "Creador Canales Cliente: Execlp ./CanalEntradaCliente error: %s", strerror(errno));
             write(fileno(stdout), buffer, strlen(buffer));
             exit(-1);
         }

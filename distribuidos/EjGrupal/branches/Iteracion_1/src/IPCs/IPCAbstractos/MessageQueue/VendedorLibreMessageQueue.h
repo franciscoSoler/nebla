@@ -14,13 +14,13 @@
 
 namespace IPC {
     
-class VendedoresMessageQueue : public AbstractMessageQueue 
+class VendedorLibreMessageQueue : public AbstractMessageQueue
 {
 public:
 
-    VendedoresMessageQueue(std::string IPCName = "") : AbstractMessageQueue(IPCName) {}
+    VendedorLibreMessageQueue(std::string IPCName = "") : AbstractMessageQueue(IPCName) {}
 
-    virtual ~VendedoresMessageQueue() {}
+    virtual ~VendedorLibreMessageQueue() {}
 
     int enviarMensajeInicial(mensaje_inicial_t dato) {
         return this->enviar ((const void *) &dato, sizeof (mensaje_inicial_t) - sizeof (long)); 

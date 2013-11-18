@@ -34,7 +34,7 @@
 
 #include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
-#include "VendedoresMessageQueue.h"
+#include "VendedorLibreMessageQueue.h"
 #include "ClientesMessageQueue.h"
 #include "PedidosVendedorMessageQueue.h"
 
@@ -77,7 +77,12 @@ int main(int argc, char* argv[]) {
         createProcess("Despacho");
         createProcess("AGV", 3);
         createProcess("Vendedor", 5, 1);
-        createProcess("Cliente", 1, 1);
+        // createProcess("Cliente", 1, 1);
+
+        // Procesos correspondientes al Middleware
+        createProcess("CreadorCanalesCliente");
+        createProcess("ServidorVendedorEntrada");
+        createProcess("ServidorVendedorSalida");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -310,13 +315,23 @@ void createIPCs() {
     /* Fin IPCs Torres */
 
         
-    IPC::VendedoresMessageQueue vendedores("Vendedores Msg Queue");
+    IPC::VendedorLibreMessageQueue vendedores("Vendedores Msg Queue");
     vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     IPC::ClientesMessageQueue clientes("Clientes Msg Queue");
     clientes.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
     IPC::PedidosVendedorMessageQueue pedidos("Pedidos Msg Queue");
     pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
-    
+
+
+    /* Esto iría en un Launcher de Clientes */
+    IPC::VendedorLibreMessageQueue vendedores_c ("Vendedores Msg Queue");
+    vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
+    IPC::ClientesMessageQueue clientes_c ("Clientes Msg Queue");
+    clientes.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES_C);
+    IPC::PedidosVendedorMessageQueue pedidos_c ("Pedidos Msg Queue");
+    pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
+
+
     Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     consultasAlmacen.crear();
     Cola<respuesta_almacen_piezas_t> respuestasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);

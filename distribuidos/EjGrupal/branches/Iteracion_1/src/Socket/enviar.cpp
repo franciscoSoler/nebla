@@ -21,8 +21,7 @@ int enviar(int sockfd, void *datos, size_t nbytes)
 	enviados = 0;
 	while(nbytes)
 	{
-		ult_envio = write(sockfd, ((unsigned char *) datos) + enviados,
-				nbytes);
+        ult_envio = write(sockfd, ((unsigned char *) datos) + enviados, nbytes);
 		if (ult_envio <= 0) return enviados;    /* error */
 		enviados += ult_envio;
 		nbytes -= ult_envio;

@@ -17,7 +17,7 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     sprintf(buffer, "Vendedor N#%ld:", numVendedor);
     Logger::setProcessInformation(buffer);
     
-    this->vendedores = IPC::VendedoresMessageQueue("Vendedor - VendedoresMsgQueue");
+    this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue");
     this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     
     this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
@@ -49,15 +49,16 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
 
 ControladorVendedor::~ControladorVendedor() { }
 
-long ControladorVendedor::recibirLlamadoTelefonico()
+void ControladorVendedor::recibirLlamadoTelefonico()
 {
     mensaje_inicial_t bufferMensajeInicial;
-    this->vendedores.recibirMensajeInicial(TIPO_BUSCANDO_VENDEDOR, &bufferMensajeInicial);
-    int tiempoRespuesta = (rand() % 20) * 100 * 1000; 
-    usleep(tiempoRespuesta);
+    bufferMensajeInicial.mtype = TIPO_VENDEDOR_LIBRE;
+    bufferMensajeInicial.emisor = numVendedor;
+
+    this->vendedores.enviarMensajeInicial( bufferMensajeInicial );
 
     /* Arma el mensaje para contactar al cliente. */
-    long numCliente = bufferMensajeInicial.emisor;
+    /*long numCliente = bufferMensajeInicial.emisor;
 
     respuesta_pedido_t respuesta;
     respuesta.emisor = numVendedor;
@@ -68,7 +69,7 @@ long ControladorVendedor::recibirLlamadoTelefonico()
 
     clientes.enviarMensajeRespuesta(mensajeRespuesta);
     
-    return bufferMensajeInicial.emisor;
+    return bufferMensajeInicial.emisor;*/
 }
 
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()

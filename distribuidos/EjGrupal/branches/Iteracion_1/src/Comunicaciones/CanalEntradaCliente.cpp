@@ -27,15 +27,14 @@ int main(int argc, char **argv) {
 
     sprintf(buffer, "Canal Entrada Cliente %d", nroCliente);
     Logger::getInstance().setProcessInformation(buffer);
-    
-    Logger::logMessage(Logger::TRACE, "Conectando canal de entrada");
+    Logger::logMessage(Logger::COMM, "Conectando canal de entrada");
 
     char server[TAM_BUFFER];
     int puertoEntrada = 0;
     int puertoSalida = 0;
     std::ifstream input("Config", std::ifstream::in);
     if (!input) {
-        Logger::logMessage(Logger::ERROR, "Error al abrir el archivo");
+        Logger::logMessage(Logger::ERROR, "Error al abrir archivo de configuración");
         exit(1);
     }
     input >> server;
@@ -44,9 +43,8 @@ int main(int argc, char **argv) {
     input.close();
 
     int socketEntrada = tcpopact(server, puertoSalida);
-
     sprintf(buffer, "Conectado al socket: %d", socketEntrada);
-    Logger::logMessage(Logger::TRACE, buffer);
+    Logger::logMessage(Logger::COMM, buffer);
 
     IPC::ClientesMessageQueue clientesMessageQueue = IPC::ClientesMessageQueue("Cliente Msg Queue");
     clientesMessageQueue.getMessageQueue((char*) DIRECTORY_VENDEDOR, ID_COLA_CLIENTES_C);
