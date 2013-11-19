@@ -219,6 +219,7 @@ int main(int argc, char* argv[]) {
         IPC::PedidosVendedorMessageQueue pedidos("Pedidos Msg Queue");
         pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
         pedidos.destroy();
+
 	
         IPC::Semaphore mutexAlmacenDePiezas("mutexAlmacenDePiezas");
         mutexAlmacenDePiezas.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ALMACEN_PIEZAS, 1);
@@ -238,12 +239,9 @@ int main(int argc, char* argv[]) {
     }
     
     catch (Exception & e) {
-        Logger::getInstance().logMessage(Logger::ERROR, 
-        e.get_error_description().c_str());
-        return -1;
+        Logger::getInstance().logMessage(Logger::ERROR, e.get_error_description().c_str());
+        abort();
     }
-    
-    
 
     Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     consultasAlmacen.destruir();

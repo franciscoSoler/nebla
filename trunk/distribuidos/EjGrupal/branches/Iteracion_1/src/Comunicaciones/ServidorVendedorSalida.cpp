@@ -5,7 +5,6 @@
 
 #include "../Common.h"
 #include "../Socket/inet.h"
-
 #include "../Logger/Logger.h"
 
 extern int tcpoppas(int puerto);

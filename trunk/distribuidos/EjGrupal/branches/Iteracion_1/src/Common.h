@@ -79,6 +79,7 @@
 #define MSGQUEUE_R16_CINTA15_INPUT_ID   2
 #define MSGQUEUE_R16_DESPACHO_INPUT_ID  3
 #define MSGQUEUE_R16_CLIENT_ID          4
+#define MSGQUEUE_R16_CLIENT_ID_C        5
 
 // ipcs del despacho (usar DIRECTORY_DESPACHO)
 #define MSGQUEUE_DESPACHO_INPUT_ID      1
@@ -86,6 +87,7 @@
 // ipcs del cliente (usar DIRECTORY_CLIENTE)
 #define MSGQUEUE_CLIENT_INPUT_ID        1
 #define MSGQUEUE_CLIENT_OUTPUT_ID       2
+#define MSGQUEUE_CLIENT_INPUT_ID_C      3
 
 // ipcs del vendedor (usar DIRECTORY_VENDEDOR)
 #define MSGQUEUE_VENDOR_INPUT_ID        1
