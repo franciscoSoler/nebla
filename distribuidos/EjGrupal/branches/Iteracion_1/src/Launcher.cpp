@@ -314,22 +314,12 @@ void createIPCs() {
 
     /* Fin IPCs Torres */
 
-        
     IPC::VendedorLibreMessageQueue vendedores("Vendedores Msg Queue");
     vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     IPC::ClientesMessageQueue clientes("Clientes Msg Queue");
     clientes.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
     IPC::PedidosVendedorMessageQueue pedidos("Pedidos Msg Queue");
     pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
-
-
-    /* Esto iría en un Launcher de Clientes */
-    IPC::VendedorLibreMessageQueue vendedores_c ("Vendedores Msg Queue");
-    vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
-    IPC::ClientesMessageQueue clientes_c ("Clientes Msg Queue");
-    clientes.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES_C);
-    IPC::PedidosVendedorMessageQueue pedidos_c ("Pedidos Msg Queue");
-    pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
 
 
     Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
