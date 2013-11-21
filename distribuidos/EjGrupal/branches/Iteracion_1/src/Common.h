@@ -83,6 +83,7 @@
 
 // ipcs del despacho (usar DIRECTORY_DESPACHO)
 #define MSGQUEUE_DESPACHO_INPUT_ID      1
+#define MSGQUEUE_DESPACHO_INPUT_ID_C    2
 
 // ipcs del cliente (usar DIRECTORY_CLIENTE)
 #define MSGQUEUE_CLIENT_INPUT_ID        1

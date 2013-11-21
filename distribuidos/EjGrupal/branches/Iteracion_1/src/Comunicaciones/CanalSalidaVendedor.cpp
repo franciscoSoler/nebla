@@ -56,6 +56,10 @@ int main(int argc, char **argv) {
             
             msg_respuesta_pedido_t respuesta;
             clientesMsgQueue.recibirMensajeRespuesta(nroCliente, &respuesta);
+
+            sprintf(buffer, "mtype: %ld - emisor: %ld - recOK: %d - tipo: %d",
+            respuesta.mtype, respuesta.respuesta_pedido.emisor, respuesta.respuesta_pedido.recepcionOK, respuesta.tipo );
+            Logger::logMessage(Logger::COMM, buffer);
             
             net_msg_respuesta_pedido_t netMsg;
             netMsg.mensaje = respuesta;
