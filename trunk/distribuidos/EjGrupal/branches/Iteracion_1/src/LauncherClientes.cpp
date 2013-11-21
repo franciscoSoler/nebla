@@ -46,7 +46,7 @@ void createDirectory(std::string directoryName) {
 }
 
 void createIPCs() {
-    Logger::getInstance().createLog();
+    // Logger::getInstance().createLog();
     Logger::getInstance().setProcessInformation("LauncherCliente:");
 
     /* NOTA: La notación para colas es que el input o output es respecto
@@ -61,6 +61,9 @@ void createIPCs() {
     R16_Cliente_Queue.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
     Logger::logMessage(Logger::IMPORTANT, "IPC R16_Cliente_Queue creado");
 
+    /* IPC::MsgQueue despacho("Despacho");
+    despacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);*/
+
     IPC::VendedorLibreMessageQueue vendedores ("Vendedores Msg Queue");
     vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
     Logger::logMessage(Logger::IMPORTANT, "IPC VendedorLibreMessageQueue creado");
@@ -72,7 +75,6 @@ void createIPCs() {
     IPC::PedidosVendedorMessageQueue pedidos ("Pedidos Msg Queue");
     pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
     Logger::logMessage(Logger::IMPORTANT, "IPC PedidosVendedorMessageQueue creado");
-
 }
 
 void createProcess(std::string processName, int amountOfProcesses, int parameterOffset) {

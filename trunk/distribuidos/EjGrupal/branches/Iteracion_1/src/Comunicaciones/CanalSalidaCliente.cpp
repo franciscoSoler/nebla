@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
         while (deboSeguir) {
             msg_pedido_t mensajePedido;
             pedidosMessageQueue.recibirMensajePedido(nroVendedor, &mensajePedido);
-            sprintf(buffer, "Recibió un pedido. Mtype: %ld", mensajePedido.mtype);		
+            sprintf(buffer, "Recibió un pedido. Mtype: %ld - Tipo: %d", mensajePedido.mtype, mensajePedido.tipo);
             Logger::logMessage(Logger::COMM, buffer);
                 
             net_msg_pedido_t netMsg;

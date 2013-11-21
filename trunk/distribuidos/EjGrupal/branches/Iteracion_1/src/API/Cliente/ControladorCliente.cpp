@@ -25,14 +25,14 @@ ControladorCliente::ControladorCliente(long numCliente)
     this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
     this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
     
-    this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
-    this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+    /* this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
+    this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);*/
     
     this->retiro = IPC::MsgQueue("retiro");
-    this->retiro.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
+    this->retiro.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
 
     this->inputQueueCliente = IPC::MsgQueue("inputQueueCliente");
-    this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
+    this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_C);
     
     this->numCliente = numCliente;
 }

@@ -240,7 +240,7 @@ void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente,
     msg_respuesta_pedido_t msgRespuesta;
     msgRespuesta.respuesta_pedido = pedido;
     msgRespuesta.mtype = numCliente;
-    
+    msgRespuesta.tipo = 0;
     clientes.enviarMensajeRespuesta(msgRespuesta);
 }
 
@@ -249,7 +249,7 @@ void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respues
     msg_respuesta_pedido_t msgRespuesta;
     msgRespuesta.respuesta_pedido = pedido;
     msgRespuesta.mtype = numCliente;
-    
+    msgRespuesta.tipo = 0;
     clientes.enviarMensajeRespuesta(msgRespuesta);
 }
 

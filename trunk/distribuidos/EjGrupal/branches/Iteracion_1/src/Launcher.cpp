@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
         // createProcess("Cliente", 1, 1);
 
         // Procesos correspondientes al Middleware
-        createProcess("CreadorCanalesCliente");
+        // createProcess("CreadorCanalesCliente");
         createProcess("ServidorVendedorEntrada");
         createProcess("ServidorVendedorSalida");
     }
