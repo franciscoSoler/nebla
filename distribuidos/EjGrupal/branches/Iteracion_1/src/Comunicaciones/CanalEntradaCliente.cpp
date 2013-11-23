@@ -9,7 +9,7 @@
 #include "../Common.h"
 #include "ClientesMessageQueue.h"
 
-#include <API/Objects/CommunicationsUtil.h>
+#include <Comunicaciones//Objects/CommunicationsUtil.h>
 #include <Socket/SocketConnector.h>
 #include <Socket/SocketStream.h>
 
@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    sprintf(buffer, "Canal Entrada Cliente %d", nroCliente);
+    sprintf(buffer, "Canal Entrada Cliente %d:", nroCliente);
     Logger::getInstance().setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conectando canal de entrada");
 

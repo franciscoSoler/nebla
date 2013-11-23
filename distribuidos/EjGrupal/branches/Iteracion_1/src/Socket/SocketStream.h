@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string>
 #include <memory>
+#include <Logger/Logger.h>
 
 
 class SocketStream
@@ -38,3 +39,4 @@ public:
 };
 
 #endif
+

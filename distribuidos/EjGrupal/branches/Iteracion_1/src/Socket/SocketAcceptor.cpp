@@ -10,14 +10,10 @@ SocketAcceptor::SocketAcceptor(int port, int listeners, const char* address)
       m_address(address),
       m_listening(false) {}
 
-SocketAcceptor::~SocketAcceptor()
-{
-    if (m_lsd > 0) {
-        close(m_lsd);
-    }
+SocketAcceptor::~SocketAcceptor() {
 }
 
-int SocketAcceptor::start() {
+int SocketAcceptor::configureSocket() {
     if (m_listening == true) {
         return 0;
     }
@@ -68,4 +64,13 @@ SocketStream* SocketAcceptor::accept() {
         return NULL;
     }
     return new SocketStream(sd, &address);
+}
+
+bool SocketAcceptor::destroy() {
+    if (m_lsd > 0) {
+        close(m_lsd);
+        return true;
+    }
+
+    return false;
 }
