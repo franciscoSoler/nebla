@@ -44,6 +44,8 @@ include_directories("${SRC_DIR}Parser")
 include_directories("${SRC_DIR}Socket")
 include_directories("${SRC_DIR}Comunicaciones")
 include_directories("${SRC_DIR}Comunicaciones/Objects")
+include_directories("${SRC_DIR}Comunicaciones/Signals")
+include_directories("${SRC_DIR}Comunicaciones/Signals/Handlers")
 
 aux_source_directory("${SRC_DIR}API"                                     COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/AGV"                                 AGV_SRC)
@@ -76,8 +78,11 @@ aux_source_directory("${SRC_DIR}IPCs/Semaphore"                          LIBRARY
 aux_source_directory("${SRC_DIR}IPCs/Barrios"                            LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Logger"                                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Parser"                                  LIBRARY_SRC)
+
 aux_source_directory("${SRC_DIR}Socket"                                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Comunicaciones/Objects"                  LIBRARY_SRC)
+aux_source_directory("${SRC_DIR}Comunicaciones/Signals"                  LIBRARY_SRC)
+aux_source_directory("${SRC_DIR}Comunicaciones/Signals/Handlers"         LIBRARY_SRC)
 
 add_library(IPCLibrary
             SHARED

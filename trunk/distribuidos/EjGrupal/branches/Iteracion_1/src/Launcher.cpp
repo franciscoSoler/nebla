@@ -37,6 +37,7 @@
 #include "VendedorLibreMessageQueue.h"
 #include "ClientesMessageQueue.h"
 #include "PedidosVendedorMessageQueue.h"
+#include <Comunicaciones/Objects/CommunicationsUtil.h>
 
 
 static char buffer[255];
@@ -46,6 +47,7 @@ static char param1[20];
 void createIPCs();
 void createDirectory(std::string directoryName);
 void createProcess(std::string processName, int amountOfProcesses = 1, int parameterOffset = 0);
+void createServerProcess(std::string processName, int amountOfProcesses = 1, int parameterOffset = 0);
 
 int main(int argc, char* argv[]) {
     try {
@@ -66,9 +68,7 @@ int main(int argc, char* argv[]) {
         
         createProcess("Robot5-Agv", 1);
         createProcess("Robot5-Cinta", 1);
-
         createProcess("AlmacenPiezas", 1);
-                                
         createProcess("Robot11", 2);
         createProcess("Robot12", 2);
         createProcess("Robot14");
@@ -77,12 +77,10 @@ int main(int argc, char* argv[]) {
         createProcess("Despacho");
         createProcess("AGV", 3);
         createProcess("Vendedor", 5, 1);
-        // createProcess("Cliente", 1, 1);
 
         // Procesos correspondientes al Middleware
-        // createProcess("CreadorCanalesCliente");
-        createProcess("ServidorVendedorEntrada");
-        createProcess("ServidorVendedorSalida");
+        createServerProcess("ServidorVendedorEntrada");
+        createServerProcess("ServidorVendedorSalida");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -382,6 +380,35 @@ void createProcess(std::string processName, int amountOfProcesses, int parameter
             Logger::getInstance().logMessage(Logger::ERROR, buffer);
         }
         else if (pid == 0) {
+            // Child process. Pass the arguments to the process and call exec
+            sprintf(param1, "%d", i);
+            sprintf(buffer, "./%s", processName.c_str());
+            execlp(buffer, processName.c_str(), param1, (char *) 0);
+
+            sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
+            Logger::getInstance().logMessage(Logger::ERROR, buffer);
+
+            return;
+        }
+    }
+}
+
+void createServerProcess(std::string processName, int amountOfProcesses, int parameterOffset) {
+    pid_t pid;
+    CommunicationsUtil util;
+    char buffer[255];
+
+    for (int i = parameterOffset; i < amountOfProcesses + parameterOffset; i++) {
+        if ((pid = fork()) < 0) {
+            sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
+            Logger::getInstance().logMessage(Logger::ERROR, buffer);
+        }
+        else if (pid == 0) {
+            // Register server pid
+            sprintf(buffer, "Creando Server %s - Pid %d", processName.c_str(), getpid());
+            Logger::logMessage(Logger::IMPORTANT, buffer);
+            util.registerServer( getpid() );
+
             // Child process. Pass the arguments to the process and call exec
             sprintf(param1, "%d", i);
             sprintf(buffer, "./%s", processName.c_str());

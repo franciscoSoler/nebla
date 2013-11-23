@@ -37,6 +37,16 @@
 #include "IPCs/Barrios/MemoriaCompartida.h"
 #include "MsgQueue.h"
 
+#include <Comunicaciones/Objects/CommunicationsUtil.h>
+#include <signal.h>
+#include <list>
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+
+
+void killServerProcesses();
+
 int main(int argc, char* argv[]) {
     try {
         Logger::getInstance().setProcessInformation("Terminator:");
@@ -260,5 +270,26 @@ int main(int argc, char* argv[]) {
     IPC::Semaphore mutexOrdenDeCompra("mutexOrdenDeCompra");
     mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
     mutexOrdenDeCompra.destroy();
+
+    // Elimino a los procesos servidores
+    killServerProcesses();
+}
+
+void killServerProcesses() {
+    CommunicationsUtil util;
+    std::list<pid_t> serverList = util.getRegisteredServers();
+    std::list<pid_t>::iterator it;
+    char buffer[255];
+
+    for (it = serverList.begin(); it != serverList.end(); it++) {
+        pid_t serverPid = *it;
+
+        sprintf(buffer, "Matando Server con Pid %d", serverPid);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
+        kill(serverPid, SIGINT);
+    }
+
+    remove(SERVERS_FILE_NAME);
 }
 

@@ -1,12 +1,13 @@
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
-#include <assert.h>
 
 #include "../Common.h"
 #include "../Logger/Logger.h"
 
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
+#include <Comunicaciones/Signals/SignalHandler.h>
+#include <Comunicaciones/Signals/Handlers/SIGINT_Handler.h>
 #include <Socket/SocketAcceptor.h>
 #include <Socket/SocketStream.h>
 
@@ -16,6 +17,9 @@ int main(int argc, char **argv) {
     static char socketEntradaChar[15];
     CommunicationsUtil util;
     char buffer[TAM_BUFFER];
+
+    SIGINT_Handler handler;
+    SignalHandler::getInstance().registerHandler(SIGINT, &handler);
 
     char server[TAM_BUFFER]; // Unused
     int puertoEntrada = 0;
@@ -30,10 +34,12 @@ int main(int argc, char **argv) {
     SocketAcceptor acceptor(puertoEntrada);
     acceptor.configureSocket();
     Logger::logMessage(Logger::COMM, "Comienza a escuchar conexiones de clientes");
-    
-    while (true) {
+
+    while ( true ) {
         SocketStream::SocketStreamPtr socketEntrada( acceptor.accept() );
-        assert( socketEntrada.get() );
+        if (not socketEntrada.get() ) {
+            break;
+        }
         Logger::logMessage(Logger::COMM, "Acepta conexión. Procede a forkear la misma");
         sprintf(socketEntradaChar, "%d", socketEntrada->getSd());
 
@@ -43,9 +49,9 @@ int main(int argc, char **argv) {
             sprintf(buffer, "execlp ./CanalEntradaVendedor error: %s", strerror(errno));
             Logger::logMessage(Logger::ERROR, buffer);
         }
+
         socketEntrada->destroy();
     }
 
-    acceptor.destroy();
     return 0;
 } 
