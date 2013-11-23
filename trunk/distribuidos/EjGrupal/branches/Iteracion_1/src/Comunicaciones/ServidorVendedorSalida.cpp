@@ -1,73 +1,51 @@
-
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
+#include <assert.h>
 
 #include "../Common.h"
-#include "../Socket/inet.h"
 #include "../Logger/Logger.h"
 
-extern int tcpoppas(int puerto);
+#include <Comunicaciones/Objects/CommunicationsUtil.h>
+#include <Socket/SocketAcceptor.h>
+#include <Socket/SocketStream.h>
 
 int main(int argc, char **argv) {
-
-    Logger::setProcessInformation("Servidor Vendedor Salida");
-
+    Logger::setProcessInformation("Servidor Vendedor Salida:");
+    /* string que contiene el socket para el servidor de eco */
     static char socketSalidaChar[15];
-
+    CommunicationsUtil util;
     char buffer[TAM_BUFFER];
 
     char server[TAM_BUFFER]; // Unused
-    int puertoEntrada = 0; // Unused
+    int puertoEntrada = 0;
     int puertoSalida = 0;
-
-    std::ifstream input("Config", std::ifstream::in);
-    if (!input) {
-        Logger::logMessage(Logger::ERROR, "Error al abrir el archivo de configuracion.");
-        exit(1);
+    if ( util.parseChannelArgs(server, puertoEntrada, puertoSalida) == -1 ) {
+        exit(-1);
     }
-    input >> server;
-    input >> puertoEntrada;
-    input >> puertoSalida;
-    input.close();
 
-    sprintf(buffer, "Levantando server: %s en puerto salida %d", server, puertoSalida);
+    sprintf(buffer, "Levantando server: %s en puerto %d.", server, puertoSalida);
     Logger::logMessage(Logger::COMM, buffer);
 
-    int socketSalidaPasivo;
-    int socketSalida; /* socket conectado al cliente */
-    unsigned clilen; /* longitud dir. cliente */
-    struct sockaddr_in cli_addr;
+    SocketAcceptor acceptor(puertoSalida);
+    acceptor.configureSocket();
+    Logger::logMessage(Logger::COMM, "Comienza a escuchar conexiones de clientes");
 
-    if ((socketSalidaPasivo = tcpoppas(puertoSalida)) < 0) {
-        Logger::logMessage(Logger::ERROR, "No se puede abrir el stream socket (error en open pasivo)");
-        exit(1);
-    }
-    
-    sprintf(buffer, "Se hizo el open pasivo, socket %d", socketSalidaPasivo);
-    Logger::logMessage(Logger::COMM, buffer);
-    
     while (true) {
-        clilen = sizeof (cli_addr);
-
-        socketSalida = accept(socketSalidaPasivo, (struct sockaddr *) &cli_addr, &clilen);
-        if (socketSalida == -1) {
-            Logger::logMessage(Logger::ERROR, "Error en accept. Abortando Servidor");
-            abort();
-        }
-
-        Logger::logMessage(Logger::COMM, "Se conecto un cliente al socket.");
-
-        sprintf(socketSalidaChar, "%d", socketSalida); /* Pasarle el socket al hijo que atiende */
+        SocketStream::SocketStreamPtr socketSalida( acceptor.accept() );
+        assert( socketSalida.get() );
+        Logger::logMessage(Logger::COMM, "Acepta conexión. Procede a forkear la misma");
+        sprintf(socketSalidaChar, "%d", socketSalida->getSd());
 
         pid_t pid = fork();
         if (pid == 0) {
-            close(socketSalidaPasivo);
             execlp("./CanalSalidaVendedor", "CanalSalidaVendedor", socketSalidaChar, (char *) 0);
-            sprintf(buffer, "Execlp ./CanalSalidaVendedor error: %s", strerror(errno));
+            sprintf(buffer, "execlp ./CanalSalidaVendedor error: %s", strerror(errno));
             Logger::logMessage(Logger::ERROR, buffer);
         }
+        // No se si esto está bien, por el momento funciona (en OS Debian Wheezy - 64 bits)
+        socketSalida->destroy();
     }
-
     return 0;
 }
+

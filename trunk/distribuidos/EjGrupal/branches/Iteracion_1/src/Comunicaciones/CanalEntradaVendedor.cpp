@@ -1,4 +1,3 @@
-
 #include "../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
 #include "../IPCs/IPCAbstractos/MessageQueue/VendedorLibreMessageQueue.h"
 
@@ -7,24 +6,22 @@
 #include "LockFile.h"
 #include "PedidosVendedorMessageQueue.h"
 
-extern int enviar(int sockfd, void *datos, size_t nbytes);
-extern int recibir(int sockfd, void *datos, size_t nbytes);
+#include <Comunicaciones/Objects/CommunicationsUtil.h>
+#include <Socket/SocketStream.h>
+
 
 int main(int argc, char **argv) {
-    
-    char buffer[TAM_BUFFER];
-        
-    Logger::getInstance().setProcessInformation("Canal Entrada Vendedor");
-    
-    if (argc != 2) {
-        Logger::logMessage(Logger::ERROR, "Error: Cantidad de parametros invalida.");
-        exit(1);
+    char buffer[TAM_BUFFER];    
+    Logger::getInstance().setProcessInformation("Canal Entrada Vendedor:");
+    int sd;
+    CommunicationsUtil util;
+
+    if ( util.parseArgs(argc, argv, sd) == -1) {
+        exit(-1);
     }
-    
+
     Logger::logMessage(Logger::COMM, "Conectando canal de entrada");
-    
-    int socketEntrada = 0;
-    sscanf(argv[1] , "%d", &socketEntrada);
+    SocketStream socketEntrada(sd);
 
     try {
         IPC::VendedorLibreMessageQueue getVendedorQueue = IPC::VendedorLibreMessageQueue("VendedoresMessageQueue");
@@ -49,14 +46,12 @@ int main(int argc, char **argv) {
         StartComunicationMessage startMsg;
         startMsg.numero = nroVendedor;
         memcpy(nroVendedorChar, &startMsg, sizeof(StartComunicationMessage));
-        enviar(socketEntrada, nroVendedorChar, TAM_BUFFER);
 
-        sprintf(buffer, "Enviando vendedor %d por el socket %d", nroVendedor, socketEntrada);
-            Logger::logMessage(Logger::COMM, buffer);
+        sprintf(buffer, "Enviando vendedor %d por el socket %d", nroVendedor, socketEntrada.getSd());
+        Logger::logMessage(Logger::COMM, buffer);
 
-        if (enviar(socketEntrada, nroVendedorChar, TAM_BUFFER) != TAM_BUFFER) {
-                Logger::logMessage(Logger::ERROR,"Error al enviar el numero de vendedor.");
-                exit(-1);
+        if ( socketEntrada.send(nroVendedorChar, TAM_BUFFER) != TAM_BUFFER ) {
+            Logger::logMessage(Logger::ERROR,"Error al enviar el numero de vendedor.");
         }
 
         bool deboSeguir = true;
@@ -65,20 +60,18 @@ int main(int argc, char **argv) {
             net_msg_pedido_t netMsg;
             msg_pedido_t pedido;
 		
-            if (recibir(socketEntrada, buffer, TAM_BUFFER) != TAM_BUFFER) {
+            if ( socketEntrada.receive(buffer, TAM_BUFFER) != TAM_BUFFER ) {
                 sprintf(buffer, "Error al recibir un pedido de ticket. ERROR: %d.", errno);
                 Logger::logMessage(Logger::ERROR, buffer);
-                close(socketEntrada);
+                socketEntrada.destroy();
                 exit(-1);
             }
 
             memcpy(&netMsg, buffer, sizeof(net_msg_pedido_t));
-	   
             sprintf(buffer, "Recibió un pedido. Destino: %d Origen: %d Tipo: %d.", netMsg.destino, netMsg.origen, netMsg.tipo);
             Logger::logMessage(Logger::COMM, buffer);
 		
             pedido = netMsg.mensaje;
-	   
             pedidos.enviarMensajePedido(pedido);
 		
             if (netMsg.tipo != 0) {
@@ -87,7 +80,7 @@ int main(int argc, char **argv) {
             }
         }
 
-        close(socketEntrada);
+        socketEntrada.destroy();
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

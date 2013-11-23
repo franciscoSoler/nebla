@@ -23,8 +23,9 @@ public:
                    const char* address="");
     ~SocketAcceptor();
     /* Here the socket do the bind and listen */
-    int start();
+    int configureSocket();
     SocketStream* accept();
+    bool destroy();
 
 private:
     SocketAcceptor() {}

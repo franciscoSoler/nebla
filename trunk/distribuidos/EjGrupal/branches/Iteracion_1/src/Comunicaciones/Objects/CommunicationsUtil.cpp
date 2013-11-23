@@ -14,7 +14,7 @@ int CommunicationsUtil::parseArgs(char argc, char* argv[], int &processID) {
     return 0;
 }
 
-int CommunicationsUtil::parseChannelArgs(char server[], int & inputPort, int &outputPort) {
+int CommunicationsUtil::parseChannelArgs(char server[], int &inputPort, int &outputPort) {
     std::ifstream input("Config", std::ifstream::in);
     if (!input) {
         Logger::logMessage(Logger::ERROR, "Error al abrir archivo de configuración");
