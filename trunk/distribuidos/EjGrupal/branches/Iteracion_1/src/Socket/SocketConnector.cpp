@@ -2,6 +2,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include "SocketConnector.h"
+#include <Logger/Logger.h>
 
 SocketStream* SocketConnector::connect(int port, const char* server) {
     struct sockaddr_in address;
@@ -17,6 +18,7 @@ SocketStream* SocketConnector::connect(int port, const char* server) {
     int sd = socket(AF_INET, SOCK_STREAM, 0);
 
     if ( ::connect(sd, (struct sockaddr*)&address, sizeof(address)) != 0 ) {
+        Logger::logMessage(Logger::ERROR, "connect() failed");
         return NULL;
     }
     return new SocketStream(sd, &address);

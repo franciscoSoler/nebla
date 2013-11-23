@@ -5,6 +5,7 @@
 #include <memory>
 #include <netinet/in.h>
 #include "SocketStream.h"
+#include <Logger/Logger.h>
 
 #define DEFAULT_AMOUNT_LISTENERS    5
 
