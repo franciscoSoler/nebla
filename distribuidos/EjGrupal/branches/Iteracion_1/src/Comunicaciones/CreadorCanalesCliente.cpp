@@ -7,14 +7,10 @@
 #include "../Logger/Logger.h"
 #include "../Common.h"
 
-extern int tcpopact(char *, int);
-
 int main(int argc, char **argv) {
-	static char numClienteString[10];
-
-    Logger::setProcessInformation("Creador Canales Cliente");
-        
-	char buffer[TAM_BUFFER];
+    static char numClienteString[10];
+    Logger::setProcessInformation("Creador Canales Cliente");        
+    char buffer[TAM_BUFFER];
 
     IPC::VendedorLibreMessageQueue getVendedorQueue;
     try {
@@ -25,9 +21,10 @@ int main(int argc, char **argv) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         exit(-1);
     }
-	
-	while (true) {
+
+    while (true) {
         mensaje_inicial_t handShake;
+
         try {
             getVendedorQueue.recibirMensajeInicial(TIPO_BUSCANDO_VENDEDOR, &handShake);
         } catch (Exception & e) {
@@ -55,6 +52,6 @@ int main(int argc, char **argv) {
             write(fileno(stdout), buffer, strlen(buffer));
             exit(-1);
         }
-    }
+        }
     return 0;
 } 

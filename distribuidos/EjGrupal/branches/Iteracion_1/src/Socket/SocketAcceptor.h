@@ -22,10 +22,8 @@ public:
     SocketAcceptor(int port, int listeners = DEFAULT_AMOUNT_LISTENERS,
                    const char* address="");
     ~SocketAcceptor();
-
     /* Here the socket do the bind and listen */
     int start();
-
     SocketStream* accept();
 
 private:

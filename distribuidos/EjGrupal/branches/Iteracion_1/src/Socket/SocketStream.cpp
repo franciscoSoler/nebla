@@ -71,3 +71,7 @@ int SocketStream::getPeerPort() {
     // TODO: getsockname
     return m_peerPort;
 }
+
+int SocketStream::getSd() {
+    return m_sd;
+}

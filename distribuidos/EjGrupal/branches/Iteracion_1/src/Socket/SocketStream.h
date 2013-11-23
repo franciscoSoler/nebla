@@ -16,7 +16,7 @@ private:
     std::string  m_peerIP;
     int          m_peerPort;
 
-public:
+public: 
     SocketStream(int sd);
     SocketStream(int sd, struct sockaddr_in* address);
     ~SocketStream();
@@ -24,9 +24,11 @@ public:
     ssize_t send(const char* buffer, size_t len);
     ssize_t receive(char* buffer, size_t len);
     bool destroy();
+
     // FIXME: See what happen when the first constructor is used
     std::string getPeerIP();
     int getPeerPort();
+    int getSd();
 
 private:
     SocketStream(const SocketStream& stream);

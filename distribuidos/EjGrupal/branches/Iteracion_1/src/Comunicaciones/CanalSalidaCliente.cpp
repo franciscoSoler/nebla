@@ -1,15 +1,17 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-
 #include <string.h>
-
-#include "../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
-#include "../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
+#include <assert.h>
 
 #include "../Common.h"
 #include "../Logger/Logger.h"
-#include "LockFile.h"
+#include "../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
+#include "../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
+
+#include <API/Objects/CommunicationsUtil.h>
+#include <Socket/SocketConnector.h>
+#include <Socket/SocketStream.h>
 
 extern int tcpopact(char *, int);
 
@@ -17,53 +19,44 @@ extern int enviar(int sockfd, void *datos, size_t nbytes);
 extern int recibir(int sockfd, void *datos, size_t nbytes);
 
 int main(int argc, char **argv) {
-
+    CommunicationsUtil util;
     char buffer[TAM_BUFFER];
-
-    if (argc != 2) {
-        Logger::getInstance().setProcessInformation("Canal Salida Cliente");
-        Logger::logMessage(Logger::ERROR, "Error: Cantidad de parametros invalida.");
-        exit(1);
-    }
-  
     int nroCliente = 0;
-    sscanf(argv[1], "%d", &nroCliente);
+
+    if ( util.parseArgs(argc, argv, nroCliente) == -1 ) {
+        exit(-1);
+    }
 
     sprintf(buffer, "Canal Salida Cliente %d", nroCliente);
     Logger::getInstance().setProcessInformation(buffer);
-    
     Logger::logMessage(Logger::COMM, "Conectando canal de salida");
 
     char server[TAM_BUFFER];
     int puertoEntrada = 0;
-    std::ifstream input("Config", std::ifstream::in);
-    if (!input) {
-        Logger::logMessage(Logger::ERROR, "Error al abrir el archivo de configuracion.");
-        exit(1);
+    int puertoSalida = 0; // Unused
+    if ( util.parseChannelArgs(server, puertoEntrada, puertoSalida) == -1 ) {
+        exit(-1);
     }
-    input >> server;
-    input >> puertoEntrada;
-    input.close();
 
     // Me conecto al puerto de Entrada del servidor.
-    int socketSalida = tcpopact(server, puertoEntrada);
+    SocketConnector connector;
+    SocketStream::SocketStreamPtr socketSalida( connector.connect(puertoEntrada, server) );
+    assert( socketSalida.get() );
 
-    sprintf(buffer, "Conectado al socket: %d", socketSalida);
+    sprintf(buffer, "Conectado al socket: %d", socketSalida->getSd());
     Logger::logMessage(Logger::COMM, buffer);
 	
     // Recibo el numero de vendedor
     char nroVendedorChar[TAM_BUFFER];
-    int n = recibir(socketSalida, nroVendedorChar, TAM_BUFFER);	
-    if (n < 0) {
+    int n = socketSalida->receive(nroVendedorChar, TAM_BUFFER);
+    if (n <= 0) {
         Logger::logMessage(Logger::ERROR,"Fallo al recibir un vendedor.");
         exit(-1);
     }
    
     StartComunicationMessage startMsg;	
     memcpy(&startMsg, nroVendedorChar, sizeof(StartComunicationMessage));
-	
     int nroVendedor = startMsg.numero;
-    
     sprintf(buffer, "Obtuvo vendedor: %d", nroVendedor);
     Logger::logMessage(Logger::COMM,buffer);
 	
@@ -102,15 +95,15 @@ int main(int argc, char **argv) {
 	   
             memcpy(buffer, &netMsg, sizeof(net_msg_pedido_t));
 	
-            if (enviar(socketSalida, buffer, TAM_BUFFER) != TAM_BUFFER) {
+            if (socketSalida->send(buffer, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar un pedido,");
-                close(socketSalida);
+                socketSalida->destroy();
                 exit(-1);
             }
         }
 	
         Logger::logMessage(Logger::COMM, "Finalizando.");
-        close(socketSalida);
+        socketSalida->destroy();
     }   
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

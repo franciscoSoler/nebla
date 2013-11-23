@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.6.0)
-project("Ejercicio 15 - Grupal")
+project("Ejercicio 15 - Iteración_1")
 
 set(SRC_DIR src/)
 set(OUT_DIR out/)
