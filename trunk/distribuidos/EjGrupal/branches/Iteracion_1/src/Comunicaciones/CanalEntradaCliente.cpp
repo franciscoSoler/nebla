@@ -2,48 +2,43 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
+#include <assert.h>
 
 #include "../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 #include "../Logger/Logger.h"
 #include "../Common.h"
 #include "ClientesMessageQueue.h"
 
-extern int tcpopact(char *, int);
+#include <API/Objects/CommunicationsUtil.h>
+#include <Socket/SocketConnector.h>
+#include <Socket/SocketStream.h>
 
-extern int enviar(int sockfd, void *datos, size_t nbytes);
-extern int recibir(int sockfd, void *datos, size_t nbytes);
 
 int main(int argc, char **argv) {
-    char buffer[TAM_BUFFER];
+    CommunicationsUtil util;
+    char buffer[255];
+    int nroCliente;
 
-    if (argc != 2) {
-        Logger::getInstance().setProcessInformation("Canal Entrada Cliente");
-        Logger::logMessage(Logger::ERROR, "Error: Cantidad de parametros invalida.");
+    if ( util.parseArgs(argc, argv, nroCliente) == -1 ) {
         exit(1);
     }
-
-    int nroCliente = 0;
-    sscanf(argv[1], "%d", &nroCliente);
 
     sprintf(buffer, "Canal Entrada Cliente %d", nroCliente);
     Logger::getInstance().setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conectando canal de entrada");
 
     char server[TAM_BUFFER];
-    int puertoEntrada = 0;
     int puertoSalida = 0;
-    std::ifstream input("Config", std::ifstream::in);
-    if (!input) {
-        Logger::logMessage(Logger::ERROR, "Error al abrir archivo de configuración");
+    int puertoEntrada = 0;
+    if ( util.parseChannelArgs(server, puertoEntrada, puertoSalida) == -1 ) {
         exit(1);
     }
-    input >> server;
-    input >> puertoEntrada;
-    input >> puertoSalida;
-    input.close();
 
-    int socketEntrada = tcpopact(server, puertoSalida);
-    sprintf(buffer, "Conectado al socket: %d", socketEntrada);
+    SocketConnector connector = SocketConnector();
+    SocketStream::SocketStreamPtr socketEntrada( connector.connect(puertoSalida, server) );
+    assert( socketEntrada.get() );
+
+    sprintf(buffer, "Conectado al socket: %d", socketEntrada->getSd());
     Logger::logMessage(Logger::COMM, buffer);
 
     IPC::ClientesMessageQueue clientesMessageQueue = IPC::ClientesMessageQueue("Cliente Msg Queue");
@@ -54,16 +49,16 @@ int main(int argc, char **argv) {
     StartComunicationMessage startMsg;
     startMsg.numero = nroCliente;
     memcpy(nroClienteChar, &startMsg, sizeof (StartComunicationMessage));
-    enviar(socketEntrada, nroClienteChar, TAM_BUFFER);
+    socketEntrada->send(nroClienteChar, TAM_BUFFER);
 
     bool deboSeguir = true;
     while (deboSeguir) {
 
         char buffer[TAM_BUFFER];
-        int n = recibir(socketEntrada, buffer, TAM_BUFFER);
-        if (n < 0) {
+        int n = socketEntrada->receive(buffer, TAM_BUFFER);
+        if (n <= 0) {
             Logger::logMessage(Logger::ERROR, "Fallo al recibir un resultado");
-            close(socketEntrada);
+            socketEntrada->destroy();
             exit(-1);
         }
 
@@ -77,5 +72,5 @@ int main(int argc, char **argv) {
         else clientesMessageQueue.enviarMensajeRespuesta(resultadoRespuesta);
     }
 
-    close(socketEntrada);
+    socketEntrada->destroy();
 }
