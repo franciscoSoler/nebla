@@ -53,6 +53,7 @@ int main(int argc, char **argv) {
         socketSalida->destroy();
     }
 
+    acceptor.destroy();
     return 0;
 }
 

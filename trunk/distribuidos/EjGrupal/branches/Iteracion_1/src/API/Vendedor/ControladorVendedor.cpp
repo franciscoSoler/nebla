@@ -12,127 +12,173 @@
 
 ControladorVendedor::ControladorVendedor(long numVendedor)
 {
-    /* Comunicacion con los clientes. */
-    char buffer[255];
-    sprintf(buffer, "Vendedor N#%ld:", numVendedor);
-    Logger::setProcessInformation(buffer);
-    
-    this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue");
-    this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
-    
-    this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
-    this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
-    
-    this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
-    this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
-    
-    /* Informacion sobre las ordenes de produccion y compra. */
-    this->shmemNumeroOrdenCompra = MemoriaCompartida(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
-    this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
+    try {
+        /* Comunicacion con los clientes. */
+        char buffer[255];
+        sprintf(buffer, "Vendedor N#%ld:", numVendedor);
+        Logger::setProcessInformation(buffer);
 
-    /* Comunicacion con el almacen de piezas. */
-    this->colaEnvioOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
-    this->colaEnvioOrdenProduccion.obtener();
-    
-    /* Comunicacion con el almacen de productos terminados. */
-    this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
-    this->mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
-    
-    this->mutexOrdenDeCompra = IPC::Semaphore("mutexOrdenDeCompra");
-    this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
-    
-    inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho");
-    inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
-    
-    this->numVendedor = numVendedor;
+        this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue");
+        this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
+
+        this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
+        this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
+
+        this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
+        this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
+
+        /* Informacion sobre las ordenes de produccion y compra. */
+        this->shmemNumeroOrdenCompra = MemoriaCompartida(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
+        this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
+
+        /* Comunicacion con el almacen de piezas. */
+        this->colaEnvioOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+        this->colaEnvioOrdenProduccion.obtener();
+
+        /* Comunicacion con el almacen de productos terminados. */
+        this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
+        this->mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
+
+        this->mutexOrdenDeCompra = IPC::Semaphore("mutexOrdenDeCompra");
+        this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
+
+        inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho");
+        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+
+        this->numVendedor = numVendedor;
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
 }
 
 ControladorVendedor::~ControladorVendedor() { }
 
 void ControladorVendedor::recibirLlamadoTelefonico()
 {
-    mensaje_inicial_t bufferMensajeInicial;
-    bufferMensajeInicial.mtype = TIPO_VENDEDOR_LIBRE;
-    bufferMensajeInicial.emisor = numVendedor;
+    try {
+        mensaje_inicial_t bufferMensajeInicial;
+        bufferMensajeInicial.mtype = TIPO_VENDEDOR_LIBRE;
+        bufferMensajeInicial.emisor = numVendedor;
 
-    this->vendedores.enviarMensajeInicial( bufferMensajeInicial );
-
-    /* Arma el mensaje para contactar al cliente. */
-    /*long numCliente = bufferMensajeInicial.emisor;
-
-    respuesta_pedido_t respuesta;
-    respuesta.emisor = numVendedor;
-    
-    msg_respuesta_pedido_t mensajeRespuesta;
-    mensajeRespuesta.mtype = numCliente;
-    mensajeRespuesta.respuesta_pedido = respuesta;
-
-    clientes.enviarMensajeRespuesta(mensajeRespuesta);
-    
-    return bufferMensajeInicial.emisor;*/
+        this->vendedores.enviarMensajeInicial( bufferMensajeInicial );
+    }
+    catch ( Exception & e ) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
 }
 
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
 {
-    mutexOrdenDeCompra.wait();
-    int idOrdenDeCompra = *numeroOrdenCompra;
-    (*numeroOrdenCompra)++;
-    mutexOrdenDeCompra.signal();
-    return idOrdenDeCompra;
+    try {
+        mutexOrdenDeCompra.wait();
+        int idOrdenDeCompra = *numeroOrdenCompra;
+        (*numeroOrdenCompra)++;
+        mutexOrdenDeCompra.signal();
+        return idOrdenDeCompra;
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
 }
 
 pedido_t ControladorVendedor::recibirPedido()
 {
-    msg_pedido_t msgPedido;
-    pedidos.recibirMensajePedido(numVendedor, &msgPedido);
-    return msgPedido.pedido;
+    try {
+        msg_pedido_t msgPedido;
+        pedidos.recibirMensajePedido(numVendedor, &msgPedido);
+        return msgPedido.pedido;
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
+void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido)
+{
+    try {
+        msg_respuesta_pedido_t msgRespuesta;
+        msgRespuesta.respuesta_pedido = pedido;
+        msgRespuesta.mtype = numCliente;
+        msgRespuesta.tipo = 0;
+        clientes.enviarMensajeRespuesta(msgRespuesta);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
+void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t pedido)
+{
+    try {
+        msg_respuesta_pedido_t msgRespuesta;
+        msgRespuesta.respuesta_pedido = pedido;
+        msgRespuesta.mtype = numCliente;
+        msgRespuesta.tipo = 0;
+        clientes.enviarMensajeRespuesta(msgRespuesta);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
 }
 
 pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido, bool* pedidoEnStock)
 {
-    pedido_fabricacion_t pedidoProduccion;
-    pedidoProduccion.tipoProducto = pedido.tipoProducto;
-    
-    int cantidadEspacioVacio = almacenProductosTerminados.obtenerEspaciosVacios();
-    int cantidadEnStock = almacenProductosTerminados.obtenerCantidadDeStockDeProducto(pedido.tipoProducto);
-    int cantidadMinima = obtenerCantidadMinimaDeProduccion(pedido.tipoProducto);
-    
-    if(cantidadEspacioVacio + cantidadEnStock < pedido.cantidad)
-    {
-        /* El pedido no entra en el APT */
-        pedidoProduccion.ventaEsValida = false;
-        return pedidoProduccion;
-    }
-    
-    if(cantidadEnStock >= pedido.cantidad)
-    {
-        /* Pedido es satisfecho con productos stockeados */
-        *pedidoEnStock = true;
+    try {
+        pedido_fabricacion_t pedidoProduccion;
+        pedidoProduccion.tipoProducto = pedido.tipoProducto;
+
+        int cantidadEspacioVacio = almacenProductosTerminados.obtenerEspaciosVacios();
+        int cantidadEnStock = almacenProductosTerminados.obtenerCantidadDeStockDeProducto(pedido.tipoProducto);
+        int cantidadMinima = obtenerCantidadMinimaDeProduccion(pedido.tipoProducto);
+
+        if(cantidadEspacioVacio + cantidadEnStock < pedido.cantidad)
+        {
+            /* El pedido no entra en el APT */
+            pedidoProduccion.ventaEsValida = false;
+            return pedidoProduccion;
+        }
+
+        if(cantidadEnStock >= pedido.cantidad)
+        {
+            /* Pedido es satisfecho con productos stockeados */
+            *pedidoEnStock = true;
+            pedidoProduccion.ventaEsValida = true;
+            pedidoProduccion.producidoParaStockear = 0;
+            pedidoProduccion.producidoVendido = 0;
+            pedidoProduccion.vendidoStockeado = pedido.cantidad;
+            pedidoProduccion.diferenciaMinimaProducto = 0;
+            return pedidoProduccion;
+        }
+
+        int cantidadAProducir = pedido.cantidad - cantidadEnStock;
+        if(cantidadMinima > cantidadAProducir && cantidadMinima > cantidadEspacioVacio)
+        {
+            /* Pedido no entra en APT. Es rechazado */
+            pedidoProduccion.ventaEsValida = false;
+            return pedidoProduccion;
+        }
+
+        cantidadAProducir = std::max(cantidadAProducir, cantidadMinima);
+
         pedidoProduccion.ventaEsValida = true;
-        pedidoProduccion.producidoParaStockear = 0;
-        pedidoProduccion.producidoVendido = 0;
-        pedidoProduccion.vendidoStockeado = pedido.cantidad;
-        pedidoProduccion.diferenciaMinimaProducto = 0;
+        pedidoProduccion.vendidoStockeado = cantidadEnStock;
+        pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock; // Cantidad final a producir
+        pedidoProduccion.producidoParaStockear = cantidadAProducir - pedidoProduccion.producidoVendido;
+        pedidoProduccion.diferenciaMinimaProducto = cantidadMinima < cantidadAProducir ? 0 : cantidadMinima - pedidoProduccion.producidoVendido;
+
         return pedidoProduccion;
     }
-    
-    int cantidadAProducir = pedido.cantidad - cantidadEnStock;
-    if(cantidadMinima > cantidadAProducir && cantidadMinima > cantidadEspacioVacio)
-    {
-        /* Pedido no entra en APT. Es rechazado */
-        pedidoProduccion.ventaEsValida = false;
-        return pedidoProduccion;
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
     }
-    
-    cantidadAProducir = std::max(cantidadAProducir, cantidadMinima);
-    
-    pedidoProduccion.ventaEsValida = true;
-    pedidoProduccion.vendidoStockeado = cantidadEnStock;
-    pedidoProduccion.producidoVendido = pedido.cantidad - cantidadEnStock; // Cantidad final a producir
-    pedidoProduccion.producidoParaStockear = cantidadAProducir - pedidoProduccion.producidoVendido;
-    pedidoProduccion.diferenciaMinimaProducto = cantidadMinima < cantidadAProducir ? 0 : cantidadMinima - pedidoProduccion.producidoVendido;
-    
-    return pedidoProduccion;
 }
 
 void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion)
@@ -233,24 +279,6 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
 
     Logger::logMessage(Logger::TRACE, "Envía Orden de Compra");
     inputQueueDespacho.send( mensaje_odc );
-}
-
-void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido)
-{
-    msg_respuesta_pedido_t msgRespuesta;
-    msgRespuesta.respuesta_pedido = pedido;
-    msgRespuesta.mtype = numCliente;
-    msgRespuesta.tipo = 0;
-    clientes.enviarMensajeRespuesta(msgRespuesta);
-}
-
-void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t pedido)
-{
-    msg_respuesta_pedido_t msgRespuesta;
-    msgRespuesta.respuesta_pedido = pedido;
-    msgRespuesta.mtype = numCliente;
-    msgRespuesta.tipo = 0;
-    clientes.enviarMensajeRespuesta(msgRespuesta);
 }
 
 int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)

@@ -28,31 +28,30 @@
 
 class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
 {
-    public:
+public:
 	ControladorAlmacenPiezas();
 	virtual ~ControladorAlmacenPiezas();
 	pedido_fabricacion_t recibirPedidoDeFabricacion();
 	int obtenerCantidadMinimaDeProduccion(int numProductoConsultado);
 	void responderConsulta(respuesta_almacen_piezas_t respuesta, int numEmisor);
-        //void obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &piezasProductoActual);
-        BufferCanastos obtenerBufferCanastos(int numBufferCanasto);
-        //void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]);
-        void avisarAAGVQueAgregueCanasto(int numAGV, PedidoCanastoRobotCinta6 pedidoCanasto);
-        void recibirConfirmacionProduccion();
-        void enviarPedidoProduccionARobot5(PedidoProduccion pedidoProduccion);
-
+    //void obtenerEspecificacionesDelProducto(TipoProducto tipoProducto, EspecifProd &piezasProductoActual);
+    BufferCanastos obtenerBufferCanastos(int numBufferCanasto);
+    //void avisarAAGVQueAgregueCanasto(TipoPieza tipoPieza, EspecifProd piezasReservadasTemporalmente[2]);
+    void avisarAAGVQueAgregueCanasto(int numAGV, PedidoCanastoRobotCinta6 pedidoCanasto);
+    void recibirConfirmacionProduccion();
+    void enviarPedidoProduccionARobot5(PedidoProduccion pedidoProduccion);
     
-    private:
-        char buffer[TAM_BUFFER];
-        Cola<mensaje_pedido_fabricacion_t> colaReciboOrdenProduccion;
-        
-        IPC::PedidosProduccionMessageQueue colaEnvioMensajePedidoProduccion;
-        IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
-        IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
-        IPC::Semaphore semMemCanastos;
-	
-        void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
-        void imprimirEspecificacionProducto(EspecifProd especifProd);
+private:
+    char buffer[TAM_BUFFER];
+    Cola<mensaje_pedido_fabricacion_t> colaReciboOrdenProduccion;
+
+    IPC::PedidosProduccionMessageQueue colaEnvioMensajePedidoProduccion;
+    IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
+    IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
+    IPC::Semaphore semMemCanastos;
+
+    void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
+    void imprimirEspecificacionProducto(EspecifProd especifProd);
 
 };
 
