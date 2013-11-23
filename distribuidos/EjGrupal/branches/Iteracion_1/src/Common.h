@@ -6,6 +6,7 @@
 #include <errno.h>
 
 #define NOMBRE_ARCHIVO_PRODUCTOS        "info_productos.csv"
+#define SERVERS_FILE_NAME               "RegisteredServers.txt"
 
 // Path utilizado para inicializar los semáforos a través de la función ftok()
 #define DIRECTORY_AGV 		"./DAGV"

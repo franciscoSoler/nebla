@@ -17,8 +17,8 @@ Logger& Logger::getInstance() {
 	 *  automatically in the end of the program
 	 */
 		static Logger m_Instance;
-		return m_Instance;
-	}
+        return m_Instance;
+}
 
 void Logger::createLog(const std::string i_LogName) {
 	if (! i_LogName.empty()) {
