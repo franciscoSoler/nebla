@@ -53,5 +53,6 @@ int main(int argc, char **argv) {
         socketEntrada->destroy();
     }
 
+    acceptor.destroy();
     return 0;
 } 

@@ -34,15 +34,10 @@ public:
 	
     void recibirLlamadoTelefonico();
 	int obtenerNumeroDeOrdenDeCompra();
-	
 	pedido_t recibirPedido();
 	void enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido);
-	
 	bool realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompra* ordenDeCompra, int cantPedidos);
 	void cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t respuesta);
-	
-	void enviarRespuestaDePedido(long numCliente, respuesta_pedido_t respuesta);
-	
     pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido, bool* pedidoEnStock);
 
 private:
