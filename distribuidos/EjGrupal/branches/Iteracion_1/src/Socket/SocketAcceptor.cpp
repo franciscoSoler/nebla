@@ -37,13 +37,13 @@ int SocketAcceptor::configureSocket() {
     
     int result = bind(m_lsd, (struct sockaddr*)&address, sizeof(address));
     if (result != 0) {
-        perror("bind() failed");
+        Logger::logMessage(Logger::ERROR, "bind() failed");
         return result;
     }
     
     result = listen(m_lsd, 5);
     if (result != 0) {
-        perror("listen() failed");
+        Logger::logMessage(Logger::ERROR, "listen() failed");
         return result;
     }
     m_listening = true;
@@ -60,7 +60,7 @@ SocketStream* SocketAcceptor::accept() {
     memset(&address, 0, sizeof(address));
     int sd = ::accept(m_lsd, (struct sockaddr*)&address, &len);
     if (sd < 0) {
-        perror("accept() failed");
+        Logger::logMessage(Logger::ERROR, "accept() failed");
         return NULL;
     }
     return new SocketStream(sd, &address);

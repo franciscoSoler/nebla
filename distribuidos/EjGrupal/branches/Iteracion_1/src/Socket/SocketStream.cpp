@@ -3,6 +3,7 @@
 #include <sstream>
 #include "SocketStream.h"
 #include <iostream>
+#include <Logger/Logger.h>
 
 SocketStream::SocketStream(int sd)
     : m_sd(sd),
@@ -33,6 +34,7 @@ ssize_t SocketStream::send(const char* buffer, size_t len) {
         lastBytesSend = write(m_sd, ((unsigned char *) buffer) + bytesSend, len);
 
         if (lastBytesSend <= 0) {
+            Logger::logMessage(Logger::ERROR, "receive(): Zero or less bytes wrote to socket");
             break;
         }
 
@@ -51,7 +53,7 @@ ssize_t SocketStream::receive(char* buffer, size_t len) {
         lastBytesReceived = read(m_sd, ((unsigned char *) buffer) + bytesReceived, len);
 
         if (lastBytesReceived <= 0) {
-            // TODO: This is an error. See how to handle that.
+            Logger::logMessage(Logger::ERROR, "receive(): Zero or less bytes read from socket");
             break;
         }
 
