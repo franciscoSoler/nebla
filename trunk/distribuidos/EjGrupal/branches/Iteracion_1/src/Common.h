@@ -6,7 +6,6 @@
 #include <errno.h>
 
 #define NOMBRE_ARCHIVO_PRODUCTOS        "info_productos.csv"
-#define SERVERS_FILE_NAME               "RegisteredServers.txt"
 
 // Path utilizado para inicializar los semáforos a través de la función ftok()
 #define DIRECTORY_AGV 		"./DAGV"
@@ -165,6 +164,9 @@
 
 #define TIPO_BUSCANDO_VENDEDOR 1
 #define TIPO_VENDEDOR_LIBRE 2
+
+/* Constantes relacionadas con el Middleware */
+#define SERVERS_CONFIG_FILE             "ServersConfigFile.txt"
 
 typedef enum {
     GABINETE_1 = 1,

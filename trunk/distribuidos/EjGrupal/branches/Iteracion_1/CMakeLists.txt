@@ -40,6 +40,7 @@ include_directories("${SRC_DIR}IPCs/Barrios")
 include_directories("${SRC_DIR}IPCs/Semaphore")
 include_directories("${SRC_DIR}Logger")
 include_directories("${SRC_DIR}Parser")
+include_directories("${SRC_DIR}ConfigFileParser")
 
 include_directories("${SRC_DIR}Socket")
 include_directories("${SRC_DIR}Comunicaciones")
@@ -78,6 +79,7 @@ aux_source_directory("${SRC_DIR}IPCs/Semaphore"                          LIBRARY
 aux_source_directory("${SRC_DIR}IPCs/Barrios"                            LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Logger"                                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Parser"                                  LIBRARY_SRC)
+aux_source_directory("${SRC_DIR}ConfigFileParser"                        LIBRARY_SRC)
 
 aux_source_directory("${SRC_DIR}Socket"                                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Comunicaciones/Objects"                  LIBRARY_SRC)
@@ -121,8 +123,7 @@ add_executable(${OUT_DIR}CanalEntradaVendedor               ${SRC_DIR}Comunicaci
 add_executable(${OUT_DIR}CanalSalidaVendedor                ${SRC_DIR}Comunicaciones/CanalSalidaVendedor.cpp       ${COMMON_SRC})
 
 add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
-add_executable(${OUT_DIR}ServidorVendedorEntrada            ${SRC_DIR}Comunicaciones/ServidorVendedorEntrada.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}ServidorVendedorSalida             ${SRC_DIR}Comunicaciones/ServidorVendedorSalida.cpp    ${COMMON_SRC})
+add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
 
 
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
@@ -152,5 +153,4 @@ target_link_libraries(${OUT_DIR}CanalEntradaVendedor                        IPCL
 target_link_libraries(${OUT_DIR}CanalSalidaVendedor                         IPCLibrary)
 
 target_link_libraries(${OUT_DIR}CreadorCanalesCliente                       IPCLibrary)
-target_link_libraries(${OUT_DIR}ServidorVendedorEntrada                     IPCLibrary)
-target_link_libraries(${OUT_DIR}ServidorVendedorSalida                      IPCLibrary)
+target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)

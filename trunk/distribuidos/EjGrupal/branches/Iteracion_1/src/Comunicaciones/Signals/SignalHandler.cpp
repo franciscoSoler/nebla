@@ -1,5 +1,4 @@
 #include "SignalHandler.h"
-#include <signal.h>
 #include <string.h>
 
 // Definition of static array of handlers
