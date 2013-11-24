@@ -52,6 +52,6 @@ int main(int argc, char **argv) {
             write(fileno(stdout), buffer, strlen(buffer));
             exit(-1);
         }
-        }
+    }
     return 0;
 } 

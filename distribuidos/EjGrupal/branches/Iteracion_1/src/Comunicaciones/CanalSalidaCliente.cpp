@@ -9,8 +9,8 @@
 #include "../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
 #include "../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
-#include <Comunicaciones//Objects/CommunicationsUtil.h>
-#include <Socket/SocketConnector.h>
+#include <Comunicaciones/Objects/CommunicationsUtil.h>
+#include <Comunicaciones/Objects/ServersManager.h>
 #include <Socket/SocketStream.h>
 
 extern int tcpopact(char *, int);
@@ -31,16 +31,9 @@ int main(int argc, char **argv) {
     Logger::getInstance().setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conectando canal de salida");
 
-    char server[TAM_BUFFER];
-    int puertoEntrada = 0;
-    int puertoSalida = 0; // Unused
-    if ( util.parseChannelArgs(server, puertoEntrada, puertoSalida) == -1 ) {
-        exit(-1);
-    }
-
-    // Me conecto al puerto de Entrada del servidor.
-    SocketConnector connector;
-    SocketStream::SocketStreamPtr socketSalida( connector.connect(puertoEntrada, server) );
+    ServersManager serversManager;
+    SocketStream::SocketStreamPtr socketSalida(
+    serversManager.connectToServer("ServidorVendedorEntrada") );
     assert( socketSalida.get() );
 
     sprintf(buffer, "Conectado al socket: %d", socketSalida->getSd());
