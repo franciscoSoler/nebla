@@ -15,10 +15,8 @@ class CommunicationsUtil
 public:
     CommunicationsUtil();
     int parseArgs(char argc, char* argv[], int &processID);
+    int parseArgs(char argc, char* argv[], std::string & serverName);
     int parseChannelArgs(char server[], int &inputPort, int &outputPort);
-    /* Save the server pid in a plain text file named RegisteredServers.txt */
-    void registerServer(pid_t serverPid);
-    std::list<pid_t> getRegisteredServers();
 
 private:
     // Used in logging operations

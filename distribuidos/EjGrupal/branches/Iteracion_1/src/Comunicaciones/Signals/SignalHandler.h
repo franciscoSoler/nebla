@@ -2,7 +2,7 @@
 #define SIGNAL_HANDLER_H_
 
 #include "EventHandler.h"
-#define NSIG    64
+#include <signal.h>
 
 class SignalHandler {
 public:
