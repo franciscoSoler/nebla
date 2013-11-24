@@ -9,8 +9,8 @@
 #include "../Common.h"
 #include "ClientesMessageQueue.h"
 
-#include <Comunicaciones//Objects/CommunicationsUtil.h>
-#include <Socket/SocketConnector.h>
+#include <Comunicaciones/Objects/CommunicationsUtil.h>
+#include <Comunicaciones/Objects/ServersManager.h>
 #include <Socket/SocketStream.h>
 
 
@@ -27,15 +27,9 @@ int main(int argc, char **argv) {
     Logger::getInstance().setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conectando canal de entrada");
 
-    char server[TAM_BUFFER];
-    int puertoSalida = 0;
-    int puertoEntrada = 0;
-    if ( util.parseChannelArgs(server, puertoEntrada, puertoSalida) == -1 ) {
-        exit(1);
-    }
-
-    SocketConnector connector = SocketConnector();
-    SocketStream::SocketStreamPtr socketEntrada( connector.connect(puertoSalida, server) );
+    ServersManager serversManager;
+    SocketStream::SocketStreamPtr socketEntrada(
+    serversManager.connectToServer("ServidorVendedorSalida") );
     assert( socketEntrada.get() );
 
     sprintf(buffer, "Conectado al socket: %d", socketEntrada->getSd());
