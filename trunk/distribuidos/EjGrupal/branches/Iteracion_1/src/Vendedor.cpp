@@ -81,7 +81,7 @@ int main(int argc, char** argv)
                 respuesta.cantidadDeProductos[i] = ordenDeCompra.cantidadPorProducto_[i];
             }
 
-            controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
+            controlador.enviarUltimaConfirmacionDeRecepcionDePedido(numCliente, respuesta);
         }
         else
         {

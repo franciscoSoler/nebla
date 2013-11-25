@@ -15,7 +15,7 @@ public:
     virtual ~ControllerDespacho();
     PedidoDespacho recibirPedido();
     OrdenDeCompra obtenerOrdenDeCompra(long idOrdenDeCompra);
-    void despacharProducto(TipoProducto producto, uint idOrdenCompra, long idCliente);
+    void despacharProducto(PedidoDespacho pedido, bool ultimoProductoDeODC);
     void notificarAClienteProductoTerminado(PedidoDespacho pedido, bool ultimoPedido);
 
 private:

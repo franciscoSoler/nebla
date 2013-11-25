@@ -7,9 +7,10 @@ class IControllerR16_Despacho {
     
 public:
     // FIXME: Cambiar nombre, poco representativo
-    virtual PedidoDespacho recibirPedido() = 0;
+    virtual PedidoDespacho recibirPedido(bool & ultimoProductoDeODC) = 0;
     virtual void tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja) = 0;
-    virtual void enviarCajaAlCliente(long idCliente, Caja unaCaja) = 0;
+    virtual void enviarCajaAlCliente(
+            long idCliente, Caja unaCaja, bool ultimoProductoDeODC) = 0;
     virtual ~IControllerR16_Despacho() {};
 };
 

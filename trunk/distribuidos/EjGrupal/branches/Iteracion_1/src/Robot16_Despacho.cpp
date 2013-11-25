@@ -9,12 +9,13 @@ int main(int argc, char* argv[]) {
     
     while (1) {
         // El pedido fue realizado por el Robot14
-        PedidoDespacho pedido = controller->recibirPedido();
+        bool ultimoProductoDeODC = false;
+        PedidoDespacho pedido = controller->recibirPedido(ultimoProductoDeODC);
         
         // Llegó una caja para el cliente
         Caja unaCaja;
         controller->tomarCajaDeAPT(pedido, &unaCaja);
-        controller->enviarCajaAlCliente(pedido.idCliente_, unaCaja);
+        controller->enviarCajaAlCliente(pedido.idCliente_, unaCaja, ultimoProductoDeODC);
         }
     
     return 0;

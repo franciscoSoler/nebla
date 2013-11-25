@@ -461,6 +461,7 @@ public:
 public:
     long mtype;
     PedidoDespacho pedido_;
+    bool ultimoProductoDeODC_;
 };
 
 #define MSG_RETIRO_PRODUCTO             5
@@ -477,6 +478,7 @@ class Msg_EnvioCajaCliente {
 public:
     long mtype;
     Caja caja;
+    bool ultimoProductoDeODC_;
 };
 
 
