@@ -98,11 +98,12 @@ int main(int argc, char** argv)
     TipoProducto tipo;
     int nroOrden;
 
-    for (int i = 0; i < cantPedidos-1; ++i) {
+    for (int i = 0; i < cantPedidos; ++i) {
         Logger::logMessage(Logger::IMPORTANT, "Procede a retirar un pedido");
 
         controlador.esperarPedido(tipo, nroOrden, numCliente);
-        controlador.retirarEncargo(tipo, nroOrden);
+        bool ultimoPedido = (i+1) == cantPedidos;
+        controlador.retirarEncargo(tipo, nroOrden, ultimoPedido);
 
         sprintf(mensajePantalla, "Cantidad de Productos N°%d a retirar:%d",
                 tipo, cantidadDeProductosPorPedido[tipo-1]);

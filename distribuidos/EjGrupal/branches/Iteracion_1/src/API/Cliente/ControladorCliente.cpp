@@ -154,7 +154,7 @@ void ControladorCliente::esperarPedido(TipoProducto & tipoProducto, int & nroOrd
     }
 }
 
-void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden) {
+void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden, bool ultimoPedido) {
     try {
         char buffer[255];
         sprintf(buffer, "Cliente va a retirar el producto N°%d de la ODC N°%d", tipo, nroOrden);
@@ -169,6 +169,7 @@ void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden) {
 
         mensaje.mtype = MSG_PEDIDO_DESPACHO;
         mensaje.pedido_ = pedido;
+        mensaje.ultimoPedido_ = ultimoPedido;
 
         inputQueueDespacho.send(mensaje);
     }

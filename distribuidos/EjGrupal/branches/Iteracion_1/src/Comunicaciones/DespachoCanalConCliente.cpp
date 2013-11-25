@@ -41,11 +41,14 @@ int main(int argc, char* argv[]) {
         IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
         inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
-        while (true) {
+        bool ultimoPedido = false;
+        while (not ultimoPedido) {
             // Espero mensajes del despacho hacia el cliente
             Msg_RetiroProducto mensajeSalida;
             inputQueueCliente.recv(idCliente, mensajeSalida);
             Logger::logMessage(Logger::COMM, "Recibe mensaje, procede a enviarlo por el canal");
+
+            ultimoPedido = mensajeSalida.ultimoPedido_;
 
             memcpy(buffer, &mensajeSalida, sizeof(mensajeSalida));
             if ( socketCliente.send(buffer, TAM_BUFFER) != TAM_BUFFER ) {
@@ -63,6 +66,8 @@ int main(int argc, char* argv[]) {
             memcpy(&mensajeEntrada, buffer, sizeof(Msg_PedidoDespacho));
             inputQueueDespacho.send(mensajeEntrada);
         }
+
+        Logger::logMessage(Logger::COMM, "Comunicación terminada. Cerrando canal");
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

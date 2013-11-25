@@ -26,37 +26,33 @@
 
 class ControladorCliente
 {
-    public:
-	ControladorCliente();
-	ControladorCliente(long numCliente);
-	virtual ~ControladorCliente();
+public:
+    ControladorCliente();
+    ControladorCliente(long numCliente);
+    virtual ~ControladorCliente();
 	
     void contactarVendedores();
-
-	void enviarPedido(int cantidadUnidades, int tipo);
-	void finalizarEnvio(int cantPedidos);
+    void enviarPedido(int cantidadUnidades, int tipo);
+    void finalizarEnvio(int cantPedidos);
     respuesta_pedido_t recibirResultado();
     void esperarPedido(TipoProducto & tipoProducto, int & nroOrdenCompra, int numCliente);
-    void retirarEncargo(TipoProducto tipo, int nroOrden);
-
+    void retirarEncargo(TipoProducto tipo, int nroOrden, bool ultimoPedido);
     Caja obtenerProducto(int idCliente);
-        
-    private:
+
+private:
         
     IPC::VendedorLibreMessageQueue vendedores;
-	IPC::ClientesMessageQueue clientes;
+    IPC::ClientesMessageQueue clientes;
     IPC::PedidosVendedorMessageQueue pedidos;
 
     IPC::MsgQueue inputQueueCliente;
     IPC::MsgQueue inputQueueDespacho;
     IPC::MsgQueue R16_Cliente_Queue_;
 
-	long numCliente;
-	long numVendedorAsociado;
-        
+    long numCliente;
+    long numVendedorAsociado;
     int nroOrdenDeCompra;
     int cantidadProductos;        
-    
     char mensajePantalla[255];
 };
 

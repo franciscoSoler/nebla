@@ -16,8 +16,7 @@ public:
     PedidoDespacho recibirPedido();
     OrdenDeCompra obtenerOrdenDeCompra(long idOrdenDeCompra);
     void despacharProducto(TipoProducto producto, uint idOrdenCompra, long idCliente);
-    void notificarAClienteProductoTerminado(long idCliente, long idOrdenCompra, 
-            TipoProducto idProducto);
+    void notificarAClienteProductoTerminado(PedidoDespacho pedido, bool ultimoPedido);
 
 private:
     char buffer_[255];

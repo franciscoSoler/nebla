@@ -348,7 +348,8 @@ class OrdenDeCompra {
 public:
     OrdenDeCompra() :   idVendedor_(0),
                         idCliente_(0),
-                        idOrden_(0) {
+                        idOrden_(0),
+                        faltantesAEntregar_(0) {
 
         for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
             productoTerminado_[i] = false;
@@ -379,6 +380,7 @@ public:
     long idVendedor_;
     long idCliente_;
     long idOrden_;
+    int faltantesAEntregar_;
     int cantidadPorProducto_[CANTIDAD_PRODUCTOS];
     // Indica con true si la cantidad pedida ya se encontraba stockeada.
     bool productoTerminado_[CANTIDAD_PRODUCTOS];
@@ -430,6 +432,7 @@ public:
 public:
     long mtype;
     PedidoDespacho pedido_;
+    bool ultimoPedido_;
 };
 
 #define MSG_ENVIO_ODC_DESPACHO          2
@@ -467,6 +470,7 @@ public:
 public:
     long mtype;
     PedidoDespacho datos_;
+    bool ultimoPedido_;
 };
 
 class Msg_EnvioCajaCliente {
