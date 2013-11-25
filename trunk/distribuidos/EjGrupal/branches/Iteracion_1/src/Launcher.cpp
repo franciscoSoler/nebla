@@ -28,6 +28,7 @@
 
 #include "API/Objects/DataSM_R11_R14.h"
 #include "API/Objects/DataSM_R14_R16.h"
+#include <API/Objects/Util.h>
 
 #include "IPCs/IPCTemplate/SharedMemory.h"
 #include "IPCs/IPCTemplate/MsgQueue.h"
@@ -41,16 +42,17 @@
 #include <Comunicaciones/Objects/ServersManager.h>
 
 
-static char buffer[255];
-static char param1[20];
+// static char buffer[255];
+// static char param1[20];
 // static char param2[20];
 
 void createIPCs();
 void createDirectory(std::string directoryName);
-void createProcess(std::string processName, int amountOfProcesses = 1, int parameterOffset = 0);
 
 int main(int argc, char* argv[]) {
     try {
+        Util::getInstance();
+        
         createDirectory(DIRECTORY_AGV);
         createDirectory(DIRECTORY_ROBOT_5);
         createDirectory(DIRECTORY_ROBOT_11);
@@ -65,17 +67,17 @@ int main(int argc, char* argv[]) {
                 
         createIPCs();
         
-        createProcess("Robot5-Agv", 1);
-        createProcess("Robot5-Cinta", 1);
-        createProcess("AlmacenPiezas", 1);
-        createProcess("Robot11", 2);
-        createProcess("Robot12", 2);
-        createProcess("Robot14");
-        createProcess("Robot16_Cinta15");
-        createProcess("Robot16_Despacho");
-        createProcess("Despacho");
-        createProcess("AGV", 3);
-        createProcess("Vendedor", 5, 1);
+        Util::createProcess("Robot5-Agv", 1);
+        Util::createProcess("Robot5-Cinta", 1);
+        Util::createProcess("AlmacenPiezas", 1);
+        Util::createProcess("Robot11", 2);
+        Util::createProcess("Robot12", 2);
+        Util::createProcess("Robot14");
+        Util::createProcess("Robot16_Cinta15");
+        Util::createProcess("Robot16_Despacho");
+        Util::createProcess("Despacho");
+        Util::createProcess("AGV", 3);
+        Util::createProcess("Vendedor", 5, 1);
 
         // Procesos correspondientes al Middleware
         ServersManager serversManager;
@@ -371,26 +373,4 @@ void createIPCs() {
     
     shMemAlmacenDePiezas.writeInfo(&estructuraAlmacen);
     
-}
-
-void createProcess(std::string processName, int amountOfProcesses, int parameterOffset) {
-	pid_t pid;
-
-    for (int i = parameterOffset; i < amountOfProcesses + parameterOffset; i++) {
-        if ((pid = fork()) < 0) {
-            sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
-            Logger::getInstance().logMessage(Logger::ERROR, buffer);
-        }
-        else if (pid == 0) {
-            // Child process. Pass the arguments to the process and call exec
-            sprintf(param1, "%d", i);
-            sprintf(buffer, "./%s", processName.c_str());
-            execlp(buffer, processName.c_str(), param1, (char *) 0);
-
-            sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
-            Logger::getInstance().logMessage(Logger::ERROR, buffer);
-
-            return;
-        }
-    }
 }

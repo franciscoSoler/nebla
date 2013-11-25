@@ -6,6 +6,7 @@
 #include "../IPCs/IPCAbstractos/MessageQueue/VendedorLibreMessageQueue.h"
 #include "../Logger/Logger.h"
 #include "../Common.h"
+#include <API/Objects/Util.h>
 
 int main(int argc, char **argv) {
     static char numClienteString[10];
@@ -37,21 +38,11 @@ int main(int argc, char **argv) {
 
         sprintf(numClienteString, "%ld", handShake.emisor);
 
-        pid_t pid = fork();
-        if (pid == 0) {
-            execlp("./CanalSalidaCliente", "CanalSalidaCliente", numClienteString, (char *) 0);
-            sprintf(buffer, "CreadorCanalesCliente: Execlp ./CanalSalidaCliente error: %s", strerror(errno));
-            write(fileno(stdout), buffer, strlen(buffer));
-            exit(-1);
-        }
-
-        pid_t pid2 = fork();
-        if (pid2 == 0) {
-            execlp("./CanalEntradaCliente", "CanalEntradaCliente", numClienteString, (char *) 0);
-            sprintf(buffer, "Creador Canales Cliente: Execlp ./CanalEntradaCliente error: %s", strerror(errno));
-            write(fileno(stdout), buffer, strlen(buffer));
-            exit(-1);
-        }
+        Util::getInstance();
+        Util::createProcess("CanalSalidaCliente", 1, handShake.emisor);
+        Util::createProcess("CanalEntradaCliente", 1, handShake.emisor);
+        Util::createProcess("ClienteCanalConDespacho", 1, handShake.emisor);
+        Util::createProcess("ClienteCanalConR16", 1, handShake.emisor);
     }
     return 0;
 } 
