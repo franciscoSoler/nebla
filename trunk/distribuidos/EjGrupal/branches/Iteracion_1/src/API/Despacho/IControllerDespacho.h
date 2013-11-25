@@ -20,8 +20,7 @@ public:
     
     /* Se llama al cliente para que este venga a buscar su Pedido
      */
-    virtual void notificarAClienteProductoTerminado(long idCliente, 
-            long idOrdenCompra, TipoProducto idProducto) = 0;
+    virtual void notificarAClienteProductoTerminado(PedidoDespacho pedido, bool ultimoPedido) = 0;
     
     virtual ~IControllerDespacho() {};
 };

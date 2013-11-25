@@ -23,7 +23,6 @@ void pedidoRobot16(autoPtrControllerDespacho & controller, PedidoDespacho pedido
                    OrdenDeCompra* ordenDeCompra);
 
 
-
 int main(int argc, char* argv[]) {
     autoPtrControllerDespacho controller ( new ControllerDespacho() );
     Dictionary<OrdenDeCompra> bufferODC;
@@ -77,7 +76,6 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
         // Actualizo la orden de compra. Quito de la misma el producto
         // a despachar
         odc->cantidadPorProducto_[idProducto-1] = 0;
-        odc->productoTerminado_[idProducto-1] = true;
 
         for (int i = 0; i < cantidadDeProductos; ++i) {
             controller->despacharProducto(idProducto, odc->idOrden_, odc->idCliente_);
@@ -87,7 +85,7 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
         // Si la orden de compra está satisfecha, se debe eliminar
         bool ordenTerminada = true;
         for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
-            if ( odc->productoTerminado_[i] ) {
+            if ( odc->cantidadPorProducto_[i] ) {
                 ordenTerminada = false;
                 break;
             }
@@ -116,14 +114,19 @@ void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
 
     // Al recibir la ODC, se verifica si algun pedido se encuentra en stock, y se
     // envia mensaje al cliente para que venga a retirar el mismo
-
     for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
         if ( odc.productoTerminado_[i] == true ) {
             odc.productoTerminado_[i] = false;
-            controller->notificarAClienteProductoTerminado(odc.idCliente_,
-                        odc.idOrden_, static_cast<TipoProducto>(i+1));
+            odc.faltantesAEntregar_--;
+
+            PedidoDespacho pedido;
+            pedido.idCliente_ = odc.idCliente_;
+            pedido.idOrdenDeCompra_ = odc.idOrden_;
+            pedido.idProducto_ = static_cast<TipoProducto> (i+1);
+            controller->notificarAClienteProductoTerminado(pedido, odc.faltantesAEntregar_ == 0);
         }
     }
+
     if (! bufferODC.insert(pedido.idOrdenDeCompra_, new OrdenDeCompra(odc) ) ) {
             Logger::logMessage(Logger::ERROR, "Existe más de una ODC con el mismo identificador");
     }
@@ -132,14 +135,19 @@ void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
 void pedidoRobot16(autoPtrControllerDespacho & controller, PedidoDespacho pedido,
                    OrdenDeCompra* ordenDeCompra) {
     try {
+        PedidoDespacho pedidoAEnviar;
+        pedidoAEnviar.idCliente_ = ordenDeCompra->idCliente_;
+        pedidoAEnviar.idOrdenDeCompra_ = ordenDeCompra->idOrden_;
+        pedidoAEnviar.idProducto_ = pedido.idProducto_;
+
         // Se envía al cliente el idProducto y el idNroCompra asociados al producto que 
         // se terminó de fabricar
-        controller->notificarAClienteProductoTerminado(ordenDeCompra->idCliente_,
-                pedido.idOrdenDeCompra_, pedido.idProducto_);
+        ordenDeCompra->faltantesAEntregar_--;
+        controller->notificarAClienteProductoTerminado(
+                pedidoAEnviar, ordenDeCompra->faltantesAEntregar_ == 0);
     }
     catch (Exception & e) {
         std::cout << "Error de Aplicación: " << 
         e.get_error_description() << std::endl;
     }
 }
-

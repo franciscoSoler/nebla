@@ -71,21 +71,18 @@ void ControllerDespacho::despacharProducto(TipoProducto idProducto, uint idOrden
     }
 }
 
-void ControllerDespacho::notificarAClienteProductoTerminado(long idCliente,
-        long idOrdenCompra, TipoProducto idProducto) {
+void ControllerDespacho::notificarAClienteProductoTerminado(
+        PedidoDespacho pedido, bool ultimoPedido) {
     try {
         sprintf(buffer_, "Notifica a Cliente N°%lu que puede retirar su pedido: "
-        "idProducto: %d - idOrdenCompra: %lu.", idCliente, idProducto, idOrdenCompra);
+        "idProducto: %d - idOrdenCompra: %lu.", pedido.idCliente_,
+        pedido.idProducto_, pedido.idOrdenDeCompra_);
         Logger::logMessage(Logger::IMPORTANT, buffer_);
-        
-        PedidoDespacho pedido;
-        pedido.idCliente_ = idCliente;
-        pedido.idOrdenDeCompra_ = idOrdenCompra;
-        pedido.idProducto_ = idProducto;
 
         Msg_RetiroProducto msgACliente;
-        msgACliente.mtype = idCliente;
+        msgACliente.mtype = pedido.idCliente_;
         msgACliente.datos_ = pedido;
+        msgACliente.ultimoPedido_ = ultimoPedido;
         
         inputQueueCliente_.send( msgACliente );
     }

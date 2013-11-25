@@ -43,8 +43,8 @@ int main(int argc, char** argv)
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
         controlador.recibirLlamadoTelefonico();
-
-        OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
+        OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(
+                controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
 
         pedido_t pedido;
         pedido_t pedidos[CANT_MAX_PEDIDOS];
@@ -68,6 +68,7 @@ int main(int argc, char** argv)
         } while(pedido.fin == false);
 
         Logger::getInstance().logMessage(Logger::TRACE, "Fin de recepcion de pedidos del cliente.");
+        ordenDeCompra.faltantesAEntregar_ = cantPedidos;
 
         bool pedidoEsValido = controlador.realizarOrdenDeCompra(pedidos, &ordenDeCompra, cantPedidos);
         if(pedidoEsValido)

@@ -43,7 +43,8 @@ int main(int argc, char* argv[]) {
         inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_C);
 
         // Luego, espero recibir un mensaje del despacho y se lo envío al cliente
-        while (true) {
+        bool ultimoPedido = false;
+        while (not ultimoPedido) {
             if ( socketDespacho->receive(buffer, TAM_BUFFER) != TAM_BUFFER ) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir mensaje de despacho");
                 abort();
@@ -51,6 +52,7 @@ int main(int argc, char* argv[]) {
 
             Msg_RetiroProducto mensajeEntrada;
             memcpy(&mensajeEntrada, buffer, sizeof(Msg_RetiroProducto));
+            ultimoPedido = mensajeEntrada.ultimoPedido_;
             inputQueueCliente.send(mensajeEntrada);
 
             // Espero el mensaje del cliente al Despacho, y dsp lo envío por el canal
@@ -63,6 +65,8 @@ int main(int argc, char* argv[]) {
                 abort();
             }
         }
+
+        Logger::logMessage(Logger::COMM, "Comunicación terminada. Cerrando canal");
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
