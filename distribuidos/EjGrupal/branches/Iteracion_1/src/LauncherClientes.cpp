@@ -10,33 +10,30 @@
 #include "VendedorLibreMessageQueue.h"
 #include "ClientesMessageQueue.h"
 #include "PedidosVendedorMessageQueue.h"
+#include <API/Objects/Util.h>
 
 
-static char buffer[255];
-static char param1[20];
+// static char buffer[255];
+// static char param1[20];
 // static char param2[20];
 
 void createIPCs();
 void createDirectory(std::string directoryName);
-void createProcess(std::string processName, int amountOfProcesses = 1, int parameterOffset = 0);
 
 int main(int argc, char* argv[]) {
     try {
+        Util::getInstance();
+        
         createDirectory(DIRECTORY_ROBOT_16);
         createDirectory(DIRECTORY_VENDEDOR);
         createDirectory(DIRECTORY_CLIENTE);
 
         createIPCs();
 
-        createProcess("Cliente", 1, 1);
+        Util::createProcess("Cliente", 1, 1);
 
         // Procesos correspondientes al Middleware
-        createProcess("CreadorCanalesCliente");
-        /* A este Proceso, se le debería enviar el mismo ID que tiene
-         * el cliente. Como es un autonumérico, por ahora esto funciona
-         */
-        createProcess("ClienteCanalConDespacho", 1, 1);
-        createProcess("ClienteCanalConR16", 1, 1);
+        Util::createProcess("CreadorCanalesCliente");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR,
@@ -82,26 +79,4 @@ void createIPCs() {
     IPC::PedidosVendedorMessageQueue pedidos ("Pedidos Msg Queue");
     pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
     Logger::logMessage(Logger::IMPORTANT, "IPC PedidosVendedorMessageQueue creado");
-}
-
-void createProcess(std::string processName, int amountOfProcesses, int parameterOffset) {
-    pid_t pid;
-
-    for (int i = parameterOffset; i < amountOfProcesses + parameterOffset; i++) {
-        if ((pid = fork()) < 0) {
-            sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
-            Logger::getInstance().logMessage(Logger::ERROR, buffer);
-        }
-        else if (pid == 0) {
-            // Child process. Pass the arguments to the process and call exec
-            sprintf(param1, "%d", i);
-            sprintf(buffer, "./%s", processName.c_str());
-            execlp(buffer, processName.c_str(), param1, (char *) 0);
-
-            sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
-            Logger::getInstance().logMessage(Logger::ERROR, buffer);
-
-            return;
-        }
-    }
 }
