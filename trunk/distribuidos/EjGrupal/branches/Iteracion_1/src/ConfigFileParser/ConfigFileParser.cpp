@@ -44,8 +44,6 @@ void ConfigFileParser::parse() {
 }
 
 void ConfigFileParser::removeComments(std::string& line) const {
-    std::string::iterator it = line.begin();
-    
     // In this version, the parser removes the contents (contenido?) of 
     // the line from the first # 
     unsigned int pos = line.find("#");

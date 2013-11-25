@@ -28,9 +28,10 @@ class ControladorCliente
 {
 public:
     ControladorCliente();
-    ControladorCliente(long numCliente);
     virtual ~ControladorCliente();
 	
+    int obtenerNumeroCliente();
+    
     void contactarVendedores();
     void enviarPedido(int cantidadUnidades, int tipo);
     void finalizarEnvio(int cantPedidos);

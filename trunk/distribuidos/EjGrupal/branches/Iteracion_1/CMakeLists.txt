@@ -8,6 +8,8 @@ set(LIB_DIR lib/)
 file(MAKE_DIRECTORY ${OUT_DIR})
 
 set(COMPILE_FLAGS "-g -Wall -pedantic")
+set(LDLIBS "-lnsl")
+
 add_definitions(${COMPILE_FLAGS})
 
 include_directories("${SRC_DIR}")
@@ -47,6 +49,12 @@ include_directories("${SRC_DIR}Comunicaciones")
 include_directories("${SRC_DIR}Comunicaciones/Objects")
 include_directories("${SRC_DIR}Comunicaciones/Signals")
 include_directories("${SRC_DIR}Comunicaciones/Signals/Handlers")
+
+include_directories("${SRC_DIR}Numerador")
+
+aux_source_directory("${SRC_DIR}Numerador"                               NUMERADOR_SRC)
+aux_source_directory("${SRC_DIR}Numerador/Ejecutables"                   NUMERADOR_EJ_SRC)
+
 
 aux_source_directory("${SRC_DIR}API"                                     COMMON_SRC)
 aux_source_directory("${SRC_DIR}API/AGV"                                 AGV_SRC)
@@ -93,12 +101,21 @@ add_library(IPCLibrary
 
 set_target_properties(IPCLibrary PROPERTIES 
   LIBRARY_OUTPUT_DIRECTORY "${LIB_DIR}")
-             
+          
+
+# Numerador
+add_executable(${OUT_DIR}LauncherNumeradorClientes           ${SRC_DIR}LauncherNumeradorClientes.cpp             ${COMMON_SRC} )   
+
+add_executable(${OUT_DIR}PruebaNumeradorClientes            ${SRC_DIR}Numerador/Ejecutables/numeradorClientes_client.c             ${COMMON_SRC} ${NUMERADOR_SRC} )   
+add_executable(${OUT_DIR}NumeradorClientesServer            ${SRC_DIR}Numerador/Ejecutables/numeradorClientes_svc.c             ${COMMON_SRC} ${NUMERADOR_SRC})   
+
 
 add_executable(${OUT_DIR}Launcher                           ${SRC_DIR}Launcher.cpp                              ${COMMON_SRC})
 add_executable(${OUT_DIR}LauncherClientes                   ${SRC_DIR}LauncherClientes.cpp                      ${COMMON_SRC})
 add_executable(${OUT_DIR}Terminator                         ${SRC_DIR}Terminator.cpp                            ${COMMON_SRC})
 add_executable(${OUT_DIR}TerminatorClientes                 ${SRC_DIR}TerminatorClientes.cpp                    ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorNumerador                ${SRC_DIR}TerminatorNumerador.cpp                   ${COMMON_SRC})
+
 add_executable(${OUT_DIR}AGV                                ${SRC_DIR}AGV.cpp                                   ${COMMON_SRC} ${AGV_SRC})
 add_executable(${OUT_DIR}Robot5-Agv                         ${SRC_DIR}Robot5-Agv.cpp                            ${COMMON_SRC} ${ROBOT5_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}Robot5-Cinta                       ${SRC_DIR}Robot5-Cinta.cpp                          ${COMMON_SRC} ${ROBOT5_SRC} ${ALMACEN_SRC})
@@ -109,13 +126,13 @@ add_executable(${OUT_DIR}Robot14                            ${SRC_DIR}Robot14.cp
 add_executable(${OUT_DIR}Robot16_Despacho                   ${SRC_DIR}Robot16_Despacho.cpp                      ${COMMON_SRC} ${ROBOT16_DESPACHO_SRC})
 add_executable(${OUT_DIR}Robot16_Cinta15                    ${SRC_DIR}Robot16_Cinta15.cpp                       ${COMMON_SRC} ${ROBOT16_CINTA15_SRC})
 add_executable(${OUT_DIR}Despacho                           ${SRC_DIR}Despacho.cpp                              ${COMMON_SRC} ${DESPACHO_SRC})
-add_executable(${OUT_DIR}Cliente                            ${SRC_DIR}Cliente.cpp                               ${COMMON_SRC} ${CLIENTE_SRC})
+add_executable(${OUT_DIR}Cliente                            ${SRC_DIR}Cliente.cpp                               ${COMMON_SRC} ${CLIENTE_SRC} ${NUMERADOR_SRC})
 add_executable(${OUT_DIR}Vendedor                           ${SRC_DIR}Vendedor.cpp                              ${COMMON_SRC} ${VENDEDOR_SRC})
 add_executable(${OUT_DIR}AlmacenPiezas                      ${SRC_DIR}AlmacenPiezas.cpp                         ${COMMON_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorCanastos                  ${SRC_DIR}RepositorCanastos.cpp                     ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorGabinetes.cpp                    ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
-add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC}${VENDEDOR_SRC})
-#add_executable(${OUT_DIR}MonitorAlmacenPiezas               ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC}${VENDEDOR_SRC})
+add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC} ${VENDEDOR_SRC})
+#add_executable(${OUT_DIR}MonitorAlmacenPiezas              ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC})
 
 # Procesos utilizados por el Middleware para entablar y realizar comunicaciones
 # Cliente
@@ -138,10 +155,16 @@ add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaci
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
 
 
+
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherClientes                            IPCLibrary)
+
+target_link_libraries(${OUT_DIR}LauncherNumeradorClientes                   IPCLibrary)
+
 target_link_libraries(${OUT_DIR}Terminator                                  IPCLibrary)
 target_link_libraries(${OUT_DIR}TerminatorClientes                          IPCLibrary)
+target_link_libraries(${OUT_DIR}TerminatorNumerador                         IPCLibrary)
+
 target_link_libraries(${OUT_DIR}AGV                                         IPCLibrary)
 target_link_libraries(${OUT_DIR}Robot5-Agv                                  IPCLibrary)
 target_link_libraries(${OUT_DIR}Robot5-Cinta                                IPCLibrary)
@@ -154,7 +177,7 @@ target_link_libraries(${OUT_DIR}Despacho                                    IPCL
 target_link_libraries(${OUT_DIR}Cliente                                     IPCLibrary)
 target_link_libraries(${OUT_DIR}Vendedor                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}AlmacenPiezas                               IPCLibrary)
-#target_link_libraries(${OUT_DIR}MonitorAlmacenPiezas                        IPCLibrary)
+#target_link_libraries(${OUT_DIR}MonitorAlmacenPiezas                       IPCLibrary)
 target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)
