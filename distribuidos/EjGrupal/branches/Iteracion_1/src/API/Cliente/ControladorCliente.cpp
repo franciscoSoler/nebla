@@ -8,13 +8,11 @@
 #include "ControladorCliente.h"
 #include <Logger.h>
 
-ControladorCliente::ControladorCliente() { }
+#include "../../Numerador/numeradorClientes.h"
 
-ControladorCliente::ControladorCliente(long numCliente)
-{ 
+ControladorCliente::ControladorCliente() {     
     try {
-        sprintf(mensajePantalla, "Cliente #%ld:", numCliente);
-        Logger::setProcessInformation(mensajePantalla);
+        Logger::setProcessInformation("Cliente ##");
 
         /* Comunicacion con el vendedor */
         this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedorLibreMsgQueue");
@@ -34,14 +32,40 @@ ControladorCliente::ControladorCliente(long numCliente)
 
         this->inputQueueCliente = IPC::MsgQueue("inputQueueCliente");
         this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_C);
-
-        this->numCliente = numCliente;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
     }
 }
+
+
+int ControladorCliente::obtenerNumeroCliente() {
+	CLIENT *clnt;
+	retorno  *result_1;
+	char *obteneridcliente_1_arg;
+
+	clnt = clnt_create ("LOCALHOST", NUMERADORCLIENTE, NUMERADORCLIENTE1, "udp");
+	if (clnt == NULL) {
+		clnt_pcreateerror ("LOCALHOST");
+		exit (1);
+	}
+
+	result_1 = obteneridcliente_1((void*)&obteneridcliente_1_arg, clnt);
+	if (result_1 == (retorno *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+
+	clnt_destroy (clnt);
+
+	this->numCliente = (*result_1).retorno_u.numero;
+        
+        sprintf(mensajePantalla, "Cliente #%ld:",this->numCliente);
+        Logger::setProcessInformation(mensajePantalla);
+        
+        return this->numCliente;
+}
+
 
 void ControladorCliente::contactarVendedores()
 {

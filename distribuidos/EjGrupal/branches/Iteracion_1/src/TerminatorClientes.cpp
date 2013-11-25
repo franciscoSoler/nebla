@@ -15,7 +15,7 @@
 
 int main(int argc, char* argv[]) {
     try {
-        Logger::getInstance().setProcessInformation("Terminator:");
+        Logger::getInstance().setProcessInformation("Terminator Clientes:");
 
         IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
         inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_C);

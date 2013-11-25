@@ -41,16 +41,19 @@ int generarNumeroDeTipoDeProducto() {
 
 int main(int argc, char** argv)
 {
-    std::stringstream ss;
+    
     long numCliente = 0;
 
+    /*std::stringstream ss;
     ss << argv[1];
-    ss >> numCliente;
+    ss >> numCliente;*/
 
+    ControladorCliente controlador;
+    numCliente = controlador.obtenerNumeroCliente();
 
     int llamando = Util::getInstance().generateRandomNumber(1, MAX_DEMORA);
     char mensajePantalla[256];
-    ControladorCliente controlador(numCliente);
+    
     int cantidadDeProductosPorPedido[CANTIDAD_PRODUCTOS];
 
     sprintf(mensajePantalla, "Se inicia el cliente #%ld.", numCliente);
