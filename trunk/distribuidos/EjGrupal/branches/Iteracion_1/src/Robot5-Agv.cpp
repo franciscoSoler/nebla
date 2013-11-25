@@ -12,7 +12,7 @@
 #include "API/Robot5/ControladorRobot5Agv.h"
 #include "Logger.h"
 
-#define MAX_DEMORA 10 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
+#define MAX_DEMORA 1 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
 
 Canasto resolverPedidoCanasto(ControladorRobot5Agv &controladorRobot5Agv, PedidoCanastoAGV pedido) {
     // El robot va a buscar el canasto al almacen de piezas

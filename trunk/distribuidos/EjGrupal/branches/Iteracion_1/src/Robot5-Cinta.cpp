@@ -14,7 +14,7 @@
 
 #include "API/Robot5/ControladorRobot5Cinta.h"
 
-#define MAX_DEMORA 10 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
+#define MAX_DEMORA 1 //Demora maxima que tarda el robot 5 en ir a buscar un canasto
 
 Gabinete resolverPedidoGabinete(ControladorRobot5Cinta &controladorRobot5Cinta, TipoProducto tipoPorudcto) {
     // El robot va a buscar el gabinete al almacen de piezas

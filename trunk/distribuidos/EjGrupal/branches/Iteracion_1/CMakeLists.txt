@@ -117,10 +117,22 @@ add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorG
 add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC}${VENDEDOR_SRC})
 #add_executable(${OUT_DIR}MonitorAlmacenPiezas               ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC}${VENDEDOR_SRC})
 
+# Procesos utilizados por el Middleware para entablar y realizar comunicaciones
+# Cliente
 add_executable(${OUT_DIR}CanalEntradaCliente                ${SRC_DIR}Comunicaciones/CanalEntradaCliente.cpp       ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalSalidaCliente                 ${SRC_DIR}Comunicaciones/CanalSalidaCliente.cpp        ${COMMON_SRC})
+add_executable(${OUT_DIR}ClienteCanalConDespacho            ${SRC_DIR}Comunicaciones/ClienteCanalConDespacho.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}ClienteCanalConR16                 ${SRC_DIR}Comunicaciones/ClienteCanalConR16.cpp        ${COMMON_SRC})
+
+# Vendedor
 add_executable(${OUT_DIR}CanalEntradaVendedor               ${SRC_DIR}Comunicaciones/CanalEntradaVendedor.cpp      ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalSalidaVendedor                ${SRC_DIR}Comunicaciones/CanalSalidaVendedor.cpp       ${COMMON_SRC})
+
+# Despacho
+add_executable(${OUT_DIR}DespachoCanalConCliente            ${SRC_DIR}Comunicaciones/DespachoCanalConCliente.cpp   ${COMMON_SRC})
+
+# Robot16
+add_executable(${OUT_DIR}R16CanalConCliente                 ${SRC_DIR}Comunicaciones/R16CanalConCliente.cpp        ${COMMON_SRC})
 
 add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
@@ -149,8 +161,11 @@ target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCL
 
 target_link_libraries(${OUT_DIR}CanalEntradaCliente                         IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaCliente                          IPCLibrary)
+target_link_libraries(${OUT_DIR}ClienteCanalConDespacho                     IPCLibrary)
+target_link_libraries(${OUT_DIR}ClienteCanalConR16                          IPCLibrary)
+target_link_libraries(${OUT_DIR}DespachoCanalConCliente                     IPCLibrary)
+target_link_libraries(${OUT_DIR}R16CanalConCliente                          IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalEntradaVendedor                        IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaVendedor                         IPCLibrary)
-
 target_link_libraries(${OUT_DIR}CreadorCanalesCliente                       IPCLibrary)
 target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)

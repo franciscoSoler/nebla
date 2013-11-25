@@ -17,13 +17,13 @@
 int main(int argc, char **argv) {
     CommunicationsUtil util;
     char buffer[255];
-    int nroCliente;
+    long nroCliente;
 
     if ( util.parseArgs(argc, argv, nroCliente) == -1 ) {
         exit(1);
     }
 
-    sprintf(buffer, "Canal Entrada Cliente %d:", nroCliente);
+    sprintf(buffer, "Canal Entrada Cliente %ld:", nroCliente);
     Logger::getInstance().setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conectando canal de entrada");
 

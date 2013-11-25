@@ -38,7 +38,6 @@ private:
     IPC::Semaphore semMutex_shMem_R14_R16_;
     IPC::Semaphore semMutex_shMem_APT_;
     IPC::MsgQueue inputQueueR16_Despacho_;
-    IPC::MsgQueue inputQueueDespacho_;
     IPC::MsgQueue R16_Cliente_Queue_;
     Msg_PedidoDespacho mensaje_;
 };

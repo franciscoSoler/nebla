@@ -42,22 +42,21 @@ int main(int argc, char** argv)
         sprintf(mensajePantalla, "Espera clientes.");
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
-        long numCliente;
         controlador.recibirLlamadoTelefonico();
 
-        /*sprintf(mensajePantalla, "Recibe mensaje del cliente %ld y establece una comunicacion.", numCliente);
-        Logger::logMessage(Logger::TRACE, mensajePantalla);*/
-
         OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
-        ordenDeCompra.idCliente_ = numCliente;
 
         pedido_t pedido;
         pedido_t pedidos[CANT_MAX_PEDIDOS];
+        long numCliente;
         int cantPedidos = 0;
+
         do
         {
             pedido = controlador.recibirPedido();
             numCliente = pedido.emisor;
+
+            ordenDeCompra.idCliente_ = numCliente;
 
             pedidos[cantPedidos] = pedido;
             respuesta_pedido_t respuesta;
