@@ -38,8 +38,8 @@ int main(int argc, char* argv[]) {
         IPC::MsgQueue R16_Cliente_Queue_("R16_Cliente_Queue");
         R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
 
-
-        while (true) {
+        bool ultimoProductoDeODC = false;
+        while ( not ultimoProductoDeODC ) {
             if ( socketR16->receive(buffer, TAM_BUFFER) != TAM_BUFFER ) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir mensaje del R16");
                 abort();
@@ -47,12 +47,16 @@ int main(int argc, char* argv[]) {
 
             Msg_EnvioCajaCliente mensaje;
             memcpy(&mensaje, buffer, sizeof(Msg_EnvioCajaCliente));
+            ultimoProductoDeODC = mensaje.ultimoProductoDeODC_;
             R16_Cliente_Queue_.send(mensaje);
         }
-        return 0;
+
+        Logger::logMessage(Logger::COMM, "Comunicación terminada. Cerrando canal");
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
     }
+
+    return 0;
 }

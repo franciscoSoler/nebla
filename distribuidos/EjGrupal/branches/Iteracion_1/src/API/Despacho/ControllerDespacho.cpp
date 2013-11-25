@@ -52,17 +52,15 @@ OrdenDeCompra ControllerDespacho::obtenerOrdenDeCompra(long idOrdenDeCompra) {
     }
 }
 
-void ControllerDespacho::despacharProducto(TipoProducto idProducto, uint idOrdenCompra, long idCliente) {
+void ControllerDespacho::despacharProducto(PedidoDespacho pedido, bool ultimoProductoDeODC) {
     try {
         Logger::logMessage(Logger::TRACE, "Notifica a Robot16 "
         "que debe sacar una caja del APT");
-        PedidoDespacho pedido;
-        pedido.idProducto_ = idProducto;
-        pedido.idOrdenDeCompra_ = idOrdenCompra;
-        pedido.idCliente_ = idCliente;
+
         Msg_FinProductoR16 msgPedido;
         msgPedido.mtype = MSG_FIN_PRODUCTO_R16;
         msgPedido.pedido_ = pedido;
+        msgPedido.ultimoProductoDeODC_ = ultimoProductoDeODC;
         inputQueueR16_Despacho_.send( msgPedido );
     }
     catch (Exception & e) {

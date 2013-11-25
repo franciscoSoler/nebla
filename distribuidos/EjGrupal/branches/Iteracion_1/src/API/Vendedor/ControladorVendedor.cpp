@@ -113,13 +113,28 @@ void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente,
     }
 }
 
+void ControladorVendedor::enviarUltimaConfirmacionDeRecepcionDePedido(
+        long numCliente, respuesta_pedido_t pedido) {
+    try {
+        msg_respuesta_pedido_t msgRespuesta;
+        msgRespuesta.respuesta_pedido = pedido;
+        msgRespuesta.mtype = numCliente;
+        msgRespuesta.tipo = 1;
+        clientes.enviarMensajeRespuesta(msgRespuesta);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+}
+
 void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t pedido)
 {
     try {
         msg_respuesta_pedido_t msgRespuesta;
         msgRespuesta.respuesta_pedido = pedido;
         msgRespuesta.mtype = numCliente;
-        msgRespuesta.tipo = 0;
+        msgRespuesta.tipo = 1;
         clientes.enviarMensajeRespuesta(msgRespuesta);
     }
     catch (Exception & e) {

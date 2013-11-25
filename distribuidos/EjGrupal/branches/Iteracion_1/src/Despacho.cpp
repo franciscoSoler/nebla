@@ -77,11 +77,6 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
         // a despachar
         odc->cantidadPorProducto_[idProducto-1] = 0;
 
-        for (int i = 0; i < cantidadDeProductos; ++i) {
-            controller->despacharProducto(idProducto, odc->idOrden_, odc->idCliente_);
-            sleep( Util::generateRandomNumber(1,5) );
-        }
-
         // Si la orden de compra está satisfecha, se debe eliminar
         bool ordenTerminada = true;
         for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {
@@ -89,6 +84,19 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
                 ordenTerminada = false;
                 break;
             }
+        }
+
+        PedidoDespacho pedido;
+        pedido.idProducto_ = idProducto;
+        pedido.idOrdenDeCompra_ = odc->idOrden_;
+        pedido.idCliente_ = odc->idCliente_;
+
+        for (int i = 0; i < cantidadDeProductos; ++i) {
+            bool ultimoProductoDeODC =
+            ordenTerminada == true && (i+1) == cantidadDeProductos;
+
+            controller->despacharProducto(pedido, ultimoProductoDeODC);
+            sleep( Util::generateRandomNumber(1,5) );
         }
 
         if ( ordenTerminada ) {

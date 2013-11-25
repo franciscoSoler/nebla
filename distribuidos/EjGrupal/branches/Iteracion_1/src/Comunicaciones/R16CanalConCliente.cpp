@@ -38,10 +38,12 @@ int main(int argc, char* argv[]) {
         R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
 
 
-        while (true) {
+        bool ultimoProductoDeODC = false;
+        while ( not ultimoProductoDeODC ) {
             // Espero mensajes del despacho hacia el cliente
             Msg_EnvioCajaCliente mensajeSalida;
             R16_Cliente_Queue_.recv(idCliente, mensajeSalida);
+            ultimoProductoDeODC = mensajeSalida.ultimoProductoDeODC_;
             Logger::logMessage(Logger::COMM, "Recibe mensaje, procede a enviarlo por el canal");
 
             memcpy(buffer, &mensajeSalida, sizeof(mensajeSalida));
@@ -50,6 +52,8 @@ int main(int argc, char* argv[]) {
                 abort();
             }
         }
+
+        Logger::logMessage(Logger::COMM, "Comunicación terminada. Cerrando canal");
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

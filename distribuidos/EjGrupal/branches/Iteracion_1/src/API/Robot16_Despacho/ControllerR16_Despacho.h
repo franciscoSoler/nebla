@@ -11,14 +11,13 @@
 
 // IPCs de Fede
 #include <API/Objects/SmMemAlmacenProductosTerminados.h>
-
 class ControllerR16_Despacho : public IControllerR16_Despacho {
     
 public:
     ControllerR16_Despacho();
-    PedidoDespacho recibirPedido();
+    PedidoDespacho recibirPedido(bool & ultimoProductoDeODC);
     void tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja);
-    void enviarCajaAlCliente(long idCliente, Caja unaCaja);
+    void enviarCajaAlCliente(long idCliente, Caja unaCaja, bool ultimoProductoDeODC);
     
     bool avanzarCinta();
     
@@ -39,7 +38,7 @@ private:
     IPC::Semaphore semMutex_shMem_APT_;
     IPC::MsgQueue inputQueueR16_Despacho_;
     IPC::MsgQueue R16_Cliente_Queue_;
-    Msg_PedidoDespacho mensaje_;
+    Msg_FinProductoR16 mensaje_;
 };
 
 #endif	/* CONTROLLER_R16_DESPACHO_H */

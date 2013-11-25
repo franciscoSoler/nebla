@@ -30,19 +30,19 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
     }
 }
 
-PedidoDespacho ControllerR16_Despacho::recibirPedido() {
+PedidoDespacho ControllerR16_Despacho::recibirPedido(bool & ultimoProductoDeODC) {
     try {
         Logger::setProcessInformation("Robot16_Despacho - recibirPedido:");
-        inputQueueR16_Despacho_.recv(MSG_FIN_PRODUCTO_R16, mensaje_ );
+        inputQueueR16_Despacho_.recv(MSG_FIN_PRODUCTO_R16, mensaje_);
 
         PedidoDespacho pedido_ = mensaje_.pedido_;
+        ultimoProductoDeODC = mensaje_.ultimoProductoDeODC_;
         obtener_shMem_R14_R16();
 
         if (pedido_.tipoPedido_ == PEDIDO_ROBOT16 && pedido_.idProducto_ == NULL_PRODUCT) {
             shMem_R14_R16_Data_->setEstadoTrabajoRobot16(true);
         }
-        liberar_shMem_R14_R16();
-        
+        liberar_shMem_R14_R16();        
         return pedido_;
 
         Logger::logMessage(Logger::TRACE, "Recibe Pedido");
@@ -68,7 +68,7 @@ void ControllerR16_Despacho::tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja
 
 } 
 
-void ControllerR16_Despacho::enviarCajaAlCliente(long idCliente, Caja caja) {
+void ControllerR16_Despacho::enviarCajaAlCliente(long idCliente, Caja caja, bool ultimoProductoDeODC) {
     try {
         Logger::setProcessInformation("Robot16_Despacho - enviarCajaAlCliente:");
         sprintf(buffer_, "Se envía Caja al cliente %ld", idCliente);
@@ -77,6 +77,7 @@ void ControllerR16_Despacho::enviarCajaAlCliente(long idCliente, Caja caja) {
         Msg_EnvioCajaCliente mensaje;
         mensaje.mtype = idCliente;
         mensaje.caja = caja;
+        mensaje.ultimoProductoDeODC_ = ultimoProductoDeODC;
         R16_Cliente_Queue_.send(mensaje);
     }
     catch (Exception & e) {

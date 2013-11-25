@@ -16,7 +16,7 @@ public:
     /* Indicarle al Robot16 que tiene que sacar un producto del AGV
      * y colocarlo en el Buffer del Despacho
      */
-    virtual void despacharProducto(TipoProducto producto, uint idOrdenCompra, long idCliente) = 0;
+    virtual void despacharProducto(PedidoDespacho pedido, bool ultimoProductoDeODC) = 0;
     
     /* Se llama al cliente para que este venga a buscar su Pedido
      */
