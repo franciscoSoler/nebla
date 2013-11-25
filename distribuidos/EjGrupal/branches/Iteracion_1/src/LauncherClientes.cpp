@@ -29,8 +29,14 @@ int main(int argc, char* argv[]) {
         createIPCs();
 
         createProcess("Cliente", 1, 1);
+
         // Procesos correspondientes al Middleware
         createProcess("CreadorCanalesCliente");
+        /* A este Proceso, se le debería enviar el mismo ID que tiene
+         * el cliente. Como es un autonumérico, por ahora esto funciona
+         */
+        createProcess("ClienteCanalConDespacho", 1, 1);
+        createProcess("ClienteCanalConR16", 1, 1);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR,
@@ -61,8 +67,9 @@ void createIPCs() {
     R16_Cliente_Queue.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
     Logger::logMessage(Logger::IMPORTANT, "IPC R16_Cliente_Queue creado");
 
-    /* IPC::MsgQueue despacho("Despacho");
-    despacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);*/
+    IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
+    inputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_C);
+    Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueDespacho creado");
 
     IPC::VendedorLibreMessageQueue vendedores ("Vendedores Msg Queue");
     vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);

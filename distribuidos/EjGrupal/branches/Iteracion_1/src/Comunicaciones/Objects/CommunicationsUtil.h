@@ -15,6 +15,7 @@ class CommunicationsUtil
 public:
     CommunicationsUtil();
     int parseArgs(char argc, char* argv[], int &processID);
+    int parseArgs(char argc, char* argv[], long &processID);
     int parseArgs(char argc, char* argv[], std::string & serverName);
     int parseChannelArgs(char server[], int &inputPort, int &outputPort);
 

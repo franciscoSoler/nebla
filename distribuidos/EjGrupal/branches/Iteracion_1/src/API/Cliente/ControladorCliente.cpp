@@ -26,11 +26,11 @@ ControladorCliente::ControladorCliente(long numCliente)
         this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
         this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
 
-        /* this->despacho = IPC::MsgQueue("Cola Cliente Despacho");
-        this->despacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);*/
+        this->inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho");
+        this->inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_C);
 
-        this->retiro = IPC::MsgQueue("retiro");
-        this->retiro.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
+        this->R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue_");
+        this->R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
 
         this->inputQueueCliente = IPC::MsgQueue("inputQueueCliente");
         this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_C);
@@ -137,9 +137,9 @@ respuesta_pedido_t ControladorCliente::recibirResultado()
 void ControladorCliente::esperarPedido(TipoProducto & tipoProducto, int & nroOrdenCompra, int numCliente)
 {
     try {
-        Msg_PedidoDespacho mensaje;
+        Msg_RetiroProducto mensaje;
         this->inputQueueCliente.recv(numCliente, mensaje);
-        PedidoDespacho pedido = mensaje.pedido_;
+        PedidoDespacho pedido = mensaje.datos_;
 
          sprintf(mensajePantalla, "Se le informa que el Producto %u fue terminado. "
                  "Procede a ir a la fabrica a buscarlo", pedido.idProducto_);
@@ -170,7 +170,7 @@ void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden) {
         mensaje.mtype = MSG_PEDIDO_DESPACHO;
         mensaje.pedido_ = pedido;
 
-        despacho.send(mensaje);
+        inputQueueDespacho.send(mensaje);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -181,7 +181,7 @@ void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden) {
 Caja ControladorCliente::obtenerProducto(int idCliente) {
     try {
         Msg_EnvioCajaCliente msgCaja;
-        retiro.recv(idCliente, msgCaja);
+        R16_Cliente_Queue_.recv(idCliente, msgCaja);
         Logger::logMessage(Logger::IMPORTANT, "Recibe Caja de Robot16");
         return msgCaja.caja;
     }

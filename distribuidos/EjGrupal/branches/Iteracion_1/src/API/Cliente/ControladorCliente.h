@@ -48,8 +48,8 @@ class ControladorCliente
     IPC::PedidosVendedorMessageQueue pedidos;
 
     IPC::MsgQueue inputQueueCliente;
-    IPC::MsgQueue despacho;
-    IPC::MsgQueue retiro;
+    IPC::MsgQueue inputQueueDespacho;
+    IPC::MsgQueue R16_Cliente_Queue_;
 
 	long numCliente;
 	long numVendedorAsociado;

@@ -81,6 +81,8 @@ int main(int argc, char* argv[]) {
         ServersManager serversManager;
         serversManager.createServer("ServidorVendedorEntrada");
         serversManager.createServer("ServidorVendedorSalida");
+        serversManager.createServer("ServidorDespachoClientes");
+        serversManager.createServer("ServidorR16Clientes");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 

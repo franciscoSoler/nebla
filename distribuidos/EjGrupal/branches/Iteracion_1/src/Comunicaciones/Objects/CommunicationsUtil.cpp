@@ -19,6 +19,16 @@ int CommunicationsUtil::parseArgs(char argc, char* argv[], int &processID) {
     return 0;
 }
 
+int CommunicationsUtil::parseArgs(char argc, char* argv[], long &processID) {
+    if (argc != 2) {
+        Logger::logMessage(Logger::ERROR, "Error: Cantidad de parametros invalida.");
+        return -1;
+    }
+
+    sscanf(argv[1], "%ld", &processID);
+    return 0;
+}
+
 int CommunicationsUtil::parseArgs(char argc, char* argv[], std::string & serverName) {
     if (argc != 2) {
         Logger::logMessage(Logger::ERROR, "Error: Cantidad de parametros invalida.");

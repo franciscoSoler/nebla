@@ -17,6 +17,11 @@ int main(int argc, char* argv[]) {
     try {
         Logger::getInstance().setProcessInformation("Terminator:");
 
+        IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
+        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_C);
+        inputQueueDespacho.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueDespacho creado");
+
         IPC::MsgQueue inputQueueCliente("inputQueueCliente");
         inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_C);
         inputQueueCliente.destroy();

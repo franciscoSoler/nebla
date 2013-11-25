@@ -125,7 +125,7 @@ void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
         }
     }
     if (! bufferODC.insert(pedido.idOrdenDeCompra_, new OrdenDeCompra(odc) ) ) {
-            Logger::logMessage(Logger::ERROR, "Existe mas de una ODC con el mismo identificador");
+            Logger::logMessage(Logger::ERROR, "Existe más de una ODC con el mismo identificador");
     }
 }
 

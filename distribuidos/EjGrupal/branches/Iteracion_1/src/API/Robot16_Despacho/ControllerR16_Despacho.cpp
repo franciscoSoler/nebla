@@ -21,10 +21,7 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
         
         R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue");
         R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
-        
-        inputQueueDespacho_ = IPC::MsgQueue("inputQueueDespacho");
-        inputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
-        
+
         semMutex_shMem_APT_ = IPC::Semaphore("semMutex_shMem_APT");
         semMutex_shMem_APT_.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
     }
