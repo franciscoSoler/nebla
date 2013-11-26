@@ -55,9 +55,14 @@ int main(int argc, char* argv[]) {
             ultimoPedido = mensajeEntrada.ultimoPedido_;
             inputQueueCliente.send(mensajeEntrada);
 
-            // Espero el mensaje del cliente al Despacho, y dsp lo envío por el canal
+            /* Espero el mensaje del cliente al Despacho, y dsp lo envío por el canal.
+             * El mensaje lo tengo que recibir por nroCliente por el caso de que exista
+             * más de un cliente en la misma PC. Se cambia en el mismo canal el mtype del
+             * mensaje por MSG_PEDIDO_DESPACHO para que luego pueda ser leído correctamente
+             * por el Despacho */
             Msg_PedidoDespacho mensajeSalida;
-            inputQueueDespacho.recv(MSG_PEDIDO_DESPACHO, mensajeSalida);
+            inputQueueDespacho.recv(nroCliente, mensajeSalida);
+            mensajeSalida.mtype = MSG_PEDIDO_DESPACHO;
 
             memcpy(buffer, &mensajeSalida, sizeof(Msg_PedidoDespacho));
             if ( socketDespacho->send(buffer, TAM_BUFFER) != TAM_BUFFER ) {

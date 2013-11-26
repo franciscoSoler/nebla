@@ -191,7 +191,7 @@ void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden, bool ul
 
         Msg_PedidoDespacho mensaje;
 
-        mensaje.mtype = MSG_PEDIDO_DESPACHO;
+        mensaje.mtype = this->numCliente;
         mensaje.pedido_ = pedido;
         mensaje.ultimoPedido_ = ultimoPedido;
 
