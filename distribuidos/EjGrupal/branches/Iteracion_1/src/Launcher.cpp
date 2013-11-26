@@ -81,6 +81,7 @@ int main(int argc, char* argv[]) {
         // Procesos correspondientes al Middleware
         Util::createProcess("VendedorCanalConDespacho", 5, 1);
         Util::createProcess("R16CanalConDespacho", 1, 1);
+        Util::createProcess("R16_Cinta15CanalConDespacho", 1, 1);
 
         ServersManager serversManager;
         serversManager.createServer("ServidorVendedorEntrada");

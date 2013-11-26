@@ -131,6 +131,13 @@ void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
             pedido.idCliente_ = odc.idCliente_;
             pedido.idOrdenDeCompra_ = odc.idOrden_;
             pedido.idProducto_ = static_cast<TipoProducto> (i+1);
+
+            char buffer_[255];
+            sprintf(buffer_, "Stock - Notifica a Cliente N°%lu que puede retirar su pedido: "
+            "idProducto: %d - idOrdenCompra: %lu.", pedido.idCliente_,
+            pedido.idProducto_, pedido.idOrdenDeCompra_);
+            Logger::logMessage(Logger::IMPORTANT, buffer_);
+
             controller->notificarAClienteProductoTerminado(pedido, odc.faltantesAEntregar_ == 0);
         }
     }
@@ -151,6 +158,14 @@ void pedidoRobot16(autoPtrControllerDespacho & controller, PedidoDespacho pedido
         // Se envía al cliente el idProducto y el idNroCompra asociados al producto que 
         // se terminó de fabricar
         ordenDeCompra->faltantesAEntregar_--;
+
+        char buffer_[255];
+        sprintf(buffer_, "Notifica a Cliente N°%lu que puede retirar su pedido: "
+        "idProducto: %d - idOrdenCompra: %lu.", pedidoAEnviar.idCliente_,
+        pedidoAEnviar.idProducto_, pedidoAEnviar.idOrdenDeCompra_);
+        Logger::logMessage(Logger::IMPORTANT, buffer_);
+
+
         controller->notificarAClienteProductoTerminado(
                 pedidoAEnviar, ordenDeCompra->faltantesAEntregar_ == 0);
     }

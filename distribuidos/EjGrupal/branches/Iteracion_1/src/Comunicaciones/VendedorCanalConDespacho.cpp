@@ -12,7 +12,7 @@
 #include <Socket/SocketStream.h>
 
 int main(int argc, char* argv[]) {
-    Logger::setProcessInformation("VendedorCanalConCliente:");
+    Logger::setProcessInformation("VendedorCanalConDespacho:");
     char buffer[255];
     CommunicationsUtil util;
     long idVendedor = 0;
