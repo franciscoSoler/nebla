@@ -25,6 +25,10 @@ ServidorDespachoVendedores-Dispatcher = DespachoCanalConVendedor
 
 # Data del Servidor de Despacho que atiende clientes
 ServidorDespachoR16-Direccion = 127.0.0.1
-ServidorDespachoR16-Port = 5003
+ServidorDespachoR16-Port = 5005
 ServidorDespachoR16-Dispatcher = DespachoCanalConR16
 
+# Data del Servidor de Despacho que atiende clientes
+ServidorDespachoR16_Cinta15-Direccion = 127.0.0.1
+ServidorDespachoR16_Cinta15-Port = 5006
+ServidorDespachoR16_Cinta15-Dispatcher = DespachoCanalConR16_Cinta15

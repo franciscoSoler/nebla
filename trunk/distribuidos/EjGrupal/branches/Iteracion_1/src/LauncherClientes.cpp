@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 
         createIPCs();
 
-        Util::createProcess("Cliente", 2, 1);
+        Util::createProcess("Cliente", 1, 1);
 
         // Procesos correspondientes al Middleware
         Util::createProcess("CreadorCanalesCliente");

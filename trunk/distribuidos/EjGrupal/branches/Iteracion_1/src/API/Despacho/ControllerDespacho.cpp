@@ -72,11 +72,6 @@ void ControllerDespacho::despacharProducto(PedidoDespacho pedido, bool ultimoPro
 void ControllerDespacho::notificarAClienteProductoTerminado(
         PedidoDespacho pedido, bool ultimoPedido) {
     try {
-        sprintf(buffer_, "Notifica a Cliente N°%lu que puede retirar su pedido: "
-        "idProducto: %d - idOrdenCompra: %lu.", pedido.idCliente_,
-        pedido.idProducto_, pedido.idOrdenDeCompra_);
-        Logger::logMessage(Logger::IMPORTANT, buffer_);
-
         Msg_RetiroProducto msgACliente;
         msgACliente.mtype = pedido.idCliente_;
         msgACliente.datos_ = pedido;

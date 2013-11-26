@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
                 piezas.pieza[i].cantidad--;
                 sprintf(buffer, "Pieza a pedir: %d - Posición: %d - Cantidad: %d",
                         piezas.pieza[i].tipoPieza, posicionPieza, piezas.pieza[i].cantidad);
-                Logger::logMessage(Logger::ERROR, buffer);
+                Logger::logMessage(Logger::IMPORTANT, buffer);
 
                 if (piezas.pieza[i].cantidad == 0)
                     break;

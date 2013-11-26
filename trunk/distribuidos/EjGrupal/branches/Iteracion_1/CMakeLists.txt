@@ -152,10 +152,12 @@ add_executable(${OUT_DIR}VendedorCanalConDespacho           ${SRC_DIR}Comunicaci
 add_executable(${OUT_DIR}DespachoCanalConCliente            ${SRC_DIR}Comunicaciones/DespachoCanalConCliente.cpp   ${COMMON_SRC})
 add_executable(${OUT_DIR}DespachoCanalConVendedor           ${SRC_DIR}Comunicaciones/DespachoCanalConVendedor.cpp  ${COMMON_SRC})
 add_executable(${OUT_DIR}DespachoCanalConR16                ${SRC_DIR}Comunicaciones/DespachoCanalConR16.cpp       ${COMMON_SRC})
+add_executable(${OUT_DIR}DespachoCanalConR16_Cinta15        ${SRC_DIR}Comunicaciones/DespachoCanalConR16_Cinta15.cpp ${COMMON_SRC})
 
 # Robot16
 add_executable(${OUT_DIR}R16CanalConCliente                 ${SRC_DIR}Comunicaciones/R16CanalConCliente.cpp        ${COMMON_SRC})
 add_executable(${OUT_DIR}R16CanalConDespacho                ${SRC_DIR}Comunicaciones/R16CanalConDespacho.cpp       ${COMMON_SRC})
+add_executable(${OUT_DIR}R16_Cinta15CanalConDespacho        ${SRC_DIR}Comunicaciones/R16_Cinta15CanalConDespacho.cpp ${COMMON_SRC})
 
 
 add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
@@ -197,8 +199,10 @@ target_link_libraries(${OUT_DIR}ClienteCanalConR16                          IPCL
 target_link_libraries(${OUT_DIR}DespachoCanalConCliente                     IPCLibrary)
 target_link_libraries(${OUT_DIR}DespachoCanalConVendedor                    IPCLibrary)
 target_link_libraries(${OUT_DIR}DespachoCanalConR16                         IPCLibrary)
+target_link_libraries(${OUT_DIR}DespachoCanalConR16_Cinta15                 IPCLibrary)
 target_link_libraries(${OUT_DIR}R16CanalConCliente                          IPCLibrary)
 target_link_libraries(${OUT_DIR}R16CanalConDespacho                         IPCLibrary)
+target_link_libraries(${OUT_DIR}R16_Cinta15CanalConDespacho                 IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalEntradaVendedor                        IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaVendedor                         IPCLibrary)
 target_link_libraries(${OUT_DIR}VendedorCanalConDespacho                    IPCLibrary)

@@ -35,11 +35,11 @@ int main(int argc, char* argv[]) {
     try {
         /* Cola por la cual el canal le envía mensajes al cliente */
         IPC::MsgQueue inputQueueCliente("inputQueueCliente");
-        inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
+        inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_D);
 
         /* Cola por la cual el cliente le envía mensajes al Despacho por el canal */
         IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
-        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_D);
 
         bool ultimoPedido = false;
         while (not ultimoPedido) {
@@ -67,7 +67,8 @@ int main(int argc, char* argv[]) {
             inputQueueDespacho.send(mensajeEntrada);
         }
 
-        Logger::logMessage(Logger::COMM, "Comunicación terminada. Cerrando canal");
+        sprintf(buffer, "Comunicación terminada con Cliente N°%ld. Cerrando canal", idCliente);
+        Logger::logMessage(Logger::COMM, buffer);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

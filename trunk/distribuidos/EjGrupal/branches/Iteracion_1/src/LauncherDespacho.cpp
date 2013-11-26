@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
         serversManager.createServer("ServidorDespachoClientes");
         serversManager.createServer("ServidorDespachoVendedores");
         serversManager.createServer("ServidorDespachoR16");
+        serversManager.createServer("ServidorDespachoR16_Cinta15");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR,

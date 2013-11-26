@@ -134,7 +134,7 @@ void ControllerR16_Cinta15::informarAlDespachoProductoTerminado(long idNroOrden,
         pedido.idOrdenDeCompra_ = idNroOrden;
         pedido.idProducto_ = tipo;
 
-        Msg_FinProductoR16 mensaje;
+        Msg_PedidoDespacho mensaje;
         mensaje.mtype = MSG_PEDIDO_DESPACHO;
         mensaje.pedido_ = pedido;
 

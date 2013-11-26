@@ -427,7 +427,7 @@ public:
 /*** Mensajes de colas, con sus respectivos IDs de mensajes definidos ***/
 
 // Utilizado por las colas que intercambian info con el despacho
-#define MSG_PEDIDO_DESPACHO             1
+#define MSG_PEDIDO_DESPACHO             100
 class Msg_PedidoDespacho {
 public:
     Msg_PedidoDespacho() : mtype(MSG_PEDIDO_DESPACHO) {}
