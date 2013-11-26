@@ -1,9 +1,3 @@
-/*
- * File:   Terminator.cpp
- * Author: francisco
- *
- * Created on 29 de octubre de 2013, 22:37
- */
 #include <iostream>
 
 #include "Exceptions/Exception.h"

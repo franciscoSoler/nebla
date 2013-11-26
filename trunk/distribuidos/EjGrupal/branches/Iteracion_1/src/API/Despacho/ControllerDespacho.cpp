@@ -7,13 +7,13 @@ ControllerDespacho::ControllerDespacho() {
         Logger::setProcessInformation("Despacho:");
 
         inputQueueDespacho_ = IPC::MsgQueue("inputQueueDespacho");
-        inputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+        inputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_D);
 
         inputQueueCliente_ = IPC::MsgQueue("inputQueueCliente");
-        inputQueueCliente_.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
+        inputQueueCliente_.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_D);
 
         inputQueueR16_Despacho_ = IPC::MsgQueue("inputQueueR16_Despacho");
-        inputQueueR16_Despacho_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
+        inputQueueR16_Despacho_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID_D);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

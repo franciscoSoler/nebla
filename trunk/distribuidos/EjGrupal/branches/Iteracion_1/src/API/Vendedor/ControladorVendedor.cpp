@@ -281,7 +281,8 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     pedido.tipoPedido_ = PEDIDO_ODC;
 
     Msg_PedidoDespacho mensaje_despacho;
-    mensaje_despacho.mtype = MSG_PEDIDO_DESPACHO;
+    // mensaje_despacho.mtype = MSG_PEDIDO_DESPACHO;
+    mensaje_despacho.mtype = numVendedor;
     mensaje_despacho.pedido_ = pedido;
 
     Logger::logMessage(Logger::TRACE, "Envía mensaje avisando de envío de Orden de Compra");
@@ -289,7 +290,8 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
 
 
     Msg_EnvioODCDespacho mensaje_odc;
-    mensaje_odc.mtype = MSG_ENVIO_ODC_DESPACHO;
+    // mensaje_odc.mtype = MSG_ENVIO_ODC_DESPACHO;
+    mensaje_odc.mtype = numVendedor;
     mensaje_odc.ordenDeCompra_ = ordenDeCompra;
 
     Logger::logMessage(Logger::TRACE, "Envía Orden de Compra");

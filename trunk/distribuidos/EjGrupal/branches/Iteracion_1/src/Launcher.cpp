@@ -75,15 +75,16 @@ int main(int argc, char* argv[]) {
         Util::createProcess("Robot14");
         Util::createProcess("Robot16_Cinta15");
         Util::createProcess("Robot16_Despacho");
-        Util::createProcess("Despacho");
         Util::createProcess("AGV", 3);
         Util::createProcess("Vendedor", 5, 1);
 
         // Procesos correspondientes al Middleware
+        Util::createProcess("VendedorCanalConDespacho", 5, 1);
+        Util::createProcess("R16CanalConDespacho", 1, 1);
+
         ServersManager serversManager;
         serversManager.createServer("ServidorVendedorEntrada");
         serversManager.createServer("ServidorVendedorSalida");
-        serversManager.createServer("ServidorDespachoClientes");
         serversManager.createServer("ServidorR16Clientes");
     }
     catch (Exception & e) {

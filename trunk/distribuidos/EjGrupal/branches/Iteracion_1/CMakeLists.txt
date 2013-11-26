@@ -104,7 +104,6 @@ set_target_properties(IPCLibrary PROPERTIES
           
 
 # Numerador
-add_executable(${OUT_DIR}LauncherNumeradorClientes           ${SRC_DIR}LauncherNumeradorClientes.cpp             ${COMMON_SRC} )   
 
 add_executable(${OUT_DIR}PruebaNumeradorClientes            ${SRC_DIR}Numerador/Ejecutables/numeradorClientes_client.c             ${COMMON_SRC} ${NUMERADOR_SRC} )   
 add_executable(${OUT_DIR}NumeradorClientesServer            ${SRC_DIR}Numerador/Ejecutables/numeradorClientes_svc.c             ${COMMON_SRC} ${NUMERADOR_SRC})   
@@ -112,9 +111,12 @@ add_executable(${OUT_DIR}NumeradorClientesServer            ${SRC_DIR}Numerador/
 
 add_executable(${OUT_DIR}Launcher                           ${SRC_DIR}Launcher.cpp                              ${COMMON_SRC})
 add_executable(${OUT_DIR}LauncherClientes                   ${SRC_DIR}LauncherClientes.cpp                      ${COMMON_SRC})
+add_executable(${OUT_DIR}LauncherNumeradorClientes          ${SRC_DIR}LauncherNumeradorClientes.cpp             ${COMMON_SRC})   
+add_executable(${OUT_DIR}LauncherDespacho                   ${SRC_DIR}LauncherDespacho.cpp                      ${COMMON_SRC})
 add_executable(${OUT_DIR}Terminator                         ${SRC_DIR}Terminator.cpp                            ${COMMON_SRC})
 add_executable(${OUT_DIR}TerminatorClientes                 ${SRC_DIR}TerminatorClientes.cpp                    ${COMMON_SRC})
 add_executable(${OUT_DIR}TerminatorNumerador                ${SRC_DIR}TerminatorNumerador.cpp                   ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorDespacho                 ${SRC_DIR}TerminatorDespacho.cpp                    ${COMMON_SRC})
 
 add_executable(${OUT_DIR}AGV                                ${SRC_DIR}AGV.cpp                                   ${COMMON_SRC} ${AGV_SRC})
 add_executable(${OUT_DIR}Robot5-Agv                         ${SRC_DIR}Robot5-Agv.cpp                            ${COMMON_SRC} ${ROBOT5_SRC} ${ALMACEN_SRC})
@@ -144,12 +146,17 @@ add_executable(${OUT_DIR}ClienteCanalConR16                 ${SRC_DIR}Comunicaci
 # Vendedor
 add_executable(${OUT_DIR}CanalEntradaVendedor               ${SRC_DIR}Comunicaciones/CanalEntradaVendedor.cpp      ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalSalidaVendedor                ${SRC_DIR}Comunicaciones/CanalSalidaVendedor.cpp       ${COMMON_SRC})
+add_executable(${OUT_DIR}VendedorCanalConDespacho           ${SRC_DIR}Comunicaciones/VendedorCanalConDespacho.cpp  ${COMMON_SRC})
 
 # Despacho
 add_executable(${OUT_DIR}DespachoCanalConCliente            ${SRC_DIR}Comunicaciones/DespachoCanalConCliente.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}DespachoCanalConVendedor           ${SRC_DIR}Comunicaciones/DespachoCanalConVendedor.cpp  ${COMMON_SRC})
+add_executable(${OUT_DIR}DespachoCanalConR16                ${SRC_DIR}Comunicaciones/DespachoCanalConR16.cpp       ${COMMON_SRC})
 
 # Robot16
 add_executable(${OUT_DIR}R16CanalConCliente                 ${SRC_DIR}Comunicaciones/R16CanalConCliente.cpp        ${COMMON_SRC})
+add_executable(${OUT_DIR}R16CanalConDespacho                ${SRC_DIR}Comunicaciones/R16CanalConDespacho.cpp       ${COMMON_SRC})
+
 
 add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
@@ -158,12 +165,13 @@ add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaci
 
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherClientes                            IPCLibrary)
-
 target_link_libraries(${OUT_DIR}LauncherNumeradorClientes                   IPCLibrary)
+target_link_libraries(${OUT_DIR}LauncherDespacho                            IPCLibrary)
 
 target_link_libraries(${OUT_DIR}Terminator                                  IPCLibrary)
 target_link_libraries(${OUT_DIR}TerminatorClientes                          IPCLibrary)
 target_link_libraries(${OUT_DIR}TerminatorNumerador                         IPCLibrary)
+target_link_libraries(${OUT_DIR}TerminatorDespacho                          IPCLibrary)
 
 target_link_libraries(${OUT_DIR}AGV                                         IPCLibrary)
 target_link_libraries(${OUT_DIR}Robot5-Agv                                  IPCLibrary)
@@ -187,8 +195,12 @@ target_link_libraries(${OUT_DIR}CanalSalidaCliente                          IPCL
 target_link_libraries(${OUT_DIR}ClienteCanalConDespacho                     IPCLibrary)
 target_link_libraries(${OUT_DIR}ClienteCanalConR16                          IPCLibrary)
 target_link_libraries(${OUT_DIR}DespachoCanalConCliente                     IPCLibrary)
+target_link_libraries(${OUT_DIR}DespachoCanalConVendedor                    IPCLibrary)
+target_link_libraries(${OUT_DIR}DespachoCanalConR16                         IPCLibrary)
 target_link_libraries(${OUT_DIR}R16CanalConCliente                          IPCLibrary)
+target_link_libraries(${OUT_DIR}R16CanalConDespacho                         IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalEntradaVendedor                        IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaVendedor                         IPCLibrary)
+target_link_libraries(${OUT_DIR}VendedorCanalConDespacho                    IPCLibrary)
 target_link_libraries(${OUT_DIR}CreadorCanalesCliente                       IPCLibrary)
 target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)

@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
     // Recibo el ID del cliente
     if ( socketCliente.receive(buffer, TAM_BUFFER) != TAM_BUFFER ) {
-        Logger::logMessage(Logger::ERROR, "Error al enviar mensaje a despacho");
+        Logger::logMessage(Logger::ERROR, "Error al enviar mensaje a Despacho");
         abort();
     }
     memcpy(&idCliente, buffer, sizeof(long));
