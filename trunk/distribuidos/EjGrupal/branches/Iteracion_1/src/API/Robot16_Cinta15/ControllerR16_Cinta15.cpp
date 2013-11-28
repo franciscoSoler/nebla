@@ -107,11 +107,14 @@ bool ControllerR16_Cinta15::depositarCajaEnAPT(Caja unaCaja, long & idNroOrdenAP
         obtenerMutexSincronismo();
         semMutex_shMem_APT_.wait();
         
-        sprintf(buffer_, "Deposita Caja en APT - TipoProducto: %d", unaCaja.idProducto_);
+        sprintf(buffer_, "Deposita Caja en APT - TipoProducto: %d, idNroOrden: %ld", unaCaja.idProducto_, idNroOrdenAPT);
         Logger::logMessage(Logger::TRACE, buffer_);
 
         bool resultado = shMem_APT_.depositarCaja(unaCaja, idNroOrdenAPT);
         semMutex_shMem_APT_.signal();
+        
+        //sprintf(buffer_, "Deposito Caja en APT - TipoProducto: %d, idNroOrdenVieja: %ld idNroOrdenNueva: %ld", unaCaja.idProducto_, unaCaja.idOrdenDeCompra_, idNroOrdenAPT);
+        //Logger::logMessage(Logger::TRACE, buffer_);
 
         obtener_shMem_R14_R16();
         shMem_R14_R16_Data_->setEstadoTrabajoRobot16(false);

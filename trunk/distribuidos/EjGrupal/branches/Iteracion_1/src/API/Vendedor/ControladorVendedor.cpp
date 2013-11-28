@@ -143,7 +143,7 @@ void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respues
     }
 }
 
-pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido, bool* pedidoEnStock)
+pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t pedido, bool* pedidoEnProduccion)
 {
     try {
         pedido_fabricacion_t pedidoProduccion;
@@ -163,7 +163,7 @@ pedido_fabricacion_t ControladorVendedor::calcularCantidadAProducir(pedido_t ped
         if(cantidadEnStock >= pedido.cantidad)
         {
             /* Pedido es satisfecho con productos stockeados */
-            *pedidoEnStock = true;
+            *pedidoEnProduccion = true;
             pedidoProduccion.ventaEsValida = true;
             pedidoProduccion.producidoParaStockear = 0;
             pedidoProduccion.producidoVendido = 0;
@@ -214,14 +214,17 @@ void ControladorVendedor::efectuarReserva(pedido_t pedido, pedido_fabricacion_t 
             if(pedidoProduccion.vendidoStockeado > 0)
             almacenProductosTerminados.reservarStockeados(pedido.tipoProducto, pedidoProduccion.vendidoStockeado);
 
-        }
+}
 
 pedido_fabricacion_t ControladorVendedor::reservarPedido(pedido_t pedido, bool* pedidoEnStock)
 {
-
-    pedido_fabricacion_t pedidoProduccion = calcularCantidadAProducir(pedido, pedidoEnStock);
+    bool pedidoEnProduccion = false;
+    pedido_fabricacion_t pedidoProduccion = calcularCantidadAProducir(pedido, &pedidoEnProduccion);
     if(pedidoProduccion.ventaEsValida) {
         efectuarReserva(pedido, pedidoProduccion);
+        if (pedidoEnProduccion) {
+            *pedidoEnStock = almacenProductosTerminados.chequearPedidoReservadoEnStock(pedido.tipoProducto);
+        }
     }
     return pedidoProduccion;
 }
@@ -333,7 +336,9 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
 {
     char mensajePantalla[1024];
     mutexAlmacenTerminados.wait();
-    Logger::getInstance().logMessage(Logger::IMPORTANT, "Paso el mutex del almacen de terminados");
+    sprintf(mensajePantalla, "Paso el mutex del almacen de terminados, "
+            "trabajara con la orden Nº: %ld", ordenDeCompra->idOrden_);
+    Logger::getInstance().logMessage(Logger::IMPORTANT, mensajePantalla);
     bool ordenDeCompraEsValida = true;
     pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
 
