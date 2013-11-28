@@ -6,6 +6,7 @@
  */
 
 #include "SmMemAlmacenProductosTerminados.h"
+#include <Logger/Logger.h>
 
 SmMemAlmacenProductosTerminados::SmMemAlmacenProductosTerminados() 
 {
@@ -52,6 +53,53 @@ int SmMemAlmacenProductosTerminados::obtenerCantidadDeStockDeProducto(int numPro
 
 bool SmMemAlmacenProductosTerminados::depositarCaja(Caja caja, long & idOrdenDeCompra)
 {
+    // En la inserción, se de prioridad a aquellos productos RESERVADO_VENDIDO
+    bool cajaAlmacenada = false;
+    int i = 0;
+    while ( !cajaAlmacenada && i < TAM_ALMACEN ) {
+        if (almacenTerminados[i].estado == RESERVADO_VENDIDO
+            && almacenTerminados[i].tipoProducto == caja.idProducto_) {
+            
+            char buffer_[TAM_BUFFER];
+            sprintf(buffer_, "Deposito Caja en APT - TipoProducto: %d en el lugar %d, idNroOrdenVieja: %ld idNroOrdenNueva: %ld", caja.idProducto_, i, caja.idOrdenDeCompra_, almacenTerminados[i].idOrdenDeCompra);
+            Logger::logMessage(Logger::TRACE, buffer_);
+            almacenTerminados[i].caja = caja;
+            almacenTerminados[i].estado = PRODUCTO_PARA_ENTREGAR;
+            idOrdenDeCompra = almacenTerminados[i].idOrdenDeCompra;
+            cajaAlmacenada = true;
+        }
+        i++;
+    }
+    
+    i = 0;
+    while ( !cajaAlmacenada && i < TAM_ALMACEN ) {
+        if (almacenTerminados[i].estado == RESERVADO_DISPONIBLE
+            && almacenTerminados[i].tipoProducto == caja.idProducto_) {
+
+            almacenTerminados[i].caja = caja;
+            almacenTerminados[i].estado = PRODUCTO_DISPONIBLE;
+            char mensajePantalla[TAM_BUFFER];
+            sprintf(mensajePantalla, "La caja se guardo en el APT como disponible - "
+                    "idProducto: %d, idOrdenDeCompraDeLaCaja: %ld, "
+                    "idOrdenDeCompra: %ld", caja.idProducto_, 
+                    caja.idOrdenDeCompra_, idOrdenDeCompra);
+            Logger::logMessage(Logger::TRACE, mensajePantalla);
+            return false;
+        }
+        i++;
+    }
+    
+    if ( not cajaAlmacenada) {
+        char mensajePantalla[TAM_BUFFER];
+        sprintf(mensajePantalla, "La caja no fue guardada en el APT - "
+                "idProducto: %d, idOrdenDeCompraDeLaCaja: %ld, "
+                "idOrdenDeCompra: %ld", caja.idProducto_, 
+                caja.idOrdenDeCompra_, idOrdenDeCompra);
+        Logger::logMessage(Logger::ERROR, mensajePantalla);
+    }
+    
+    return pedidoFueCompletado(caja.idProducto_, idOrdenDeCompra);
+ /*   
     // TODO: Los ids SIEMPRE tienen que ser unsigned. Crear un tipo nuevo en definedTypes
     // y utilizarlo para todos los IDs
     idOrdenDeCompra = caja.idOrdenDeCompra_;
@@ -68,23 +116,11 @@ bool SmMemAlmacenProductosTerminados::depositarCaja(Caja caja, long & idOrdenDeC
         almacenarProductoReservadoEnAlmacen(caja);
     }
 
-    return pedidoFueCompletado(caja.idProducto_, idOrdenDeCompra);
+    return pedidoFueCompletado(caja.idProducto_, idOrdenDeCompra);*/
 }
 
 void SmMemAlmacenProductosTerminados::almacenarProductoNoReservadoEnAlmacen(Caja unaCaja, long & idOrdenDeCompra) {
-    // En la inserción, se de prioridad a aquellos productos reservados disponibles
-    for (int i = 0; i < TAM_ALMACEN; ++i) {
-        if (almacenTerminados[i].estado == RESERVADO_DISPONIBLE
-            && almacenTerminados[i].tipoProducto == unaCaja.idProducto_) {
-
-            almacenTerminados[i].caja = unaCaja;
-            almacenTerminados[i].estado = PRODUCTO_DISPONIBLE;
-            return;
-        }
-    }
-
-    // El producto fue vendido durante la producción, se procede a almacenar el mismo en algún
-    // lugar del almacen que sea de su mismo tipo y que posea el estado RESERVADO_VENDIDO
+    // En la inserción, se de prioridad a aquellos productos RESERVADO_VENDIDO
     for (int i = 0; i < TAM_ALMACEN; ++i) {
         if (almacenTerminados[i].estado == RESERVADO_VENDIDO
             && almacenTerminados[i].tipoProducto == unaCaja.idProducto_) {
@@ -95,6 +131,19 @@ void SmMemAlmacenProductosTerminados::almacenarProductoNoReservadoEnAlmacen(Caja
             return;
         }
     }
+    
+    
+    for (int i = 0; i < TAM_ALMACEN; ++i) {
+        if (almacenTerminados[i].estado == RESERVADO_DISPONIBLE
+            && almacenTerminados[i].tipoProducto == unaCaja.idProducto_) {
+
+            almacenTerminados[i].caja = unaCaja;
+            almacenTerminados[i].estado = PRODUCTO_DISPONIBLE;
+            return;
+        }
+    }
+
+    
 }
 
 void SmMemAlmacenProductosTerminados::almacenarProductoReservadoEnAlmacen(Caja unaCaja) {
@@ -143,6 +192,24 @@ bool SmMemAlmacenProductosTerminados::sacarCaja(Caja* caja, int idProducto, int 
     return false;
 }
 
+bool SmMemAlmacenProductosTerminados::chequearPedidoReservadoEnStock(int tipoProducto) {
+    for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
+    {
+	if(almacenTerminados[numeroEspacio].estado == RESERVADO_DISPONIBLE &&
+            almacenTerminados[numeroEspacio].tipoProducto == tipoProducto &&
+            almacenTerminados[numeroEspacio].esTemporal == true)
+        {
+            char mensajePantalla[TAM_BUFFER];
+            sprintf(mensajePantalla, "chequearPedidoReservadoEnStock - el "
+                    "producto %d no esta completamente en stock, la posicion: "
+                    "%d esta en produccion", tipoProducto, numeroEspacio);
+            Logger::logMessage(Logger::TRACE, mensajePantalla);
+            return false;
+        }
+    }
+    return true;
+}
+
 void SmMemAlmacenProductosTerminados::reservarVaciosComoDisponibles(int cantidad)
 {
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
@@ -186,7 +253,10 @@ void SmMemAlmacenProductosTerminados::reservarStockeados(int tipo, int cantidad)
 	{
 	    almacenTerminados[numeroEspacio].esTemporal = true;
 	    almacenTerminados[numeroEspacio].tipoProducto = tipo;
-	    cantidad--;	    
+	    cantidad--;	   
+            char mensajePantalla[1024];
+            sprintf(mensajePantalla, "Se RESERVAN los productos stockeados: %d de la posicion %d", tipo, numeroEspacio);
+            Logger::logMessage(Logger::TRACE, mensajePantalla);
 	}
 	
 	if(cantidad <= 0)
@@ -245,6 +315,9 @@ void SmMemAlmacenProductosTerminados::asignarStockeados(long idOrdenCompra, int 
             almacenTerminados[numeroEspacio].esTemporal = false;
             almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
             cantidad--;
+            char mensajePantalla[1024];
+            sprintf(mensajePantalla, "Se ASIGNAN como RESERVADO_VENDIDO los productos RESERVADO_DISPONIBLE: %d de la posicion %d", tipoProducto, numeroEspacio);
+            Logger::logMessage(Logger::TRACE, mensajePantalla);
         }
 	
 	else if(almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE &&
@@ -256,6 +329,9 @@ void SmMemAlmacenProductosTerminados::asignarStockeados(long idOrdenCompra, int 
             almacenTerminados[numeroEspacio].esTemporal = false;
             almacenTerminados[numeroEspacio].tipoProducto = tipoProducto;
             cantidad--;
+            char mensajePantalla[1024];
+            sprintf(mensajePantalla, "Se ASIGNAN como PRODUCTO_PARA_ENTREGAR los productos PRODUCTO_DISPONIBLE: %d de la posicion %d", tipoProducto, numeroEspacio);
+            Logger::logMessage(Logger::TRACE, mensajePantalla);
         }
 
         if(cantidad <= 0)

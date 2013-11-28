@@ -37,6 +37,7 @@ public:
     /* Retorna true si la Caja depositada fue la última del pedido de la misma */
     bool depositarCaja(Caja caja, long & idOrdenDeCompra);
     bool sacarCaja(Caja* caja, int idProducto, int idOrdenCompra);
+    bool chequearPedidoReservadoEnStock(int tipoProducto);
 	
 	EspacioAlmacenProductos* obtenerMatriz();
 

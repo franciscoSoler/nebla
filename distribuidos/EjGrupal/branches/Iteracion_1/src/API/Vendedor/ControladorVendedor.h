@@ -66,7 +66,6 @@ private:
 	void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
 
     void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
-
 };
 
 #endif	/* CONTROLADORVENDEDOR_H */
