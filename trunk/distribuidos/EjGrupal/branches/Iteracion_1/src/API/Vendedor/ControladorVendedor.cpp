@@ -106,6 +106,10 @@ void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente,
         msgRespuesta.mtype = numCliente;
         msgRespuesta.tipo = 0;
         clientes.enviarMensajeRespuesta(msgRespuesta);
+        
+        char buffer[TAM_BUFFER];
+        sprintf(buffer, "Envio confirmacion de recepcion: a cliente: %ld con tipo %d", msgRespuesta.mtype, msgRespuesta.tipo);
+        Logger::getInstance().logMessage(Logger::TRACE, buffer);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -121,6 +125,10 @@ void ControladorVendedor::enviarUltimaConfirmacionDeRecepcionDePedido(
         msgRespuesta.mtype = numCliente;
         msgRespuesta.tipo = 1;
         clientes.enviarMensajeRespuesta(msgRespuesta);
+        
+        char buffer[TAM_BUFFER];
+        sprintf(buffer, "Envio pedido aceptado: a cliente: %ld con tipo %d", msgRespuesta.mtype, msgRespuesta.tipo);
+        Logger::getInstance().logMessage(Logger::TRACE, buffer);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -136,6 +144,10 @@ void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respues
         msgRespuesta.mtype = numCliente;
         msgRespuesta.tipo = 1;
         clientes.enviarMensajeRespuesta(msgRespuesta);
+        
+        char buffer[TAM_BUFFER];
+        sprintf(buffer, "Envio pedido cancelado: a cliente: %ld con tipo %d", msgRespuesta.mtype, msgRespuesta.tipo);
+        Logger::getInstance().logMessage(Logger::TRACE, buffer);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

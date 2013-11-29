@@ -62,8 +62,11 @@ int main(int argc, char **argv) {
         msg_respuesta_pedido_t resultadoRespuesta;
         resultadoRespuesta = netMsg.mensaje;
 
-        if (netMsg.tipo != 0) deboSeguir = false;
-        else clientesMessageQueue.enviarMensajeRespuesta(resultadoRespuesta);
+        if (netMsg.tipo != 0) {
+            Logger::logMessage(Logger::COMM, "Cerrando canal");
+            deboSeguir = false;
+        }
+        clientesMessageQueue.enviarMensajeRespuesta(resultadoRespuesta);
     }
 
     socketEntrada->destroy();

@@ -61,9 +61,9 @@ int main(int argc, char** argv)
             pedidos[cantPedidos] = pedido;
             respuesta_pedido_t respuesta;
             respuesta.recepcionOK = true;
-            controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
             if(pedido.fin == true)
             continue;
+            controlador.enviarConfirmacionDeRecepcionDePedido(numCliente, respuesta);
             cantPedidos++;
         } while(pedido.fin == false);
 

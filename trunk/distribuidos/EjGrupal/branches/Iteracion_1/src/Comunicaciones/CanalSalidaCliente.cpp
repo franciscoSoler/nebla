@@ -83,6 +83,7 @@ int main(int argc, char **argv) {
             netMsg.size = sizeof(net_msg_pedido_t);
 		    
             if (mensajePedido.tipo != 0) {
+                Logger::logMessage(Logger::COMM, "Cerrando canal");
                 deboSeguir = false;
             }
 	   
