@@ -150,6 +150,15 @@ respuesta_pedido_t ControladorCliente::recibirResultado()
     try {
         msg_respuesta_pedido_t msgRespuesta;
         clientes.recibirMensajeRespuesta(numCliente, &msgRespuesta);
+        
+        char buffer[TAM_BUFFER];
+        if ( msgRespuesta.respuesta_pedido.recepcionOK) {
+            sprintf(buffer, "Pedido tomado: tipo %d", msgRespuesta.tipo);
+        } else {
+            sprintf(buffer, "Pedido Rechazado: tipo %d", msgRespuesta.tipo);
+        }
+        Logger::getInstance().logMessage(Logger::TRACE, buffer);
+        
         return msgRespuesta.respuesta_pedido;
     }
     catch (Exception & e) {

@@ -65,7 +65,10 @@ int main(int argc, char **argv) {
                 exit(-1);
             }
 
-            if (respuesta.tipo != 0) deboSeguir = false;
+            if (respuesta.tipo != 0) {
+                Logger::logMessage(Logger::COMM, "Cerrando canal");
+                deboSeguir = false;
+            }
         }
     }
     catch (Exception & e) {
