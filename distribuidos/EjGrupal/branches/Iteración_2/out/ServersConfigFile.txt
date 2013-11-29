@@ -1,0 +1,34 @@
+# Data de ServidorVendedorEntrada
+ServidorVendedorEntrada-Direccion = 127.0.0.1
+ServidorVendedorEntrada-Port = 5000
+ServidorVendedorEntrada-Dispatcher = CanalEntradaVendedor
+
+# Data de ServidorVendedorSalida
+ServidorVendedorSalida-Direccion = 127.0.0.1
+ServidorVendedorSalida-Port = 5001
+ServidorVendedorSalida-Dispatcher = CanalSalidaVendedor
+
+# Data del Servidor de Despacho que atiende clientes
+ServidorDespachoClientes-Direccion = 127.0.0.1
+ServidorDespachoClientes-Port = 5002
+ServidorDespachoClientes-Dispatcher = DespachoCanalConCliente
+
+# Data del Servidor del R16 que se comunica clientes
+ServidorR16Clientes-Direccion = 127.0.0.1
+ServidorR16Clientes-Port = 5003
+ServidorR16Clientes-Dispatcher = R16CanalConCliente
+
+# Data del Servidor de Despacho que atiende clientes
+ServidorDespachoVendedores-Direccion = 127.0.0.1
+ServidorDespachoVendedores-Port = 5004
+ServidorDespachoVendedores-Dispatcher = DespachoCanalConVendedor
+
+# Data del Servidor de Despacho que atiende clientes
+ServidorDespachoR16-Direccion = 127.0.0.1
+ServidorDespachoR16-Port = 5005
+ServidorDespachoR16-Dispatcher = DespachoCanalConR16
+
+# Data del Servidor de Despacho que atiende clientes
+ServidorDespachoR16_Cinta15-Direccion = 127.0.0.1
+ServidorDespachoR16_Cinta15-Port = 5006
+ServidorDespachoR16_Cinta15-Dispatcher = DespachoCanalConR16_Cinta15
