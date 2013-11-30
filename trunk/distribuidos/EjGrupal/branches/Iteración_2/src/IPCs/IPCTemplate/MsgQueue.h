@@ -101,6 +101,18 @@ public:
         this->recv( type, emptyMsg_ );
     }
 
+    /*
+     *
+     */
+    void recv( long type, char buffer[], int msgSize) {
+            if (msgrcv (this->id, (void *) buffer, msgSize - sizeof(long), type, 0) == -1) {
+                    sprintf(buffer, "MsgQueue %s Error - rcv: %s",
+                    getIPCName().c_str(), strerror(errno));
+                    throw Exception(buffer);
+            }
+
+    }
+
 	/*
 	 *
 	 */
