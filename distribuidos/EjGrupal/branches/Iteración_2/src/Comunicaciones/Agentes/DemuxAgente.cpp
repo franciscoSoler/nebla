@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string.h>
 #include <stdlib.h>
+#include <Common.h>
 
 #define MAX_SIZE_DIR            20
 #define MAX_SIZE_AGENT_NAME     20
@@ -83,6 +84,7 @@ int main(int argc, char* argv[]) {
     parserResults += argParser.parseArgument(3, tamanioMensaje);
     parserResults += argParser.parseArgument(4, idTipoAgent);
     TipoAgente idTipoAgente = static_cast<TipoAgente> (idTipoAgent);
+
     if ( parserResults < 0) {
         Logger::logMessage(Logger::ERROR, "Parseo incorrecto de parámetros");
         exit(-1);
@@ -100,8 +102,8 @@ int main(int argc, char* argv[]) {
     colaCanalDeSalida.getMsgQueue(DIRECTORY_COMM, idTipoAgente);
     
     while ( true ) {
-        char buffer[tamanioMensaje];
-        colaAgente.recv(MSG_DEMUX, buffer);
+        char buffer[TAM_BUFFER];
+        colaAgente.recv(MSG_DEMUX, buffer, tamanioMensaje);
         Logger::logMessage(Logger::COMM, "Recibe mensaje");
         
         // El proceso procede a rearmar el mensaje para enviarselo al 
