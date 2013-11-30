@@ -50,6 +50,11 @@ include_directories("${SRC_DIR}Comunicaciones/Objects")
 include_directories("${SRC_DIR}Comunicaciones/Signals")
 include_directories("${SRC_DIR}Comunicaciones/Signals/Handlers")
 
+include_directories("${SRC_DIR}Comunicaciones/Agentes")
+include_directories("${SRC_DIR}Comunicaciones/Brokers")
+
+
+
 include_directories("${SRC_DIR}Numerador")
 
 aux_source_directory("${SRC_DIR}Numerador"                               NUMERADOR_SRC)
@@ -93,6 +98,9 @@ aux_source_directory("${SRC_DIR}Socket"                                  LIBRARY
 aux_source_directory("${SRC_DIR}Comunicaciones/Objects"                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Comunicaciones/Signals"                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Comunicaciones/Signals/Handlers"         LIBRARY_SRC)
+
+aux_source_directory("${SRC_DIR}Comunicaciones/Agentes"         LIBRARY_SRC)
+aux_source_directory("${SRC_DIR}Comunicaciones/Brokers"         LIBRARY_SRC)
 
 add_library(IPCLibrary
             SHARED
@@ -163,6 +171,8 @@ add_executable(${OUT_DIR}R16_Cinta15CanalConDespacho        ${SRC_DIR}Comunicaci
 add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
 
+add_executable(${OUT_DIR}DemuxAgente                        ${SRC_DIR}Comunicaciones/Agentes/DemuxAgente.cpp       ${COMMON_SRC})
+
 
 
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
@@ -208,3 +218,6 @@ target_link_libraries(${OUT_DIR}CanalSalidaVendedor                         IPCL
 target_link_libraries(${OUT_DIR}VendedorCanalConDespacho                    IPCLibrary)
 target_link_libraries(${OUT_DIR}CreadorCanalesCliente                       IPCLibrary)
 target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)
+
+
+target_link_libraries(${OUT_DIR}DemuxAgente                            IPCLibrary)
