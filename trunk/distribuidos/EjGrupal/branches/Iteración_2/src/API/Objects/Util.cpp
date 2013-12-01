@@ -7,6 +7,8 @@
 // #include <stdlib.h>
 #include <stdio.h>
 
+#define MAX_PARAMS_SIZE     200
+
 char Util::buffer[] = {0};
 
 Util & Util::getInstance() {
@@ -47,6 +49,32 @@ void Util::createProcess(std::string processName,
         }
     }
     
+}
+
+void Util::createProcess(std::string processName, std::string params) {
+    pid_t pid;
+    static char streamParams[MAX_PARAMS_SIZE];
+
+    if ( params.size() > MAX_PARAMS_SIZE ) {
+        Logger::logMessage(Logger::ERROR, "Tamaño de parámetros no permitido");
+        abort();
+    }
+
+    strcpy(streamParams, params.c_str());
+
+    if ((pid = fork()) < 0) {
+        sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+    }
+    else if (pid == 0) {
+        // Child process. Pass the arguments to the process and call exec
+        execlp(buffer, processName.c_str(), streamParams, (char *) 0);
+
+        sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+
+        return;
+    }
 }
 
 

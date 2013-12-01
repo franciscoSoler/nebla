@@ -3,6 +3,7 @@
 
 #define DIRECTORY_COMM     "./DComm"
 #define DIRECTORY_BROKER   "./DBroker"
+#define DIRECTORY_MUX      "./DMux"
 #define MSG_MUX            1
 
 typedef enum {

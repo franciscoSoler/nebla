@@ -12,6 +12,7 @@ public:
     static long generateRandomNumber(long minValue, long maxValue);
     static void createProcess(std::string processName, 
     int amountOfProcesses = 1, int parameterOffset = 0);
+    static void createProcess(std::string processName, std::string params);
     virtual ~Util();
     
 private:

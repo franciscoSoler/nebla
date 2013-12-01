@@ -27,7 +27,7 @@
 class ControladorCliente
 {
 public:
-    ControladorCliente();
+    ControladorCliente(long numCliente);
     virtual ~ControladorCliente();
 	
     int obtenerNumeroCliente();
@@ -42,7 +42,7 @@ public:
 
 private:
         
-    IPC::VendedorLibreMessageQueue vendedores;
+    // IPC::VendedorLibreMessageQueue vendedores;
     IPC::ClientesMessageQueue clientes;
     IPC::PedidosVendedorMessageQueue pedidos;
 
