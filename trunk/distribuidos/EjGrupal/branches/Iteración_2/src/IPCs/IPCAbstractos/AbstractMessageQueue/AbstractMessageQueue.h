@@ -30,7 +30,6 @@ protected:
         long idEmisor;
         TipoAgente idTipoAgente;
         int id;
-        MsgQueue* colaMux;
         int idIPC;
         char dirIPC[DIR_FIXED_SIZE];
         char buffer[255];

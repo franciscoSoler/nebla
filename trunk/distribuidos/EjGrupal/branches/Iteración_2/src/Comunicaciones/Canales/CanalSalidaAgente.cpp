@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
         while ( true ) {
             MsgCanalSalidaAgente mensaje;
             colaCanalDeSalida.recv(idAgente, mensaje);
+            Logger::logMessage(Logger::COMM, "Recibio un mensaje");
             
             memcpy(buffer, & mensaje.msg, sizeof(MsgCanalEntradaBroker));
             socketBroker->send(buffer, sizeof(MsgCanalEntradaBroker));
