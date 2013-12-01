@@ -39,6 +39,7 @@ private:
 
     int id;
     long idEmisor;
+    TipoAgente idTipoReceptor;
     TipoAgente idTipoAgente;
     int idIPC;
     char dirIPC[DIR_FIXED_SIZE];
@@ -46,10 +47,13 @@ private:
     
 public:    
     
-    MsgQueue(std::string IPCName = "", long idEmisor = 0, TipoAgente idTipoAgente = ID_TIPO_VACIO) 
+    MsgQueue(std::string IPCName = "", long idEmisor = 0, 
+            TipoAgente idTipoReceptor = ID_TIPO_VACIO, 
+            TipoAgente idTipoAgente = ID_TIPO_VACIO) 
             :  IPCObject(IPCName), 
                id(0),
                idEmisor(0),
+               idTipoReceptor(idTipoReceptor),
                idTipoAgente(idTipoAgente)
                {}
             
@@ -102,8 +106,9 @@ public:
     void send(long idReceptor, T& data ) {
         MsgAgenteReceptor msg;
         msg.mtype = MSG_MUX;
-        msg.idEmisor = this->idEmisor;
+        msg.idTipoReceptor = this->idTipoReceptor;
         msg.idReceptor = idReceptor;
+        msg.idEmisor = this->idEmisor;
         msg.idIPCReceptor = this->idIPC;
         strcpy(msg.dirIPCReceptor, this->dirIPC);
         
@@ -149,7 +154,7 @@ public:
     void recv(long type, MsgAgenteReceptor& data ) {
         if (msgrcv (this->id, (void *) & data, 
             sizeof(MsgAgenteReceptor) - sizeof(long), type, 0) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - send: %s",
+            sprintf(buffer_, "MsgQueue %s Error - recv: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
         }

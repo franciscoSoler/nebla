@@ -6,7 +6,7 @@
 #include <Logger/Logger.h>
 #include <Common.h>
 
-#include <IPCs/IPCTemplate/MsgQueue.h>
+#include <Comunicaciones/Objects/CommMsgQueue.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, buffer);
     
     try {
-        IPC::MsgQueue colaBroker("cola Broker");
+        IPC::CommMsgQueue colaBroker("cola Broker");
         colaBroker.getMsgQueue(DIRECTORY_BROKER, idTipoAgente);
         
         while ( true ) {

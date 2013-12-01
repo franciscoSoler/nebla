@@ -5,7 +5,7 @@
 #include <Logger/Logger.h>
 #include <Common.h>
 
-#include <IPCs/IPCTemplate/MsgQueue.h>
+#include <Comunicaciones/Objects/CommMsgQueue.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
@@ -15,16 +15,19 @@
 
 
 int main(int argc, char* argv[]) {
+    Logger::setProcessInformation("CanalSalidaAgente - ");
     char buffer[255];
     ArgumentParser argParser(argc, argv);
     long idAgente = 0;
     int idTipoAgente;
 
     if ( argParser.parseArgument(1, idAgente) == -1 ) {
+        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 1");
         exit(-1);
     }
     
     if ( argParser.parseArgument(2, idTipoAgente) == -1 ) {
+        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 2");
         exit(-1);
     }
 
@@ -39,7 +42,7 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, "Canal creado");
     
     try {
-        IPC::MsgQueue colaCanalDeSalida("colaCanalSalida");
+        IPC::CommMsgQueue colaCanalDeSalida("colaCanalSalida");
         colaCanalDeSalida.getMsgQueue(DIRECTORY_COMM, idTipoAgente); 
         
         while ( true ) {
@@ -48,7 +51,8 @@ int main(int argc, char* argv[]) {
             Logger::logMessage(Logger::COMM, "Recibio un mensaje");
             
             memcpy(buffer, & mensaje.msg, sizeof(MsgCanalEntradaBroker));
-            socketBroker->send(buffer, sizeof(MsgCanalEntradaBroker));
+            socketBroker->send(buffer, TAM_BUFFER);
+            
         }
     }
     catch (Exception & e) {

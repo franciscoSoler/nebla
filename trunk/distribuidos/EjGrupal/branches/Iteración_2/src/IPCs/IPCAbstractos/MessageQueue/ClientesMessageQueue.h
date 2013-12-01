@@ -19,8 +19,9 @@ class ClientesMessageQueue : public AbstractMessageQueue
 public:
 
     ClientesMessageQueue(std::string IPCName = "", long idEmisor = 0, 
+                TipoAgente idTipoReceptor = ID_TIPO_VACIO,
                 TipoAgente idTipoAgente = ID_TIPO_VACIO) : AbstractMessageQueue
-                (IPCName, idEmisor, idTipoAgente) {}
+                (IPCName, idEmisor, idTipoReceptor, idTipoAgente) {}
 
     virtual ~ClientesMessageQueue() {}
 
@@ -30,8 +31,9 @@ public:
         
         MsgAgenteReceptor msg;
         msg.mtype = MSG_MUX;
-        msg.idEmisor = this->idEmisor;
+        msg.idTipoReceptor = this->idTipoReceptor;
         msg.idReceptor = idReceptor;
+        msg.idEmisor = this->idEmisor;
         msg.idIPCReceptor = this->idIPC;
         strcpy(msg.dirIPCReceptor, this->dirIPC);
 
@@ -57,14 +59,6 @@ public:
         memcpy(buffer, msg.msg, sizeof(msg_respuesta_pedido_t));
         return resultado;
     }
- 
-    int getMessageQueue(const char *fileName, int id) {
-        this->idIPC = id;
-        // Caso base de la recursividad: Código REEE entendible
-        return AbstractMessageQueue::getMessageQueue(DIRECTORY_MUX, ID_TIPO_CLIENTE);
-    }
-
-
 };
 
 }

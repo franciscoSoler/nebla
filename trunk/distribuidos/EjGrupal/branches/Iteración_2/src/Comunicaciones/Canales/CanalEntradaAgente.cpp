@@ -25,10 +25,12 @@ int main(int argc, char* argv[]) {
     int idTipoAgente;
 
     if ( argParser.parseArgument(1, idAgente) == -1 ) {
+        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 1");
         exit(-1);
     }
     
     if ( argParser.parseArgument(2, idTipoAgente) == -1 ) {
+        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 2");
         exit(-1);
     }
   

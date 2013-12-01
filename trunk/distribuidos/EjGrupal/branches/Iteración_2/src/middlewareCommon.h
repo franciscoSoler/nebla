@@ -23,7 +23,7 @@ typedef enum {
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
-#define MSG_QUEUE_FIXED_SIZE    150
+#define MSG_QUEUE_FIXED_SIZE    100
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
@@ -32,6 +32,7 @@ typedef enum {
 
 typedef struct {
     long mtype;
+    TipoAgente idTipoReceptor;
     long idReceptor;
     long idEmisor;
     char dirIPCReceptor[DIR_FIXED_SIZE];
@@ -51,7 +52,7 @@ typedef struct {
 } MsgCanalSalidaBroker;
 
 typedef struct { 
-    TipoAgente idTipoAgente;
+    TipoAgente idTipoReceptor;
     long idReceptor;
     MsgCanalSalidaBroker msg;
 } MsgCanalEntradaBroker;

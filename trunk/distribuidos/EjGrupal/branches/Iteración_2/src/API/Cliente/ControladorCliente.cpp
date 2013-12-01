@@ -26,19 +26,19 @@ ControladorCliente::ControladorCliente(long numCliente) {
         /*this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedorLibreMsgQueue");
         this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);*/
 
-        this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue", numCliente, ID_TIPO_CLIENTE);
+        this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue", numCliente, ID_TIPO_CLIENTE, ID_TIPO_VENDEDOR);
         this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
 
-        this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue", numCliente, ID_TIPO_CLIENTE);
+        this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue", numCliente, ID_TIPO_VENDEDOR, ID_TIPO_CLIENTE);
         this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
-        this->inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho", numCliente, ID_TIPO_CLIENTE);
+        this->inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho", numCliente, ID_TIPO_DESPACHO, ID_TIPO_CLIENTE);
         this->inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
-        this->R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue_", numCliente, ID_TIPO_CLIENTE);
+        this->R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue_", numCliente, ID_TIPO_CLIENTE, ID_TIPO_ROBOT16_DESPACHO);
         this->R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
 
-        this->inputQueueCliente = IPC::MsgQueue("inputQueueCliente", numCliente, ID_TIPO_CLIENTE);
+        this->inputQueueCliente = IPC::MsgQueue("inputQueueCliente", numCliente, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
         this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
     }
     catch (Exception & e) {

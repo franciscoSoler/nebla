@@ -4,8 +4,10 @@
 namespace IPC {
     
 AbstractMessageQueue::AbstractMessageQueue(std::string IPCName, long idEmisor,
+                        TipoAgente idTipoReceptor,
                         TipoAgente idTipoAgente) : IPCObject(IPCName)
                                 ,idEmisor(idEmisor)
+                                ,idTipoReceptor(idTipoReceptor)
                                 ,idTipoAgente(idTipoAgente)
                                 ,id(0){
 }
@@ -19,7 +21,8 @@ int AbstractMessageQueue::createMessageQueue(const char *fileName, int id) {
 
 int AbstractMessageQueue::getMessageQueue(const char *fileName, int id) {
     // Caso base de la recursividad: Código REEE entendible
-    strcpy(dirIPC, fileName);
+    this->idIPC = id;
+    strcpy(this->dirIPC, fileName);
     return this->getId(fileName, id, 0666);
 }
 
