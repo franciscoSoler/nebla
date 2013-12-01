@@ -1,4 +1,5 @@
 #include "MiddlewareAPI.h"
+#include "Logger.h"
 #include <Util.h>
 #include <sstream>
 
@@ -8,6 +9,8 @@ void MiddlewareAPI::crearCanales(int idAgente, TipoAgente idTipoAgente) {
     std::stringstream argumentos;
     argumentos << idAgente << " " << idTipoAgente;
 
+    Logger::logMessage(Logger::COMM, argumentos.str());
+    
     Util::createProcess("CanalEntradaAgente", argumentos.str());
     Util::createProcess("CanalSalidaAgente", argumentos.str());
 }

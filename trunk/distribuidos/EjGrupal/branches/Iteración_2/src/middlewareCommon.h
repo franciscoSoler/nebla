@@ -23,7 +23,7 @@ typedef enum {
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
-#define MSG_QUEUE_FIXED_SIZE    100
+#define MSG_QUEUE_FIXED_SIZE    150
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
