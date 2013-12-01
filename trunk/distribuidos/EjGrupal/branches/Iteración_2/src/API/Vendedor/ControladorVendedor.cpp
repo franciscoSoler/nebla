@@ -294,19 +294,13 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     PedidoDespacho pedido;
     pedido.idOrdenDeCompra_ = ordenDeCompra.idOrden_;
     pedido.tipoPedido_ = PEDIDO_ODC;
+    pedido.odc_ = ordenDeCompra;
 
     Msg_PedidoDespacho mensaje_despacho;
     mensaje_despacho.pedido_ = pedido;
 
-    Logger::logMessage(Logger::TRACE, "Envía mensaje avisando de envío de Orden de Compra");
+    Logger::logMessage(Logger::TRACE, "Envía mensaje con la Orden de Compra");
     inputQueueDespacho.send( MSG_PEDIDO_DESPACHO, mensaje_despacho );
-
-
-    Msg_EnvioODCDespacho mensaje_odc;
-    mensaje_odc.ordenDeCompra_ = ordenDeCompra;
-
-    Logger::logMessage(Logger::TRACE, "Envía Orden de Compra");
-    inputQueueDespacho.send( MSG_ENVIO_ODC_DESPACHO, mensaje_odc );
 }
 
 int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)

@@ -118,7 +118,7 @@ void pedidoCliente(autoPtrControllerDespacho & controller,
 void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
                          PedidoDespacho pedido, Dictionary<OrdenDeCompra> & bufferODC) {
 
-    OrdenDeCompra odc = controller->obtenerOrdenDeCompra(pedido.idOrdenDeCompra_);
+    OrdenDeCompra odc = pedido.odc_;
 
     // Al recibir la ODC, se verifica si algun pedido se encuentra en stock, y se
     // envia mensaje al cliente para que venga a retirar el mismo

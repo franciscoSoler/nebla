@@ -31,11 +31,12 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
 }
 
 PedidoDespacho ControllerR16_Despacho::recibirPedido(bool & ultimoProductoDeODC) {
+    PedidoDespacho pedido_;
     try {
         Logger::setProcessInformation("Robot16_Despacho - recibirPedido:");
         inputQueueR16_Despacho_.recv(MSG_FIN_PRODUCTO_R16, mensaje_);
 
-        PedidoDespacho pedido_ = mensaje_.pedido_;
+        pedido_ = mensaje_.pedido_;
         ultimoProductoDeODC = mensaje_.ultimoProductoDeODC_;
         obtener_shMem_R14_R16();
 
@@ -51,6 +52,8 @@ PedidoDespacho ControllerR16_Despacho::recibirPedido(bool & ultimoProductoDeODC)
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
     }
+
+    return pedido_;
 }
 
 void ControllerR16_Despacho::tomarCajaDeAPT(PedidoDespacho pedido, Caja* unaCaja) {

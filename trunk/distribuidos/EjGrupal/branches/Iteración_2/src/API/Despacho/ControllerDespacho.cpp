@@ -37,21 +37,6 @@ PedidoDespacho ControllerDespacho::recibirPedido() {
     }
 }
 
-OrdenDeCompra ControllerDespacho::obtenerOrdenDeCompra(long idOrdenDeCompra) {
-    try {
-        Msg_EnvioODCDespacho pedido;
-        inputQueueDespacho_.recv(MSG_ENVIO_ODC_DESPACHO, pedido);
-        sprintf(buffer_, "Recibe Orden de Compra N°%lu", pedido.ordenDeCompra_.idOrden_);
-        Logger::logMessage(Logger::TRACE, buffer_);
-
-        return pedido.ordenDeCompra_;
-    }
-    catch (Exception & e) {
-        Logger::logMessage(Logger::ERROR, e.get_error_description());
-        abort();
-    }
-}
-
 void ControllerDespacho::despacharProducto(PedidoDespacho pedido, bool ultimoProductoDeODC) {
     try {
         Logger::logMessage(Logger::TRACE, "Notifica a Robot16 "
