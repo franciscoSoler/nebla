@@ -125,16 +125,16 @@ void createIPCs() {
 }
 
 void createMuxes() {
-    Util::createProcess("MuxTipoAgente",  1, static_cast<int>(ID_TIPO_CLIENTE));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_VENDEDOR));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_AP));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_AGV));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_ROBOT5_CINTA));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_ROBOT5_AGV));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_ROBOT11));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_ROBOT12));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_ROBOT14));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_ROBOT16_CINTA));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_ROBOT16_DESPACHO));
-    Util::createProcess("MuxTipoAgente",  1,static_cast<int>(ID_TIPO_DESPACHO));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_CLIENTE));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_VENDEDOR));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_AP));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_AGV));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_ROBOT5_CINTA));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_ROBOT5_AGV));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_ROBOT11));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_ROBOT12));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_ROBOT14));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_ROBOT16_CINTA));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_ROBOT16_DESPACHO));
+    Util::createProcess("MuxTipoAgente", 1, static_cast<int>(ID_TIPO_DESPACHO));
 }
