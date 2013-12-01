@@ -41,7 +41,6 @@ void createDirectory(std::string directoryName) {
 }
 
 void createIPCs() {
-    Logger::getInstance().createLog();
     Logger::getInstance().setProcessInformation("LauncherBrokers:");
     
     // Se crea una cola por cada Agente

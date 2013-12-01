@@ -54,6 +54,7 @@ void Util::createProcess(std::string processName,
 void Util::createProcess(std::string processName, std::string params) {
     pid_t pid;
     static char streamParams[MAX_PARAMS_SIZE];
+    sprintf(buffer, "./%s", processName.c_str());
 
     if ( params.size() > MAX_PARAMS_SIZE ) {
         Logger::logMessage(Logger::ERROR, "Tamaño de parámetros no permitido");
