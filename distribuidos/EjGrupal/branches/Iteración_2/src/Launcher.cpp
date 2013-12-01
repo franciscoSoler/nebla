@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
         Util::createProcess("Robot16_Cinta15");
         Util::createProcess("Robot16_Despacho");
         Util::createProcess("AGV", 3);
-        Util::createProcess("Vendedor", 5, 1);
+        Util::createProcess("Vendedor", 1, 1);
 
         
     }

@@ -10,7 +10,7 @@
 #include "Logger/Logger.h"
 
 ControladorRobot5Agv::ControladorRobot5Agv() : 
-        colaPedidos("PedidosAgvMessageQueue", 1, ID_TIPO_ROBOT5_AGV),
+        colaPedidos("PedidosAgvMessageQueue", 1, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV),
         semaforoAccesoBufferAgv("Acceso al buffer AGV - 5"),
         semaforoBloqueoAgv("Bloqueo AGV"),
         semaforoApiRobot5("Api Robot 5")

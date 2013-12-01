@@ -21,16 +21,18 @@ class PedidosVendedorMessageQueue : public AbstractMessageQueue
 public:
 
     PedidosVendedorMessageQueue(std::string IPCName = "", long idEmisor = 0, 
+                TipoAgente idTipoReceptor = ID_TIPO_VACIO,
                 TipoAgente idTipoAgente = ID_TIPO_VACIO) : AbstractMessageQueue
-                (IPCName, idEmisor, idTipoAgente) {}
+                (IPCName, idEmisor, idTipoReceptor, idTipoAgente) {}
 
     virtual ~PedidosVendedorMessageQueue() {}
 
     int enviarMensajePedido(long idReceptor, msg_pedido_t dato) {
         MsgAgenteReceptor msg;
         msg.mtype = MSG_MUX;
-        msg.idEmisor = this->idEmisor;
+        msg.idTipoReceptor = this->idTipoReceptor;
         msg.idReceptor = idReceptor;
+        msg.idEmisor = this->idEmisor;
         msg.idIPCReceptor = this->idIPC;
         strcpy(msg.dirIPCReceptor, this->dirIPC);
 

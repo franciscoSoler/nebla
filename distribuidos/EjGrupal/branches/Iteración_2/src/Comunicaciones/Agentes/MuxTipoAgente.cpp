@@ -53,6 +53,12 @@ int main(int argc, char* argv[]) {
             long idReceptor = msgAgenteReceptor.idReceptor;
             long idEmisor = msgAgenteReceptor.idEmisor;
             
+            sprintf(buffer, "parametros mensaje - idRec: %ld, idEmis: %ld, "
+                    "idIPCRec: %d, dirIPCReceptor: %s", msgAgenteReceptor.idReceptor, 
+                    msgAgenteReceptor.idEmisor, msgAgenteReceptor.idIPCReceptor, msgAgenteReceptor.dirIPCReceptor);
+            
+            Logger::logMessage(Logger::COMM, buffer);
+            
             MsgCanalEntradaAgente msgCanalEntradaAgente;
             strcpy(msgCanalEntradaAgente.directorioIPC, 
                    msgAgenteReceptor.dirIPCReceptor);
@@ -66,7 +72,7 @@ int main(int argc, char* argv[]) {
             
             MsgCanalEntradaBroker msgCanalEntradaBroker;
             msgCanalEntradaBroker.idReceptor = idReceptor;
-            msgCanalEntradaBroker.idTipoAgente = idTipoAgente;
+            msgCanalEntradaBroker.idTipoReceptor = msgAgenteReceptor.idTipoReceptor;
             msgCanalEntradaBroker.msg = msgCanalSalidaBroker;
             
             MsgCanalSalidaAgente msgCanalSalidaAgente;

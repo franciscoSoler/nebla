@@ -28,6 +28,7 @@ private:
 
 protected:
         long idEmisor;
+        TipoAgente idTipoReceptor;
         TipoAgente idTipoAgente;
         int id;
         int idIPC;
@@ -41,7 +42,9 @@ public:
 	/* Pre: -
  	 * Post: -
  	 */
-	AbstractMessageQueue(std::string IPCName = "", long idEmisor = 0, TipoAgente idTipoAgente = ID_TIPO_VACIO); 
+	AbstractMessageQueue(std::string IPCName = "", long idEmisor = 0, 
+                TipoAgente idTipoReceptor = ID_TIPO_VACIO, 
+                TipoAgente idTipoAgente = ID_TIPO_VACIO); 
 	
 	/* Pre: - 
  	 * Post: - 
