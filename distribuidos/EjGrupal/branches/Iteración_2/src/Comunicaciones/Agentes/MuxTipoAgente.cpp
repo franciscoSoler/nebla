@@ -13,9 +13,6 @@
 #define MAX_SIZE_DIR            20
 #define MAX_SIZE_AGENT_NAME     20
 
-MsgAgenteReceptor crearMsgAgenteReceptor(char buffer[], int tamanioMensaje, 
-                                           long idReceptor);
-
 int main(int argc, char* argv[]) {
     int idTipoAgent;
     
@@ -50,6 +47,7 @@ int main(int argc, char* argv[]) {
             colaAgente.recv(MSG_MUX, msgAgenteReceptor);
             Logger::logMessage(Logger::COMM, "Recibe mensaje");
             
+            memcpy(msgAgenteReceptor.msg, &(msgAgenteReceptor.idReceptor), sizeof(long));
             long idReceptor = msgAgenteReceptor.idReceptor;
             long idEmisor = msgAgenteReceptor.idEmisor;
             

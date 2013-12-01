@@ -37,7 +37,7 @@ public:
             }
             memcpy(msg.msg, &dato, sizeof(MensajePedidoProduccion));
             
-            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoAgente);
+            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
             msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
             msgQ.send(msg);
             return 0;
@@ -68,7 +68,7 @@ public:
             }
             memcpy(msg.msg, &dato, sizeof(MensajeProximoPedidoProduccion));
             
-            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoAgente);
+            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
             msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
             msgQ.send(msg);
             return 0;

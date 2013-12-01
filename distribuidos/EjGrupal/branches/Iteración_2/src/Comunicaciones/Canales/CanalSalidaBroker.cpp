@@ -55,6 +55,11 @@ int main(int argc, char* argv[]) {
             colaBroker.recv(idAgente, mensaje);
             Logger::logMessage(Logger::COMM, "Recibe mensaje de Broker");
             
+            sprintf(buffer, "parametros: mtype del siguiente salto: %ld", 
+            mensaje.mtype);
+            Logger::logMessage(Logger::COMM, buffer);
+            
+            
             memcpy(buffer, &mensaje.msg, sizeof(MsgCanalEntradaAgente));
             if (socketAgente.send(buffer, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar "

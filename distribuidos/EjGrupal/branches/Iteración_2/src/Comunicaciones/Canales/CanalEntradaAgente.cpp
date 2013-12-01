@@ -34,8 +34,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
   
-    sprintf(buffer, "Se envían los datos del agente: %ld - %d", 
-            idAgente, idTipoAgente);
+    
     
     ServersManager serversManager;
     SocketStream::SocketStreamPtr socketBroker(
@@ -48,7 +47,8 @@ int main(int argc, char* argv[]) {
     ss << idTipoAgente;
     memcpy(buffer, ss.str().c_str(), sizeof(int) + sizeof(long));
     
-    
+    sprintf(buffer, "Se envían los datos del agente: %ld - %d", 
+            idAgente, idTipoAgente);
     Logger::logMessage(Logger::COMM, buffer);
     
     
@@ -68,10 +68,20 @@ int main(int argc, char* argv[]) {
                 socketBroker->destroy();
                 abort();
             }
-            Logger::logMessage(Logger::COMM, "Recibe mensaje de Broker");
-            
             MsgCanalEntradaAgente mensaje;
+            memcpy(&mensaje, buffer, sizeof(MsgCanalEntradaAgente));
+            
+            sprintf(buffer, "directorioIPC: %s, idIPC: %d", 
+            mensaje.directorioIPC, mensaje.idIPC);
+            Logger::logMessage(Logger::COMM, buffer);
+            
+            
             colaAgente = obtenerColaAgente(mensaje.directorioIPC, mensaje.idIPC);
+            
+            //char buffer[TAM_BUFFER];
+            //sprintf(buffer, "Recibe mensaje de Broker: mtype siguiente: %ld, ", mensaje.msg.mtype, )
+            //Logger::logMessage(Logger::COMM, buffer);
+            
             colaAgente.send(mensaje.msg.idReceptor, mensaje.msg.msg);
         }
         

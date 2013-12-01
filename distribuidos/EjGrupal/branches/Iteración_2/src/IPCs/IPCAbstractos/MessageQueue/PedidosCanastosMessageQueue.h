@@ -61,7 +61,12 @@ public:
                 Logger::logMessage(Logger::ERROR, this->buffer);
             }
             memcpy(msg.msg, &dato, sizeof(MensajePedidoRobotCinta_6));
-            return this->send(msg);
+            
+            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
+            msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
+            msgQ.send(msg);
+            return 0;
+            //return this->send(msg);
 	}
 	
 	int recibirPedidoCanasto ( int tipo, MensajePedidoRobotCinta_6* buffer ) {
