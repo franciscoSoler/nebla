@@ -72,51 +72,51 @@ int main(int argc, char* argv[]) {
         IPC::CommMsgQueue commColaSalida;
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_CLIENTE);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-cliente destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_VENDEDOR);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-vendedor destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_AP);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-AlmacenDePiezas destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_AGV);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-AGV destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_ROBOT5_AGV);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Robot5AGV destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_ROBOT5_CINTA);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Robot5Cinta destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_ROBOT11);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Robot11 destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_ROBOT12);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Robot12 destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_ROBOT14);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Robot14 destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_ROBOT16_CINTA);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Robot16Cinta destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_ROBOT16_DESPACHO);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Robot16Despacho destruida");
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_DESPACHO);
-        colaAgente.destroy();
+        commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Despacho destruida");
 
     }
