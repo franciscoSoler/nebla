@@ -91,6 +91,8 @@ public:
         
         // Caso base de la recursividad: Código REEE entendible
         if ( strcmp(fileName, DIRECTORY_MUX) ) {
+            sprintf(buffer_, "idTipoAgente: %d", idTipoAgente);
+            Logger::logMessage(Logger::COMM, buffer_);
             colaMux = new MsgQueue(DIRECTORY_MUX, idEmisor, idTipoAgente);
             colaMux->getMsgQueue(DIRECTORY_MUX, idTipoAgente);
         }

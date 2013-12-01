@@ -14,7 +14,7 @@
 ControladorCliente::ControladorCliente(long numCliente) {
     try {
 
-        sprintf(mensajePantalla, "Cliente N°%ld", numCliente);
+        sprintf(mensajePantalla, "Cliente N°%ld:", numCliente);
         Logger::setProcessInformation(mensajePantalla);
 
         this->numCliente = numCliente;

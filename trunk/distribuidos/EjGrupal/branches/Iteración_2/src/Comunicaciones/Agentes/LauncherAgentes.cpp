@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
         Util::getInstance();
 
         createDirectory(DIRECTORY_MUX);
-        createDirectory(DIRECTORY_MUX);
+        createDirectory(DIRECTORY_COMM);
 
         createIPCs();
         createMuxes();
