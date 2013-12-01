@@ -17,8 +17,6 @@ MsgAgenteReceptor crearMsgAgenteReceptor(char buffer[], int tamanioMensaje,
                                            long idReceptor);
 
 int main(int argc, char* argv[]) {
-    char directorioIPC[MAX_SIZE_DIR];
-    int idIPC;
     int idTipoAgent;
     
     ArgumentParser argParser(argc, argv);
@@ -32,13 +30,15 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
     
+    
     char buffer[255];
-    sprintf(buffer, "MuxTipoAgente - TipoAgente: %d", idTipoAgente);
+    sprintf(buffer, "MuxTipoAgente - TipoAgente: %d", idTipoAgent);
     Logger::setProcessInformation(buffer);
+    Logger::logMessage(Logger::COMM, "Creando Mux");
     
     try {
         // Creo la colas con los parámetros parseados
-        IPC::MsgQueue colaAgente("colaAgente", 0);
+        IPC::MsgQueue colaAgente("colaAgente", 0, idTipoAgente);
         colaAgente.getMsgQueue(DIRECTORY_MUX, idTipoAgente);
 
         IPC::CommMsgQueue colaCanalDeSalida("colaCanalSalida");
@@ -54,8 +54,9 @@ int main(int argc, char* argv[]) {
             long idEmisor = msgAgenteReceptor.idEmisor;
             
             MsgCanalEntradaAgente msgCanalEntradaAgente;
-            strcpy(msgCanalEntradaAgente.directorioIPC, directorioIPC);
-            msgCanalEntradaAgente.idIPC = idIPC;
+            strcpy(msgCanalEntradaAgente.directorioIPC, 
+                   msgAgenteReceptor.dirIPCReceptor);
+            msgCanalEntradaAgente.idIPC = msgAgenteReceptor.idIPCReceptor;
             msgCanalEntradaAgente.msg = msgAgenteReceptor;
             
             MsgCanalSalidaBroker msgCanalSalidaBroker;

@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_ROBOT_16);
         createDirectory(DIRECTORY_VENDEDOR);
         createDirectory(DIRECTORY_CLIENTE);
+        createDirectory(DIRECTORY_DESPACHO);
 
         createIPCs();
 
@@ -46,7 +47,7 @@ void createDirectory(std::string directoryName) {
 }
 
 void createIPCs() {
-    Logger::getInstance().createLog();
+    //Logger::getInstance().createLog();
     Logger::getInstance().setProcessInformation("LauncherCliente:");
 
     /* NOTA: La notación para colas es que el input o output es respecto

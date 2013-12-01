@@ -77,15 +77,7 @@ int main(int argc, char* argv[]) {
         Util::createProcess("AGV", 3);
         Util::createProcess("Vendedor", 5, 1);
 
-        // Procesos correspondientes al Middleware
-        Util::createProcess("VendedorCanalConDespacho", 5, 1);
-        Util::createProcess("R16CanalConDespacho", 1, 1);
-        Util::createProcess("R16_Cinta15CanalConDespacho", 1, 1);
-
-        ServersManager serversManager;
-        serversManager.createServer("ServidorVendedorEntrada");
-        serversManager.createServer("ServidorVendedorSalida");
-        serversManager.createServer("ServidorR16Clientes");
+        
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -101,7 +93,7 @@ void createDirectory(std::string directoryName) {
 }
 
 void createIPCs() {
-    Logger::getInstance().createLog();
+    //Logger::getInstance().createLog();
     Logger::getInstance().setProcessInformation("Launcher:");
     
     // Robot 5
