@@ -8,7 +8,7 @@ AbstractMessageQueue::AbstractMessageQueue(std::string IPCName, long idEmisor,
                         TipoAgente idTipoAgente) : IPCObject(IPCName)
                                 ,idEmisor(idEmisor)
                                 ,idTipoReceptor(idTipoReceptor)
-                                ,idTipoAgente(idTipoAgente)
+                                ,idTipoEmisor(idTipoAgente)
                                 ,id(0){
 }
 

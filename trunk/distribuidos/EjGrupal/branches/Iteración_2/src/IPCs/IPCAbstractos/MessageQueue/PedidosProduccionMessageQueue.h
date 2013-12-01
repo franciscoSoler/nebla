@@ -37,8 +37,8 @@ public:
             }
             memcpy(msg.msg, &dato, sizeof(MensajePedidoProduccion));
             
-            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
-            msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
+            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoEmisor);
+            msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoEmisor);
             msgQ.send(msg);
             return 0;
             //return this->enviar((const void *)&msg,sizeof(MsgAgenteReceptor)-sizeof(long));
@@ -68,8 +68,8 @@ public:
             }
             memcpy(msg.msg, &dato, sizeof(MensajeProximoPedidoProduccion));
             
-            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
-            msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
+            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoEmisor);
+            msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoEmisor);
             msgQ.send(msg);
             return 0;
             //return this->enviar((const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long));
