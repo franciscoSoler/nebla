@@ -10,6 +10,7 @@
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
+#include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Socket/SocketStream.h>
 
 #include "middlewareCommon.h"
@@ -67,7 +68,7 @@ int main(int argc, char* argv[]) {
             
             MsgCanalEntradaAgente mensaje;
             colaAgente = obtenerColaAgente(mensaje.directorioIPC, mensaje.idIPC);
-            colaAgente.send(mensaje.msg.mensajeMux, mensaje.msg.tamanioMensajeMux);
+            colaAgente.send(mensaje.msg.idReceptor, mensaje.msg.msg);
         }
         
     }

@@ -138,7 +138,6 @@ void ControllerR16_Cinta15::informarAlDespachoProductoTerminado(long idNroOrden,
         pedido.idProducto_ = tipo;
 
         Msg_PedidoDespacho mensaje;
-        mensaje.mtype = MSG_PEDIDO_DESPACHO;
         mensaje.pedido_ = pedido;
 
         obtenerMutexSincronismo();
@@ -146,7 +145,7 @@ void ControllerR16_Cinta15::informarAlDespachoProductoTerminado(long idNroOrden,
                 "N°%lu ha sido terminado", tipo, idNroOrden);
         Logger::logMessage(Logger::TRACE, buffer_);
 
-        inputQueueDespacho_.send(mensaje);
+        inputQueueDespacho_.send(MSG_PEDIDO_DESPACHO, mensaje);
         liberarMutexSincronismo();
     }
     catch (Exception & e) {

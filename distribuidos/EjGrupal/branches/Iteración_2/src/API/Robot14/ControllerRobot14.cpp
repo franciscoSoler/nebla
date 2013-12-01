@@ -322,7 +322,7 @@ void ControllerRobot14::depositarCajaEnCinta15(Caja unaCaja) {
                 cajaDepositada = true;
                 
                 Logger::logMessage(Logger::TRACE, "Envío de mensaje a Robot16");
-                inputQueueR16_Cinta15_.send( mensaje_ );
+                inputQueueR16_Cinta15_.send( MSG_AVISO_CAJA_CINTA_15, mensaje_ );
             }
             else if (estaRobot16Trabajando()) {
                 Logger::logMessage(Logger::TRACE, "Robot16 trabajando en la "
@@ -344,7 +344,7 @@ void ControllerRobot14::depositarCajaEnCinta15(Caja unaCaja) {
                 cajaDepositada = true;
                 
                 Logger::logMessage(Logger::TRACE, "Envío de mensaje a Robot16");
-                inputQueueR16_Cinta15_.send( mensaje_ );
+                inputQueueR16_Cinta15_.send( MSG_AVISO_CAJA_CINTA_15, mensaje_ );
             }
             else {
                 Logger::logMessage(Logger::TRACE, "No se pudo mover cinta. Robot se bloquea");

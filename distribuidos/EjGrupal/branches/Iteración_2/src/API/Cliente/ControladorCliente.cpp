@@ -199,12 +199,10 @@ void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden, bool ul
         pedido.tipoPedido_ = PEDIDO_CLIENTE;
 
         Msg_PedidoDespacho mensaje;
-
-        mensaje.mtype = this->numCliente;
         mensaje.pedido_ = pedido;
         mensaje.ultimoPedido_ = ultimoPedido;
 
-        inputQueueDespacho.send(mensaje);
+        inputQueueDespacho.send(MSG_PEDIDO_DESPACHO, mensaje);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

@@ -1,5 +1,5 @@
-#ifndef MSGQUEUE_H_
-#define MSGQUEUE_H_
+#ifndef COMM_MSGQUEUE_H_
+#define COMM_MSGQUEUE_H_
 
 #include <sys/ipc.h>
 #include <stdio.h>
@@ -14,12 +14,10 @@
 #include <iostream>
 #include <Exceptions/Exception.h>
 #include <IPCs/IPCObject/IPCObject.h>
-#include <middlewareCommon.h>
-
 
 namespace IPC {
 
-class MsgQueue : public IPCObject {    
+class CommMsgQueue : public IPCObject {    
 private:
     int getId(const char *fileName, int id, int flags) {
         key_t clave = ftok (fileName, id);
@@ -37,15 +35,13 @@ private:
     }
 
     int id;
-    long idEmisor;
     char buffer_[200];
 
 public:    
     
-    MsgQueue(std::string IPCName = "", long idEmisor = 0) 
+    CommMsgQueue(std::string IPCName = "") 
             :  IPCObject(IPCName), 
-               id(0),
-               idEmisor(0) {}
+               id(0) {}
 
     /* 
      * Metodo utilizado para crear la Cola de Mensajes, si ya 
@@ -55,7 +51,7 @@ public:
      */
     void create(const char *fileName, int id) {
         if (this->getId(fileName, id, 0666|IPC_CREAT|IPC_EXCL) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - create: %s",
+            sprintf(buffer_, "CommMsgQueue %s Error - create: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
         }
@@ -67,7 +63,7 @@ public:
      */
     void getMsgQueue(const char *fileName, int id) {
         if (this->getId(fileName, id, 0666) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - getMsgQueue: %s",
+            sprintf(buffer_, "CommMsgQueue %s Error - getCommMsgQueue: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
         }
@@ -78,7 +74,7 @@ public:
       */
     void destroy(void) {
         if (msgctl ( this->id,IPC_RMID,NULL ) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - destroy: %s",
+            sprintf(buffer_, "CommMsgQueue %s Error - destroy: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
         }
@@ -87,29 +83,32 @@ public:
     /*
      *
      */
-    template<class T>
-    void send(long idReceptor, T& data ) {
-        MsgAgenteReceptor msg;
-        msg.mtype = MSG_MUX;
-        msg.idEmisor = this->idEmisor;
-        msg.idReceptor = idReceptor;
-        
-        if ( sizeof(T) > MSG_QUEUE_FIXED_SIZE ) {
-            sprintf(buffer_, "MsgQueue %s Error - send: Mensaje demasiado largo",
-                    getIPCName().c_str());
+    void send(const char buffer[], int msgSize) {
+        if (msgsnd (this->id, (const void *) buffer, msgSize - sizeof(long), 0) == -1) {
+            sprintf(buffer_, "CommMsgQueue %s Error - send: %s",
+            getIPCName().c_str(), strerror(errno));
+            throw Exception(buffer_);
         }
-        
-        memcpy(msg.msg, &data, sizeof(T));
-        this->send(msg);
     }
 
     /*
      *
      */
-    void send( MsgAgenteReceptor& data ) {
-        if (msgsnd (this->id, (const void *) & data, 
-            sizeof(MsgAgenteReceptor) - sizeof(long), 0) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - send: %s",
+    void recv( long type, char buffer[], int msgSize) {
+        if (msgrcv (this->id, (void *) buffer, msgSize - sizeof(long), type, 0) == -1) {
+            sprintf(buffer, "CommMsgQueue %s Error - rcv: %s",
+            getIPCName().c_str(), strerror(errno));
+            throw Exception(buffer);
+        }
+    }
+
+    /*
+     *
+     */
+    template<class T>
+    void send( T& data ) {
+        if (msgsnd (this->id, (const void *) & data, sizeof(T)-sizeof(long), 0) == -1) {
+            sprintf(buffer_, "CommMsgQueue %s Error - send: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
         }
@@ -120,23 +119,13 @@ public:
      */
     template<class T>
     void recv( long type, T& data) {
-        MsgAgenteReceptor msg;
-        this->recv(type, msg);
-        
-        memcpy(&data, msg.msg, sizeof(T));
-    }
-    
-    void recv(long type, MsgAgenteReceptor& data ) {
-        if (msgrcv (this->id, (void *) & data, 
-            sizeof(MsgAgenteReceptor) - sizeof(long), type, 0) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - send: %s",
+        if (msgrcv (this->id, (void *) & data, sizeof(T)-sizeof(long), type, 0) == -1) {
+            sprintf(buffer_, "CommMsgQueue %s Error - rcv: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
         }
     }
 
 };
-
 }
-
 #endif

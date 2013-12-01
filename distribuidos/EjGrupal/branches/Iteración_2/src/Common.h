@@ -170,6 +170,7 @@
 
 /* Constantes relacionadas con el Middleware */
 #define SERVERS_CONFIG_FILE             "ServersConfigFile.txt"
+#define MSG_MUX                         1
 
 typedef enum {
     GABINETE_1 = 1,
@@ -207,6 +208,7 @@ typedef enum {
     RESERVADO_VENDIDO, 
     PRODUCTO_DISPONIBLE 
 } EstadoEspacio;
+
 
 typedef struct {
     TipoPieza tipoPieza;
@@ -430,10 +432,9 @@ public:
 #define MSG_PEDIDO_DESPACHO             100
 class Msg_PedidoDespacho {
 public:
-    Msg_PedidoDespacho() : mtype(MSG_PEDIDO_DESPACHO) {}
+    Msg_PedidoDespacho() {}
 
 public:
-    long mtype;
     PedidoDespacho pedido_;
     bool ultimoPedido_;
 };
@@ -441,9 +442,8 @@ public:
 #define MSG_ENVIO_ODC_DESPACHO          2
 class Msg_EnvioODCDespacho {
 public:
-    Msg_EnvioODCDespacho() : mtype(MSG_ENVIO_ODC_DESPACHO) {}
+    Msg_EnvioODCDespacho() {}
 public:
-    long mtype;
     OrdenDeCompra ordenDeCompra_;
 };
 
@@ -452,17 +452,18 @@ public:
 #define MSG_AVISO_CAJA_CINTA_15         1
 class Msg_AvisoCajaEnCinta15 {
 public:
-    Msg_AvisoCajaEnCinta15() : mtype(MSG_AVISO_CAJA_CINTA_15) {}
+    Msg_AvisoCajaEnCinta15() {}
 public:
-    long mtype;
+    // FIXXXXME: Please, do not touch this struct. 
+    // The universe could collapse
+    long prrrrrrr;
 };
 
 #define MSG_FIN_PRODUCTO_R16            4
 class Msg_FinProductoR16 {
 public:
-    Msg_FinProductoR16() : mtype(MSG_FIN_PRODUCTO_R16) {}
+    Msg_FinProductoR16() {}
 public:
-    long mtype;
     PedidoDespacho pedido_;
     bool ultimoProductoDeODC_;
 };
@@ -470,16 +471,14 @@ public:
 #define MSG_RETIRO_PRODUCTO             5
 class Msg_RetiroProducto {
 public:
-    Msg_RetiroProducto() : mtype(MSG_RETIRO_PRODUCTO) {}
+    Msg_RetiroProducto() {}
 public:
-    long mtype;
     PedidoDespacho datos_;
     bool ultimoPedido_;
 };
 
 class Msg_EnvioCajaCliente {
 public:
-    long mtype;
     Caja caja;
     bool ultimoProductoDeODC_;
 };
