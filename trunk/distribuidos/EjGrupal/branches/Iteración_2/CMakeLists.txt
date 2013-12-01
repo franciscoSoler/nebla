@@ -52,6 +52,7 @@ include_directories("${SRC_DIR}Comunicaciones/Signals/Handlers")
 
 include_directories("${SRC_DIR}Comunicaciones/Agentes")
 include_directories("${SRC_DIR}Comunicaciones/Brokers")
+include_directories("${SRC_DIR}Comunicaciones/Canales")
 
 
 
@@ -99,8 +100,6 @@ aux_source_directory("${SRC_DIR}Comunicaciones/Objects"                  LIBRARY
 aux_source_directory("${SRC_DIR}Comunicaciones/Signals"                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Comunicaciones/Signals/Handlers"         LIBRARY_SRC)
 
-aux_source_directory("${SRC_DIR}Comunicaciones/Agentes"         LIBRARY_SRC)
-aux_source_directory("${SRC_DIR}Comunicaciones/Brokers"         LIBRARY_SRC)
 
 add_library(IPCLibrary
             SHARED
@@ -144,34 +143,19 @@ add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorG
 add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC} ${VENDEDOR_SRC})
 #add_executable(${OUT_DIR}MonitorAlmacenPiezas              ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC})
 
-# Procesos utilizados por el Middleware para entablar y realizar comunicaciones
-# Cliente
-add_executable(${OUT_DIR}CanalEntradaCliente                ${SRC_DIR}Comunicaciones/CanalEntradaCliente.cpp       ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalSalidaCliente                 ${SRC_DIR}Comunicaciones/CanalSalidaCliente.cpp        ${COMMON_SRC})
-add_executable(${OUT_DIR}ClienteCanalConDespacho            ${SRC_DIR}Comunicaciones/ClienteCanalConDespacho.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}ClienteCanalConR16                 ${SRC_DIR}Comunicaciones/ClienteCanalConR16.cpp        ${COMMON_SRC})
-
-# Vendedor
-add_executable(${OUT_DIR}CanalEntradaVendedor               ${SRC_DIR}Comunicaciones/CanalEntradaVendedor.cpp      ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalSalidaVendedor                ${SRC_DIR}Comunicaciones/CanalSalidaVendedor.cpp       ${COMMON_SRC})
-add_executable(${OUT_DIR}VendedorCanalConDespacho           ${SRC_DIR}Comunicaciones/VendedorCanalConDespacho.cpp  ${COMMON_SRC})
-
-# Despacho
-add_executable(${OUT_DIR}DespachoCanalConCliente            ${SRC_DIR}Comunicaciones/DespachoCanalConCliente.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}DespachoCanalConVendedor           ${SRC_DIR}Comunicaciones/DespachoCanalConVendedor.cpp  ${COMMON_SRC})
-add_executable(${OUT_DIR}DespachoCanalConR16                ${SRC_DIR}Comunicaciones/DespachoCanalConR16.cpp       ${COMMON_SRC})
-add_executable(${OUT_DIR}DespachoCanalConR16_Cinta15        ${SRC_DIR}Comunicaciones/DespachoCanalConR16_Cinta15.cpp ${COMMON_SRC})
-
-# Robot16
-add_executable(${OUT_DIR}R16CanalConCliente                 ${SRC_DIR}Comunicaciones/R16CanalConCliente.cpp        ${COMMON_SRC})
-add_executable(${OUT_DIR}R16CanalConDespacho                ${SRC_DIR}Comunicaciones/R16CanalConDespacho.cpp       ${COMMON_SRC})
-add_executable(${OUT_DIR}R16_Cinta15CanalConDespacho        ${SRC_DIR}Comunicaciones/R16_Cinta15CanalConDespacho.cpp ${COMMON_SRC})
-
-
 add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
 
-add_executable(${OUT_DIR}DemuxAgente                        ${SRC_DIR}Comunicaciones/Agentes/DemuxAgente.cpp       ${COMMON_SRC})
+# Broker - Agente
+add_executable(${OUT_DIR}MuxTipoAgente                      ${SRC_DIR}Comunicaciones/Agentes/MuxTipoAgente.cpp       ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaAgente                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaAgente.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaAgente                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaAgente.cpp  ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaBroker                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaBroker.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaBroker                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaBroker.cpp  ${COMMON_SRC})
+add_executable(${OUT_DIR}LauncherBrokers                    ${SRC_DIR}Comunicaciones/Brokers/LauncherBrokers.cpp     ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorBrokers                  ${SRC_DIR}Comunicaciones/Brokers/TerminatorBrokers.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}Broker                             ${SRC_DIR}Comunicaciones/Brokers/Broker.cpp              ${COMMON_SRC})
+
 
 
 
@@ -202,22 +186,14 @@ target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCL
 target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)
 
-target_link_libraries(${OUT_DIR}CanalEntradaCliente                         IPCLibrary)
-target_link_libraries(${OUT_DIR}CanalSalidaCliente                          IPCLibrary)
-target_link_libraries(${OUT_DIR}ClienteCanalConDespacho                     IPCLibrary)
-target_link_libraries(${OUT_DIR}ClienteCanalConR16                          IPCLibrary)
-target_link_libraries(${OUT_DIR}DespachoCanalConCliente                     IPCLibrary)
-target_link_libraries(${OUT_DIR}DespachoCanalConVendedor                    IPCLibrary)
-target_link_libraries(${OUT_DIR}DespachoCanalConR16                         IPCLibrary)
-target_link_libraries(${OUT_DIR}DespachoCanalConR16_Cinta15                 IPCLibrary)
-target_link_libraries(${OUT_DIR}R16CanalConCliente                          IPCLibrary)
-target_link_libraries(${OUT_DIR}R16CanalConDespacho                         IPCLibrary)
-target_link_libraries(${OUT_DIR}R16_Cinta15CanalConDespacho                 IPCLibrary)
-target_link_libraries(${OUT_DIR}CanalEntradaVendedor                        IPCLibrary)
-target_link_libraries(${OUT_DIR}CanalSalidaVendedor                         IPCLibrary)
-target_link_libraries(${OUT_DIR}VendedorCanalConDespacho                    IPCLibrary)
+
 target_link_libraries(${OUT_DIR}CreadorCanalesCliente                       IPCLibrary)
 target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)
-
-
-target_link_libraries(${OUT_DIR}DemuxAgente                            IPCLibrary)
+target_link_libraries(${OUT_DIR}MuxTipoAgente                               IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalSalidaAgente                           IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalEntradaAgente                          IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalSalidaBroker                           IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalEntradaBroker                          IPCLibrary)
+target_link_libraries(${OUT_DIR}LauncherBrokers                             IPCLibrary)
+target_link_libraries(${OUT_DIR}TerminatorBrokers                           IPCLibrary)
+target_link_libraries(${OUT_DIR}Broker                                      IPCLibrary)
