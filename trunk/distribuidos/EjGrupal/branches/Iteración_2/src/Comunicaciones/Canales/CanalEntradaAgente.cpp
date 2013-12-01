@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     
     // Se envían los datos del agente por el socket al CanalSalidaBroker
     std::stringstream ss;
-    ss << idAgente;
+    ss << idAgente << " ";
     ss << idTipoAgente;
     memcpy(buffer, ss.str().c_str(), sizeof(int) + sizeof(long));
     

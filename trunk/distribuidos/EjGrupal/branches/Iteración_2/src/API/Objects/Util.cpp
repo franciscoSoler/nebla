@@ -5,6 +5,7 @@
 #include <string.h>
 #include <errno.h>
 // #include <stdlib.h>
+#include <list>
 #include <stdio.h>
 
 #define MAX_PARAMS_SIZE     200
@@ -51,17 +52,25 @@ void Util::createProcess(std::string processName,
     
 }
 
-void Util::createProcess(std::string processName, std::string params) {
+void Util::createProcess(std::string processName, std::list<std::string> args) {
     pid_t pid;
-    static char streamParams[MAX_PARAMS_SIZE];
+    // static char streamParams[MAX_PARAMS_SIZE];
     sprintf(buffer, "./%s", processName.c_str());
+    std::list<std::string>::iterator it = args.begin();
+    static char param1[25];
+    static char param2[25];
+    strcpy(param1, (*it).c_str());
+    it++;
+    strcpy(param2, (*it).c_str());
 
-    if ( params.size() > MAX_PARAMS_SIZE ) {
+    /*if ( params.size() > MAX_PARAMS_SIZE ) {
         Logger::logMessage(Logger::ERROR, "Tamaño de parámetros no permitido");
         abort();
-    }
+    }*/
 
-    strcpy(streamParams, params.c_str());
+    /*strcpy(streamParams, params.c_str());
+    Logger::logMessage(Logger::COMM, "Creando canal de comunicaciones");
+    Logger::logMessage(Logger::COMM, params);*/
 
     if ((pid = fork()) < 0) {
         sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
@@ -69,7 +78,7 @@ void Util::createProcess(std::string processName, std::string params) {
     }
     else if (pid == 0) {
         // Child process. Pass the arguments to the process and call exec
-        execlp(buffer, processName.c_str(), streamParams, (char *) 0);
+        execlp(buffer, processName.c_str(), param1, param2, (char *) 0);
 
         sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
         Logger::getInstance().logMessage(Logger::ERROR, buffer);
