@@ -118,6 +118,8 @@
 #define TIPO_PEDIDO_DESPACHO            1
 #define TIPO_PEDIDO_ODC_DESPACHO        2
 
+#define TIPO_NOTIFICACION_BARRERA_11_12 1
+
 
 //constantes del sistema
 #define TAM_BUFFER 				255
@@ -229,7 +231,6 @@ typedef struct {
 } PedidoCanastoAGV;
 
 typedef struct {
-	long mtype; // tipo = TIPO_PEDIDO_CANASTO
         PedidoCanastoAGV pedidoCanastoAgv;
 } MensajePedidoAgv_5;
 
@@ -268,7 +269,7 @@ typedef struct {
 } PedidoProduccion;
 
 typedef struct {
-    long mtype; // mtype = TIPO_PEDIDO_PRODUCCION
+    // mtype = TIPO_PEDIDO_PRODUCCION
     PedidoProduccion pedidoProduccion;    
 } MensajePedidoProduccion;
 
@@ -297,7 +298,6 @@ typedef struct {
 } PedidoCanastoRobotCinta6;
 
 typedef struct {
-	long mtype; // tipo = TIPO_PEDIDO_CANASTO
 	PedidoCanastoRobotCinta6 pedidoCanastoAgv;
 } MensajePedidoRobotCinta_6;
 
@@ -555,7 +555,7 @@ typedef struct {
 
 typedef struct _mensaje_inicial
 {
-    long mtype; // receptor.
+    // mtype = receptor.
     long emisor; 
 } mensaje_inicial_t;
 
@@ -568,7 +568,7 @@ typedef struct _pedido
 } pedido_t;
 
 typedef struct {
-    long mtype; // receptor.
+    // receptor.
     int tipo; // indica si se debe terminar la comunicacion
     pedido_t pedido;
 } msg_pedido_t;
@@ -580,7 +580,6 @@ typedef struct _respuesta_pedido {
 } respuesta_pedido_t;
 
 typedef struct {
-    long mtype;
     int tipo;
     respuesta_pedido_t respuesta_pedido;
 } msg_respuesta_pedido_t;

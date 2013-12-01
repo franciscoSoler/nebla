@@ -58,14 +58,13 @@ void ControladorAlmacenPiezas::enviarPedidoProduccionARobot5(PedidoProduccion pe
     try {
         MensajePedidoProduccion mensaje;
         mensaje.pedidoProduccion = pedidoProduccion;
-        mensaje.mtype = TIPO_PEDIDO_PRODUCCION;
 
         sprintf(this->buffer, "Enviando pedido de Fabricación al Robot5: Cantidad:"
                 "%d - Dif:%d - ODC:%d - Tipo:%d", pedidoProduccion.cantidad,
                 pedidoProduccion.diferenciaMinima, pedidoProduccion.nroOrdenCompra,
                 pedidoProduccion.tipo);
         Logger::logMessage(Logger::DEBUG, this->buffer);
-        colaEnvioMensajePedidoProduccion.enviarPedidoProduccion(mensaje);
+        colaEnvioMensajePedidoProduccion.enviarPedidoProduccion(TIPO_PEDIDO_PRODUCCION, mensaje);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -93,9 +92,8 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(int numAGV,
     
     try {
         MensajePedidoRobotCinta_6 mensaje;
-        mensaje.mtype = numAGV + 1;
         mensaje.pedidoCanastoAgv = pedidoCanasto;
-        colaPedidosCanastos.enviarPedidoCanasto(mensaje);
+        colaPedidosCanastos.enviarPedidoCanasto(numAGV + 1, mensaje);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

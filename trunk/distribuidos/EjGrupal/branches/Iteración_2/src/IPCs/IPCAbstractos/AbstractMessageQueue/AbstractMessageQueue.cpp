@@ -3,8 +3,10 @@
 
 namespace IPC {
     
-AbstractMessageQueue::AbstractMessageQueue(std::string IPCName) : IPCObject(IPCName){	
-}
+AbstractMessageQueue::AbstractMessageQueue(std::string IPCName, long idEmisor)
+                                : IPCObject(IPCName)
+                                ,id(0)
+                                ,idEmisor(idEmisor){}
 
 AbstractMessageQueue::~AbstractMessageQueue() {
 }

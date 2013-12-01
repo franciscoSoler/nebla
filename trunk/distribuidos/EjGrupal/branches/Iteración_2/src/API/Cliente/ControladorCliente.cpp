@@ -73,9 +73,8 @@ void ControladorCliente::contactarVendedores()
         /* Se establece la comunicacion "en dos pasos". */
         mensaje_inicial_t mensaje;
         mensaje.emisor = numCliente;
-        mensaje.mtype = TIPO_BUSCANDO_VENDEDOR;
         Logger::logMessage(Logger::TRACE, "Llama a algun vendedor.");
-        vendedores.enviarMensajeInicial(mensaje);
+        vendedores.enviarMensajeInicial(TIPO_BUSCANDO_VENDEDOR, mensaje);
 
         msg_respuesta_pedido_t mensajeRespuesta;
         clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
@@ -106,10 +105,9 @@ void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo)
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
         msg_pedido_t mensajePedido;
-        mensajePedido.mtype = numVendedorAsociado;
         mensajePedido.pedido = pedido;
         mensajePedido.tipo = 0;
-        pedidos.enviarMensajePedido(mensajePedido);
+        pedidos.enviarMensajePedido(numVendedorAsociado, mensajePedido);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -132,10 +130,9 @@ void ControladorCliente::finalizarEnvio(int cantPedidos)
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
         msg_pedido_t mensajePedido;
-        mensajePedido.mtype = numVendedorAsociado;
         mensajePedido.pedido = pedidoFinal;
         mensajePedido.tipo = 1; // Tipo != 0 fin de la comunicacion
-        pedidos.enviarMensajePedido(mensajePedido);
+        pedidos.enviarMensajePedido(numVendedorAsociado, mensajePedido);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

@@ -94,7 +94,6 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
         
         CintaTransportadora_6 ctrlCinta;
         MensajeBarrera messageBarrera;
-        messageBarrera.mtype = 1;
 
         while (true) {
             this->semBufferCinta6.wait(this->id_Robot);
@@ -120,7 +119,7 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
 
         if(!ctrlCinta.lugarVacio[ctrlCinta.puntoLectura]) {
             Logger::logMessage(Logger::TRACE, "hay gabinete, despierto robot 12");
-            this->cola11_A_12.send(messageBarrera);
+            this->cola11_A_12.send(TIPO_NOTIFICACION_BARRERA_11_12, messageBarrera);
             
             ControladorRobot11::obtenerPantallaDelProducto(ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto, piezas);
             return true;
@@ -237,10 +236,9 @@ void ControladorRobot11::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza)
         Logger::logMessage(Logger::TRACE, "no posee la pieza, se la pido al agv por la cola");
         
         MensajePedidoRobotCinta_6 pedidoCanasto;
-        pedidoCanasto.mtype = this->id_Agv;
         pedidoCanasto.pedidoCanastoAgv.lugar = posicionPieza;
         pedidoCanasto.pedidoCanastoAgv.tipoPieza = tipoPieza;
-        this->colaPedidosCanastos.enviarPedidoCanasto(pedidoCanasto);
+        this->colaPedidosCanastos.enviarPedidoCanasto(this->id_Agv, pedidoCanasto);
         this->semBloqueoRobot11.wait(this->id_Robot);
     }
     catch (Exception & e) {

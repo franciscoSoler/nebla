@@ -13,33 +13,59 @@
 #include <sys/msg.h>
 
 #include "../AbstractMessageQueue/AbstractMessageQueue.h"
+#include <middlewareCommon.h>
+#include <Logger/Logger.h>
 
 namespace IPC {
 
 class Barrera1112MessageQueue : public AbstractMessageQueue
 {
-
-public:
-	Barrera1112MessageQueue(std::string IPCName = "") : AbstractMessageQueue(IPCName) {} 
-	
-	virtual ~Barrera1112MessageQueue() {}
-
-	int send (MensajeBarrera dato) {
-		int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(MensajeBarrera)-sizeof(long),0 );
+private:
+        int send (MsgAgenteReceptor dato) {
+		int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long),0 );
 		if (resultado == -1) {
 			sprintf(this->buffer, "Barrera1112MessageQueue - Fallo la operacion send: %s", strerror(errno));
                         throw Exception(std::string(this->buffer));
 		}
 		return resultado;
 	}
-	
-	int receive ( int tipo, MensajeBarrera* buffer ) {
-		int resultado = msgrcv ( this->id,(void *)buffer,sizeof(MensajeBarrera)-sizeof(long),tipo,0 );
+        
+        int receive ( int tipo, MsgAgenteReceptor* buffer ) {
+		int resultado = msgrcv ( this->id,(void *)buffer,sizeof(MsgAgenteReceptor)-sizeof(long),tipo,0 );
 		if (resultado == -1) {
 			sprintf(this->buffer, "Barrera1112MessageQueue - Fallo la operacion recv: %s", strerror(errno));
 			throw Exception(std::string(this->buffer));
 		}
 		return resultado;
+	}
+        
+public:
+	Barrera1112MessageQueue(std::string IPCName = "", long idEmisor = 0) 
+                : AbstractMessageQueue(IPCName, idEmisor) {} 
+	
+	virtual ~Barrera1112MessageQueue() {}
+
+	int send (long idReceptor, MensajeBarrera dato) {
+            MsgAgenteReceptor msg;
+            msg.mtype = MSG_MUX;
+            msg.idEmisor = this->idEmisor;
+            msg.idReceptor = idReceptor;
+            
+            if ( sizeof(MensajeBarrera) > MSG_QUEUE_FIXED_SIZE ) {
+                sprintf(this->buffer, "MsgQueue %s Error - send: Mensaje demasiado largo",
+                        getIPCName().c_str());
+                Logger::logMessage(Logger::ERROR, this->buffer);
+            }
+
+            memcpy(msg.msg, &dato, sizeof(MensajeBarrera));
+            return this->send(msg);
+	}
+	
+	int receive ( int tipo, MensajeBarrera* buffer ) {
+            MsgAgenteReceptor msg;
+            int resultado = this->receive(tipo, &msg);
+            memcpy(buffer, msg.msg, sizeof(MensajeBarrera));
+            return resultado;
 	}
 
 };

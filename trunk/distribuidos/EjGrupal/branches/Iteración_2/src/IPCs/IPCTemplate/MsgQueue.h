@@ -15,6 +15,7 @@
 #include <Exceptions/Exception.h>
 #include <IPCs/IPCObject/IPCObject.h>
 #include <middlewareCommon.h>
+#include <Logger/Logger.h>
 
 
 namespace IPC {
@@ -97,6 +98,7 @@ public:
         if ( sizeof(T) > MSG_QUEUE_FIXED_SIZE ) {
             sprintf(buffer_, "MsgQueue %s Error - send: Mensaje demasiado largo",
                     getIPCName().c_str());
+            Logger::logMessage(Logger::ERROR, this->buffer_);
         }
         
         memcpy(msg.msg, &data, sizeof(T));

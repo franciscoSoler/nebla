@@ -95,10 +95,9 @@ Canasto ControladorAGV::buscarPieza(TipoPieza tipoPieza) {
         Canasto canasto;
 
         MensajePedidoAgv_5 pedidoCanastoAGV;
-        pedidoCanastoAGV.mtype = 1;
         pedidoCanastoAGV.pedidoCanastoAgv.idAgv = this->id_AGV;
         pedidoCanastoAGV.pedidoCanastoAgv.tipoPieza = tipoPieza;
-        this->colaPedidosAGV_5.enviarPedidoAgv(pedidoCanastoAGV);
+        this->colaPedidosAGV_5.enviarPedidoAgv(TIPO_PEDIDO_CANASTO, pedidoCanastoAGV);
 
         Logger::logMessage(Logger::TRACE, "realice el pedido del canasto al robot 5, duermo hasta que lo traiga");
         this->semBloqueoAGV.wait(this->id_AGV);
