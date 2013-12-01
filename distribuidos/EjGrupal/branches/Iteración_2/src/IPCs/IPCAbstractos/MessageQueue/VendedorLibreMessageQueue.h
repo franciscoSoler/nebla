@@ -44,11 +44,11 @@ public:
 
         
         sprintf(this->buffer, "idEmisor: %ld, idTipoReceptor: %d, idTipoAgente: %d",
-                    idEmisor, this->idTipoReceptor, this->idTipoAgente);
+                    idEmisor, this->idTipoReceptor, this->idTipoEmisor);
         Logger::logMessage(Logger::TRACE, this->buffer);
         
-        MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
-        msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
+        MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoEmisor);
+        msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoReceptor);
         msgQ.send(msg);
         return 0;
         //return this->enviar((const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long));

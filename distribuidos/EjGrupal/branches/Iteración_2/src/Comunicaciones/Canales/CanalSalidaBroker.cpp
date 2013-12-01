@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
+    sleep(20);
     SocketStream socketAgente(idSd);
     Logger::logMessage(Logger::COMM, "Canal de Salida conectado");
     
@@ -42,8 +43,8 @@ int main(int argc, char* argv[]) {
     ss >> idAgente;
     ss >> idTipoAgente;
     
-    sprintf(buffer, "Se reciben los datos del agente: %ld - %d", 
-            idAgente, idTipoAgente);
+    sprintf(buffer, "Se reciben los datos del buffer: %s,  agente: %ld - %d", 
+            buffer, idAgente, idTipoAgente);
     Logger::logMessage(Logger::COMM, buffer);
     
     try {

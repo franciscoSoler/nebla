@@ -29,7 +29,7 @@ private:
 protected:
         long idEmisor;
         TipoAgente idTipoReceptor;
-        TipoAgente idTipoAgente;
+        TipoAgente idTipoEmisor;
         int id;
         int idIPC;
         char dirIPC[DIR_FIXED_SIZE];

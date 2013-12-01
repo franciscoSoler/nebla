@@ -6,7 +6,7 @@ ControllerDespacho::ControllerDespacho() {
         // Util::getInstance();
         Logger::setProcessInformation("Despacho:");
 
-        inputQueueDespacho_ = IPC::MsgQueue("inputQueueDespacho", 1, ID_TIPO_DESPACHO, ID_TIPO_VENDEDOR);
+        inputQueueDespacho_ = IPC::MsgQueue("inputQueueDespacho", 1, ID_TIPO_DESPACHO);
         inputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
         inputQueueCliente_ = IPC::MsgQueue("inputQueueCliente", 1, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
