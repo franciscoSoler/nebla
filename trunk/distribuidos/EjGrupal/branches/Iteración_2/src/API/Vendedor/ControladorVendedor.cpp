@@ -18,13 +18,13 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
         sprintf(buffer, "Vendedor N#%ld:", numVendedor);
         Logger::setProcessInformation(buffer);
 
-        this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue");
+        this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue", numVendedor, ID_TIPO_VENDEDOR);
         this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
 
-        this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
+        this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue", numVendedor, ID_TIPO_VENDEDOR);
         this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
 
-        this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
+        this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue", numVendedor, ID_TIPO_VENDEDOR);
         this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
         /* Informacion sobre las ordenes de produccion y compra. */
@@ -32,8 +32,8 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
         this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
 
         /* Comunicacion con el almacen de piezas. */
-        this->colaEnvioOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
-        this->colaEnvioOrdenProduccion.obtener();
+        this->colaEnvioOrdenProduccion = IPC::MsgQueue("Vendedor - colaEvioOrdenProduccion", numVendedor, ID_TIPO_VENDEDOR);
+        this->colaEnvioOrdenProduccion.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         /* Comunicacion con el almacen de productos terminados. */
         this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
@@ -42,7 +42,7 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
         this->mutexOrdenDeCompra = IPC::Semaphore("mutexOrdenDeCompra");
         this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
 
-        inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho");
+        inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho", numVendedor, ID_TIPO_VENDEDOR);
         inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
         this->numVendedor = numVendedor;
@@ -279,9 +279,8 @@ void ControladorVendedor::enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacio
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     mensaje_pedido_fabricacion_t mensaje;
-    mensaje.mtype = 1;
     mensaje.pedidoFabricacion = pedidoProduccion;
-    colaEnvioOrdenProduccion.enviar(mensaje);
+    colaEnvioOrdenProduccion.send(1, mensaje);
 }
 
 void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra) {

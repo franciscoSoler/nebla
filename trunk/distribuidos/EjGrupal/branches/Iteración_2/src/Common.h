@@ -545,7 +545,6 @@ typedef struct _pedido_produccion
 } pedido_fabricacion_t;
 
 typedef struct {
-    long mtype;
     pedido_fabricacion_t pedidoFabricacion; 
 } mensaje_pedido_fabricacion_t;
 

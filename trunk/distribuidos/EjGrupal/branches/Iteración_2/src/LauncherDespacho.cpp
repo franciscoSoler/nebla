@@ -26,13 +26,6 @@ int main(int argc, char* argv[]) {
         createIPCs();
 
         Util::createProcess("Despacho");
-
-        // Procesos correspondientes al Middleware
-        ServersManager serversManager;
-        serversManager.createServer("ServidorDespachoClientes");
-        serversManager.createServer("ServidorDespachoVendedores");
-        serversManager.createServer("ServidorDespachoR16");
-        serversManager.createServer("ServidorDespachoR16_Cinta15");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR,
@@ -56,14 +49,14 @@ void createIPCs() {
      * ejemplo indica que es la cola donde el cliente recibe mensajes
      */
     IPC::MsgQueue inputQueueCliente("inputQueueCliente");
-    inputQueueCliente.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_D);
+    inputQueueCliente.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
     Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueCliente creado");
 
     IPC::MsgQueue inputQueueR16_Despacho("inputQueueR16_Despacho");
-    inputQueueR16_Despacho.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID_D);
+    inputQueueR16_Despacho.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
     Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueR16_Despacho creado");
 
     IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
-    inputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_D);
+    inputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
     Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueDespacho creado");
 }

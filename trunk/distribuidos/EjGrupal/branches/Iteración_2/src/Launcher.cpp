@@ -33,7 +33,6 @@
 #include "IPCs/IPCTemplate/SharedMemory.h"
 #include "IPCs/IPCTemplate/MsgQueue.h"
 
-#include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
 #include "VendedorLibreMessageQueue.h"
 #include "ClientesMessageQueue.h"
@@ -326,10 +325,11 @@ void createIPCs() {
     pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
 
-    Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
-    consultasAlmacen.crear();
-    Cola<respuesta_almacen_piezas_t> respuestasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
-    respuestasAlmacen.crear();  
+    IPC::MsgQueue consultasAlmacen("ConsultasAlmacen");
+    consultasAlmacen.create(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+    
+    IPC::MsgQueue respuestasAlmacen("RespuestasAlmacen");
+    respuestasAlmacen.create(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     
     MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     shmemAlmacenTerminados.crear();

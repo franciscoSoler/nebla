@@ -39,14 +39,28 @@ private:
 
     int id;
     long idEmisor;
+    TipoAgente idTipoAgente;
+    MsgQueue* colaMux;
+    int idIPC;
+    char dirIPC[DIR_FIXED_SIZE];
     char buffer_[200];
-
+    
 public:    
     
-    MsgQueue(std::string IPCName = "", long idEmisor = 0) 
+    MsgQueue(std::string IPCName = "", long idEmisor = 0, TipoAgente idTipoAgente = ID_TIPO_VACIO) 
             :  IPCObject(IPCName), 
                id(0),
-               idEmisor(0) {}
+               idEmisor(0),
+               idTipoAgente(idTipoAgente),
+               colaMux(NULL) {
+        
+    }
+            
+    virtual ~MsgQueue() {
+        if ( colaMux != NULL) {
+            delete colaMux;
+        }
+    }
 
     /* 
      * Metodo utilizado para crear la Cola de Mensajes, si ya 
@@ -67,10 +81,18 @@ public:
      * una cola de mensajes con la misma clave el metodo falla.
      */
     void getMsgQueue(const char *fileName, int id) {
+        idIPC = id;
+        strcpy(dirIPC, fileName);
         if (this->getId(fileName, id, 0666) == -1) {
             sprintf(buffer_, "MsgQueue %s Error - getMsgQueue: %s",
             getIPCName().c_str(), strerror(errno));
             throw Exception(buffer_);
+        }
+        
+        // Caso base de la recursividad: Código REEE entendible
+        if ( strcmp(fileName, DIRECTORY_MUX) ) {
+            colaMux = new MsgQueue(DIRECTORY_MUX, idEmisor, idTipoAgente);
+            colaMux->getMsgQueue(DIRECTORY_MUX, idTipoAgente);
         }
     }
 
@@ -94,6 +116,9 @@ public:
         msg.mtype = MSG_MUX;
         msg.idEmisor = this->idEmisor;
         msg.idReceptor = idReceptor;
+        msg.idIPCReceptor = this->idIPC;
+        strcpy(msg.dirIPCReceptor, this->dirIPC);
+        
         
         if ( sizeof(T) > MSG_QUEUE_FIXED_SIZE ) {
             sprintf(buffer_, "MsgQueue %s Error - send: Mensaje demasiado largo",
@@ -106,10 +131,10 @@ public:
     }
 
     /*
-     *
+     * ESPANTOOOSOO!!!!
      */
     void send( MsgAgenteReceptor& data ) {
-        if (msgsnd (this->id, (const void *) & data, 
+        if (msgsnd (this->colaMux->id, (const void *) & data, 
             sizeof(MsgAgenteReceptor) - sizeof(long), 0) == -1) {
             sprintf(buffer_, "MsgQueue %s Error - send: %s",
             getIPCName().c_str(), strerror(errno));
@@ -129,7 +154,7 @@ public:
     }
     
     void recv(long type, MsgAgenteReceptor& data ) {
-        if (msgrcv (this->id, (void *) & data, 
+        if (msgrcv (this->colaMux->id, (void *) & data, 
             sizeof(MsgAgenteReceptor) - sizeof(long), type, 0) == -1) {
             sprintf(buffer_, "MsgQueue %s Error - send: %s",
             getIPCName().c_str(), strerror(errno));

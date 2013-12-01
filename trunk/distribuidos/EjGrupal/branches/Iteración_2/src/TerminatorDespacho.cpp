@@ -12,17 +12,17 @@ int main(int argc, char* argv[]) {
         Logger::getInstance().setProcessInformation("Terminator Despacho:");
 
         IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
-        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_D);
+        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
         inputQueueDespacho.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueDespacho creado");
 
         IPC::MsgQueue inputQueueCliente("inputQueueCliente");
-        inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_D);
+        inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
         inputQueueCliente.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueCliente destruido");
 
         IPC::MsgQueue inputQueueR16_Despacho("inputQueueR16_Despacho");
-        inputQueueR16_Despacho.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID_D);
+        inputQueueR16_Despacho.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
         inputQueueR16_Despacho.destroy();
         Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueR16_Despacho Destruido");
 

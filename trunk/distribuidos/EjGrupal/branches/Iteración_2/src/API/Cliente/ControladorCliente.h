@@ -15,7 +15,6 @@
 #include <sys/types.h>
 
 #include "../../Common.h"
-#include "../../IPCs/Barrios/Cola.h"
 
 #include "../../IPCs/IPCAbstractos/MessageQueue/VendedorLibreMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"

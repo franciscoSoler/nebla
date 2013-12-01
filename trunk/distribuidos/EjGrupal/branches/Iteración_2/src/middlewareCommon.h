@@ -7,7 +7,8 @@
 #define MSG_MUX            1
 
 typedef enum {
-    ID_TIPO_CLIENTE = 1,
+    ID_TIPO_VACIO = 0,
+    ID_TIPO_CLIENTE,
     ID_TIPO_VENDEDOR,
     ID_TIPO_ROBOT5_CINTA,
     ID_TIPO_ROBOT5_AGV,
@@ -33,6 +34,8 @@ typedef struct {
     long mtype;
     long idReceptor;
     long idEmisor;
+    char dirIPCReceptor[DIR_FIXED_SIZE];
+    int idIPCReceptor;
     char msg[MSG_QUEUE_FIXED_SIZE];
 } MsgAgenteReceptor;
 
