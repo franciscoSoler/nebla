@@ -423,6 +423,7 @@ public:
     TipoProducto idProducto_;
     long idCliente_;
     long idOrdenDeCompra_;
+    OrdenDeCompra odc_;
 };
 
 
@@ -438,15 +439,6 @@ public:
     PedidoDespacho pedido_;
     bool ultimoPedido_;
 };
-
-#define MSG_ENVIO_ODC_DESPACHO          2
-class Msg_EnvioODCDespacho {
-public:
-    Msg_EnvioODCDespacho() {}
-public:
-    OrdenDeCompra ordenDeCompra_;
-};
-
 
 // Mensaje del Robot14 al Robot16
 #define MSG_AVISO_CAJA_CINTA_15         1
