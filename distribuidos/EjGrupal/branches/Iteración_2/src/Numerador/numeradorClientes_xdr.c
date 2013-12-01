@@ -8,7 +8,7 @@
 bool_t
 xdr_retorno (XDR *xdrs, retorno *objp)
 {
-	register int32_t *buf;
+	/*register int32_t *buf;*/
 
 	 if (!xdr_int (xdrs, &objp->cod_ret))
 		 return FALSE;
