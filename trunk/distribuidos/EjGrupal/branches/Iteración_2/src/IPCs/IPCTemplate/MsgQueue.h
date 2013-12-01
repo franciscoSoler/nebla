@@ -122,7 +122,7 @@ public:
         memcpy(msg.msg, &data, sizeof(T));
         
         
-        MsgQueue msgQ("algo", idEmisor, this->idTipoAgente);
+        MsgQueue msgQ("algo", idEmisor, this->idTipoReceptor, this->idTipoAgente);
         msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
         msgQ.send(msg);
         //this->send(msg);

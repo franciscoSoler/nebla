@@ -44,7 +44,7 @@ public:
         }
         memcpy(msg.msg, &dato, sizeof(msg_pedido_t));
         
-        MsgQueue msgQ("queueAMux", idEmisor, this->idTipoAgente);
+        MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
         msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
         msgQ.send(msg);
         return 0;

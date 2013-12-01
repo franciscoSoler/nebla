@@ -43,7 +43,11 @@ public:
         memcpy(msg.msg, &dato, sizeof(mensaje_inicial_t));
 
         
-        MsgQueue msgQ("queueAMux", idEmisor, this->idTipoAgente);
+        sprintf(this->buffer, "idEmisor: %ld, idTipoReceptor: %d, idTipoAgente: %d",
+                    idEmisor, this->idTipoReceptor, this->idTipoAgente);
+        Logger::logMessage(Logger::TRACE, this->buffer);
+        
+        MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoAgente);
         msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
         msgQ.send(msg);
         return 0;
