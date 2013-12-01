@@ -6,7 +6,6 @@
 #include <sys/msg.h>
 
 #include "../AbstractMessageQueue/AbstractMessageQueue.h"
-#include <middlewareCommon.h>
 #include <Logger/Logger.h>
 
 namespace IPC {
@@ -15,7 +14,9 @@ class PedidosProduccionMessageQueue : public AbstractMessageQueue
 {
 
 public:
-	PedidosProduccionMessageQueue(std::string IPCName = "", long idEmisor = 0):AbstractMessageQueue(IPCName, idEmisor) {} 
+	PedidosProduccionMessageQueue(std::string IPCName = "", long 
+                idEmisor = 0, TipoAgente idTipoAgente = ID_TIPO_VACIO) 
+                : AbstractMessageQueue(IPCName, idEmisor, idTipoAgente) {} 
 	
 	virtual ~PedidosProduccionMessageQueue() {}
 
@@ -24,6 +25,8 @@ public:
             msg.mtype = MSG_MUX;
             msg.idEmisor = this->idEmisor;
             msg.idReceptor = idReceptor;
+            msg.idIPCReceptor = this->idIPC;
+            strcpy(msg.dirIPCReceptor, this->dirIPC);
 
             if ( sizeof(MensajePedidoProduccion) > MSG_QUEUE_FIXED_SIZE ) {
                 sprintf(this->buffer, "MsgQueue %s Error - send: Mensaje demasiado largo",
@@ -32,14 +35,15 @@ public:
             }
 
             memcpy(msg.msg, &dato, sizeof(MensajePedidoProduccion));
-            return this->enviar((const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long));
+            this->colaMux->send(msg);
+            return 0;
 	}
 	
 	int recibirPedidoProduccion ( int tipo, MensajePedidoProduccion* buffer ) {
             MsgAgenteReceptor msg;
-            int resultado = this->recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+            this->colaMux->recv(tipo, msg);
             memcpy(buffer, msg.msg, sizeof(MensajePedidoProduccion));
-            return resultado;
+            return 0;
 	}
         
         int enviarProximoPedidoProduccion (long idReceptor, MensajeProximoPedidoProduccion dato) {
@@ -47,6 +51,8 @@ public:
             msg.mtype = MSG_MUX;
             msg.idEmisor = this->idEmisor;
             msg.idReceptor = idReceptor;
+            msg.idIPCReceptor = this->idIPC;
+            strcpy(msg.dirIPCReceptor, this->dirIPC);
 
             if ( sizeof(MensajeProximoPedidoProduccion) > MSG_QUEUE_FIXED_SIZE ) {
                 sprintf(this->buffer, "MsgQueue %s Error - send: Mensaje demasiado largo",
@@ -55,14 +61,15 @@ public:
             }
 
             memcpy(msg.msg, &dato, sizeof(MensajeProximoPedidoProduccion));
-            return this->enviar((const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long));
+            this->colaMux->send(msg);
+            return 0;
 	}
 	
 	int recibirProximoPedidoProduccion ( int tipo, MensajeProximoPedidoProduccion* buffer ) {
             MsgAgenteReceptor msg;
-            int resultado = this->recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+            this->colaMux->recv(tipo, msg);
             memcpy(buffer, msg.msg, sizeof(MensajeProximoPedidoProduccion));
-            return resultado;
+            return 0;
 	}
 
 };

@@ -33,7 +33,6 @@
 #include "API/Objects/DataSM_R14_R16.h"
 #include "IPCs/IPCTemplate/SharedMemory.h"
 
-#include "IPCs/Barrios/Cola.h"
 #include "IPCs/Barrios/MemoriaCompartida.h"
 #include "MsgQueue.h"
 
@@ -244,17 +243,20 @@ int main(int argc, char* argv[]) {
         IPC::Semaphore esperaRepositorGabinete("Espera Repositor Gabinete");
         esperaRepositorGabinete.getSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_GABINETES, 1);
         esperaRepositorGabinete.destroy();
+        
+        IPC::MsgQueue consultasAlmacen("consultasAlmacen");
+        consultasAlmacen.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+        consultasAlmacen.destroy();
+
+        IPC::MsgQueue respuestasAlmacen("respuestasAlmacen");
+        respuestasAlmacen.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
+        respuestasAlmacen.destroy();
     }
     
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, e.get_error_description().c_str());
         abort();
     }
-
-    Cola<consulta_almacen_piezas_t> consultasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
-    consultasAlmacen.destruir();
-    Cola<respuesta_almacen_piezas_t> respuestasAlmacen(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
-    respuestasAlmacen.destruir();
    
     MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
     shmemAlmacenTerminados.liberar();

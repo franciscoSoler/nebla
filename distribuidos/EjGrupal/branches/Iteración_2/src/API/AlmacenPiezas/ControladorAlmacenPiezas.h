@@ -19,12 +19,12 @@
 #include "../../Common.h"
 #include "IControladorAlmacenPiezas.h"
 
-#include "../../IPCs/Barrios/Cola.h"
 #include "../../IPCs/Semaphore/Semaphore.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
 {
@@ -43,7 +43,7 @@ public:
     
 private:
     char buffer[TAM_BUFFER];
-    Cola<mensaje_pedido_fabricacion_t> colaReciboOrdenProduccion;
+    IPC::MsgQueue colaReciboOrdenProduccion;
 
     IPC::PedidosProduccionMessageQueue colaEnvioMensajePedidoProduccion;
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;

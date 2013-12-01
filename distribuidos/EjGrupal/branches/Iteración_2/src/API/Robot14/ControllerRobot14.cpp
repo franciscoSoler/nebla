@@ -40,7 +40,7 @@ ControllerRobot14::ControllerRobot14() {
         semR14_Cinta15 = IPC::Semaphore("semR14_Cinta15");
         semR14_Cinta15.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA15_ID, 1);
         
-        inputQueueR16_Cinta15_ = IPC::MsgQueue("inputQueueR16_Cinta15");
+        inputQueueR16_Cinta15_ = IPC::MsgQueue("inputQueueR16_Cinta15", 1, ID_TIPO_ROBOT14);
         inputQueueR16_Cinta15_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CINTA15_INPUT_ID);
 
         // Creo los estados

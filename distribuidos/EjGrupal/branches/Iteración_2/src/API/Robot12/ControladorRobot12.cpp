@@ -35,7 +35,7 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         this->semBufferCanastos = IPC::Semaphore("semMemCanastos");
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_Robot + 1, ID_TIPO_ROBOT12);
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
@@ -43,8 +43,8 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
 
         
 
-        this->cola11_A_12 = IPC::Barrera1112MessageQueue();
-        this->cola12_A_11 = IPC::Barrera1112MessageQueue();
+        this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", this->id_Robot + 1, ID_TIPO_ROBOT12);
+        this->cola12_A_11 = IPC::Barrera1112MessageQueue("cola12_A_11", this->id_Robot + 1, ID_TIPO_ROBOT12);
         if (numRobot == 0) {
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_0");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_0);

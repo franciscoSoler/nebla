@@ -14,8 +14,10 @@
 #include <unistd.h>
 
 #include "../../Common.h"
+#include <middlewareCommon.h>
 #include "../../Exceptions/Exception.h"
 #include "../../IPCObject/IPCObject.h"
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 namespace IPC {
 
@@ -25,8 +27,12 @@ private:
 	int getId(const char *fileName, int id, int flags);
 
 protected:
-	int id;
         long idEmisor;
+        TipoAgente idTipoAgente;
+        int id;
+        MsgQueue* colaMux;
+        int idIPC;
+        char dirIPC[DIR_FIXED_SIZE];
         char buffer[255];
         
         int enviar(const void *dato, size_t size);
@@ -36,7 +42,7 @@ public:
 	/* Pre: -
  	 * Post: -
  	 */
-	AbstractMessageQueue(std::string IPCName = "", long idEmisor = 0); 
+	AbstractMessageQueue(std::string IPCName = "", long idEmisor = 0, TipoAgente idTipoAgente = ID_TIPO_VACIO); 
 	
 	/* Pre: - 
  	 * Post: - 

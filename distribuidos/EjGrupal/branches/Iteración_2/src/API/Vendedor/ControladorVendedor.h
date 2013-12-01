@@ -19,7 +19,6 @@
 
 #include "../../IPCs/Semaphore/Semaphore.h"
 
-#include "../../IPCs/Barrios/Cola.h"
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
 #include "../../Common.h"
@@ -49,7 +48,7 @@ private:
 	MemoriaCompartida shmemNumeroOrdenCompra;
 	int* numeroOrdenCompra;
  
-	Cola<mensaje_pedido_fabricacion_t> colaEnvioOrdenProduccion;
+	IPC::MsgQueue colaEnvioOrdenProduccion;
 
 	IPC::Semaphore mutexAlmacenTerminados;
 	IPC::Semaphore mutexOrdenDeCompra;

@@ -11,7 +11,7 @@
 #include "../../Parser/Parser.h"
 
 ControladorRobot5Cinta::ControladorRobot5Cinta() :
-        colaPedidosProduccion("PedidosProduccionMessageQueue"),
+        colaPedidosProduccion("PedidosProduccionMessageQueue", 1, ID_TIPO_ROBOT5_CINTA),
         estadoRobot5("EstadoRobot5SharedMemory"),
         semaforoAccesoEstadoRobot5("AccesoEstadoRobot5"),
         semaforoBloqueoRobot5("BloqueoRobot5"),

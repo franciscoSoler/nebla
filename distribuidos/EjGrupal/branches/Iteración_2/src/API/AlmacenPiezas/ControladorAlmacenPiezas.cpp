@@ -12,16 +12,16 @@
 #include "LockFile.h"
 
 ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
-        colaEnvioMensajePedidoProduccion ("Mensaje Robot 5 Msg Queue")
+        colaEnvioMensajePedidoProduccion ("Mensaje Robot 5 Msg Queue", 1, ID_TIPO_AP)
 {
     try {
         Logger::setProcessInformation("AlmacenDePiezas:");
-        this->colaReciboOrdenProduccion = Cola<mensaje_pedido_fabricacion_t>(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
-        colaReciboOrdenProduccion.obtener();
+        this->colaReciboOrdenProduccion = IPC::MsgQueue("ColaReciboOP", 1, ID_TIPO_AP);       
+        this->colaReciboOrdenProduccion.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         colaEnvioMensajePedidoProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos");
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", 1, ID_TIPO_AP);
         this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
         this->shMemBufferCanastos[CANTIDAD_AGVS] = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
@@ -44,7 +44,7 @@ pedido_fabricacion_t ControladorAlmacenPiezas::recibirPedidoDeFabricacion()
 {
     try {
         mensaje_pedido_fabricacion_t mensajePedido;
-        this->colaReciboOrdenProduccion.recibir(1, &mensajePedido);
+        this->colaReciboOrdenProduccion.recv(1, mensajePedido);
         return mensajePedido.pedidoFabricacion;
     }
     catch (Exception & e) {

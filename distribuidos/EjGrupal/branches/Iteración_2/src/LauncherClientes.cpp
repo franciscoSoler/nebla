@@ -54,26 +54,26 @@ void createIPCs() {
      * ejemplo indica que es la cola donde el cliente recibe mensajes
      */
     IPC::MsgQueue inputQueueCliente("inputQueueCliente");
-    inputQueueCliente.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_C);
+    inputQueueCliente.create(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
     Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueCliente creado");
 
     IPC::MsgQueue R16_Cliente_Queue("R16_Cliente_Queue");
-    R16_Cliente_Queue.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
+    R16_Cliente_Queue.create(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
     Logger::logMessage(Logger::IMPORTANT, "IPC R16_Cliente_Queue creado");
 
     IPC::MsgQueue inputQueueDespacho("inputQueueDespacho");
-    inputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_C);
+    inputQueueDespacho.create(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
     Logger::logMessage(Logger::IMPORTANT, "IPC inputQueueDespacho creado");
 
     IPC::VendedorLibreMessageQueue vendedores ("Vendedores Msg Queue");
-    vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
+    vendedores.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
     Logger::logMessage(Logger::IMPORTANT, "IPC VendedorLibreMessageQueue creado");
 
     IPC::ClientesMessageQueue clientes ("Clientes Msg Queue");
-    clientes.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES_C);
+    clientes.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
     Logger::logMessage(Logger::IMPORTANT, "IPC ClientesMessageQueue creado");
 
     IPC::PedidosVendedorMessageQueue pedidos ("Pedidos Msg Queue");
-    pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
+    pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
     Logger::logMessage(Logger::IMPORTANT, "IPC PedidosVendedorMessageQueue creado");
 }
