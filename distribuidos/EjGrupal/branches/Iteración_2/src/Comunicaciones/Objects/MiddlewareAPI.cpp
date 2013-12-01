@@ -2,27 +2,22 @@
 #include "Logger.h"
 #include <Util.h>
 #include <sstream>
+#include <list>
 
 void MiddlewareAPI::crearCanales(int idAgente, TipoAgente idTipoAgente) {
     Util::getInstance();
 
-    std::stringstream argumentos;
-    argumentos << idAgente << " " << idTipoAgente;
+    std::list<std::string> args;
 
-    Logger::logMessage(Logger::COMM, argumentos.str());
+    std::stringstream argumentos;
+    argumentos << idAgente;
+    args.push_back(argumentos.str());
+    argumentos.str("");
+
+    argumentos << idTipoAgente;
+    args.push_back(argumentos.str());
     
-    Util::createProcess("CanalEntradaAgente", argumentos.str());
-    Util::createProcess("CanalSalidaAgente", argumentos.str());
-}
-
-void MiddlewareAPI::crearHandlerDeColaSalida(const char* dirIPC, long idAgente,
-                                             TipoAgente idTipoAgente) {
-
-    Util::getInstance();
-
-    std::stringstream argumentos;
-    argumentos << dirIPC << " " << idAgente << " " << idTipoAgente;
-
-    Util::createProcess("MuxTipoAgente", argumentos.str());
+    Util::createProcess("CanalEntradaAgente", args);
+    Util::createProcess("CanalSalidaAgente", args);
 }
 
