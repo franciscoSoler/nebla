@@ -173,8 +173,7 @@ void ControladorRobot5Cinta::avisarProximoPedido()
     {
 	Logger::getInstance().logMessage(Logger::TRACE, "Envio mensaje al almacen de piezas para que envie la proxima orden de produccion.");
 	MensajeProximoPedidoProduccion mensajeProximoPedido;
-	mensajeProximoPedido.mtype = TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS;
-	colaPedidosProduccion.enviarProximoPedidoProduccion(mensajeProximoPedido);
+	colaPedidosProduccion.enviarProximoPedidoProduccion(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, mensajeProximoPedido);
     }
     catch(Exception &e)
     {

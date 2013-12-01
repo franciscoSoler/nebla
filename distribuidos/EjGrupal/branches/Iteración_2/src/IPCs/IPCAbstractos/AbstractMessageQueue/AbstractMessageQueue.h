@@ -26,6 +26,7 @@ private:
 
 protected:
 	int id;
+        long idEmisor;
         char buffer[255];
         
         int enviar(const void *dato, size_t size);
@@ -35,7 +36,7 @@ public:
 	/* Pre: -
  	 * Post: -
  	 */
-	AbstractMessageQueue(std::string IPCName = ""); 
+	AbstractMessageQueue(std::string IPCName = "", long idEmisor = 0); 
 	
 	/* Pre: - 
  	 * Post: - 

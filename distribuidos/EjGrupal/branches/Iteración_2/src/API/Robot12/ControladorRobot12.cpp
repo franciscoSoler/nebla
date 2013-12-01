@@ -155,10 +155,9 @@ void ControladorRobot12::pedirPiezaAlAGV(TipoPieza tipoPieza, int posicionPieza)
         if (this->posEsperaDelOtroRobot12 != posicionPieza) {
             Logger::logMessage(Logger::TRACE, "el otro robot NO esta esperando la misma pieza, realizo el pedido al agv por la cola");
             MensajePedidoRobotCinta_6 pedidoCanasto;
-            pedidoCanasto.mtype = this->id_Agv;
             pedidoCanasto.pedidoCanastoAgv.lugar = posicionPieza;
             pedidoCanasto.pedidoCanastoAgv.tipoPieza = tipoPieza;
-            this->colaPedidosCanastos.enviarPedidoCanasto(pedidoCanasto);
+            this->colaPedidosCanastos.enviarPedidoCanasto(this->id_Agv, pedidoCanasto);
         }
         this->semBloqueoRobot12.wait(this->id_Robot);
     }
@@ -172,9 +171,8 @@ void ControladorRobot12::finalizarEnsamble() {
     try {
         sprintf(this->buffer, "Robot 12-%u - finalizarEnsamble:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
-        MensajeBarrera message;
-        message.mtype = 1;
-        this->cola12_A_11.send(message);
+        MensajeBarrera message;       
+        this->cola12_A_11.send(TIPO_NOTIFICACION_BARRERA_11_12, message);
         Logger::logMessage(Logger::TRACE, "finalizó el ensamble");
     }
     catch (Exception & e) {

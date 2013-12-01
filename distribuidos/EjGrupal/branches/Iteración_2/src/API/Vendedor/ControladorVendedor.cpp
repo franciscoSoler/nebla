@@ -59,10 +59,9 @@ void ControladorVendedor::recibirLlamadoTelefonico()
 {
     try {
         mensaje_inicial_t bufferMensajeInicial;
-        bufferMensajeInicial.mtype = TIPO_VENDEDOR_LIBRE;
         bufferMensajeInicial.emisor = numVendedor;
 
-        this->vendedores.enviarMensajeInicial( bufferMensajeInicial );
+        this->vendedores.enviarMensajeInicial( TIPO_VENDEDOR_LIBRE, bufferMensajeInicial );
     }
     catch ( Exception & e ) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -103,12 +102,11 @@ void ControladorVendedor::enviarConfirmacionDeRecepcionDePedido(long numCliente,
     try {
         msg_respuesta_pedido_t msgRespuesta;
         msgRespuesta.respuesta_pedido = pedido;
-        msgRespuesta.mtype = numCliente;
         msgRespuesta.tipo = 0;
-        clientes.enviarMensajeRespuesta(msgRespuesta);
+        clientes.enviarMensajeRespuesta(numCliente, msgRespuesta);
         
         char buffer[TAM_BUFFER];
-        sprintf(buffer, "Envio confirmacion de recepcion: a cliente: %ld con tipo %d", msgRespuesta.mtype, msgRespuesta.tipo);
+        sprintf(buffer, "Envio confirmacion de recepcion: a cliente: %ld con tipo %d", numCliente, msgRespuesta.tipo);
         Logger::getInstance().logMessage(Logger::TRACE, buffer);
     }
     catch (Exception & e) {
@@ -122,12 +120,11 @@ void ControladorVendedor::enviarUltimaConfirmacionDeRecepcionDePedido(
     try {
         msg_respuesta_pedido_t msgRespuesta;
         msgRespuesta.respuesta_pedido = pedido;
-        msgRespuesta.mtype = numCliente;
         msgRespuesta.tipo = 1;
-        clientes.enviarMensajeRespuesta(msgRespuesta);
+        clientes.enviarMensajeRespuesta(numCliente, msgRespuesta);
         
         char buffer[TAM_BUFFER];
-        sprintf(buffer, "Envio pedido aceptado: a cliente: %ld con tipo %d", msgRespuesta.mtype, msgRespuesta.tipo);
+        sprintf(buffer, "Envio pedido aceptado: a cliente: %ld con tipo %d", numCliente, msgRespuesta.tipo);
         Logger::getInstance().logMessage(Logger::TRACE, buffer);
     }
     catch (Exception & e) {
@@ -141,12 +138,11 @@ void ControladorVendedor::cancelarOrdenDeCompraACliente(long numCliente, respues
     try {
         msg_respuesta_pedido_t msgRespuesta;
         msgRespuesta.respuesta_pedido = pedido;
-        msgRespuesta.mtype = numCliente;
         msgRespuesta.tipo = 1;
-        clientes.enviarMensajeRespuesta(msgRespuesta);
+        clientes.enviarMensajeRespuesta(numCliente, msgRespuesta);
         
         char buffer[TAM_BUFFER];
-        sprintf(buffer, "Envio pedido cancelado: a cliente: %ld con tipo %d", msgRespuesta.mtype, msgRespuesta.tipo);
+        sprintf(buffer, "Envio pedido cancelado: a cliente: %ld con tipo %d", numCliente, msgRespuesta.tipo);
         Logger::getInstance().logMessage(Logger::TRACE, buffer);
     }
     catch (Exception & e) {
