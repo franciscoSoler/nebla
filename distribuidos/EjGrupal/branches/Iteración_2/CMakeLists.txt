@@ -143,11 +143,12 @@ add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorG
 add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC} ${VENDEDOR_SRC})
 #add_executable(${OUT_DIR}MonitorAlmacenPiezas              ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC})
 
-add_executable(${OUT_DIR}CreadorCanalesCliente              ${SRC_DIR}Comunicaciones/CreadorCanalesCliente.cpp     ${COMMON_SRC})
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
 
 # Broker - Agente
 add_executable(${OUT_DIR}MuxTipoAgente                      ${SRC_DIR}Comunicaciones/Agentes/MuxTipoAgente.cpp       ${COMMON_SRC})
+add_executable(${OUT_DIR}LauncherAgentes                    ${SRC_DIR}Comunicaciones/Agentes/LauncherAgentes.cpp     ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorAgentes                  ${SRC_DIR}Comunicaciones/Agentes/TerminatorAgentes.cpp   ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalSalidaAgente                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaAgente.cpp   ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalEntradaAgente                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaAgente.cpp  ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalSalidaBroker                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaBroker.cpp   ${COMMON_SRC})
@@ -186,10 +187,10 @@ target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCL
 target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)
 
-
-target_link_libraries(${OUT_DIR}CreadorCanalesCliente                       IPCLibrary)
 target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)
 target_link_libraries(${OUT_DIR}MuxTipoAgente                               IPCLibrary)
+target_link_libraries(${OUT_DIR}LauncherAgentes                             IPCLibrary)
+target_link_libraries(${OUT_DIR}TerminatorAgentes                           IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaAgente                           IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalEntradaAgente                          IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaBroker                           IPCLibrary)

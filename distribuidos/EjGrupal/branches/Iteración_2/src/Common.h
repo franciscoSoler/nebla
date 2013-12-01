@@ -14,7 +14,7 @@
 #define DIRECTORY_ROBOT_12 	"./DRobot12"
 #define DIRECTORY_ROBOT_14 	"./DRobot14"
 #define DIRECTORY_ROBOT_16 	"./DRobot16"
-#define DIRECTORY_CLIENTE       "./DCliente"
+#define DIRECTORY_CLIENTE   "./DCliente"
 #define DIRECTORY_VENDEDOR 	"./DVendedor"
 #define DIRECTORY_DESPACHO      "./DDespacho"
 #define DIRECTORY_APT           "./DAPT"

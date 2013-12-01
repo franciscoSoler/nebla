@@ -9,29 +9,37 @@
 #include <Logger.h>
 
 #include "../../Numerador/numeradorClientes.h"
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 
-ControladorCliente::ControladorCliente() {     
+ControladorCliente::ControladorCliente(long numCliente) {
     try {
-        Logger::setProcessInformation("Cliente ##");
+
+        sprintf(mensajePantalla, "Cliente N°%ld", numCliente);
+        Logger::setProcessInformation(mensajePantalla);
+
+        this->numCliente = numCliente;
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
 
         /* Comunicacion con el vendedor */
-        this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedorLibreMsgQueue");
-        this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES_C);
+        /*this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedorLibreMsgQueue");
+        this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);*/
 
         this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue");
-        this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES_C);
+        this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
 
         this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue");
-        this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS_C);
+        this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
         this->inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho");
-        this->inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID_C);
+        this->inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
         this->R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue_");
-        this->R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID_C);
+        this->R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
 
         this->inputQueueCliente = IPC::MsgQueue("inputQueueCliente");
-        this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID_C);
+        this->inputQueueCliente.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -71,7 +79,7 @@ void ControladorCliente::contactarVendedores()
 {
     try {
         /* Se establece la comunicacion "en dos pasos". */
-        mensaje_inicial_t mensaje;
+        /*mensaje_inicial_t mensaje;
         mensaje.emisor = numCliente;
         Logger::logMessage(Logger::TRACE, "Llama a algun vendedor.");
         vendedores.enviarMensajeInicial(TIPO_BUSCANDO_VENDEDOR, mensaje);
@@ -80,9 +88,9 @@ void ControladorCliente::contactarVendedores()
         clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
         respuesta_pedido_t respuesta = mensajeRespuesta.respuesta_pedido;
         long numVendedor = respuesta.emisor;
-        Logger::logMessage(Logger::TRACE, "Recibe la respuesta del vendedor.");
+        Logger::logMessage(Logger::TRACE, "Recibe la respuesta del vendedor.");*/
 
-        this->numVendedorAsociado = numVendedor;
+        this->numVendedorAsociado = 1;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

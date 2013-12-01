@@ -31,9 +31,6 @@ int main(int argc, char* argv[]) {
         createIPCs();
 
         Util::createProcess("Cliente", 1, 1);
-
-        // Procesos correspondientes al Middleware
-        Util::createProcess("CreadorCanalesCliente");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR,
@@ -49,7 +46,7 @@ void createDirectory(std::string directoryName) {
 }
 
 void createIPCs() {
-    // Logger::getInstance().createLog();
+    Logger::getInstance().createLog();
     Logger::getInstance().setProcessInformation("LauncherCliente:");
 
     /* NOTA: La notación para colas es que el input o output es respecto

@@ -19,17 +19,12 @@ MsgAgenteReceptor crearMsgAgenteReceptor(char buffer[], int tamanioMensaje,
 int main(int argc, char* argv[]) {
     char directorioIPC[MAX_SIZE_DIR];
     int idIPC;
-    int tamanioMensaje;
-    //TipoAgente idTipoAgente;
     int idTipoAgent;
     
     ArgumentParser argParser(argc, argv);
     int parserResults = 0;
     
-    parserResults += argParser.parseArgument(1, directorioIPC, MAX_SIZE_DIR);
-    parserResults += argParser.parseArgument(2, idIPC);
-    parserResults += argParser.parseArgument(3, tamanioMensaje);
-    parserResults += argParser.parseArgument(4, idTipoAgent);
+    parserResults += argParser.parseArgument(1, idTipoAgent);
     TipoAgente idTipoAgente = static_cast<TipoAgente> (idTipoAgent);
 
     if ( parserResults < 0) {
@@ -44,7 +39,7 @@ int main(int argc, char* argv[]) {
     try {
         // Creo la colas con los parámetros parseados
         IPC::MsgQueue colaAgente("colaAgente", 0);
-        colaAgente.getMsgQueue(directorioIPC, idIPC);
+        colaAgente.getMsgQueue(DIRECTORY_MUX, idTipoAgente);
 
         IPC::CommMsgQueue colaCanalDeSalida("colaCanalSalida");
         colaCanalDeSalida.getMsgQueue(DIRECTORY_COMM, idTipoAgente);
