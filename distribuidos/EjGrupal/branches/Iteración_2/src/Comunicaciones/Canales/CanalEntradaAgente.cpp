@@ -32,6 +32,9 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
   
+    sprintf(buffer, "Se envían los datos del agente: %ld - %d", 
+            idAgente, idTipoAgente);
+    
     ServersManager serversManager;
     SocketStream::SocketStreamPtr socketBroker(
     serversManager.connectToServer("ServidorCanalSalidaBroker") );
@@ -43,8 +46,7 @@ int main(int argc, char* argv[]) {
     ss << idTipoAgente;
     memcpy(buffer, ss.str().c_str(), sizeof(int) + sizeof(long));
     
-    sprintf(buffer, "Se envían los datos del agente: %ld - %d", 
-            idAgente, idTipoAgente);
+    
     Logger::logMessage(Logger::COMM, buffer);
     
     

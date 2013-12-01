@@ -11,9 +11,6 @@ AbstractMessageQueue::AbstractMessageQueue(std::string IPCName, long idEmisor,
 }
 
 AbstractMessageQueue::~AbstractMessageQueue() {
-    if ( colaMux != NULL) {
-        delete colaMux;
-    }
 }
 
 int AbstractMessageQueue::createMessageQueue(const char *fileName, int id) {
@@ -22,13 +19,7 @@ int AbstractMessageQueue::createMessageQueue(const char *fileName, int id) {
 
 int AbstractMessageQueue::getMessageQueue(const char *fileName, int id) {
     // Caso base de la recursividad: Código REEE entendible
-    this->idIPC = id;
     strcpy(dirIPC, fileName);
-    
-    if ( strcmp(fileName, DIRECTORY_MUX) ) {
-        colaMux = new MsgQueue(DIRECTORY_MUX, idEmisor, idTipoAgente);
-        colaMux->getMsgQueue(DIRECTORY_MUX, idTipoAgente);
-    }
     return this->getId(fileName, id, 0666);
 }
 

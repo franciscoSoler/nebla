@@ -13,16 +13,34 @@
 #include <sys/msg.h>
 
 #include "../AbstractMessageQueue/AbstractMessageQueue.h"
-#include <Logger/Logger.h>
 
 namespace IPC {
 
 class PedidosCanastosMessageQueue : public AbstractMessageQueue
 {
+private:
+        int send (MsgAgenteReceptor dato) {
+            int resultado = msgsnd ( this->id,(const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long),0 );
+            if (resultado == -1) {
+                    sprintf(this->buffer, "Barrera1112MessageQueue - Fallo la operacion send: %s", strerror(errno));
+                    throw Exception(std::string(this->buffer));
+            }
+            return resultado;
+	}
+	
+	int receive ( int tipo, MsgAgenteReceptor* buffer ) {
+            int resultado = msgrcv ( this->id,(void *)buffer,sizeof(MsgAgenteReceptor)-sizeof(long),tipo,0 );
+            if (resultado == -1) {
+                    sprintf(this->buffer, "Barrera1112MessageQueue - Fallo la operacion recv: %s", strerror(errno));
+                    throw Exception(std::string(this->buffer));
+            }
+            return resultado;
+	}
+    
 public:
-	PedidosCanastosMessageQueue(std::string IPCName = "", 
-                long idEmisor = 0, TipoAgente idTipoAgente = ID_TIPO_VACIO) 
-                     : AbstractMessageQueue(IPCName, idEmisor, idTipoAgente) {} 
+	PedidosCanastosMessageQueue(std::string IPCName = "", long idEmisor = 0, 
+                TipoAgente idTipoAgente = ID_TIPO_VACIO) : AbstractMessageQueue
+                (IPCName, idEmisor, idTipoAgente) {} 
 	
 	virtual ~PedidosCanastosMessageQueue() {}
 
@@ -33,23 +51,23 @@ public:
             msg.idReceptor = idReceptor;
             msg.idIPCReceptor = this->idIPC;
             strcpy(msg.dirIPCReceptor, this->dirIPC);
-            
+
+
             if ( sizeof(MensajePedidoRobotCinta_6) > MSG_QUEUE_FIXED_SIZE ) {
                 sprintf(this->buffer, "MsgQueue %s Error - send: Mensaje demasiado largo",
                         getIPCName().c_str());
                 Logger::logMessage(Logger::ERROR, this->buffer);
             }
-
             memcpy(msg.msg, &dato, sizeof(MensajePedidoRobotCinta_6));
-            this->colaMux->send(msg);
-            return 0;
+            return this->send(msg);
 	}
 	
 	int recibirPedidoCanasto ( int tipo, MensajePedidoRobotCinta_6* buffer ) {
             MsgAgenteReceptor msg;
-            this->colaMux->recv(tipo, msg);
+            int resultado = this->receive(tipo, &msg);
+
             memcpy(buffer, msg.msg, sizeof(MensajePedidoRobotCinta_6));
-            return 0;
+            return resultado;
 	}
 
 };
