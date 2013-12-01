@@ -5,16 +5,13 @@
 #include <Logger/Logger.h>
 #include <Common.h>
 
-#include <IPCs/IPCTemplate/MsgQueue.h>
-
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
+#include <Comunicaciones/Objects/CommMsgQueue.h>
 #include <Socket/SocketStream.h>
 
 #include "middlewareCommon.h"
-
-IPC::MsgQueue obtenerColaAgente(char dirIPC[], int idIPC);
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalEntradaBroker:");
@@ -30,7 +27,7 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, "Canal de Entrada conectado");
     
     try {
-        IPC::MsgQueue colaAgente;
+        IPC::CommMsgQueue colaAgente;
         while ( true ) {
             if (socketAgente.receive(buffer, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir "

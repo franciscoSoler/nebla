@@ -58,10 +58,9 @@ void ControllerDespacho::despacharProducto(PedidoDespacho pedido, bool ultimoPro
         "que debe sacar una caja del APT");
 
         Msg_FinProductoR16 msgPedido;
-        msgPedido.mtype = MSG_FIN_PRODUCTO_R16;
         msgPedido.pedido_ = pedido;
         msgPedido.ultimoProductoDeODC_ = ultimoProductoDeODC;
-        inputQueueR16_Despacho_.send( msgPedido );
+        inputQueueR16_Despacho_.send( MSG_FIN_PRODUCTO_R16, msgPedido );
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -73,11 +72,10 @@ void ControllerDespacho::notificarAClienteProductoTerminado(
         PedidoDespacho pedido, bool ultimoPedido) {
     try {
         Msg_RetiroProducto msgACliente;
-        msgACliente.mtype = pedido.idCliente_;
         msgACliente.datos_ = pedido;
         msgACliente.ultimoPedido_ = ultimoPedido;
         
-        inputQueueCliente_.send( msgACliente );
+        inputQueueCliente_.send(pedido.idCliente_, msgACliente );
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());   

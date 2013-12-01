@@ -1,6 +1,7 @@
 #include <middlewareCommon.h>
 #include <Logger/Logger.h>
-#include <IPCTemplate/MsgQueue.h>
+#include <Comunicaciones/Objects/CommMsgQueue.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 #include <sstream>
 #include <string.h>
 #include <stdlib.h>
@@ -42,37 +43,20 @@ int main(int argc, char* argv[]) {
     
     try {
         // Creo la colas con los parámetros parseados
-        IPC::MsgQueue colaAgente("colaAgente");
+        IPC::MsgQueue colaAgente("colaAgente", 0);
         colaAgente.getMsgQueue(directorioIPC, idIPC);
 
-        IPC::MsgQueue colaCanalDeSalida("colaCanalSalida");
+        IPC::CommMsgQueue colaCanalDeSalida("colaCanalSalida");
         colaCanalDeSalida.getMsgQueue(DIRECTORY_COMM, idTipoAgente);
 
         while ( true ) {
-            char buffer[TAM_BUFFER];
-            colaAgente.recv(MSG_DEMUX, buffer, tamanioMensaje);
+            // char buffer[TAM_BUFFER];
+            MsgAgenteReceptor msgAgenteReceptor;
+            colaAgente.recv(MSG_MUX, msgAgenteReceptor);
             Logger::logMessage(Logger::COMM, "Recibe mensaje");
-
-            // El proceso procede a rearmar el mensaje para enviarselo al 
-            // CanalDeSalida
-            std::stringstream ss;
-            ss << buffer;
-
-            long idReceptor;
-            long idEmisor;
-
-            ss >> idReceptor;
-            ss >> idReceptor;
-            ss >> idEmisor;
-
-            if ( idReceptor < 0 || idEmisor < 0) {
-                Logger::logMessage(Logger::ERROR, "Se recibió un "
-                "mensaje malformado de la colaAgente");
-                abort();
-            }
             
-            MsgAgenteReceptor msgAgenteReceptor = crearMsgAgenteReceptor(
-                              buffer, tamanioMensaje, idReceptor);
+            long idReceptor = msgAgenteReceptor.idReceptor;
+            long idEmisor = msgAgenteReceptor.idEmisor;
             
             MsgCanalEntradaAgente msgCanalEntradaAgente;
             strcpy(msgCanalEntradaAgente.directorioIPC, directorioIPC);
@@ -103,14 +87,4 @@ int main(int argc, char* argv[]) {
     }
     
     return 0;
-}
-
-MsgAgenteReceptor crearMsgAgenteReceptor(char buffer[], int tamanioMensaje, 
-                                            long idReceptor) {
-    
-    memcpy(buffer, &idReceptor, sizeof(long));
-    MsgAgenteReceptor msg;
-    strcpy(msg.mensajeMux, buffer);
-    msg.tamanioMensajeMux = tamanioMensaje;
-    return msg;
 }

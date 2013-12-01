@@ -75,10 +75,9 @@ void ControllerR16_Despacho::enviarCajaAlCliente(long idCliente, Caja caja, bool
         Logger::logMessage(Logger::IMPORTANT, buffer_);
 
         Msg_EnvioCajaCliente mensaje;
-        mensaje.mtype = idCliente;
         mensaje.caja = caja;
         mensaje.ultimoProductoDeODC_ = ultimoProductoDeODC;
-        R16_Cliente_Queue_.send(mensaje);
+        R16_Cliente_Queue_.send(idCliente, mensaje);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

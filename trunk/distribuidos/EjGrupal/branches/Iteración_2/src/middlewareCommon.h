@@ -3,7 +3,7 @@
 
 #define DIRECTORY_COMM     "./DComm"
 #define DIRECTORY_BROKER   "./DBroker"
-#define MSG_DEMUX       1
+#define MSG_MUX            1
 
 typedef enum {
     ID_TIPO_CLIENTE = 1,
@@ -21,7 +21,7 @@ typedef enum {
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
-#define DEMUX_FIXED_SIZE        100
+#define MSG_QUEUE_FIXED_SIZE    100
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
@@ -29,8 +29,10 @@ typedef enum {
  */
 
 typedef struct {
-    int tamanioMensajeMux;
-    char mensajeMux[DEMUX_FIXED_SIZE];
+    long mtype;
+    long idReceptor;
+    long idEmisor;
+    char msg[MSG_QUEUE_FIXED_SIZE];
 } MsgAgenteReceptor;
 
 typedef struct {
