@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.6.0)
-project("Ejercicio 15 - Iteración_1")
+project("Ejercicio 15 - Iteración_2")
 
 set(SRC_DIR src/)
 set(OUT_DIR out/)
@@ -111,14 +111,13 @@ set_target_properties(IPCLibrary PROPERTIES
           
 
 # Numerador
-
-add_executable(${OUT_DIR}PruebaNumeradorClientes            ${SRC_DIR}Numerador/Ejecutables/numeradorClientes_client.c             ${COMMON_SRC} ${NUMERADOR_SRC} )   
-add_executable(${OUT_DIR}NumeradorClientesServer            ${SRC_DIR}Numerador/Ejecutables/numeradorClientes_svc.c             ${COMMON_SRC} ${NUMERADOR_SRC})   
+add_executable(${OUT_DIR}PruebaNumerador                    ${SRC_DIR}Numerador/Ejecutables/numerador_client.c             ${COMMON_SRC} ${NUMERADOR_SRC} )   
+add_executable(${OUT_DIR}NumeradorServer                    ${SRC_DIR}Numerador/Ejecutables/numerador_svc.c             ${COMMON_SRC} ${NUMERADOR_SRC})   
 
 
 add_executable(${OUT_DIR}Launcher                           ${SRC_DIR}Launcher.cpp                              ${COMMON_SRC})
 add_executable(${OUT_DIR}LauncherClientes                   ${SRC_DIR}LauncherClientes.cpp                      ${COMMON_SRC})
-add_executable(${OUT_DIR}LauncherNumeradorClientes          ${SRC_DIR}LauncherNumeradorClientes.cpp             ${COMMON_SRC})   
+add_executable(${OUT_DIR}LauncherNumerador                  ${SRC_DIR}LauncherNumerador.cpp                     ${COMMON_SRC})
 add_executable(${OUT_DIR}LauncherDespacho                   ${SRC_DIR}LauncherDespacho.cpp                      ${COMMON_SRC})
 add_executable(${OUT_DIR}Terminator                         ${SRC_DIR}Terminator.cpp                            ${COMMON_SRC})
 add_executable(${OUT_DIR}TerminatorClientes                 ${SRC_DIR}TerminatorClientes.cpp                    ${COMMON_SRC})
@@ -136,7 +135,7 @@ add_executable(${OUT_DIR}Robot16_Despacho                   ${SRC_DIR}Robot16_De
 add_executable(${OUT_DIR}Robot16_Cinta15                    ${SRC_DIR}Robot16_Cinta15.cpp                       ${COMMON_SRC} ${ROBOT16_CINTA15_SRC})
 add_executable(${OUT_DIR}Despacho                           ${SRC_DIR}Despacho.cpp                              ${COMMON_SRC} ${DESPACHO_SRC})
 add_executable(${OUT_DIR}Cliente                            ${SRC_DIR}Cliente.cpp                               ${COMMON_SRC} ${CLIENTE_SRC} ${NUMERADOR_SRC})
-add_executable(${OUT_DIR}Vendedor                           ${SRC_DIR}Vendedor.cpp                              ${COMMON_SRC} ${VENDEDOR_SRC})
+add_executable(${OUT_DIR}Vendedor                           ${SRC_DIR}Vendedor.cpp                              ${COMMON_SRC} ${VENDEDOR_SRC} ${NUMERADOR_SRC})
 add_executable(${OUT_DIR}AlmacenPiezas                      ${SRC_DIR}AlmacenPiezas.cpp                         ${COMMON_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorCanastos                  ${SRC_DIR}RepositorCanastos.cpp                     ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorGabinetes.cpp                    ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
@@ -162,7 +161,7 @@ add_executable(${OUT_DIR}Broker                             ${SRC_DIR}Comunicaci
 
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherClientes                            IPCLibrary)
-target_link_libraries(${OUT_DIR}LauncherNumeradorClientes                   IPCLibrary)
+target_link_libraries(${OUT_DIR}LauncherNumerador                           IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherDespacho                            IPCLibrary)
 
 target_link_libraries(${OUT_DIR}Terminator                                  IPCLibrary)

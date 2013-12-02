@@ -41,18 +41,23 @@ int generarNumeroDeTipoDeProducto() {
 
 int main(int argc, char** argv)
 {
-    
     long numCliente = 0;
+    char mensajePantalla[TAM_BUFFER];
 
-    std::stringstream ss;
+    /*std::stringstream ss;
     ss << argv[1];
-    ss >> numCliente;
+    ss >> numCliente;*/
 
-    ControladorCliente controlador(numCliente);
-    // numCliente = controlador.obtenerNumeroCliente();
+    ControladorCliente controlador;
+    numCliente = controlador.obtenerNumeroCliente();
 
+    if (numCliente == 0) {
+        sprintf(mensajePantalla, "No se puo obtener un numero de cliente (vendedores ocupados).");
+        Logger::logMessage(Logger::DEBUG, mensajePantalla);
+        return 0;
+    }            
+    
     int llamando = Util::getInstance().generateRandomNumber(1, MAX_DEMORA);
-    char mensajePantalla[256];
     
     int cantidadDeProductosPorPedido[CANTIDAD_PRODUCTOS];
 
@@ -60,7 +65,7 @@ int main(int argc, char** argv)
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     usleep(llamando * 1000 * 1000);
     
-    controlador.contactarVendedores();
+    //controlador.contactarVendedores();
     
     /* Envio los pedidos. */
     int cantPedidos = Util::getInstance().generateRandomNumber(1, 3);

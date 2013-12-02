@@ -21,7 +21,6 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_BROKER);
         
         createIPCs();
-       
 
         ServersManager serversManager;
         serversManager.createServer("ServidorCanalEntradaBroker");

@@ -25,9 +25,13 @@ OrdenDeCompra obtenerNuevaOrdenDeCompra(int numOrdenCompra, int numVendedor)
 
 int main(int argc, char** argv)
 {
+    //long numVendedor = atoi(argv[1]);
+    //ControladorVendedor controlador(numVendedor);
     
-    long numVendedor = atoi(argv[1]);
-    ControladorVendedor controlador(numVendedor);
+    ControladorVendedor controlador;
+    
+    long numVendedor = controlador.obtenerNumeroVendedor();
+    
     char mensajePantalla[256];
 
     sprintf(mensajePantalla,"Vendedor %ld",numVendedor);
@@ -42,7 +46,9 @@ int main(int argc, char** argv)
         sprintf(mensajePantalla, "Espera clientes.");
         Logger::logMessage(Logger::TRACE, mensajePantalla);
 
-        controlador.recibirLlamadoTelefonico();
+        //controlador.recibirLlamadoTelefonico();
+        controlador.vendedorLibre();
+        
         OrdenDeCompra ordenDeCompra = obtenerNuevaOrdenDeCompra(
                 controlador.obtenerNumeroDeOrdenDeCompra(), numVendedor);
 

@@ -26,12 +26,13 @@
 class ControladorCliente
 {
 public:
-    ControladorCliente(long numCliente);
+    //ControladorCliente(long numCliente);
+    ControladorCliente();
     virtual ~ControladorCliente();
 	
     int obtenerNumeroCliente();
     
-    void contactarVendedores();
+    //void contactarVendedores();
     void enviarPedido(int cantidadUnidades, int tipo);
     void finalizarEnvio(int cantPedidos);
     respuesta_pedido_t recibirResultado();

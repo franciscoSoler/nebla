@@ -27,6 +27,7 @@
 #include <sys/types.h>
 
 #include "IPCs/IPCAbstractos/SharedMemory/NumeradorClientesSharedMemory.h"
+#include "IPCs/IPCAbstractos/SharedMemory/NumeradorVendedoresSharedMemory.h"
 #include "IPCs/Semaphore/Semaphore.h"
 
 #include "Numerador/commonNumerador.h"
@@ -41,11 +42,11 @@ int main(int argc, char **argv)
     try {
         Util::getInstance();
         
-        createDirectory(DIRECTORY_NUMERADOR_CLIENTES);
+        createDirectory(DIRECTORY_NUMERADOR);
 
         createIPCs();
 
-        Util::createProcess("NumeradorClientesServer", 1, 1);
+        Util::createProcess("NumeradorServer", 1, 1);
 
     }
     catch (Exception & e) {
@@ -63,24 +64,42 @@ void createDirectory(std::string directoryName) {
 
 void createIPCs() {
 
-    Logger::getInstance().setProcessInformation("LauncherNumeradorCliente:");
+    Logger::getInstance().setProcessInformation("LauncherNumerador:");
 
-    IPC::Semaphore semaforoNumeradorClientes("Semaforo Numerador Clientes");
-    semaforoNumeradorClientes.createSemaphore(DIRECTORY_NUMERADOR_CLIENTES, ID_NUMERADOR_CLIENTES, 1);
-    semaforoNumeradorClientes.initializeSemaphore(0,1);
-    
-    IPC::NumeradorClientesSharedMemory numeradorClientesShMem("Numerador Clientes SharedMemory");
-    numeradorClientesShMem.createSharedMemory(DIRECTORY_NUMERADOR_CLIENTES, ID_NUMERADOR_CLIENTES);
+    IPC::Semaphore semaforoNumeradorVendedores("Semaforo Numerador Vendedores");
+    semaforoNumeradorVendedores.createSemaphore(DIRECTORY_NUMERADOR, ID_NUMERADOR_VENDEDORES, 1);
+    semaforoNumeradorVendedores.initializeSemaphore(0,1);
    
-    ClientesInfo initialInfo;
+    IPC::NumeradorVendedoresSharedMemory numeradorVendedoresShMem("Numerador Vendedores SharedMemory");
+    numeradorVendedoresShMem.createSharedMemory(DIRECTORY_NUMERADOR, ID_NUMERADOR_VENDEDORES);
+
+    VendedoresInfo vendedoresInfo;
     int i = 0;
+    for (i = 0; i < MAX_VENDEDORES; ++i) {
+        vendedoresInfo.idVendedores[i] = NOASIGNADO;
+    }
+    
+    semaforoNumeradorVendedores.wait();
+    {
+        numeradorVendedoresShMem.writeInfo(&vendedoresInfo);
+    }
+    semaforoNumeradorVendedores.signal();
+    
+    IPC::Semaphore semaforoNumeradorClientes("Semaforo Numerador Clientes");
+    semaforoNumeradorClientes.createSemaphore(DIRECTORY_NUMERADOR, ID_NUMERADOR_CLIENTES, 1);
+    semaforoNumeradorClientes.initializeSemaphore(0,1);
+
+    IPC::NumeradorClientesSharedMemory numeradorClientesShMem("Numerador Clientes SharedMemory");
+    numeradorClientesShMem.createSharedMemory(DIRECTORY_NUMERADOR, ID_NUMERADOR_CLIENTES);
+   
+    ClientesInfo clientsInfo;
     for (i = 0; i < MAX_CLIENTES; ++i) {
-        initialInfo.idClientes[i] = 0;
+        clientsInfo.idClientes[i] = DESASIGNADO;
     }
     
     semaforoNumeradorClientes.wait();
     {
-        numeradorClientesShMem.writeInfo(&initialInfo);
+        numeradorClientesShMem.writeInfo(&clientsInfo);
     }
     semaforoNumeradorClientes.signal();
 }
