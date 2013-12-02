@@ -10,18 +10,24 @@
 #include <Logger/Logger.h>
 #include <iostream>
 
+#include "../../Numerador/numerador.h"
+#include "../../Numerador/commonNumerador.h"
+
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
 
-ControladorVendedor::ControladorVendedor(long numVendedor)
+//ControladorVendedor::ControladorVendedor(long numVendedor)
+ControladorVendedor::ControladorVendedor()
 {
     try {
         /* Comunicacion con los clientes. */
-        char buffer[255];
+        /*char buffer[255];
         sprintf(buffer, "Vendedor N#%ld:", numVendedor);
         Logger::setProcessInformation(buffer);
         
         MiddlewareAPI middleware;
         middleware.crearCanales(numVendedor, ID_TIPO_VENDEDOR);
+         
+        this->numVendedor = numVendedor;*/
 
         this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue", numVendedor, ID_TIPO_VENDEDOR);
         this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
@@ -50,7 +56,6 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
         inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho", numVendedor, ID_TIPO_DESPACHO, ID_TIPO_VENDEDOR);
         inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
-        this->numVendedor = numVendedor;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -58,9 +63,60 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
     }
 }
 
-ControladorVendedor::~ControladorVendedor() { }
+ControladorVendedor::~ControladorVendedor() {
+}
 
-void ControladorVendedor::recibirLlamadoTelefonico()
+long ControladorVendedor::obtenerNumeroVendedor() {
+
+    retornoVendedor *result_1;
+    char *obteneridvendedor_1_arg;
+
+    CLIENT *clnt = clnt_create(HOST, NUMERADORVENDEDOR, NUMERADORVENDEDOR1, "udp");
+    if (clnt == NULL) {
+        clnt_pcreateerror(HOST);
+        exit(1);
+    }
+
+    result_1 = obteneridvendedor_1((void*) &obteneridvendedor_1_arg, clnt);
+    if (result_1 == (retornoVendedor *) NULL) {
+        clnt_perror(clnt, "call failed");
+    }
+
+    if ((*result_1).cod_ret != 1) {
+        printf("Error mientras se numeraba el vendedor");
+    }
+
+    clnt_destroy(clnt);
+
+    this->numVendedor = (*result_1).retornoVendedor_u.idVendedor;
+
+    char buffer[255];
+    sprintf(buffer, "Vendedor N#%ld:", this->numVendedor);
+    Logger::setProcessInformation(buffer);
+
+    MiddlewareAPI middleware;
+    middleware.crearCanales(this->numVendedor, ID_TIPO_VENDEDOR);
+    
+    return this->numVendedor;
+}
+
+void ControladorVendedor::vendedorLibre() {
+    void *result_2;
+    int vendedorlibre_1_arg = this->numVendedor;
+
+    CLIENT *clnt = clnt_create(HOST, NUMERADORVENDEDOR, NUMERADORVENDEDOR1, "udp");
+    if (clnt == NULL) {
+        clnt_pcreateerror(HOST);
+        exit(1);
+    }
+
+    result_2 = vendedorlibre_1(&vendedorlibre_1_arg, clnt);
+    if (result_2 == (void *) NULL) {
+        clnt_perror(clnt, "call failed");
+    }
+}
+
+/*void ControladorVendedor::recibirLlamadoTelefonico()
 {
     try {
         mensaje_inicial_t bufferMensajeInicial;
@@ -72,7 +128,7 @@ void ControladorVendedor::recibirLlamadoTelefonico()
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
     }
-}
+}*/
 
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
 {

@@ -3,18 +3,18 @@
 
 # Parameters
 
-CLIENT = numeradorClientes_client
-SERVER = numeradorClientes_server
+CLIENT = numerador_client
+SERVER = numerador_server
 
 SOURCES_CLNT.c = 
 SOURCES_CLNT.h = 
 SOURCES_SVC.c = 
 SOURCES_SVC.h = 
-SOURCES.x = numeradorClientes.x
+SOURCES.x = numerador.x
 
-TARGETS_SVC.c = numeradorClientes_svc.c numeradorClientes_server.c numeradorClientes_xdr.c 
-TARGETS_CLNT.c = numeradorClientes_clnt.c numeradorClientes_client.c numeradorClientes_xdr.c 
-TARGETS = numeradorClientes.h numeradorClientes_xdr.c numeradorClientes_clnt.c numeradorClientes_svc.c numeradorClientes_client.c numeradorClientes_server.c
+TARGETS_SVC.c = numerador_svc.c numerador_server.c numerador_xdr.c 
+TARGETS_CLNT.c = numerador_clnt.c numerador_client.c numerador_xdr.c 
+TARGETS = numerador.h numerador_xdr.c numerador_clnt.c numerador_svc.c numerador_client.c numerador_server.c
 
 OBJECTS_CLNT = $(SOURCES_CLNT.c:%.c=%.o) $(TARGETS_CLNT.c:%.c=%.o)
 OBJECTS_SVC = $(SOURCES_SVC.c:%.c=%.o) $(TARGETS_SVC.c:%.c=%.o)

@@ -25,44 +25,47 @@
 #include <IPCs/IPCTemplate/MsgQueue.h>
 #include "../../Parser/Parser.h"
 
-class ControladorVendedor
-{
+class ControladorVendedor {
 public:
-	ControladorVendedor(long numVendedor);
-	virtual ~ControladorVendedor();
-	
-    void recibirLlamadoTelefonico();
-	int obtenerNumeroDeOrdenDeCompra();
-	pedido_t recibirPedido();
-	void enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido);
+    //ControladorVendedor(long numVendedor);
+    ControladorVendedor();
+    virtual ~ControladorVendedor();
+
+    long obtenerNumeroVendedor();
+    void vendedorLibre();
+    //void recibirLlamadoTelefonico();
+    
+    int obtenerNumeroDeOrdenDeCompra();
+    pedido_t recibirPedido();
+    void enviarConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido);
     void enviarUltimaConfirmacionDeRecepcionDePedido(long numCliente, respuesta_pedido_t pedido);
-	bool realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompra* ordenDeCompra, int cantPedidos);
-	void cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t respuesta);
+    bool realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompra* ordenDeCompra, int cantPedidos);
+    void cancelarOrdenDeCompraACliente(long numCliente, respuesta_pedido_t respuesta);
     pedido_fabricacion_t calcularCantidadAProducir(pedido_t pedido, bool* pedidoEnStock);
 
 private:
-	long numVendedor;
-	IPC::VendedorLibreMessageQueue vendedores;
-	IPC::ClientesMessageQueue clientes;
-	IPC::PedidosVendedorMessageQueue pedidos;
-	MemoriaCompartida shmemNumeroOrdenCompra;
-	int* numeroOrdenCompra;
- 
-	IPC::MsgQueue colaEnvioOrdenProduccion;
+    long numVendedor;
+    IPC::VendedorLibreMessageQueue vendedores;
+    IPC::ClientesMessageQueue clientes;
+    IPC::PedidosVendedorMessageQueue pedidos;
+    MemoriaCompartida shmemNumeroOrdenCompra;
+    int* numeroOrdenCompra;
 
-	IPC::Semaphore mutexAlmacenTerminados;
-	IPC::Semaphore mutexOrdenDeCompra;
-	SmMemAlmacenProductosTerminados almacenProductosTerminados;
+    IPC::MsgQueue colaEnvioOrdenProduccion;
+
+    IPC::Semaphore mutexAlmacenTerminados;
+    IPC::Semaphore mutexOrdenDeCompra;
+    SmMemAlmacenProductosTerminados almacenProductosTerminados;
     IPC::MsgQueue inputQueueDespacho;
 
     pedido_fabricacion_t reservarPedido(pedido_t pedido, bool* pedidoEnStock);
-	void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);
-	int obtenerCantidadMinimaDeProduccion(int numProducto);
-	void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
-	
-	void confirmarPedidos(pedido_fabricacion_t pedidos[], OrdenDeCompra ordenDeCompra, int cantPedidos);
-	
-	void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
+    void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);
+    int obtenerCantidadMinimaDeProduccion(int numProducto);
+    void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
+
+    void confirmarPedidos(pedido_fabricacion_t pedidos[], OrdenDeCompra ordenDeCompra, int cantPedidos);
+
+    void enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompra);
 
     void enviarPedidoProduccionAAlmacenPiezas(pedido_fabricacion_t pedidoProduccion);
 };

@@ -8,19 +8,17 @@
 #include "ControladorCliente.h"
 #include <Logger.h>
 
-#include "../../Numerador/numeradorClientes.h"
+#include "../../Numerador/numerador.h"
+#include "../../Numerador/commonNumerador.h"
+
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
 
-ControladorCliente::ControladorCliente(long numCliente) {
+//ControladorCliente::ControladorCliente(long numCliente) {
+ControladorCliente::ControladorCliente() {
     try {
 
-        sprintf(mensajePantalla, "Cliente N°%ld:", numCliente);
+        sprintf(mensajePantalla, "Cliente N°x:");
         Logger::setProcessInformation(mensajePantalla);
-
-        this->numCliente = numCliente;
-
-        MiddlewareAPI middleware;
-        middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
 
         /* Comunicacion con el vendedor */
         /*this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedorLibreMsgQueue");
@@ -49,37 +47,48 @@ ControladorCliente::ControladorCliente(long numCliente) {
 
 
 int ControladorCliente::obtenerNumeroCliente() {
-	CLIENT *clnt;
-	retorno  *result_1;
-	char *obteneridcliente_1_arg;
+    
+    retornoCliente *result_1;
+    char *obteneridcliente_1_arg;
 
-	clnt = clnt_create ("LOCALHOST", NUMERADORCLIENTE, NUMERADORCLIENTE1, "udp");
-	if (clnt == NULL) {
-		clnt_pcreateerror ("LOCALHOST");
-		exit (1);
-	}
+    CLIENT *clnt = clnt_create(HOST, NUMERADORCLIENTE, NUMERADORCLIENTE1, "udp");
+    if (clnt == NULL) {
+        clnt_pcreateerror(HOST);
+        exit(1);
+    }
 
-	result_1 = obteneridcliente_1((void*)&obteneridcliente_1_arg, clnt);
-	if (result_1 == (retorno *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
+    result_1 = obteneridcliente_1((void*) &obteneridcliente_1_arg, clnt);
+    if (result_1 == (retornoCliente *) NULL) {
+        clnt_perror(clnt, "call failed");
+    }
 
-	clnt_destroy (clnt);
+    if ((*result_1).cod_ret != 1) {
+        printf("Error mientras se numeraba el cliente");
+    }
 
-	this->numCliente = (*result_1).retorno_u.numero;
-        
-        sprintf(mensajePantalla, "Cliente #%ld:",this->numCliente);
-        Logger::setProcessInformation(mensajePantalla);
-        
-        return this->numCliente;
+    clnt_destroy(clnt);
+
+    this->numCliente = (*result_1).retornoCliente_u.retorno.idCliente;
+    
+    sprintf(mensajePantalla, "Cliente N°%ld:", numCliente);
+    Logger::setProcessInformation(mensajePantalla);
+
+    MiddlewareAPI middleware;
+    middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
+    
+    this->numVendedorAsociado = (*result_1).retornoCliente_u.retorno.idVendedorLibre;
+
+    sprintf(mensajePantalla, "Recibió el vendedor N°%ld:", numVendedorAsociado);
+    Logger::logMessage(Logger::DEBUG, mensajePantalla);
+    
+    return this->numCliente;
 }
 
-
-void ControladorCliente::contactarVendedores()
+/*void ControladorCliente::contactarVendedores()
 {
     try {
-        /* Se establece la comunicacion "en dos pasos". */
-        /*mensaje_inicial_t mensaje;
+        // Se establece la comunicacion "en dos pasos".
+        mensaje_inicial_t mensaje;
         mensaje.emisor = numCliente;
         Logger::logMessage(Logger::TRACE, "Llama a algun vendedor.");
         vendedores.enviarMensajeInicial(TIPO_BUSCANDO_VENDEDOR, mensaje);
@@ -88,7 +97,7 @@ void ControladorCliente::contactarVendedores()
         clientes.recibirMensajeRespuesta(numCliente, &mensajeRespuesta);
         respuesta_pedido_t respuesta = mensajeRespuesta.respuesta_pedido;
         long numVendedor = respuesta.emisor;
-        Logger::logMessage(Logger::TRACE, "Recibe la respuesta del vendedor.");*/
+        Logger::logMessage(Logger::TRACE, "Recibe la respuesta del vendedor.");
 
         this->numVendedorAsociado = 1;
     }
@@ -96,7 +105,7 @@ void ControladorCliente::contactarVendedores()
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
     }
-}
+}*/
 
 void ControladorCliente::enviarPedido(int cantidadUnidades, int tipo)
 {
