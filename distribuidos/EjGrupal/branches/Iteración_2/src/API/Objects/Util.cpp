@@ -52,35 +52,26 @@ void Util::createProcess(std::string processName,
     
 }
 
-void Util::createProcess(std::string processName, std::list<std::string> args) {
+void Util::createProcess(std::string processName,
+                         std::string arg1, std::string arg2) {
     pid_t pid;
-    // static char streamParams[MAX_PARAMS_SIZE];
-    sprintf(buffer, "./%s", processName.c_str());
-    std::list<std::string>::iterator it = args.begin();
-    static char param1[25];
-    static char param2[25];
-    strcpy(param1, (*it).c_str());
-    it++;
-    strcpy(param2, (*it).c_str());
+    static char name[30];
+    static char param1[30];
+    static char param2[30];
 
-    /*if ( params.size() > MAX_PARAMS_SIZE ) {
-        Logger::logMessage(Logger::ERROR, "Tamaño de parámetros no permitido");
-        abort();
-    }*/
-
-    /*strcpy(streamParams, params.c_str());
-    Logger::logMessage(Logger::COMM, "Creando canal de comunicaciones");
-    Logger::logMessage(Logger::COMM, params);*/
+    sprintf(name, "./%s", processName.c_str());
+    strcpy(param1, arg1.c_str());
+    strcpy(param2, arg2.c_str());
 
     if ((pid = fork()) < 0) {
-        sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
+        sprintf(name, "%s Error: %s", processName.c_str(), strerror(errno));
         Logger::getInstance().logMessage(Logger::ERROR, buffer);
     }
     else if (pid == 0) {
         // Child process. Pass the arguments to the process and call exec
-        execlp(buffer, processName.c_str(), param1, param2, (char *) 0);
+        execlp(name, processName.c_str(), param1, param2, (char *) 0);
 
-        sprintf(buffer, "%s Error: %s", processName.c_str(), strerror(errno));
+        sprintf(name, "%s Error: %s", processName.c_str(), strerror(errno));
         Logger::getInstance().logMessage(Logger::ERROR, buffer);
 
         return;
