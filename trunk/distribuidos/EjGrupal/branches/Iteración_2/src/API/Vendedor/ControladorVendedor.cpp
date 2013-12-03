@@ -360,7 +360,7 @@ void ControladorVendedor::enviarOrdenDeCompraDespacho(OrdenDeCompra ordenDeCompr
     mensaje_despacho.pedido_ = pedido;
 
     Logger::logMessage(Logger::TRACE, "Envía mensaje con la Orden de Compra");
-    inputQueueDespacho.send( MSG_PEDIDO_DESPACHO, mensaje_despacho );
+    inputQueueDespacho.send( ID_DESPACHO, mensaje_despacho );
 }
 
 int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)

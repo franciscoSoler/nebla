@@ -31,7 +31,7 @@ ControllerDespacho::~ControllerDespacho() {
 PedidoDespacho ControllerDespacho::recibirPedido() {
     try {
         Msg_PedidoDespacho pedido;
-        inputQueueDespacho_.recv(MSG_PEDIDO_DESPACHO, pedido);
+        inputQueueDespacho_.recv(ID_DESPACHO, pedido);
         Logger::logMessage(Logger::TRACE, "Recibe un Pedido");
         return pedido.pedido_;
     }
@@ -49,7 +49,7 @@ void ControllerDespacho::despacharProducto(PedidoDespacho pedido, bool ultimoPro
         Msg_FinProductoR16 msgPedido;
         msgPedido.pedido_ = pedido;
         msgPedido.ultimoProductoDeODC_ = ultimoProductoDeODC;
-        inputQueueR16_Despacho_.send( MSG_FIN_PRODUCTO_R16, msgPedido );
+        inputQueueR16_Despacho_.send( ID_R16_DESPACHO, msgPedido );
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

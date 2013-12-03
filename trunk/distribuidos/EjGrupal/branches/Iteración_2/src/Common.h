@@ -426,7 +426,7 @@ public:
 /*** Mensajes de colas, con sus respectivos IDs de mensajes definidos ***/
 
 // Utilizado por las colas que intercambian info con el despacho
-#define MSG_PEDIDO_DESPACHO             100
+#define ID_DESPACHO             1
 class Msg_PedidoDespacho {
 public:
     Msg_PedidoDespacho() {}
@@ -447,7 +447,7 @@ public:
     long prrrrrrr;
 };
 
-#define MSG_FIN_PRODUCTO_R16            4
+#define ID_R16_DESPACHO            1
 class Msg_FinProductoR16 {
 public:
     Msg_FinProductoR16() {}

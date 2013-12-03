@@ -38,7 +38,7 @@ PedidoDespacho ControllerR16_Despacho::recibirPedido(bool & ultimoProductoDeODC)
     PedidoDespacho pedido_;
     try {
         Logger::setProcessInformation("Robot16_Despacho - recibirPedido:");
-        inputQueueR16_Despacho_.recv(MSG_FIN_PRODUCTO_R16, mensaje_);
+        inputQueueR16_Despacho_.recv(ID_R16_DESPACHO, mensaje_);
 
         pedido_ = mensaje_.pedido_;
         ultimoProductoDeODC = mensaje_.ultimoProductoDeODC_;
