@@ -35,7 +35,7 @@ void ControladorRobot5Cinta::iniciarControlador()
     try
     {
 	/* Obtengo la cola de pedidos */
-    colaPedidoProduccion = IPC::PedidosProduccionMessageQueue("ColaPedidoProduccion", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
+    colaPedidosProduccion = IPC::PedidosProduccionMessageQueue("ColaPedidoProduccion", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
 	colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
 	/* Obtengo las cintas transportadoras */
