@@ -40,8 +40,8 @@ private:
 
     int id;
     long idEmisor_;
-    TipoAgente idTipoReceptor_;
-    TipoAgente idTipoAgente_;
+    TipoAgente idDuenioEstaCola_;
+    TipoAgente idDuenioColaRemota_;
     int idIPC;
     char dirIPC[DIR_FIXED_SIZE];
     char buffer_[200];
@@ -49,13 +49,13 @@ private:
 public:    
     
     MsgQueue(std::string IPCName = "", long idEmisor = 0, 
-            TipoAgente idTipoReceptor = ID_TIPO_VACIO, 
-            TipoAgente idTipoAgente = ID_TIPO_VACIO) 
+            TipoAgente idDuenioEstaCola = ID_TIPO_VACIO, 
+            TipoAgente idDuenioColaRemota = ID_TIPO_VACIO) 
             :  IPCObject(IPCName), 
                id(0),
                idEmisor_(idEmisor),
-               idTipoReceptor_(idTipoReceptor),
-               idTipoAgente_(idTipoAgente)
+               idDuenioEstaCola_(idDuenioEstaCola),
+               idDuenioColaRemota_(idDuenioColaRemota)
                {}
             
     virtual ~MsgQueue() {
@@ -107,7 +107,7 @@ public:
     void send(long idReceptor, T& data ) {
         MsgAgenteReceptor msg;
         msg.mtype = MSG_MUX;
-        msg.idTipoReceptor = this->idTipoReceptor_;
+        msg.idTipoReceptor = this->idDuenioColaRemota_;
         msg.idReceptor = idReceptor;
         msg.idEmisor = this->idEmisor_;
         msg.idIPCReceptor = this->idIPC;
@@ -122,8 +122,8 @@ public:
         
         memcpy(msg.msg, &data, sizeof(T));
         
-        MsgQueue msgQ("algo", idEmisor_, this->idTipoReceptor_, this->idTipoAgente_);
-        msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente_);
+        MsgQueue msgQ("queueAMux", idEmisor_, this->idDuenioEstaCola_, this->idDuenioColaRemota_);
+        msgQ.getMsgQueue(DIRECTORY_MUX, this->idDuenioEstaCola_);
         msgQ.send(msg);
     }
 

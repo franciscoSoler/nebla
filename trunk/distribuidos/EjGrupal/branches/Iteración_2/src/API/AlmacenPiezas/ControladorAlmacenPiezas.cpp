@@ -13,8 +13,8 @@
 #include "../../Logger/Logger.h"
 #include "LockFile.h"
 
-ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
-        colaEnvioMensajePedidoProduccion ("Mensaje Robot 5 Msg Queue", 1, ID_TIPO_AP)
+ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
+        //colaEnvioMensajePedidoProduccion ("Mensaje Robot 5 Msg Queue", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA)
 {
     try {
         Logger::setProcessInformation("AlmacenDePiezas:");
@@ -22,14 +22,14 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
         MiddlewareAPI middleware;
         middleware.crearCanales(1, ID_TIPO_AP);
 
-        this->colaReciboOrdenProduccion = IPC::MsgQueue("ColaReciboOP", 1, ID_TIPO_AP);
+        this->colaReciboOrdenProduccion = IPC::MsgQueue("ColaReciboOP", 1, ID_TIPO_AP, ID_TIPO_VENDEDOR);
         this->colaReciboOrdenProduccion.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         this->colaEnvioMensajePedidoProduccion =
-        IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP);
+        IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
         colaEnvioMensajePedidoProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", 1, ID_TIPO_AGV, ID_TIPO_AP);
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", 1, ID_TIPO_AP, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
         this->shMemBufferCanastos[CANTIDAD_AGVS] = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
@@ -113,7 +113,7 @@ void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {
     try {
         MensajeProximoPedidoProduccion mensajeProximoPedido;
         this->colaEnvioMensajePedidoProduccion.recibirProximoPedidoProduccion(
-                    TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, &mensajeProximoPedido);
+                    ID_ALMACEN_PIEZAS, &mensajeProximoPedido);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

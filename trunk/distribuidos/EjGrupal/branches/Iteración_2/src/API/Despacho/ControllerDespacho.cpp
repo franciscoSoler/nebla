@@ -13,10 +13,10 @@ ControllerDespacho::ControllerDespacho() {
         inputQueueDespacho_ = IPC::MsgQueue("inputQueueDespacho", 1, ID_TIPO_DESPACHO);
         inputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
-        inputQueueCliente_ = IPC::MsgQueue("inputQueueCliente", 1, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
+        inputQueueCliente_ = IPC::MsgQueue("inputQueueCliente", 1, ID_TIPO_DESPACHO, ID_TIPO_CLIENTE);
         inputQueueCliente_.getMsgQueue(DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
 
-        inputQueueR16_Despacho_ = IPC::MsgQueue("inputQueueR16_Despacho", 1, ID_TIPO_ROBOT16_DESPACHO, ID_TIPO_DESPACHO);
+        inputQueueR16_Despacho_ = IPC::MsgQueue("inputQueueR16_Despacho", 1, ID_TIPO_DESPACHO, ID_TIPO_ROBOT16_DESPACHO);
         inputQueueR16_Despacho_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
     }
     catch (Exception & e) {

@@ -39,7 +39,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_AGV, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
-        this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5", this->id_AGV + 1, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV);
+        this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5", this->id_AGV + 1, ID_TIPO_AGV, ID_TIPO_ROBOT5_AGV);
         this->colaPedidosAGV_5.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
         this->semRobotCinta = IPC::Semaphore("semRobotCinta");

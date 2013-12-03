@@ -11,7 +11,7 @@
 #include "../../Parser/Parser.h"
 
 ControladorRobot5Cinta::ControladorRobot5Cinta() :
-        colaPedidosProduccion("PedidosProduccionMessageQueue", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP),
+        //colaPedidosProduccion("PedidosProduccionMessageQueue", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP),
         estadoRobot5("EstadoRobot5SharedMemory"),
         semaforoAccesoEstadoRobot5("AccesoEstadoRobot5"),
         semaforoBloqueoRobot5("BloqueoRobot5"),
@@ -35,7 +35,7 @@ void ControladorRobot5Cinta::iniciarControlador()
     try
     {
 	/* Obtengo la cola de pedidos */
-    colaPedidosProduccion = IPC::PedidosProduccionMessageQueue("ColaPedidoProduccion", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
+        colaPedidosProduccion = IPC::PedidosProduccionMessageQueue("ColaPedidoProduccion", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP);
 	colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
 	/* Obtengo las cintas transportadoras */
@@ -180,7 +180,7 @@ void ControladorRobot5Cinta::avisarProximoPedido()
     {
 	Logger::getInstance().logMessage(Logger::TRACE, "Envio mensaje al almacen de piezas para que envie la proxima orden de produccion.");
 	MensajeProximoPedidoProduccion mensajeProximoPedido;
-	colaPedidosProduccion.enviarProximoPedidoProduccion(TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS, mensajeProximoPedido);
+	colaPedidosProduccion.enviarProximoPedidoProduccion(ID_ALMACEN_PIEZAS, mensajeProximoPedido);
     }
     catch(Exception &e)
     {

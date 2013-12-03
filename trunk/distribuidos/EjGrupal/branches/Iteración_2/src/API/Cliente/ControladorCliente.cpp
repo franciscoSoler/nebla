@@ -33,10 +33,10 @@ ControladorCliente::ControladorCliente(long numCliente) {
         this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue", numCliente, ID_TIPO_CLIENTE, ID_TIPO_VENDEDOR);
         this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
 
-        this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue", numCliente, ID_TIPO_VENDEDOR, ID_TIPO_CLIENTE);
+        this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue", numCliente, ID_TIPO_CLIENTE, ID_TIPO_VENDEDOR);
         this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
-        this->inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho", numCliente, ID_TIPO_DESPACHO, ID_TIPO_CLIENTE);
+        this->inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho", numCliente, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
         this->inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
         this->R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue_", numCliente, ID_TIPO_CLIENTE, ID_TIPO_ROBOT16_DESPACHO);

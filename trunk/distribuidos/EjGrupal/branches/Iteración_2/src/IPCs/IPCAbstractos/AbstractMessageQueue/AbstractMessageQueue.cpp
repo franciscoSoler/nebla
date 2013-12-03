@@ -4,11 +4,11 @@
 namespace IPC {
     
 AbstractMessageQueue::AbstractMessageQueue(std::string IPCName, long idEmisor,
-                        TipoAgente idTipoReceptor,
-                        TipoAgente idTipoAgente) : IPCObject(IPCName)
+                        TipoAgente idDuenioEstaCola,
+                        TipoAgente idDuenioColaRemota) : IPCObject(IPCName)
                                 ,idEmisor(idEmisor)
-                                ,idTipoReceptor(idTipoReceptor)
-                                ,idTipoEmisor(idTipoAgente)
+                                ,idDuenioEstaCola_(idDuenioEstaCola)
+                                ,idDuenioColaRemota_(idDuenioColaRemota)
                                 ,id(0){
 }
 

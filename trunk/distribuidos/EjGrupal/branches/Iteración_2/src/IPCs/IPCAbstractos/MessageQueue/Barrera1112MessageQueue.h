@@ -39,16 +39,16 @@ private:
     
 public:
 	Barrera1112MessageQueue(std::string IPCName = "", long idEmisor = 0, 
-                TipoAgente idTipoReceptor = ID_TIPO_VACIO, 
-                TipoAgente idTipoAgente = ID_TIPO_VACIO) : AbstractMessageQueue
-                (IPCName, idEmisor, idTipoReceptor, idTipoAgente) {} 
+                TipoAgente idDuenioEstaCola = ID_TIPO_VACIO, 
+                TipoAgente idDuenioColaRemota = ID_TIPO_VACIO) : AbstractMessageQueue
+                (IPCName, idEmisor, idDuenioEstaCola, idDuenioColaRemota) {} 
 	
 	virtual ~Barrera1112MessageQueue() {}
 
 	int send (long idReceptor, MensajeBarrera dato) {
             MsgAgenteReceptor msg;
             msg.mtype = MSG_MUX;
-            msg.idTipoReceptor = this->idTipoReceptor;
+            msg.idTipoReceptor = this->idDuenioColaRemota_;
             msg.idReceptor = idReceptor;
             msg.idEmisor = this->idEmisor;
             msg.idIPCReceptor = this->idIPC;
@@ -62,8 +62,8 @@ public:
             }
             memcpy(msg.msg, &dato, sizeof(MensajeBarrera));
             
-            MsgQueue msgQ("queueAMux", idEmisor, this->idTipoReceptor, this->idTipoEmisor);
-            msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoEmisor);
+            MsgQueue msgQ("queueAMux", idEmisor, this->idDuenioEstaCola_, this->idDuenioColaRemota_);
+            msgQ.getMsgQueue(DIRECTORY_MUX, this->idDuenioEstaCola_);
             msgQ.send(msg);
             return 0;
             //return this->send(msg);
