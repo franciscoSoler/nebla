@@ -69,11 +69,12 @@ int main(int argc, char* argv[]) {
         Util::createProcess("Robot5-Agv", 1);
         Util::createProcess("Robot5-Cinta", 1);
         Util::createProcess("AlmacenPiezas", 1);
-        Util::createProcess("Robot11", 2);
-        Util::createProcess("Robot12", 2);
+        Util::createProcess("Robot11", 2, 1);
+        Util::createProcess("Robot12", 2, 1);
         Util::createProcess("Robot14");
         Util::createProcess("Robot16_Cinta15");
         Util::createProcess("Robot16_Despacho");
+        Util::createProcess("Despacho");
         Util::createProcess("AGV", 3);
         Util::createProcess("Vendedor", 1, 1);
 

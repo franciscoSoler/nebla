@@ -21,15 +21,15 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         Logger::getInstance();
         sprintf(this->buffer, "Robot 12-%u:", numRobot);
         Logger::setProcessInformation(this->buffer);
-
-
-        MiddlewareAPI middleware;
-        middleware.crearCanales(numRobot, ID_TIPO_ROBOT12);
         
         this->id_Agv = 2;
         this->id_semMemCanastos = 1;
         srand (getpid());
         this->id_Robot = numRobot;
+        
+        MiddlewareAPI middleware;
+        middleware.crearCanales(this->id_Robot + 1, ID_TIPO_ROBOT12);
+        
         /* Obtengo el semaforo de sincronizacion de Robot12 con AGVs y robot 5*/
         this->semBloqueoRobot12 = IPC::Semaphore("semBloqueoRobot12");
         this->semBloqueoRobot12.getSemaphore((char*) DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
