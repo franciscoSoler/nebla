@@ -72,19 +72,18 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         
         this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", this->nroCinta_, ID_TIPO_ROBOT12, ID_TIPO_ROBOT11);
+        this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12);
         this->cola12_A_11 = IPC::Barrera1112MessageQueue("cola12_A_11", this->nroCinta_, ID_TIPO_ROBOT11, ID_TIPO_ROBOT12);
+        this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11);
+        
         if (numRobot == 0) {
             this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_0");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_0);
-            this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_1);
-            this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
         } else {
             this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_1");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_1);
-            this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_2);
-            this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
         }
     }
     catch (Exception & e) {
@@ -125,7 +124,7 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
 
         if(!ctrlCinta.lugarVacio[ctrlCinta.puntoLectura]) {
             Logger::logMessage(Logger::TRACE, "hay gabinete, despierto robot 12");
-            this->cola11_A_12.send(TIPO_NOTIFICACION_BARRERA_11_12, messageBarrera);
+            this->cola11_A_12.send(this->nroCinta_, messageBarrera);
             
             ControladorRobot11::obtenerPantallaDelProducto(ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto, piezas);
             return true;
