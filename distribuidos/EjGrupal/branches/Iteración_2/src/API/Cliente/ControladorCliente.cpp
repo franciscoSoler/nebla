@@ -223,7 +223,7 @@ void ControladorCliente::retirarEncargo(TipoProducto tipo, int nroOrden, bool ul
         mensaje.pedido_ = pedido;
         mensaje.ultimoPedido_ = ultimoPedido;
 
-        inputQueueDespacho.send(MSG_PEDIDO_DESPACHO, mensaje);
+        inputQueueDespacho.send(ID_DESPACHO, mensaje);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

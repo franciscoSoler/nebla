@@ -260,7 +260,7 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         MensajeBarrera message;
         message.mtype = 1;
         
-        this->cola12_A_11.receive(1, &message);
+        this->cola12_A_11.receive(this->nroCinta_, &message);
         
         CintaTransportadora_6 ctrlCinta;
         Caja unaCaja;
