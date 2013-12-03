@@ -7,6 +7,7 @@
 
 #include "ControladorAGV.h"
 #include "../../Logger/Logger.h"
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
  
 
 ControladorAGV::ControladorAGV() {
@@ -20,6 +21,9 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         Logger::getInstance();
         sprintf(this->buffer, "AGV-%u:", id_AGV);
         Logger::setProcessInformation(this->buffer);
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(id_AGV + 1, ID_TIPO_AGV);
 
         this->id_AGV = id_AGV;
 
@@ -35,7 +39,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_AGV, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
-        this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5", this->id_AGV, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV);
+        this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5", this->id_AGV + 1, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV);
         this->colaPedidosAGV_5.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
         this->semRobotCinta = IPC::Semaphore("semRobotCinta");

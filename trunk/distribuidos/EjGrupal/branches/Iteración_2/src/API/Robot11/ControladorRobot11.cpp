@@ -26,7 +26,7 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         Logger::setProcessInformation(this->buffer);
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(numRobot, ID_TIPO_ROBOT11);
+        middleware.crearCanales(1, ID_TIPO_ROBOT11);
         
         this->id_Agv = numRobot * 2 + 1;
         this->nroCinta_ = numRobot + 1;
