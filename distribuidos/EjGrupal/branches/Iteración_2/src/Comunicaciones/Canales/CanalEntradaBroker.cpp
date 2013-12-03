@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
             char buffer[TAM_BUFFER];
-            sprintf(buffer, "parametros mensaje: mtype del siguiente salto: %ld, idReceptor %ld, tipoAgente %d ", mensaje.msg.mtype, mensaje.idReceptor, mensaje.idTipoReceptor);
+            sprintf(buffer, "parametros mensaje: mtype del siguiente salto: %ld, idReceptor %ld, idTipoReceptor %d ", mensaje.msg.mtype, mensaje.idReceptor, mensaje.idTipoReceptor);
             Logger::logMessage(Logger::COMM, buffer);
             
             colaAgente.getMsgQueue(DIRECTORY_BROKER, mensaje.idTipoReceptor);

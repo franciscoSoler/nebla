@@ -36,7 +36,7 @@ void ControladorRobot5Agv::iniciarControlador()
     try
     {
 	/* Obtengo la cola de pedidos */
-        colaPedidos = IPC::PedidosAgvMessageQueue("colaPedidos", 1, ID_TIPO_AP);
+    colaPedidos = IPC::PedidosAgvMessageQueue("colaPedidos", 1, ID_TIPO_AP);
 	colaPedidos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
 	/* Obtengo el buffer para depositar los canastos */
