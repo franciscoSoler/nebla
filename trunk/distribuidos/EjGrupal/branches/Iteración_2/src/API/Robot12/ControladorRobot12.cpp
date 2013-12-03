@@ -8,6 +8,7 @@
 #include "ControladorRobot12.h"
 #include "../Logger/Logger.h"
 #include "../Parser/Parser.h"
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 
 ControladorRobot12::ControladorRobot12() {
 }
@@ -20,6 +21,10 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         Logger::getInstance();
         sprintf(this->buffer, "Robot 12-%u:", numRobot);
         Logger::setProcessInformation(this->buffer);
+
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(numRobot, ID_TIPO_ROBOT12);
         
         this->id_Agv = 2;
         this->id_semMemCanastos = 1;

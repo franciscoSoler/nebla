@@ -6,8 +6,9 @@
 #include <Logger/Logger.h>
 #include <Common.h>
 
-#include <IPCs/IPCTemplate/MsgQueue.h>
+// #include <IPCs/IPCTemplate/MsgQueue.h>
 
+#include <Comunicaciones/Objects/CommMsgQueue.h>
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
@@ -15,11 +16,12 @@
 
 #include "middlewareCommon.h"
 
-IPC::MsgQueue obtenerColaAgente(char dirIPC[], int idIPC);
+IPC::CommMsgQueue obtenerColaAgente(char dirIPC[], int idIPC);
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalEntradaAgente:");
     char buffer[255];
+    char bufferSocket[255];
     ArgumentParser argParser(argc, argv);
     long idAgente = 0;
     int idTipoAgente;
@@ -35,7 +37,6 @@ int main(int argc, char* argv[]) {
     }
   
     
-    
     ServersManager serversManager;
     SocketStream::SocketStreamPtr socketBroker(
     serversManager.connectToServer("ServidorCanalSalidaBroker") );
@@ -45,31 +46,37 @@ int main(int argc, char* argv[]) {
     std::stringstream ss;
     ss << idAgente << " ";
     ss << idTipoAgente;
-    memcpy(buffer, ss.str().c_str(), sizeof(int) + sizeof(long));
+    memcpy(bufferSocket, ss.str().c_str(), sizeof(int) + sizeof(long));
     
     sprintf(buffer, "Se envían los datos del agente: %ld - %d", 
             idAgente, idTipoAgente);
     Logger::logMessage(Logger::COMM, buffer);
     
     
-    if ( socketBroker->send(buffer, TAM_BUFFER) != TAM_BUFFER ) {
+    if ( socketBroker->send(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
         Logger::logMessage(Logger::ERROR, "Error al enviar el id del agente");
         socketBroker->destroy();
         abort();
     }
     
     try {
-        IPC::MsgQueue colaAgente;
+        IPC::CommMsgQueue colaAgente;
     
         while( true ) {
-            if ( socketBroker->receive(buffer, TAM_BUFFER) != TAM_BUFFER ) {
+            if ( socketBroker->receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
                 Logger::logMessage(Logger::ERROR, "Error al "
                         "recibir mensajes del broker");
                 socketBroker->destroy();
                 abort();
             }
             MsgCanalEntradaAgente mensaje;
-            memcpy(&mensaje, buffer, sizeof(MsgCanalEntradaAgente));
+            memcpy(&mensaje, bufferSocket, sizeof(MsgCanalEntradaAgente));
+
+            /*msg_pedido_t pedido;
+            memcpy(&pedido, mensaje.msg.msg, sizeof(msg_pedido_t));
+
+            sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
+            Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
             sprintf(buffer, "directorioIPC: %s, idIPC: %d", 
             mensaje.directorioIPC, mensaje.idIPC);
@@ -82,7 +89,7 @@ int main(int argc, char* argv[]) {
             //sprintf(buffer, "Recibe mensaje de Broker: mtype siguiente: %ld, ", mensaje.msg.mtype, )
             //Logger::logMessage(Logger::COMM, buffer);
             
-            colaAgente.send(mensaje.msg.idReceptor, mensaje.msg.msg);
+            colaAgente.send(mensaje.msg);
         }
         
     }
@@ -94,9 +101,9 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-IPC::MsgQueue obtenerColaAgente(char dirIPC[], int idIPC) {
+IPC::CommMsgQueue obtenerColaAgente(char dirIPC[], int idIPC) {
     // FIXME: Crear estructura que permita reutilizar colas ya creadas
-    IPC::MsgQueue colaAgente("colaAgente");
+    IPC::CommMsgQueue colaAgente("colaAgente");
     colaAgente.getMsgQueue(dirIPC, idIPC);
     return colaAgente;
 }

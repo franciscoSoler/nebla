@@ -44,9 +44,9 @@ public:
 private:
     char buffer[TAM_BUFFER];
     IPC::MsgQueue colaReciboOrdenProduccion;
-
     IPC::PedidosProduccionMessageQueue colaEnvioMensajePedidoProduccion;
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
+
     IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
     IPC::Semaphore semMemCanastos;
 

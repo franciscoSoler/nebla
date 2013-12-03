@@ -8,6 +8,7 @@
 #include "ControladorRobot5Agv.h"
 
 #include "Logger/Logger.h"
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 
 ControladorRobot5Agv::ControladorRobot5Agv() : 
         colaPedidos("PedidosAgvMessageQueue", 1, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV),
@@ -15,6 +16,10 @@ ControladorRobot5Agv::ControladorRobot5Agv() :
         semaforoBloqueoAgv("Bloqueo AGV"),
         semaforoApiRobot5("Api Robot 5")
 {
+
+    MiddlewareAPI middleware;
+    middleware.crearCanales(1, ID_TIPO_ROBOT5_AGV);
+
     char buffer[TAM_BUFFER];
     for (int i = 0; i < CANTIDAD_AGVS; ++i) {
         sprintf(buffer, "BufferCanastoSharedMemory %d", i);
@@ -31,6 +36,7 @@ void ControladorRobot5Agv::iniciarControlador()
     try
     {
 	/* Obtengo la cola de pedidos */
+        colaPedidos = IPC::PedidosAgvMessageQueue("colaPedidos", 1, ID_TIPO_AP);
 	colaPedidos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
 	/* Obtengo el buffer para depositar los canastos */

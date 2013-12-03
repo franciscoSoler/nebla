@@ -27,7 +27,6 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
-    sleep(20);
     SocketStream socketAgente(idSd);
     Logger::logMessage(Logger::COMM, "Canal de Salida conectado");
     
@@ -43,8 +42,8 @@ int main(int argc, char* argv[]) {
     ss >> idAgente;
     ss >> idTipoAgente;
     
-    sprintf(buffer, "Se reciben los datos del buffer: %s,  agente: %ld - %d", 
-            buffer, idAgente, idTipoAgente);
+    sprintf(buffer, "Se reciben los datos del agente: %ld - %d",
+            idAgente, idTipoAgente);
     Logger::logMessage(Logger::COMM, buffer);
     
     try {
@@ -55,6 +54,12 @@ int main(int argc, char* argv[]) {
             MsgCanalSalidaBroker mensaje;
             colaBroker.recv(idAgente, mensaje);
             Logger::logMessage(Logger::COMM, "Recibe mensaje de Broker");
+
+            /*msg_pedido_t pedido;
+            memcpy(&pedido, mensaje.msg.msg.msg, sizeof(msg_pedido_t));
+
+            sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
+            Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
             sprintf(buffer, "parametros: mtype del siguiente salto: %ld", 
             mensaje.mtype);

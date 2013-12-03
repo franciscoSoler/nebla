@@ -16,6 +16,7 @@
 #include <IPCs/IPCObject/IPCObject.h>
 #include <middlewareCommon.h>
 #include <Logger/Logger.h>
+#include <Common.h>
 
 
 namespace IPC {
@@ -38,9 +39,9 @@ private:
     }
 
     int id;
-    long idEmisor;
-    TipoAgente idTipoReceptor;
-    TipoAgente idTipoAgente;
+    long idEmisor_;
+    TipoAgente idTipoReceptor_;
+    TipoAgente idTipoAgente_;
     int idIPC;
     char dirIPC[DIR_FIXED_SIZE];
     char buffer_[200];
@@ -52,9 +53,9 @@ public:
             TipoAgente idTipoAgente = ID_TIPO_VACIO) 
             :  IPCObject(IPCName), 
                id(0),
-               idEmisor(0),
-               idTipoReceptor(idTipoReceptor),
-               idTipoAgente(idTipoAgente)
+               idEmisor_(idEmisor),
+               idTipoReceptor_(idTipoReceptor),
+               idTipoAgente_(idTipoAgente)
                {}
             
     virtual ~MsgQueue() {
@@ -80,7 +81,7 @@ public:
      */
     void getMsgQueue(const char *fileName, int id) {
         idIPC = id;
-        strcpy(dirIPC, DIRECTORY_MUX);
+        strcpy(dirIPC, fileName);
         if (this->getId(fileName, id, 0666) == -1) {
             sprintf(buffer_, "MsgQueue %s Error - getMsgQueue: %s",
             getIPCName().c_str(), strerror(errno));
@@ -106,9 +107,9 @@ public:
     void send(long idReceptor, T& data ) {
         MsgAgenteReceptor msg;
         msg.mtype = MSG_MUX;
-        msg.idTipoReceptor = this->idTipoReceptor;
+        msg.idTipoReceptor = this->idTipoReceptor_;
         msg.idReceptor = idReceptor;
-        msg.idEmisor = this->idEmisor;
+        msg.idEmisor = this->idEmisor_;
         msg.idIPCReceptor = this->idIPC;
         strcpy(msg.dirIPCReceptor, this->dirIPC);
         
@@ -121,16 +122,11 @@ public:
         
         memcpy(msg.msg, &data, sizeof(T));
         
-        
-        MsgQueue msgQ("algo", idEmisor, this->idTipoReceptor, this->idTipoAgente);
-        msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente);
+        MsgQueue msgQ("algo", idEmisor_, this->idTipoReceptor_, this->idTipoAgente_);
+        msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoAgente_);
         msgQ.send(msg);
-        //this->send(msg);
     }
 
-    /*
-     * ESPANTOOOSOO!!!!
-     */
     void send( MsgAgenteReceptor& data ) {
         if (msgsnd (this->id, (const void *) & data, 
             sizeof(MsgAgenteReceptor) - sizeof(long), 0) == -1) {

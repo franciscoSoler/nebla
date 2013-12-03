@@ -56,7 +56,7 @@ public:
 
     int recibirMensajeInicial(int tipo, mensaje_inicial_t* buffer) {
         MsgAgenteReceptor msg;
-        int resultado = recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+        int resultado = recibir(tipo, (void *) & msg, sizeof (MsgAgenteReceptor) - sizeof (long));
 
         memcpy(buffer, msg.msg, sizeof(mensaje_inicial_t));
         return resultado;

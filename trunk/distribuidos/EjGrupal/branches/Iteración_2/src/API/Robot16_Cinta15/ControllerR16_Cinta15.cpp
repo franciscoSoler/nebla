@@ -1,6 +1,7 @@
 #include "ControllerR16_Cinta15.h"
 #include <Exceptions/Exception.h>
 #include <Logger/Logger.h>
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 
 ControllerR16_Cinta15::ControllerR16_Cinta15() {
     try {
@@ -8,6 +9,10 @@ ControllerR16_Cinta15::ControllerR16_Cinta15() {
         // Util::getInstance();
         Logger::setProcessInformation("Robot16_Cinta15:");
         shMem_R14_R16_Data_ = new DataSM_R14_R16();
+
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(1, ID_TIPO_ROBOT16_CINTA);
              
         // Se crean los IPCs
         shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("shMem_R14_R16");

@@ -26,8 +26,8 @@
 class ControladorCliente
 {
 public:
-    //ControladorCliente(long numCliente);
-    ControladorCliente();
+    ControladorCliente(long numCliente);
+    //ControladorCliente();
     virtual ~ControladorCliente();
 	
     int obtenerNumeroCliente();

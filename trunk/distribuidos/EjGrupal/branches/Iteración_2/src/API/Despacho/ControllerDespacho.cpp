@@ -1,10 +1,14 @@
 #include "ControllerDespacho.h"
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 
 ControllerDespacho::ControllerDespacho() {
     try {
         Logger::getInstance();
         // Util::getInstance();
         Logger::setProcessInformation("Despacho:");
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(1, ID_TIPO_DESPACHO);
 
         inputQueueDespacho_ = IPC::MsgQueue("inputQueueDespacho", 1, ID_TIPO_DESPACHO);
         inputQueueDespacho_.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);

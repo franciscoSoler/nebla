@@ -39,6 +39,12 @@ int main(int argc, char* argv[]) {
             
             MsgCanalEntradaBroker mensaje;
             memcpy(&mensaje, buffer, sizeof(MsgCanalEntradaBroker));
+
+            /*msg_pedido_t pedido;
+            memcpy(&pedido, mensaje.msg.msg.msg.msg, sizeof(msg_pedido_t));
+
+            sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
+            Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
             char buffer[TAM_BUFFER];
             sprintf(buffer, "parametros mensaje: mtype del siguiente salto: %ld, idReceptor %ld, tipoAgente %d ", mensaje.msg.mtype, mensaje.idReceptor, mensaje.idTipoReceptor);
