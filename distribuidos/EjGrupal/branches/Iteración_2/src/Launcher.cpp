@@ -226,15 +226,11 @@ void createIPCs() {
     semBufferCanastos.signal(2);
     
     //Robots 11 y 12
-    IPC::Barrera1112MessageQueue cola11_A_121;
-    IPC::Barrera1112MessageQueue cola11_A_122;
-    cola11_A_121.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_1);
-    cola11_A_122.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_2);
+    IPC::Barrera1112MessageQueue cola11_A_12;
+    cola11_A_12.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12);
     
-    IPC::Barrera1112MessageQueue cola12_A_111;
-    IPC::Barrera1112MessageQueue cola12_A_112;
-    cola12_A_111.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
-    cola12_A_112.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
+    IPC::Barrera1112MessageQueue cola12_A_11;
+    cola12_A_11.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11);
     
     /* IPCs Torres: R11-R14-R16-Despacho-Cliente-Vendedores */
     DataSM_R11_R14 dataSM_R11_R14;

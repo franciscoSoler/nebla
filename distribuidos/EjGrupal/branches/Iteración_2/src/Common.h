@@ -63,10 +63,8 @@
 #define ID_SEM_BLOQUEO_ROBOT_12         1
 
 // ipcs entre robot 11 y 12 (usar DIRECTORY_ROBOT_12)
-#define ID_COLA_11_A_12_1               1 // se lee cola de 11 a 12
-#define ID_COLA_11_A_12_2               2
-#define ID_COLA_12_A_11_1               3
-#define ID_COLA_12_A_11_2               4
+#define ID_COLA_11_A_12               1 
+#define ID_COLA_12_A_11               2
 
 //ipcs del robot 14 (usar DIRECTORY_ROBOT_14)
 #define SEM_R14_CINTA13_ID              1
@@ -117,8 +115,6 @@
 
 #define TIPO_PEDIDO_DESPACHO            1
 #define TIPO_PEDIDO_ODC_DESPACHO        2
-
-#define TIPO_NOTIFICACION_BARRERA_11_12 1
 
 
 //constantes del sistema

@@ -49,17 +49,16 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         
 
         this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", this->id_Robot + 1, ID_TIPO_ROBOT12, ID_TIPO_ROBOT11);
+        this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12);
         this->cola12_A_11 = IPC::Barrera1112MessageQueue("cola12_A_11", this->id_Robot + 1, ID_TIPO_ROBOT11, ID_TIPO_ROBOT12);
+        this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11);
+        
         if (numRobot == 0) {
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_0");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_0);
-            this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_1);
-            this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
         } else {
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_1");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_1);
-            this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_2);
-            this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
         }
     }
     catch (Exception & e) {
@@ -177,7 +176,7 @@ void ControladorRobot12::finalizarEnsamble() {
         sprintf(this->buffer, "Robot 12-%u - finalizarEnsamble:", this->id_Robot);
         Logger::setProcessInformation(this->buffer);
         MensajeBarrera message;       
-        this->cola12_A_11.send(TIPO_NOTIFICACION_BARRERA_11_12, message);
+        this->cola12_A_11.send(this->id_Robot + 1, message);
         Logger::logMessage(Logger::TRACE, "finalizó el ensamble");
     }
     catch (Exception & e) {

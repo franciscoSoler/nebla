@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     autoPtrControllerDespacho controller ( new ControllerDespacho() );
     Dictionary<OrdenDeCompra> bufferODC;
     OrdenDeCompra* odc;
-    char buffer[255];
+    char buffer[255]; 
 
     while (1) {
         PedidoDespacho pedido = controller->recibirPedido();

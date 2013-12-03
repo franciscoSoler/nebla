@@ -131,19 +131,13 @@ int main(int argc, char* argv[]) {
         shMemBufferCanastos2.destroy();
         
         //Robots 11 y 12
-        IPC::Barrera1112MessageQueue cola11_A_121;
-        IPC::Barrera1112MessageQueue cola11_A_122;
-        cola11_A_121.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_1);
-        cola11_A_122.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12_2);
-        cola11_A_121.destroy();
-        cola11_A_122.destroy();
+        IPC::Barrera1112MessageQueue cola11_A_12;        
+        cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12);
+        cola11_A_12.destroy();
 
-        IPC::Barrera1112MessageQueue cola12_A_111;
-        IPC::Barrera1112MessageQueue cola12_A_112;
-        cola12_A_111.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_1);
-        cola12_A_112.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11_2);
-        cola12_A_111.destroy();
-        cola12_A_112.destroy();
+        IPC::Barrera1112MessageQueue cola12_A_11;
+        cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11);
+        cola12_A_11.destroy();
         
 
         // IPCs Torres
