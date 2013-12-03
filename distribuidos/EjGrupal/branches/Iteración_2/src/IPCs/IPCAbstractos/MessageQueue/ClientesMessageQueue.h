@@ -27,8 +27,6 @@ public:
 
     int enviarMensajeRespuesta(long idReceptor, msg_respuesta_pedido_t dato) {
         
-        
-        
         MsgAgenteReceptor msg;
         msg.mtype = MSG_MUX;
         msg.idTipoReceptor = this->idTipoReceptor;
@@ -49,12 +47,11 @@ public:
         msgQ.getMsgQueue(DIRECTORY_MUX, this->idTipoEmisor);
         msgQ.send(msg);
         return 0;
-        //return this->enviar ((const void *) &dato, sizeof (MsgAgenteReceptor) - sizeof (long)); 
     }
 
     int recibirMensajeRespuesta(int tipo, msg_respuesta_pedido_t* buffer) {
         MsgAgenteReceptor msg;
-        int resultado = recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+        int resultado = recibir(tipo, (void *) & msg, sizeof (MsgAgenteReceptor) - sizeof (long));
 
         memcpy(buffer, msg.msg, sizeof(msg_respuesta_pedido_t));
         return resultado;

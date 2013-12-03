@@ -9,6 +9,7 @@
 #include "../../Logger/Logger.h"
 #include "../../Parser/Parser.h"
 #include <sstream>
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 
 ControladorRobot11::ControladorRobot11() {
     this->shMem_R11_R14_Data_ = new DataSM_R11_R14();
@@ -23,6 +24,9 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         Logger::getInstance();
         sprintf(this->buffer, "Robot 11-%u:", numRobot);
         Logger::setProcessInformation(this->buffer);
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(numRobot, ID_TIPO_ROBOT11);
         
         this->id_Agv = numRobot * 2 + 1;
         this->nroCinta_ = numRobot + 1;

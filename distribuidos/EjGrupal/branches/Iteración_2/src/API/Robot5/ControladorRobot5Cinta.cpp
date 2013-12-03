@@ -6,7 +6,7 @@
  */
 
 #include "ControladorRobot5Cinta.h"
-
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 #include "../../Logger/Logger.h"
 #include "../../Parser/Parser.h"
 
@@ -18,8 +18,14 @@ ControladorRobot5Cinta::ControladorRobot5Cinta() :
         semaforoBloqueoRobot11("BloqueoRobot11"),
         semaforoApiRobot5("ApiRobot5")
 {
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(1, ID_TIPO_ROBOT5_CINTA);
+
         cintaTransportadora[0] = CintaTransportadora6(0);
         cintaTransportadora[1] = CintaTransportadora6(1);
+
+
 }
 
 ControladorRobot5Cinta::~ControladorRobot5Cinta() { }
@@ -29,6 +35,7 @@ void ControladorRobot5Cinta::iniciarControlador()
     try
     {
 	/* Obtengo la cola de pedidos */
+    colaPedidosProduccion = IPC::PedidosProduccionMessageQueue("ColaPedidoProduccion", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
 	colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
 	/* Obtengo las cintas transportadoras */

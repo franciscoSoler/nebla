@@ -48,7 +48,7 @@ public:
 	
 	int recibirPedidoAgv ( int tipo, MensajePedidoAgv_5* buffer ) {
             MsgAgenteReceptor msg;
-            int resultado = recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+            int resultado = recibir(tipo, (void *) & msg, sizeof (MsgAgenteReceptor) - sizeof (long));
 
             memcpy(buffer, msg.msg, sizeof(MensajePedidoAgv_5));
             return resultado;

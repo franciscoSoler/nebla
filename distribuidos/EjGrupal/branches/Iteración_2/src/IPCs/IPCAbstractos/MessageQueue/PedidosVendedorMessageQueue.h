@@ -36,6 +36,10 @@ public:
         msg.idIPCReceptor = this->idIPC;
         strcpy(msg.dirIPCReceptor, this->dirIPC);
 
+        sprintf(buffer, "MsgAgenteReceptor: %d - %ld - %ld - %d",
+                msg.idTipoReceptor, msg.idReceptor, msg.idEmisor, msg.idIPCReceptor);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
 
         if ( sizeof(msg_pedido_t) > MSG_QUEUE_FIXED_SIZE ) {
             sprintf(this->buffer, "MsgQueue %s Error - send: Mensaje demasiado largo",
@@ -53,7 +57,7 @@ public:
 
     int recibirMensajePedido(int tipo, msg_pedido_t* buffer) {
         MsgAgenteReceptor msg;
-        int resultado = recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+        int resultado = recibir(tipo, (void *) & msg, sizeof (MsgAgenteReceptor) - sizeof (long));
 
         memcpy(buffer, msg.msg, sizeof(msg_pedido_t));
         return resultado;

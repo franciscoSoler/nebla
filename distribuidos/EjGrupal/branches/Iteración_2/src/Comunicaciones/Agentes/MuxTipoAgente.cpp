@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <Common.h>
+#include <assert.h>
 #include <Exceptions/Exception.h>
 
 #include <Comunicaciones/Objects/ArgumentParser.h>
@@ -45,38 +46,42 @@ int main(int argc, char* argv[]) {
             // char buffer[TAM_BUFFER];
             MsgAgenteReceptor msgAgenteReceptor;
             colaAgente.recv(MSG_MUX, msgAgenteReceptor);
+            msgAgenteReceptor.mtype = msgAgenteReceptor.idReceptor;
             Logger::logMessage(Logger::COMM, "Recibe mensaje");
             
-            memcpy(msgAgenteReceptor.msg, &(msgAgenteReceptor.idReceptor), sizeof(long));
+            //memcpy(msgAgenteReceptor.msg, &(msgAgenteReceptor.idReceptor), sizeof(long));
             long idReceptor = msgAgenteReceptor.idReceptor;
             long idEmisor = msgAgenteReceptor.idEmisor;
-            
-            sprintf(buffer, "parametros mensaje - idRec: %ld, idEmis: %ld, "
-                    "idIPCRec: %d, dirIPCReceptor: %s", msgAgenteReceptor.idReceptor, 
-                    msgAgenteReceptor.idEmisor, msgAgenteReceptor.idIPCReceptor, msgAgenteReceptor.dirIPCReceptor);
-            
-            Logger::logMessage(Logger::COMM, buffer);
             
             MsgCanalEntradaAgente msgCanalEntradaAgente;
             strcpy(msgCanalEntradaAgente.directorioIPC, 
                    msgAgenteReceptor.dirIPCReceptor);
             msgCanalEntradaAgente.idIPC = msgAgenteReceptor.idIPCReceptor;
-            msgCanalEntradaAgente.msg = msgAgenteReceptor;
+            memcpy(&msgCanalEntradaAgente.msg, &msgAgenteReceptor, sizeof(MsgAgenteReceptor));
             
             MsgCanalSalidaBroker msgCanalSalidaBroker;
             msgCanalSalidaBroker.mtype = idReceptor;
             msgCanalSalidaBroker.msg = msgCanalEntradaAgente;
-            
+            memcpy(& msgCanalSalidaBroker.msg, &msgCanalEntradaAgente, sizeof(MsgCanalEntradaAgente));
             
             MsgCanalEntradaBroker msgCanalEntradaBroker;
             msgCanalEntradaBroker.idReceptor = idReceptor;
             msgCanalEntradaBroker.idTipoReceptor = msgAgenteReceptor.idTipoReceptor;
-            msgCanalEntradaBroker.msg = msgCanalSalidaBroker;
+            memcpy(&msgCanalEntradaBroker.msg, &msgCanalSalidaBroker, sizeof(MsgCanalSalidaBroker));
             
             MsgCanalSalidaAgente msgCanalSalidaAgente;
             msgCanalSalidaAgente.mtype = idEmisor;
-            msgCanalSalidaAgente.msg = msgCanalEntradaBroker;
-   
+            memcpy(&msgCanalSalidaAgente.msg, &msgCanalEntradaBroker, sizeof(MsgCanalEntradaBroker));
+
+            sprintf(buffer, "parametros mensaje Salida - idRec: %ld, idEmis: %ld, "
+                    "idIPCRec: %d, dirIPCReceptor: %s",
+                    msgCanalSalidaAgente.msg.msg.msg.msg.idReceptor,
+                    msgCanalSalidaAgente.msg.msg.msg.msg.idEmisor,
+                    msgCanalSalidaAgente.msg.msg.msg.msg.idIPCReceptor,
+                    msgCanalSalidaAgente.msg.msg.msg.msg.dirIPCReceptor);
+            Logger::logMessage(Logger::COMM, buffer);
+
+
             // Se envía al CanalDeSalida el mensaje formado
             colaCanalDeSalida.send(msgCanalSalidaAgente);
         }

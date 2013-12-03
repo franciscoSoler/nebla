@@ -27,8 +27,8 @@
 
 class ControladorVendedor {
 public:
-    //ControladorVendedor(long numVendedor);
-    ControladorVendedor();
+    ControladorVendedor(long numVendedor);
+    //ControladorVendedor();
     virtual ~ControladorVendedor();
 
     long obtenerNumeroVendedor();

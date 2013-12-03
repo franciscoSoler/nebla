@@ -7,6 +7,8 @@
 
 #include <sstream>
 
+#include <middlewareCommon.h>
+#include <Comunicaciones/Objects/MiddlewareAPI.h>
 #include "ControladorAlmacenPiezas.h"
 #include "../../Logger/Logger.h"
 #include "LockFile.h"
@@ -16,12 +18,18 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() :
 {
     try {
         Logger::setProcessInformation("AlmacenDePiezas:");
-        this->colaReciboOrdenProduccion = IPC::MsgQueue("ColaReciboOP", 1, ID_TIPO_AP);       
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(1, ID_TIPO_AP);
+
+        this->colaReciboOrdenProduccion = IPC::MsgQueue("ColaReciboOP", 1, ID_TIPO_AP);
         this->colaReciboOrdenProduccion.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
+        this->colaEnvioMensajePedidoProduccion =
+        IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP);
         colaEnvioMensajePedidoProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", 1, ID_TIPO_AP);
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", 1, ID_TIPO_AGV, ID_TIPO_AP);
         this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
         this->shMemBufferCanastos[CANTIDAD_AGVS] = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");

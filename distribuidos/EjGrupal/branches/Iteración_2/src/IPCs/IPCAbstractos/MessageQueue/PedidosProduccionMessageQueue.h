@@ -46,7 +46,7 @@ public:
 	
 	int recibirPedidoProduccion ( int tipo, MensajePedidoProduccion* buffer ) {
             MsgAgenteReceptor msg;
-            int resultado = recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+            int resultado = recibir(tipo, (void *) & msg, sizeof (MsgAgenteReceptor) - sizeof (long));
 
             memcpy(buffer, msg.msg, sizeof(MensajePedidoProduccion));
             return resultado;
@@ -77,7 +77,7 @@ public:
 	
 	int recibirProximoPedidoProduccion ( int tipo, MensajeProximoPedidoProduccion* buffer ) {
             MsgAgenteReceptor msg;
-            int resultado = recibir(tipo, (void *)buffer, sizeof (MsgAgenteReceptor) - sizeof (long));
+            int resultado = recibir(tipo, (void *) & msg, sizeof (MsgAgenteReceptor) - sizeof (long));
 
             memcpy(buffer, msg.msg, sizeof(MensajeProximoPedidoProduccion));
             return resultado;

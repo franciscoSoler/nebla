@@ -15,19 +15,18 @@
 
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
 
-//ControladorVendedor::ControladorVendedor(long numVendedor)
-ControladorVendedor::ControladorVendedor()
+ControladorVendedor::ControladorVendedor(long numVendedor)
 {
     try {
         /* Comunicacion con los clientes. */
-        /*char buffer[255];
+        char buffer[255];
         sprintf(buffer, "Vendedor N#%ld:", numVendedor);
         Logger::setProcessInformation(buffer);
         
         MiddlewareAPI middleware;
         middleware.crearCanales(numVendedor, ID_TIPO_VENDEDOR);
          
-        this->numVendedor = numVendedor;*/
+        this->numVendedor = numVendedor;
 
         this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue", numVendedor, ID_TIPO_VENDEDOR);
         this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
@@ -43,7 +42,7 @@ ControladorVendedor::ControladorVendedor()
         this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
 
         /* Comunicacion con el almacen de piezas. */
-        this->colaEnvioOrdenProduccion = IPC::MsgQueue("Vendedor - colaEvioOrdenProduccion", numVendedor, ID_TIPO_DESPACHO, ID_TIPO_VENDEDOR);
+        this->colaEnvioOrdenProduccion = IPC::MsgQueue("Vendedor - colaEvioOrdenProduccion", numVendedor, ID_TIPO_AP, ID_TIPO_VENDEDOR);
         this->colaEnvioOrdenProduccion.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         /* Comunicacion con el almacen de productos terminados. */
@@ -77,7 +76,7 @@ long ControladorVendedor::obtenerNumeroVendedor() {
         exit(1);
     }
 
-    result_1 = obteneridvendedor_1((void*) &obteneridvendedor_1_arg, clnt);
+    // result_1 = obteneridvendedor_1((void*) &obteneridvendedor_1_arg, clnt);
     if (result_1 == (retornoVendedor *) NULL) {
         clnt_perror(clnt, "call failed");
     }
@@ -101,7 +100,7 @@ long ControladorVendedor::obtenerNumeroVendedor() {
 }
 
 void ControladorVendedor::vendedorLibre() {
-    void *result_2;
+  /*  void *result_2;
     int vendedorlibre_1_arg = this->numVendedor;
 
     CLIENT *clnt = clnt_create(HOST, NUMERADORVENDEDOR, NUMERADORVENDEDOR1, "udp");
@@ -113,7 +112,7 @@ void ControladorVendedor::vendedorLibre() {
     result_2 = vendedorlibre_1(&vendedorlibre_1_arg, clnt);
     if (result_2 == (void *) NULL) {
         clnt_perror(clnt, "call failed");
-    }
+    }*/
 }
 
 /*void ControladorVendedor::recibirLlamadoTelefonico()
@@ -150,7 +149,12 @@ pedido_t ControladorVendedor::recibirPedido()
     try {
         msg_pedido_t msgPedido;
         pedidos.recibirMensajePedido(numVendedor, &msgPedido);
-        return msgPedido.pedido;
+
+        char buffer[255];
+        sprintf(buffer, "MsgPedidoT: %d - %d", msgPedido.tipo, msgPedido.pedido.tipoProducto);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
+                return msgPedido.pedido;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

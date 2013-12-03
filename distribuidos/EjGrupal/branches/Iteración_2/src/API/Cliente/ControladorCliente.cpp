@@ -14,8 +14,14 @@
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
 
 //ControladorCliente::ControladorCliente(long numCliente) {
-ControladorCliente::ControladorCliente() {
+ControladorCliente::ControladorCliente(long numCliente) {
     try {
+
+        this->numCliente = numCliente;
+        this->numVendedorAsociado = 1;
+
+        MiddlewareAPI middleware;
+        middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
 
         sprintf(mensajePantalla, "Cliente N°x:");
         Logger::setProcessInformation(mensajePantalla);
@@ -76,7 +82,8 @@ int ControladorCliente::obtenerNumeroCliente() {
     MiddlewareAPI middleware;
     middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
     
-    this->numVendedorAsociado = (*result_1).retornoCliente_u.retorno.idVendedorLibre;
+    //this->numVendedorAsociado = (*result_1).retornoCliente_u.retorno.idVendedorLibre;
+    this->numVendedorAsociado = 1;
 
     sprintf(mensajePantalla, "Recibió el vendedor N°%ld:", numVendedorAsociado);
     Logger::logMessage(Logger::DEBUG, mensajePantalla);
@@ -84,7 +91,7 @@ int ControladorCliente::obtenerNumeroCliente() {
     return this->numCliente;
 }
 
-/*void ControladorCliente::contactarVendedores()
+/* void ControladorCliente::contactarVendedores()
 {
     try {
         // Se establece la comunicacion "en dos pasos".
