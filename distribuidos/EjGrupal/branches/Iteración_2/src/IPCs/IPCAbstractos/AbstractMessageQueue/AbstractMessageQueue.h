@@ -28,8 +28,8 @@ private:
 
 protected:
         long idEmisor;
-        TipoAgente idTipoReceptor;
-        TipoAgente idTipoEmisor;
+        TipoAgente idDuenioEstaCola_;
+        TipoAgente idDuenioColaRemota_;
         int id;
         int idIPC;
         char dirIPC[DIR_FIXED_SIZE];
