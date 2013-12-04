@@ -15,7 +15,8 @@
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalEntradaBroker:");
-    char buffer[255];
+    char buffer[TAM_BUFFER];
+    char bufferSocket[TAM_BUFFER];
     CommunicationsUtil util;
     int idSd = 0;
 
@@ -29,7 +30,7 @@ int main(int argc, char* argv[]) {
     try {
         IPC::CommMsgQueue colaAgente;
         while ( true ) {
-            if (socketAgente.receive(buffer, TAM_BUFFER) != TAM_BUFFER) {
+            if (socketAgente.receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir "
                 "mensajes del Agente");
                 socketAgente.destroy();
