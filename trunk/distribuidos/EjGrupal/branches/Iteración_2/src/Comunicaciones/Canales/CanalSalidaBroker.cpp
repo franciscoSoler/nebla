@@ -17,7 +17,8 @@
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalSalidaBroker:");
-    char buffer[255];
+    char buffer[TAM_BUFFER];
+    char bufferSocket[TAM_BUFFER];
     CommunicationsUtil util;
     int idSd = 0;
     long idAgente = 0;
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, "Canal de Salida conectado");
     
     // Recibe el id los datos del Agente
-    if ( socketAgente.receive(buffer, TAM_BUFFER) != TAM_BUFFER ) {
+    if ( socketAgente.receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
         Logger::logMessage(Logger::ERROR, "Error al recibir el id del Agente");
         socketAgente.destroy();
         abort();
@@ -67,7 +68,7 @@ int main(int argc, char* argv[]) {
             
             
             memcpy(buffer, &mensaje.msg, sizeof(MsgCanalEntradaAgente));
-            if (socketAgente.send(buffer, TAM_BUFFER) != TAM_BUFFER) {
+            if (socketAgente.send(bufferSocket, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar "
                 "mensajes al Agente");
                 socketAgente.destroy();

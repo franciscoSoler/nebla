@@ -20,8 +20,8 @@ IPC::CommMsgQueue obtenerColaAgente(char dirIPC[], int idIPC);
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalEntradaAgente:");
-    char buffer[255];
-    char bufferSocket[255];
+    char buffer[TAM_BUFFER];
+    char bufferSocket[TAM_BUFFER];
     ArgumentParser argParser(argc, argv);
     long idAgente = 0;
     int idTipoAgente;

@@ -16,7 +16,8 @@
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalSalidaAgente - ");
-    char buffer[255];
+    char buffer[TAM_BUFFER];
+    char bufferSocket[TAM_BUFFER];
     ArgumentParser argParser(argc, argv);
     long idAgente = 0;
     int idTipoAgente;
@@ -57,7 +58,7 @@ int main(int argc, char* argv[]) {
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
             memcpy(buffer, & mensaje.msg, sizeof(MsgCanalEntradaBroker));
-            socketBroker->send(buffer, TAM_BUFFER);
+            socketBroker->send(bufferSocket, TAM_BUFFER);
             
         }
     }
