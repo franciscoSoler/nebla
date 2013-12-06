@@ -42,8 +42,9 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
         this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
 
         /* Comunicacion con el almacen de piezas. */
-        this->colaEnvioOrdenProduccion = IPC::MsgQueue("Vendedor - colaEvioOrdenProduccion", numVendedor, ID_TIPO_VENDEDOR, ID_TIPO_AP);
-        this->colaEnvioOrdenProduccion.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+        this->colaEnvioOrdenProduccion = CommMsgHandler(numVendedor, ID_TIPO_VENDEDOR, ID_TIPO_AP);
+        this->colaEnvioOrdenProduccion.setReceptorInfo("Vendedor - colaEvioOrdenProduccion",
+                                                       DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         /* Comunicacion con el almacen de productos terminados. */
         this->mutexAlmacenTerminados = IPC::Semaphore("Acceso Almacen Terminados");
@@ -52,8 +53,8 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
         this->mutexOrdenDeCompra = IPC::Semaphore("mutexOrdenDeCompra");
         this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
 
-        inputQueueDespacho = IPC::MsgQueue("inputQueueDespacho", numVendedor, ID_TIPO_VENDEDOR, ID_TIPO_DESPACHO);
-        inputQueueDespacho.getMsgQueue(DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
+        inputQueueDespacho = CommMsgHandler(numVendedor, ID_TIPO_VENDEDOR, ID_TIPO_DESPACHO);
+        inputQueueDespacho.setReceptorInfo("inputQueueDespacho", DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
     }
     catch (Exception & e) {

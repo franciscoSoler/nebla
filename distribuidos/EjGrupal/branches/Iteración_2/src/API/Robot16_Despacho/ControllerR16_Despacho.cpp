@@ -20,11 +20,13 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
         semMutex_shMem_R14_R16_ = IPC::Semaphore ("semMutex_shMem_R14_R16");
         semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
         
-        inputQueueR16_Despacho_ = IPC::MsgQueue("inputQueueR16_Despacho", 1, ID_TIPO_ROBOT16_DESPACHO, ID_TIPO_DESPACHO);
-        inputQueueR16_Despacho_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
+        inputQueueR16_Despacho_ = CommMsgHandler(1, ID_TIPO_ROBOT16_DESPACHO, ID_TIPO_DESPACHO);
+        inputQueueR16_Despacho_.setReceptorInfo("inputQueueR16_Despacho",
+                                                DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
         
-        R16_Cliente_Queue_ = IPC::MsgQueue("R16_Cliente_Queue", 1, ID_TIPO_ROBOT16_DESPACHO, ID_TIPO_CLIENTE);
-        R16_Cliente_Queue_.getMsgQueue(DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
+        R16_Cliente_Queue_ = CommMsgHandler(1, ID_TIPO_ROBOT16_DESPACHO, ID_TIPO_CLIENTE);
+        R16_Cliente_Queue_.setReceptorInfo("R16_Cliente_Queue",
+                                           DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
 
         semMutex_shMem_APT_ = IPC::Semaphore("semMutex_shMem_APT");
         semMutex_shMem_APT_.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);

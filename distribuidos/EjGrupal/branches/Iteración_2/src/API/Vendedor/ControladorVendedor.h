@@ -22,8 +22,9 @@
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
 #include "../../Common.h"
-#include <IPCs/IPCTemplate/MsgQueue.h>
 #include "../../Parser/Parser.h"
+
+#include <Comunicaciones/Objects/CommMsgHandler.h>
 
 class ControladorVendedor {
 public:
@@ -51,12 +52,12 @@ private:
     MemoriaCompartida shmemNumeroOrdenCompra;
     int* numeroOrdenCompra;
 
-    IPC::MsgQueue colaEnvioOrdenProduccion;
+    CommMsgHandler colaEnvioOrdenProduccion;
 
     IPC::Semaphore mutexAlmacenTerminados;
     IPC::Semaphore mutexOrdenDeCompra;
     SmMemAlmacenProductosTerminados almacenProductosTerminados;
-    IPC::MsgQueue inputQueueDespacho;
+    CommMsgHandler inputQueueDespacho;
 
     pedido_fabricacion_t reservarPedido(pedido_t pedido, bool* pedidoEnStock);
     void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);

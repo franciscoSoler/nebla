@@ -4,7 +4,6 @@
 #include <API/Robot14/IControllerRobot14.h>
 #include <IPCs/Semaphore/Semaphore.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
-#include <IPCs/IPCTemplate/MsgQueue.h>
 #include <API/Objects/DataSM_R11_R14.h>
 #include <API/Objects/DataSM_R14_R16.h>
 #include <API/Robot14/State/StateR14_Durmiendo.h>
@@ -12,6 +11,8 @@
 #include <API/Robot14/State/StateR14_Trabajando.h>
 #include <definedTypes.h>
 #include <Common.h>
+
+#include <Comunicaciones/Objects/CommMsgHandler.h>
 
 // Forward Declaration
 class StateR14_Durmiendo;
@@ -77,7 +78,7 @@ private:
     IPC::Semaphore semR14_Cinta15;
     
     // IPC::Semaphore semR16_;
-    IPC::MsgQueue inputQueueR16_Cinta15_;
+    CommMsgHandler inputQueueR16_Cinta15_;
     Msg_AvisoCajaEnCinta15 mensaje_;
 };
 

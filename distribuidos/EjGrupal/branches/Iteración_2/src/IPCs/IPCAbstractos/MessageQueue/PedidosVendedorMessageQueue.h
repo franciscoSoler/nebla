@@ -11,8 +11,9 @@
 
 
 #include "../AbstractMessageQueue/AbstractMessageQueue.h"
-
 #include "../../../Common.h"
+
+#include <Comunicaciones/Objects/CommPacketWrapper.h>
 
 namespace IPC {
     
@@ -28,31 +29,25 @@ public:
     virtual ~PedidosVendedorMessageQueue() {}
 
     int enviarMensajePedido(long idReceptor, msg_pedido_t dato) {
-        MsgAgenteReceptor msg;
-        msg.mtype = MSG_MUX;
-        msg.idTipoReceptor = this->idDuenioColaRemota_;
-        msg.idReceptor = idReceptor;
-        msg.idEmisor = this->idEmisor;
-        msg.idIPCReceptor = this->idIPC;
-        strcpy(msg.dirIPCReceptor, this->dirIPC);
-
-        sprintf(buffer, "MsgAgenteReceptor: %d - %ld - %ld - %d",
-                msg.idTipoReceptor, msg.idReceptor, msg.idEmisor, msg.idIPCReceptor);
-        Logger::logMessage(Logger::IMPORTANT, buffer);
-
+        CommPacketWrapper wrapper;
+        wrapper.setDirIPC( dirIPC );
+        wrapper.setIdDirIPC( idIPC );
+        wrapper.setSenderId( idEmisor );
+        wrapper.setReceiverType( idDuenioColaRemota_ );
+        wrapper.setReceiverId( idReceptor );
+        MsgCanalSalidaAgente msg;
+        wrapper.createPacket(msg, dato);
 
         if ( sizeof(msg_pedido_t) > MSG_QUEUE_FIXED_SIZE ) {
             sprintf(this->buffer, "MsgQueue %s Error - send: Mensaje demasiado largo",
                     getIPCName().c_str());
             Logger::logMessage(Logger::ERROR, this->buffer);
         }
-        memcpy(msg.msg, &dato, sizeof(msg_pedido_t));
         
-        MsgQueue msgQ("queueAMux", idEmisor, this->idDuenioEstaCola_, this->idDuenioColaRemota_);
-        msgQ.getMsgQueue(DIRECTORY_MUX, this->idDuenioEstaCola_);
+        MsgQueue msgQ("queueAColaSalida");
+        msgQ.getMsgQueue(DIRECTORY_COMM, this->idDuenioEstaCola_);
         msgQ.send(msg);
         return 0;
-        //return this->enviar((const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long));
     }
 
     int recibirMensajePedido(int tipo, msg_pedido_t* buffer) {

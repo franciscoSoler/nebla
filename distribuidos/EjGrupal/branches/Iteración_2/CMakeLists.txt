@@ -145,7 +145,6 @@ add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlm
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
 
 # Broker - Agente
-add_executable(${OUT_DIR}MuxTipoAgente                      ${SRC_DIR}Comunicaciones/Agentes/MuxTipoAgente.cpp       ${COMMON_SRC})
 add_executable(${OUT_DIR}LauncherAgentes                    ${SRC_DIR}Comunicaciones/Agentes/LauncherAgentes.cpp     ${COMMON_SRC})
 add_executable(${OUT_DIR}TerminatorAgentes                  ${SRC_DIR}Comunicaciones/Agentes/TerminatorAgentes.cpp   ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalSalidaAgente                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaAgente.cpp   ${COMMON_SRC})
@@ -187,7 +186,6 @@ target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCL
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)
 
 target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)
-target_link_libraries(${OUT_DIR}MuxTipoAgente                               IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherAgentes                             IPCLibrary)
 target_link_libraries(${OUT_DIR}TerminatorAgentes                           IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaAgente                           IPCLibrary)

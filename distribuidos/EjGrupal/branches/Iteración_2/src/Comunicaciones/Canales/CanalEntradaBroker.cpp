@@ -4,11 +4,11 @@
 
 #include <Logger/Logger.h>
 #include <Common.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
-#include <Comunicaciones/Objects/CommMsgQueue.h>
 #include <Socket/SocketStream.h>
 
 #include "middlewareCommon.h"
@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, "Canal de Entrada conectado");
     
     try {
-        IPC::CommMsgQueue colaAgente;
+        IPC::MsgQueue colaAgente;
         while ( true ) {
             if (socketAgente.receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir "
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
             Logger::logMessage(Logger::COMM, "Recibe mensaje de Agente");
             
             MsgCanalEntradaBroker mensaje;
-            memcpy(&mensaje, buffer, sizeof(MsgCanalEntradaBroker));
+            memcpy(&mensaje, bufferSocket, sizeof(MsgCanalEntradaBroker));
 
             /*msg_pedido_t pedido;
             memcpy(&pedido, mensaje.msg.msg.msg.msg, sizeof(msg_pedido_t));
@@ -47,7 +47,6 @@ int main(int argc, char* argv[]) {
             sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
-            char buffer[TAM_BUFFER];
             sprintf(buffer, "parametros mensaje: mtype del siguiente salto: %ld, idReceptor %ld, idTipoReceptor %d ", mensaje.msg.mtype, mensaje.idReceptor, mensaje.idTipoReceptor);
             Logger::logMessage(Logger::COMM, buffer);
             

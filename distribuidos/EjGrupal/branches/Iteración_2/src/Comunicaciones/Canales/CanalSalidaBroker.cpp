@@ -5,8 +5,7 @@
 
 #include <Logger/Logger.h>
 #include <Common.h>
-
-#include <Comunicaciones/Objects/CommMsgQueue.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
@@ -39,7 +38,7 @@ int main(int argc, char* argv[]) {
     }
     
     std::stringstream ss;
-    ss << buffer;
+    ss << bufferSocket;
     ss >> idAgente;
     ss >> idTipoAgente;
     
@@ -48,7 +47,7 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, buffer);
     
     try {
-        IPC::CommMsgQueue colaBroker("cola Broker");
+        IPC::MsgQueue colaBroker("cola Broker");
         colaBroker.getMsgQueue(DIRECTORY_BROKER, idTipoAgente);
         
         while ( true ) {
@@ -67,7 +66,7 @@ int main(int argc, char* argv[]) {
             Logger::logMessage(Logger::COMM, buffer);
             
             
-            memcpy(buffer, &mensaje.msg, sizeof(MsgCanalEntradaAgente));
+            memcpy(bufferSocket, &mensaje.msg, sizeof(MsgCanalEntradaAgente));
             if (socketAgente.send(bufferSocket, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar "
                 "mensajes al Agente");

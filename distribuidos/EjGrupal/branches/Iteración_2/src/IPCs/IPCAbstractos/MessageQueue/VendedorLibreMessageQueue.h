@@ -9,8 +9,10 @@
 #define	VENDEDORESMESSAGEQUEUE_H
 
 #include "../AbstractMessageQueue/AbstractMessageQueue.h"
+#include <Common.h>
+#include <Logger/Logger.h>
 
-#include "../../../Common.h"
+#include <Comunicaciones/Objects/CommPacketWrapper.h>
 
 namespace IPC {
     
@@ -26,13 +28,14 @@ public:
     virtual ~VendedorLibreMessageQueue() {}
 
     int enviarMensajeInicial(long idReceptor, mensaje_inicial_t dato) {
-        MsgAgenteReceptor msg;
-        msg.mtype = MSG_MUX;
-        msg.idTipoReceptor = this->idDuenioColaRemota_;
-        msg.idReceptor = idReceptor;
-        msg.idEmisor = this->idEmisor;
-        msg.idIPCReceptor = this->idIPC;
-        strcpy(msg.dirIPCReceptor, this->dirIPC);
+        CommPacketWrapper wrapper;
+        wrapper.setDirIPC( dirIPC );
+        wrapper.setIdDirIPC( idIPC );
+        wrapper.setSenderId( idEmisor );
+        wrapper.setReceiverType( idDuenioColaRemota_ );
+        wrapper.setReceiverId( idReceptor );
+        MsgCanalSalidaAgente msg;
+        wrapper.createPacket(msg, dato);
 
 
         if ( sizeof(mensaje_inicial_t) > MSG_QUEUE_FIXED_SIZE ) {
@@ -40,18 +43,16 @@ public:
                     getIPCName().c_str());
             Logger::logMessage(Logger::ERROR, this->buffer);
         }
-        memcpy(msg.msg, &dato, sizeof(mensaje_inicial_t));
 
         
         sprintf(this->buffer, "idEmisor: %ld, idTipoReceptor: %d, idTipoAgente: %d",
                     idEmisor, this->idDuenioEstaCola_, this->idDuenioColaRemota_);
         Logger::logMessage(Logger::TRACE, this->buffer);
         
-        MsgQueue msgQ("queueAMux", idEmisor, this->idDuenioEstaCola_, this->idDuenioColaRemota_);
-        msgQ.getMsgQueue(DIRECTORY_MUX, this->idDuenioEstaCola_);
+        MsgQueue msgQ("queueAColaSalida");
+        msgQ.getMsgQueue(DIRECTORY_COMM, this->idDuenioEstaCola_);
         msgQ.send(msg);
         return 0;
-        //return this->enviar((const void *)&dato,sizeof(MsgAgenteReceptor)-sizeof(long));
     }
 
     int recibirMensajeInicial(int tipo, mensaje_inicial_t* buffer) {

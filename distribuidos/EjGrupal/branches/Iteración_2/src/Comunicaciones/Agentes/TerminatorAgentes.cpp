@@ -7,8 +7,9 @@
 
 #include <API/Objects/Util.h>
 #include "IPCs/IPCTemplate/MsgQueue.h"
+
 #include <Comunicaciones/Objects/ServersManager.h>
-#include <Comunicaciones/Objects/CommMsgQueue.h>
+#include <middlewareCommon.h>
 
 void getMsgQueueIPCs();
 void getMsgQueueDirectory(std::string directoryName);
@@ -18,58 +19,7 @@ int main(int argc, char* argv[]) {
         Logger::getInstance().setProcessInformation("TerminatorAgentes:");
 
         // Se crea una cola por cada Agente
-        IPC::MsgQueue colaAgente;
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_CLIENTE);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-cliente destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_VENDEDOR);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-vendedor destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_AP);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-AlmacenDePiezas destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_AGV);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-AGV destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_ROBOT5_AGV);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Robot5AGV destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_ROBOT5_CINTA);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Robot5Cinta destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_ROBOT11);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Robot11 destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_ROBOT12);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Robot12 destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_ROBOT14);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Robot14 destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_ROBOT16_CINTA);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Robot16Cinta destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_ROBOT16_DESPACHO);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Robot16Despacho destruida");
-
-        colaAgente.getMsgQueue(DIRECTORY_MUX, ID_TIPO_DESPACHO);
-        colaAgente.destroy();
-        Logger::logMessage(Logger::COMM, "Cola Agente-Despacho destruida");
-
-
-        IPC::CommMsgQueue commColaSalida;
+        IPC::MsgQueue commColaSalida;
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_CLIENTE);
         commColaSalida.destroy();

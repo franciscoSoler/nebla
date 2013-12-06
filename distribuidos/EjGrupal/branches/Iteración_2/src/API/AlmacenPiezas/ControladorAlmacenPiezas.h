@@ -24,7 +24,7 @@
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
-#include <IPCs/IPCTemplate/MsgQueue.h>
+#include <Comunicaciones/Objects/CommMsgHandler.h>
 
 class ControladorAlmacenPiezas : public IControladorAlmacenPiezas
 {
@@ -43,7 +43,7 @@ public:
     
 private:
     char buffer[TAM_BUFFER];
-    IPC::MsgQueue colaReciboOrdenProduccion;
+    CommMsgHandler colaReciboOrdenProduccion;
     IPC::PedidosProduccionMessageQueue colaEnvioMensajePedidoProduccion;
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
 

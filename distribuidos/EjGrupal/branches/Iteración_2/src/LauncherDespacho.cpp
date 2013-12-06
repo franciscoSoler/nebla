@@ -8,7 +8,6 @@
 #include <Logger/Logger.h>
 #include <IPCs/IPCTemplate/MsgQueue.h>
 #include <API/Objects/Util.h>
-
 #include <Comunicaciones/Objects/ServersManager.h>
 
 
@@ -41,7 +40,6 @@ void createDirectory(std::string directoryName) {
 }
 
 void createIPCs() {
-    // Logger::getInstance().createLog();
     Logger::getInstance().setProcessInformation("LauncherCliente:");
 
     /* NOTA: La notación para colas es que el input o output es respecto
