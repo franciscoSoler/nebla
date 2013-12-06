@@ -22,8 +22,9 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         MiddlewareAPI middleware;
         middleware.crearCanales(1, ID_TIPO_AP);
 
-        this->colaReciboOrdenProduccion = IPC::MsgQueue("ColaReciboOP", 1, ID_TIPO_AP, ID_TIPO_VENDEDOR);
-        this->colaReciboOrdenProduccion.getMsgQueue(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
+        this->colaReciboOrdenProduccion = CommMsgHandler(1, ID_TIPO_AP, ID_TIPO_VENDEDOR);
+        this->colaReciboOrdenProduccion.setReceptorInfo("colaReciboOrdenProduccion",
+                                                        DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         this->colaEnvioMensajePedidoProduccion =
         IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);

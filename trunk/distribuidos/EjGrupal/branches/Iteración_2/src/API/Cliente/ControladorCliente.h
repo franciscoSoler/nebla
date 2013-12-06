@@ -20,7 +20,7 @@
 #include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
-#include <IPCs/IPCTemplate/MsgQueue.h>
+#include <Comunicaciones/Objects/CommMsgHandler.h>
 #include <Logger/Logger.h>
 
 class ControladorCliente
@@ -46,9 +46,9 @@ private:
     IPC::ClientesMessageQueue clientes;
     IPC::PedidosVendedorMessageQueue pedidos;
 
-    IPC::MsgQueue inputQueueCliente;
-    IPC::MsgQueue inputQueueDespacho;
-    IPC::MsgQueue R16_Cliente_Queue_;
+    CommMsgHandler inputQueueCliente;
+    CommMsgHandler inputQueueDespacho;
+    CommMsgHandler R16_Cliente_Queue_;
 
     long numCliente;
     long numVendedorAsociado;

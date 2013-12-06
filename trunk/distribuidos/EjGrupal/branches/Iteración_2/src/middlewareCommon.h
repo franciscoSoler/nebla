@@ -1,10 +1,8 @@
 #ifndef MIDDLEWARECOMMON_H
 #define	MIDDLEWARECOMMON_H
 
-#define DIRECTORY_COMM     "./DComm"
-#define DIRECTORY_BROKER   "./DBroker"
-#define DIRECTORY_MUX      "./DMux"
-#define MSG_MUX            1
+#define DIRECTORY_COMM             "./DComm"
+#define DIRECTORY_BROKER           "./DBroker"
 
 typedef enum {
     ID_TIPO_VACIO = 0,
@@ -23,7 +21,7 @@ typedef enum {
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
-#define MSG_QUEUE_FIXED_SIZE    200
+#define MSG_QUEUE_FIXED_SIZE    300
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
@@ -32,18 +30,13 @@ typedef enum {
 
 typedef struct {
     long mtype;
-    TipoAgente idTipoReceptor;
-    long idReceptor;
-    long idEmisor;
-    char dirIPCReceptor[DIR_FIXED_SIZE];
-    int idIPCReceptor;
     char msg[MSG_QUEUE_FIXED_SIZE];
 } MsgAgenteReceptor;
 
 typedef struct {
     char directorioIPC[DIR_FIXED_SIZE];
     int idIPC;
-    MsgAgenteReceptor msg;    
+    MsgAgenteReceptor msg;
 } MsgCanalEntradaAgente;
 
 typedef struct {  

@@ -11,8 +11,10 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-
+#include <Logger/Logger.h>
 #include "../AbstractMessageQueue/AbstractMessageQueue.h"
+
+#include <Comunicaciones/Objects/CommPacketWrapper.h>
 
 namespace IPC {
 
@@ -46,13 +48,14 @@ public:
 	virtual ~Barrera1112MessageQueue() {}
 
 	int send (long idReceptor, MensajeBarrera dato) {
-            MsgAgenteReceptor msg;
-            msg.mtype = MSG_MUX;
-            msg.idTipoReceptor = this->idDuenioColaRemota_;
-            msg.idReceptor = idReceptor;
-            msg.idEmisor = this->idEmisor;
-            msg.idIPCReceptor = this->idIPC;
-            strcpy(msg.dirIPCReceptor, this->dirIPC);
+            CommPacketWrapper wrapper;
+            wrapper.setDirIPC( dirIPC );
+            wrapper.setIdDirIPC( idIPC );
+            wrapper.setSenderId( idEmisor );
+            wrapper.setReceiverType( idDuenioColaRemota_ );
+            wrapper.setReceiverId( idReceptor );
+            MsgCanalSalidaAgente msg;
+            wrapper.createPacket(msg, dato);
 
 
             if ( sizeof(MensajeBarrera) > MSG_QUEUE_FIXED_SIZE ) {
@@ -60,13 +63,11 @@ public:
                         getIPCName().c_str());
                 Logger::logMessage(Logger::ERROR, this->buffer);
             }
-            memcpy(msg.msg, &dato, sizeof(MensajeBarrera));
             
-            MsgQueue msgQ("queueAMux", idEmisor, this->idDuenioEstaCola_, this->idDuenioColaRemota_);
-            msgQ.getMsgQueue(DIRECTORY_MUX, this->idDuenioEstaCola_);
-            msgQ.send(msg);
+            MsgQueue queue("queueAMux");
+            queue.getMsgQueue(DIRECTORY_COMM, this->idDuenioEstaCola_);
+            queue.send(msg);
             return 0;
-            //return this->send(msg);
 	}
 	
 	int receive ( int tipo, MensajeBarrera* buffer ) {

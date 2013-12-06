@@ -4,10 +4,11 @@
 #include <API/Robot16_Cinta15/IControllerR16_Cinta15.h>
 #include <IPCs/Semaphore/Semaphore.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
-#include <IPCs/IPCTemplate/MsgQueue.h>
 #include <API/Objects/DataSM_R14_R16.h>
 #include <definedTypes.h>
 #include <Common.h>
+
+#include <Comunicaciones/Objects/CommMsgHandler.h>
 
 // IPCs de Fede
 #include <API/Objects/SmMemAlmacenProductosTerminados.h>
@@ -42,8 +43,8 @@ private:
     IPC::Semaphore semMutex_sincronismo_R16_;
     IPC::Semaphore semR14_Cinta15_;
 
-    IPC::MsgQueue inputQueueR16_Cinta15_;
-    IPC::MsgQueue inputQueueDespacho_;
+    CommMsgHandler inputQueueR16_Cinta15_;
+    CommMsgHandler inputQueueDespacho_;
     Msg_AvisoCajaEnCinta15 mensaje_;
 };
 

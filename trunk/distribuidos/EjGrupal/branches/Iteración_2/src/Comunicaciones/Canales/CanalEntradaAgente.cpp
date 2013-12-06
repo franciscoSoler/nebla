@@ -5,18 +5,15 @@
 
 #include <Logger/Logger.h>
 #include <Common.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
-// #include <IPCs/IPCTemplate/MsgQueue.h>
-
-#include <Comunicaciones/Objects/CommMsgQueue.h>
 #include <Comunicaciones/Objects/ServersManager.h>
-#include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Socket/SocketStream.h>
 
 #include "middlewareCommon.h"
 
-IPC::CommMsgQueue obtenerColaAgente(char dirIPC[], int idIPC);
+IPC::MsgQueue obtenerColaAgente(char dirIPC[], int idIPC);
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalEntradaAgente:");
@@ -60,7 +57,7 @@ int main(int argc, char* argv[]) {
     }
     
     try {
-        IPC::CommMsgQueue colaAgente;
+        IPC::MsgQueue colaAgente;
     
         while( true ) {
             if ( socketBroker->receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
@@ -78,10 +75,9 @@ int main(int argc, char* argv[]) {
             sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
-            sprintf(buffer, "directorioIPC: %s, idIPC: %d", 
+            sprintf(buffer, "directorioIPC: %s, idIPC: %d",
             mensaje.directorioIPC, mensaje.idIPC);
             Logger::logMessage(Logger::COMM, buffer);
-            
             
             colaAgente = obtenerColaAgente(mensaje.directorioIPC, mensaje.idIPC);
             
@@ -101,9 +97,9 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-IPC::CommMsgQueue obtenerColaAgente(char dirIPC[], int idIPC) {
+IPC::MsgQueue obtenerColaAgente(char dirIPC[], int idIPC) {
     // FIXME: Crear estructura que permita reutilizar colas ya creadas
-    IPC::CommMsgQueue colaAgente("colaAgente");
+    IPC::MsgQueue colaAgente("colaAgente");
     colaAgente.getMsgQueue(dirIPC, idIPC);
     return colaAgente;
 }

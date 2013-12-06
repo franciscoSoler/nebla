@@ -4,10 +4,11 @@
 #include <API/Robot16_Despacho/IControllerR16_Despacho.h>
 #include <IPCs/Semaphore/Semaphore.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
-#include <IPCs/IPCTemplate/MsgQueue.h>
 #include <API/Objects/DataSM_R14_R16.h>
 #include <definedTypes.h>
 #include <Common.h>
+
+#include <Comunicaciones/Objects/CommMsgHandler.h>
 
 // IPCs de Fede
 #include <API/Objects/SmMemAlmacenProductosTerminados.h>
@@ -36,8 +37,8 @@ private:
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
     IPC::Semaphore semMutex_shMem_R14_R16_;
     IPC::Semaphore semMutex_shMem_APT_;
-    IPC::MsgQueue inputQueueR16_Despacho_;
-    IPC::MsgQueue R16_Cliente_Queue_;
+    CommMsgHandler inputQueueR16_Despacho_;
+    CommMsgHandler R16_Cliente_Queue_;
     Msg_FinProductoR16 mensaje_;
 };
 

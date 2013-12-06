@@ -4,8 +4,7 @@
 
 #include <Logger/Logger.h>
 #include <Common.h>
-
-#include <Comunicaciones/Objects/CommMsgQueue.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
@@ -43,7 +42,7 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, "Canal creado");
     
     try {
-        IPC::CommMsgQueue colaCanalDeSalida("colaCanalSalida");
+        IPC::MsgQueue colaCanalDeSalida("colaCanalSalida");
         colaCanalDeSalida.getMsgQueue(DIRECTORY_COMM, idTipoAgente); 
         
         while ( true ) {
@@ -57,7 +56,7 @@ int main(int argc, char* argv[]) {
             sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
-            memcpy(buffer, & mensaje.msg, sizeof(MsgCanalEntradaBroker));
+            memcpy(bufferSocket, & mensaje.msg, sizeof(MsgCanalEntradaBroker));
             socketBroker->send(bufferSocket, TAM_BUFFER);
             
         }
