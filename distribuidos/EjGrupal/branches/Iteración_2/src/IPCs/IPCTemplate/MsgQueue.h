@@ -14,6 +14,7 @@
 #include <iostream>
 #include <Exceptions/Exception.h>
 #include <IPCs/IPCObject/IPCObject.h>
+#include <Logger/Logger.h>
 
 namespace IPC {
 
@@ -51,9 +52,9 @@ public:
      */
     void create(const char *fileName, int id) {
         if (this->getId(fileName, id, 0666|IPC_CREAT|IPC_EXCL) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - create: %s",
+            sprintf(buffer_, "MsgQueue %s Warning - create: %s",
             getIPCName().c_str(), strerror(errno));
-            throw Exception(buffer_);
+            Logger::logMessage(Logger::WARNING, buffer_);
         }
     }
 
@@ -63,9 +64,9 @@ public:
      */
     void getMsgQueue(const char *fileName, int id) {
         if (this->getId(fileName, id, 0666) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - getMsgQueue: %s",
+            sprintf(buffer_, "MsgQueue %s Warning - getMsgQueue: %s",
             getIPCName().c_str(), strerror(errno));
-            throw Exception(buffer_);
+            Logger::logMessage(Logger::WARNING, buffer_);
         }
     }
 
@@ -74,9 +75,9 @@ public:
       */
     void destroy(void) {
         if (msgctl ( this->id,IPC_RMID,NULL ) == -1) {
-            sprintf(buffer_, "MsgQueue %s Error - destroy: %s",
+            sprintf(buffer_, "MsgQueue %s Warning - destroy: %s",
             getIPCName().c_str(), strerror(errno));
-            throw Exception(buffer_);
+            Logger::logMessage(Logger::WARNING, buffer_);
         }
     }
 

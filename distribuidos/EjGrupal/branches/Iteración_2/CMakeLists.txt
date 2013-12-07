@@ -10,6 +10,8 @@ file(MAKE_DIRECTORY ${OUT_DIR})
 set(COMPILE_FLAGS "-g -Wall -pedantic")
 set(LDLIBS "-lnsl")
 
+
+
 add_definitions(${COMPILE_FLAGS})
 
 include_directories("${SRC_DIR}")
@@ -100,9 +102,19 @@ aux_source_directory("${SRC_DIR}Comunicaciones/Objects"                  LIBRARY
 aux_source_directory("${SRC_DIR}Comunicaciones/Signals"                  LIBRARY_SRC)
 aux_source_directory("${SRC_DIR}Comunicaciones/Signals/Handlers"         LIBRARY_SRC)
 
+# Only for QTcreator. With this, QTcreator can recognize headers files. The process is a
+# little bit annoying, but works :)
+file(GLOB SRC_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/*.h")
+file(GLOB MSGQUEUE_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/IPCs/IPCTemplate/*.h")
+file(GLOB MESSAGE_QUEUE_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/IPCs/IPCAbstractos/MessageQueue/*.h")
+file(GLOB COMM_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/Comunicaciones/Objects/*.h")
 
 add_library(IPCLibrary
             SHARED
+            ${SRC_HEADERS}
+            ${MSGQUEUE_HEADERS}
+            ${MESSAGE_QUEUE_HEADERS}
+            ${COMM_HEADERS}
             ${LIBRARY_SRC})
 
 
