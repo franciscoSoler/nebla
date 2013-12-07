@@ -6,14 +6,16 @@
 namespace IPC {
 
 class IPCObject {
-protected:
-	std::string IPCName_;
+
 
 public:
 	IPCObject(std::string IPCName);
         virtual ~IPCObject();
 	std::string getIPCName() const;
 	void setIPCName(std::string IPCName);
+
+protected:
+    std::string IPCName_;
 };
 
 } /* namespace IPC */

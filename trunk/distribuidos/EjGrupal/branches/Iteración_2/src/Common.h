@@ -8,24 +8,24 @@
 #define NOMBRE_ARCHIVO_PRODUCTOS        "info_productos.csv"
 
 // Path utilizado para inicializar los semáforos a través de la función ftok()
-#define DIRECTORY_AGV 		"./DAGV"
-#define DIRECTORY_ROBOT_5 	"./DRobot5"
-#define DIRECTORY_ROBOT_11 	"./DRobot11"
-#define DIRECTORY_ROBOT_12 	"./DRobot12"
-#define DIRECTORY_ROBOT_14 	"./DRobot14"
-#define DIRECTORY_ROBOT_16 	"./DRobot16"
-#define DIRECTORY_CLIENTE   "./DCliente"
-#define DIRECTORY_VENDEDOR 	"./DVendedor"
-#define DIRECTORY_DESPACHO      "./DDespacho"
-#define DIRECTORY_APT           "./DAPT"
-#define DIRECTORY_APIEZAS	"./DAPiezas"
+#define DIRECTORY_AGV                   "./DAGV"
+#define DIRECTORY_ROBOT_5               "./DRobot5"
+#define DIRECTORY_ROBOT_11              "./DRobot11"
+#define DIRECTORY_ROBOT_12              "./DRobot12"
+#define DIRECTORY_ROBOT_14              "./DRobot14"
+#define DIRECTORY_ROBOT_16              "./DRobot16"
+#define DIRECTORY_CLIENTE               "./DCliente"
+#define DIRECTORY_VENDEDOR              "./DVendedor"
+#define DIRECTORY_DESPACHO              "./DDespacho"
+#define DIRECTORY_APT                   "./DAPT"
+#define DIRECTORY_APIEZAS               "./DAPiezas"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
 #define ID_SEM_BUFFER_AGV_5            	2	// es el id para el semaforo de acceso al buffer
 #define ID_BUFFER_AGV_5_0           	3	// es el id tanto para shMemory como semaforo de acceso
-#define ID_BUFFER_AGV_5_1		4
-#define ID_BUFFER_AGV_5_2		5
+#define ID_BUFFER_AGV_5_1               4
+#define ID_BUFFER_AGV_5_2               5
 #define ID_COLA_PEDIDOS_AGV_5           6
 
 // ipcs entre AGV, robot 11 y robot 12 (usar DIRECTORY_AGV)
@@ -37,7 +37,7 @@
 
 
 //ipcs del Robot5 (usar DIRECTORY_ROBOT_5)
-#define ID_SEM_API_ROBOT_5 		1
+#define ID_SEM_API_ROBOT_5              1
 
 //ipcs entre Robot5 y almacen de piezas (usar DIRECTORY_ROBOT_5)
 #define ID_COLA_PEDIDOS_PRODUCCION      2
@@ -76,20 +76,14 @@
 #define SEM_MUTEX_SINCRONISMO_R16_ID     1
 #define MSGQUEUE_R16_CINTA15_INPUT_ID    2
 #define MSGQUEUE_R16_DESPACHO_INPUT_ID   3
-#define MSGQUEUE_R16_DESPACHO_INPUT_ID_D 4
 #define MSGQUEUE_R16_CLIENT_ID           5
-#define MSGQUEUE_R16_CLIENT_ID_C         6
 
 // ipcs del despacho (usar DIRECTORY_DESPACHO)
 #define MSGQUEUE_DESPACHO_INPUT_ID      1
-#define MSGQUEUE_DESPACHO_INPUT_ID_C    2
-#define MSGQUEUE_DESPACHO_INPUT_ID_D    3
 
 // ipcs del cliente (usar DIRECTORY_CLIENTE)
 #define MSGQUEUE_CLIENT_INPUT_ID        1
 #define MSGQUEUE_CLIENT_OUTPUT_ID       2
-#define MSGQUEUE_CLIENT_INPUT_ID_C      3
-#define MSGQUEUE_CLIENT_INPUT_ID_D      4
 
 // ipcs del vendedor (usar DIRECTORY_VENDEDOR)
 #define MSGQUEUE_VENDOR_INPUT_ID        1
@@ -118,9 +112,9 @@
 
 
 //constantes del sistema
-#define TAM_BUFFER 				512
-#define BUFF_SIZE_CINTA_6               	5
-#define CANTIDAD_CINTAS_6               	2
+#define TAM_BUFFER                              512
+#define BUFF_SIZE_CINTA_6                       5
+#define CANTIDAD_CINTAS_6                       2
 #define CANTIDAD_AGVS                           3
 #define MAX_QUANTITY_CANASTOS                   50
 #define MAX_PIEZAS_POR_PRODUCTO                 9
@@ -129,24 +123,24 @@
 #define CINTA_13_CAPACITY                       3
 #define CINTA_15_CAPACITY                       5
 #define CANTIDAD_PRODUCTOS                      3
-#define CANTIDAD_TIPOS_PIEZAS			6
-#define CANTIDAD_TIPOS_GABINETES		3
-#define CANTIDAD_MAXIMA_REPOSICION_PIEZAS	200
-#define CANTIDAD_MINIMA_REPOSICION_PIEZAS	100
-#define CANTIDAD_MAXIMA_ITEMS_REPOSICION	10
-#define CANTIDAD_MINIMA_ITEMS_REPOSICION	5
+#define CANTIDAD_TIPOS_PIEZAS                   6
+#define CANTIDAD_TIPOS_GABINETES                3
+#define CANTIDAD_MAXIMA_REPOSICION_PIEZAS       200
+#define CANTIDAD_MINIMA_REPOSICION_PIEZAS       100
+#define CANTIDAD_MAXIMA_ITEMS_REPOSICION        10
+#define CANTIDAD_MINIMA_ITEMS_REPOSICION    	5
 #define CANTIDAD_MAXIMA_ITEMS_POR_TIPO_ALMACEN  15
 
 /* Tipos de productos. */
 
-#define CANT_MAX_PEDIDOS			10
-#define CANT_PRODUCTOS				3
+#define CANT_MAX_PEDIDOS                        10
+#define CANT_PRODUCTOS                          3
 
-#define CANT_VENDEDORES				10
-#define CANT_CLIENTES				50
-#define TAM_ALMACEN				30
+#define CANT_VENDEDORES                         10
+#define CANT_CLIENTES                           50
+#define TAM_ALMACEN                             30
 
-#define CANT_MAX_COMPONENTES_PRODUCTO		10
+#define CANT_MAX_COMPONENTES_PRODUCTO           10
 
 /* Constantes IPC internas. */
 // User DIRECTORY_VENDEDOR

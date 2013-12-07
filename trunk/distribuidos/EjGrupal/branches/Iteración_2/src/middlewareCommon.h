@@ -4,6 +4,8 @@
 #define DIRECTORY_COMM             "./DComm"
 #define DIRECTORY_BROKER           "./DBroker"
 
+#define SH_MEM_CONFIG_FILE          "SharedMemoryConfigFile.txt"
+
 typedef enum {
     ID_TIPO_VACIO = 0,
     ID_TIPO_CLIENTE,
