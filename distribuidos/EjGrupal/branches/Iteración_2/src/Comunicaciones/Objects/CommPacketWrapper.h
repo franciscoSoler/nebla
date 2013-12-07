@@ -26,8 +26,12 @@ public:
         dirIPC_ = dirIPC;
     }
 
+    void setIdShMem(int idShMem) {
+        idShMem_ = idShMem;
+    }
+    
     template <class T>
-    void createPacket(MsgCanalSalidaAgente & msg, const T & data) {
+    void createPacketForQueues(MsgCanalSalidaAgente & msg, const T & data) {
 
         MsgAgenteReceptor msgAgenteReceptor;
         msgAgenteReceptor.mtype = receiverId_;
@@ -51,12 +55,63 @@ public:
         msg.mtype = senderId_;
         memcpy(&msg.msg, &msgCanalEntradaBroker, sizeof(MsgCanalEntradaBroker));
     }
+    
+    template <class T>
+    void createPacketRequestShMem(MsgCanalSalidaAgente & msg) {
+
+        MsgPedidoMemoriaAdministrador msgPedidoMemoriaAdministrador;
+        msgPedidoMemoriaAdministrador.mtype = idShMem_;
+        msgPedidoMemoriaAdministrador.idReceptor = receiverId_;
+        msgPedidoMemoriaAdministrador.idTipoReceptor = receiverType_;
+
+        MsgCanalEntradaBroker msgCanalEntradaBroker;
+        msgCanalEntradaBroker.idReceptor = receiverId_;
+        msgCanalEntradaBroker.idTipoReceptor = receiverType_;
+        memcpy(&msgCanalEntradaBroker.msg, &msgPedidoMemoriaAdministrador, sizeof(MsgPedidoMemoriaAdministrador));
+
+        msg.mtype = senderId_;
+        memcpy(&msg.msg, &msgCanalEntradaBroker, sizeof(MsgCanalEntradaBroker));
+    }
+    
+    template <class T>
+    void createPacketReplyShMem(MsgCanalSalidaBroker & msg, const T & data) {
+
+        MsgAgenteReceptor msgAgenteReceptor;
+        msgAgenteReceptor.mtype = receiverId_;
+        memcpy(&msgAgenteReceptor.msg, &data, sizeof(T));
+
+        MsgCanalEntradaAgente msgCanalEntradaAgente;
+        strcpy(msgCanalEntradaAgente.directorioIPC, dirIPC_);
+        msgCanalEntradaAgente.idIPC = idDirIPC_;
+        memcpy(& msgCanalEntradaAgente.msg, &msgAgenteReceptor, sizeof(MsgAgenteReceptor));
+        
+        msg.mtype = receiverId_;
+        msg.msg = msgCanalEntradaAgente;
+        memcpy(& msg.msg, &msgCanalEntradaAgente, sizeof(MsgCanalEntradaAgente));
+    }
+    
+    template <class T>
+    void createPacketReturnShMem(MsgCanalSalidaAgente & msg, const T & data) {
+
+        MsgEntregaMemoriaAdministrador msgEntregaMemoriaAdministrador;
+        msgEntregaMemoriaAdministrador.mtype = idShMem_;
+        memcpy(& msgEntregaMemoriaAdministrador.memoria, &data, sizeof(T));
+
+        MsgCanalEntradaBroker msgCanalEntradaBroker;
+        msgCanalEntradaBroker.idReceptor = receiverId_;
+        msgCanalEntradaBroker.idTipoReceptor = receiverType_;
+        memcpy(&msgCanalEntradaBroker.msg, &msgEntregaMemoriaAdministrador, sizeof(MsgEntregaMemoriaAdministrador));
+
+        msg.mtype = senderId_;
+        memcpy(&msg.msg, &msgCanalEntradaBroker, sizeof(MsgCanalEntradaBroker));
+    }
 
 private:
     long receiverId_;
     long senderId_;
     TipoAgente receiverType_;
     int idDirIPC_;
+    int idShMem_;
     const char* dirIPC_;
 };
 
