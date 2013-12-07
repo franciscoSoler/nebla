@@ -9,6 +9,7 @@ class Logger {
 
 public:
     typedef enum {	TRACE = 0,
+                    WARNING,
                     IMPORTANT,
                     DEBUG,
                     COMM,

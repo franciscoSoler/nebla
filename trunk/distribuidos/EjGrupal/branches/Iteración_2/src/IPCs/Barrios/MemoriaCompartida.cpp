@@ -1,6 +1,7 @@
 #include "MemoriaCompartida.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <Logger/Logger.h>
 
 MemoriaCompartida::MemoriaCompartida() {}
 
@@ -20,7 +21,7 @@ void* MemoriaCompartida::crear()
     void* tmpPtr = shmat(this->shmId, NULL, 0);
     if(tmpPtr == (void*) - 1)
     {
-	perror("Error al crear shmem.");
+    Logger::logMessage(Logger::WARNING, "Error al crear shmem.");
 	exit(-1);
     }
     
@@ -41,7 +42,7 @@ void* MemoriaCompartida::obtener()
     void* tmpPtr = shmat(this->shmId, NULL, 0);
     if(tmpPtr == (void*) - 1)
     {
-	perror("Error al obtener shmem.");
+        Logger::logMessage(Logger::WARNING, "Error al obtener shmem.");
     }
     this->ptrDatos = tmpPtr;
     return this->ptrDatos;

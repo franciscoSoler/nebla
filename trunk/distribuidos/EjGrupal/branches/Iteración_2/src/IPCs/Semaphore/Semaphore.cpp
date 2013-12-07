@@ -1,4 +1,5 @@
 #include "Semaphore.h"
+#include <Logger/Logger.h>
 
 namespace IPC {
 
@@ -16,9 +17,9 @@ Semaphore::~Semaphore()
 void Semaphore::destroy(void)
 {
 	if (semctl(this->id, 0, IPC_RMID, (struct semid_ds *) 0) == -1) {
-		sprintf(buffer_, "Semaphore %s Error - destroy: %s",
+        sprintf(buffer_, "Semaphore %s Warning - destroy: %s",
 				getIPCName().c_str(), strerror(errno));
-		throw Exception(std::string(buffer_));
+        Logger::logMessage(Logger::WARNING, buffer_);
 	}
 }
 
@@ -43,17 +44,17 @@ void Semaphore::initializeSemaphore(int numSem, int val)
 
 void Semaphore::getSemaphore(const char *fileName, int id, int qty) {
 	if (this->getId(fileName, id, qty, 0666) == -1) {
-		sprintf(buffer_, "Semaphore %s Error - getSemaphore: %s",
+        sprintf(buffer_, "Semaphore %s Warning - getSemaphore: %s",
 				getIPCName().c_str(), strerror(errno));
-		throw Exception(std::string(buffer_));
-	}
+        Logger::logMessage(Logger::WARNING, buffer_);
+    }
 }
 
 void Semaphore::createSemaphore(const char *fileName, int id, int qty) {
 	if (this->getId(fileName, id, qty, 0666|IPC_CREAT|IPC_EXCL) == -1) {
-		sprintf(buffer_, "Semaphore %s Error - createSemaphore: %s",
+        sprintf(buffer_, "Semaphore %s Warning - createSemaphore: %s",
 				getIPCName().c_str(), strerror(errno));
-		throw Exception(std::string(buffer_));
+        Logger::logMessage(Logger::WARNING, buffer_);
 	}
 }
 

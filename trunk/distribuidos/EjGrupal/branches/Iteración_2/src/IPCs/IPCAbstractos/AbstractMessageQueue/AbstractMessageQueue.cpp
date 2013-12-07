@@ -16,14 +16,25 @@ AbstractMessageQueue::~AbstractMessageQueue() {
 }
 
 int AbstractMessageQueue::createMessageQueue(const char *fileName, int id) {
-	return this->getId(fileName, id, 0666|IPC_CREAT|IPC_EXCL);
+    try {
+        return this->getId(fileName, id, 0666|IPC_CREAT|IPC_EXCL);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::WARNING, e.get_error_description());
+        return -1;
+    }
 }
 
 int AbstractMessageQueue::getMessageQueue(const char *fileName, int id) {
-    // Caso base de la recursividad: Código REEE entendible
-    this->idIPC = id;
-    strcpy(this->dirIPC, fileName);
-    return this->getId(fileName, id, 0666);
+    try {
+        this->idIPC = id;
+        strcpy(this->dirIPC, fileName);
+        return this->getId(fileName, id, 0666);
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::WARNING, e.get_error_description());
+        return -1;
+    }
 }
 
 void AbstractMessageQueue::destroy () {
@@ -38,7 +49,7 @@ int AbstractMessageQueue::getId(const char *fileName, int id, int flags) {
                 throw Exception(std::string(this->buffer));
 	}
 	
-	this->id = msgget ( clave ,flags );
+    this->id = msgget ( clave, flags );
 	if ( this->id == -1 ) {
 		sprintf(this->buffer, "%s - Fallo la operacion msgget: %s", getIPCName().c_str(), strerror(errno));
                 throw Exception(std::string(this->buffer));

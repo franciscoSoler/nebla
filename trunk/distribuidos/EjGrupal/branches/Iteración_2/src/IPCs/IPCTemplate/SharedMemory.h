@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <Exceptions/Exception.h>
 #include <IPCs/IPCObject/IPCObject.h>
+#include <Logger/Logger.h>
 
 namespace IPC {
 
@@ -36,9 +37,10 @@ public:
 	 */
 	void getSharedMemory(const char *fileName, int id) {
         if (this->getId(fileName, id, 0666) == -1) {
-            sprintf(buffer_, "Shared Memory %s Error - getSharedMemory: %s",
+            sprintf(buffer_, "Shared Memory %s Warning - getSharedMemory: %s",
                     getIPCName().c_str(), strerror(errno));
-            throw Exception(buffer_);
+            Logger::logMessage(Logger::WARNING, buffer_);
+            return;
         }
 
         try {
@@ -57,9 +59,9 @@ public:
 	 */
 	void createSharedMemory(const char *fileName, int id) {
         if (this->getId(fileName, id, 0666|IPC_CREAT|IPC_EXCL) == -1) {
-            sprintf(buffer_, "Shared Memory %s Error - createSharedMemory: %s",
+            sprintf(buffer_, "Shared Memory %s Warning - createSharedMemory: %s",
                     getIPCName().c_str(), strerror(errno));
-            throw Exception(buffer_);
+            Logger::logMessage(Logger::WARNING, buffer_);
         }
 
         try {
@@ -84,9 +86,9 @@ public:
         }
 
         if (shmctl(this->id, IPC_RMID, NULL) != 0) {
-            sprintf(buffer_, "SharedMemory %s Error - destroy: %s",
+            sprintf(buffer_, "SharedMemory %s Warning - destroy: %s",
             getIPCName().c_str(), strerror(errno));
-            throw Exception(std::string(buffer_));
+            Logger::logMessage(Logger::WARNING, buffer_);
         }  
     }
     
