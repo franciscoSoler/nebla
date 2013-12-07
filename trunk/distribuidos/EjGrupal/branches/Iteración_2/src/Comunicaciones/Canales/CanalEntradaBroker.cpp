@@ -5,6 +5,7 @@
 #include <Logger/Logger.h>
 #include <Common.h>
 #include <IPCs/IPCTemplate/MsgQueue.h>
+#include <IPCs/Semaphore/Semaphore.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
@@ -12,6 +13,7 @@
 #include <Socket/SocketStream.h>
 
 #include "middlewareCommon.h"
+#include "SharedMemory.h"
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalEntradaBroker:");
@@ -52,6 +54,19 @@ int main(int argc, char* argv[]) {
             
             colaAgente.getMsgQueue(DIRECTORY_BROKER, mensaje.idTipoReceptor);
             colaAgente.send(mensaje.msg);
+            
+            if (mensaje.idTipoReceptor == ID_TIPO_PEDIDO_MEMORIA) {
+                IPC::SharedMemory<int> contadoraSharedMemory = IPC::SharedMemory<int>("Contadora Pedidos Sh Mem");
+                contadoraSharedMemory.getSharedMemory(DIRECTORY_ADM, mensaje.idReceptor); 
+                IPC::Semaphore semaforoContadora = IPC::Semaphore("Semaforo Contadora Pedidos");
+                semaforoContadora.getSemaphore(DIRECTORY_ADM, mensaje.idReceptor,1);
+                semaforoContadora.wait();
+                int cantidad;
+                contadoraSharedMemory.read(&cantidad);
+                cantidad++;
+                contadoraSharedMemory.write(&cantidad);
+                semaforoContadora.signal();
+            }
         }
     }
     catch (Exception & e) {

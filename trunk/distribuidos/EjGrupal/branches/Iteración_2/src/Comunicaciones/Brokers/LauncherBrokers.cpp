@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
     try {
         Util::getInstance();
         
+        createDirectory(DIRECTORY_ADM);
         createDirectory(DIRECTORY_BROKER);
         
         createIPCs();
@@ -85,6 +86,14 @@ void createIPCs() {
     
     colaAgente.create(DIRECTORY_BROKER, ID_TIPO_DESPACHO);
     Logger::logMessage(Logger::COMM, "Cola Despacho creada"); 
+
+    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+    Logger::logMessage(Logger::COMM, "Cola Memorias creada");
+    
+    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+    Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");    
+
+    // TODO: Crear todas las memorias compartidas de contadoras bajo DIRECTORY_ADM
 }
 
 void createSharedMemoryAdministrators() {
