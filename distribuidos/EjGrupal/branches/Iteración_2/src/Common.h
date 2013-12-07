@@ -477,8 +477,6 @@ typedef struct _OrdenProduccion
     int tipoProducto;
 } OrdenDeProduccion;
 
-
-
 typedef struct _EspacioAlmacen
 {
     EstadoEspacio estado;
@@ -488,6 +486,11 @@ typedef struct _EspacioAlmacen
     bool esTemporal;
 } EspacioAlmacenProductos;
 
+
+typedef struct 
+{
+    EspacioAlmacenProductos almacen[TAM_ALMACEN];
+} AlmacenProductosTerminados;
 
 
 typedef struct _consulta_almacen_piezas

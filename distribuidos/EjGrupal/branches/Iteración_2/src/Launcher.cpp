@@ -33,7 +33,7 @@
 #include "IPCs/IPCTemplate/SharedMemory.h"
 #include "IPCs/IPCTemplate/MsgQueue.h"
 
-#include "IPCs/Barrios/MemoriaCompartida.h"
+//#include "IPCs/Barrios/MemoriaCompartida.h"
 #include "VendedorLibreMessageQueue.h"
 #include "ClientesMessageQueue.h"
 #include "PedidosVendedorMessageQueue.h"
@@ -320,11 +320,11 @@ void createIPCs() {
     IPC::MsgQueue respuestasAlmacen("RespuestasAlmacen");
     respuestasAlmacen.create(DIRECTORY_VENDEDOR, ID_COLA_RESPUESTAS_ALMACEN_PIEZAS);
     
-    MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
-    shmemAlmacenTerminados.crear();
-    MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
-    shmemNumeroOrdenCompra.crear();
-    int* shMemData = (int*) shmemNumeroOrdenCompra.obtener();
+    IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados("shMemAlmacenTerminados");
+    shmemAlmacenTerminados.createSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
+    
+    IPC::SharedMemory<int> shmemNumeroOrdenCompra("ultimaOrdenCompra");
+    shmemNumeroOrdenCompra.createSharedMemory(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC);
     
     IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");
     mutexAlmacenTerminados.createSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
@@ -337,7 +337,8 @@ void createIPCs() {
     /* Setea la orden de compra en uno por ser la primera. */
     mutexOrdenDeCompra.wait();
     {
-	*shMemData = 1;
+	int shMemData = 1;
+        shmemNumeroOrdenCompra.write(&shMemData);
     }
     mutexOrdenDeCompra.signal();
         

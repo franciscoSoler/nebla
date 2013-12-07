@@ -9,8 +9,8 @@
 #include <unistd.h>
 #include "Common.h"
 #include "IPCs/Semaphore/Semaphore.h"
-#include "IPCs/Barrios/MemoriaCompartida.h"
-#include "Objects/SmMemAlmacenProductosTerminados.h"
+#include <IPCs/IPCTemplate/SharedMemory.h>
+//#include "Objects/SmMemAlmacenProductosTerminados.h"
 
 using namespace std;
 
@@ -20,14 +20,19 @@ int main(int argc, char** argv)
      * y reservas simulando que ya hubo comportamiento. */
     IPC::Semaphore mutex = IPC::Semaphore("Acceso Almacen Terminados");
     mutex.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
-        
-    SmMemAlmacenProductosTerminados almacenProductosTerminados;
-        
+    
+    IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados("shMemAlmacenTerminados");
+    shmemAlmacenTerminados.getSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
+    
+    AlmacenProductosTerminados almacenPT;
+    
     while(true)
     {
 	mutex.wait();
-	EspacioAlmacenProductos* matrizAPT = almacenProductosTerminados.obtenerMatriz();
 	
+        shmemAlmacenTerminados.read(&almacenPT);
+        EspacioAlmacenProductos matrizAPT[TAM_ALMACEN] = almacenPT.almacen;
+        
 	for(int i = 0; i < TAM_ALMACEN; i++)
 	{
 	    EspacioAlmacenProductos espacio = matrizAPT[i];
@@ -53,7 +58,7 @@ int main(int argc, char** argv)
 	}
 	mutex.signal();
 	
-	cout << endl;
+	//cout << endl;
 	char a = getchar(); a = a;
     }
 

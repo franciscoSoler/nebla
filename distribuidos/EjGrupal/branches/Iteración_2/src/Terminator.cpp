@@ -33,7 +33,6 @@
 #include "API/Objects/DataSM_R14_R16.h"
 #include "IPCs/IPCTemplate/SharedMemory.h"
 
-#include "IPCs/Barrios/MemoriaCompartida.h"
 #include "MsgQueue.h"
 
 #include <Comunicaciones/Objects/ServersManager.h>
@@ -252,10 +251,13 @@ int main(int argc, char* argv[]) {
         abort();
     }
    
-    MemoriaCompartida shmemAlmacenTerminados(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
-    shmemAlmacenTerminados.liberar();
-    MemoriaCompartida shmemNumeroOrdenCompra(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
-    shmemNumeroOrdenCompra.liberar();
+    IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados("shMemAlmacenTerminados");
+    shmemAlmacenTerminados.getSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
+    shmemAlmacenTerminados.destroy();
+    
+    IPC::SharedMemory<int> shmemNumeroOrdenCompra("ultimaOrdenCompra");
+    shmemNumeroOrdenCompra.getSharedMemory(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC);
+    shmemNumeroOrdenCompra.destroy();
 
     IPC::Semaphore mutexAlmacenTerminados("Mutex Almacen Terminados");
     mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);

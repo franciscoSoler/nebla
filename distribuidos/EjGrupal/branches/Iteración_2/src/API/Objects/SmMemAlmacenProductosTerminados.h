@@ -8,7 +8,7 @@
 #ifndef SMMEMALMACENPRODUCTOSTERMINADOS_H
 #define	SMMEMALMACENPRODUCTOSTERMINADOS_H
 
-#include "MemoriaCompartida.h"
+//#include "MemoriaCompartida.h"
 #include "../../IPCs/Semaphore/Semaphore.h"
 #include "../../Common.h"
 
@@ -18,6 +18,8 @@ public:
 	SmMemAlmacenProductosTerminados();
 	virtual ~SmMemAlmacenProductosTerminados();
 	
+        void establecerMatriz(EspacioAlmacenProductos almacenTerminados[TAM_ALMACEN]);
+        
 	int obtenerEspaciosVacios();
 	int obtenerCantidadDeStockDeProducto(int numProducto);
 	
@@ -39,11 +41,11 @@ public:
     bool sacarCaja(Caja* caja, int idProducto, int idOrdenCompra);
     bool chequearPedidoReservadoEnStock(int tipoProducto);
 	
-	EspacioAlmacenProductos* obtenerMatriz();
+	void obtenerMatriz(EspacioAlmacenProductos almacenTerminados[TAM_ALMACEN]);
 
 private:
-	MemoriaCompartida shmemAlmacenTerminados;
-	EspacioAlmacenProductos* almacenTerminados;	
+	//MemoriaCompartida shmemAlmacenTerminados;
+	EspacioAlmacenProductos almacenTerminados[TAM_ALMACEN];	
 
     void almacenarProductoNoReservadoEnAlmacen(Caja unaCaja, long & idOrdenDeCompra);
     void almacenarProductoReservadoEnAlmacen(Caja unaCaja);

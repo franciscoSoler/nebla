@@ -38,6 +38,7 @@ private:
     SmMemAlmacenProductosTerminados shMem_APT_;
     
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
+    IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados;
     IPC::CommSemaphoreMutex semMutex_shMem_R14_R16_;
     IPC::CommSemaphoreMutex semMutex_shMem_APT_;
     IPC::Semaphore semMutex_sincronismo_R16_;
