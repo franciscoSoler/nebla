@@ -68,6 +68,17 @@ int main(int argc, char* argv[]) {
         colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_DESPACHO);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Despacho destruida"); 
+        
+        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+        colaAgente.destroy();  
+        Logger::logMessage(Logger::COMM, "Cola Memorias destruida");
+   
+        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+        colaAgente.destroy();     
+        Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias destruida"); 
+    
+        // TODO: Destruir todas las memorias compartidas de contadoras
+
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

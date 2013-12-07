@@ -151,21 +151,22 @@ add_executable(${OUT_DIR}Vendedor                           ${SRC_DIR}Vendedor.c
 add_executable(${OUT_DIR}AlmacenPiezas                      ${SRC_DIR}AlmacenPiezas.cpp                         ${COMMON_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorCanastos                  ${SRC_DIR}RepositorCanastos.cpp                     ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorGabinetes.cpp                    ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
-add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC} ${VENDEDOR_SRC})
-#add_executable(${OUT_DIR}MonitorAlmacenPiezas              ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC})
+#add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC} ${VENDEDOR_SRC} ${NUMERADOR_SRC})
+#add_executable(${OUT_DIR}MonitorAlmacenPiezas              ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC} ${NUMERADOR_SRC})
 
 add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
 
 # Broker - Agente
-add_executable(${OUT_DIR}LauncherAgentes                    ${SRC_DIR}Comunicaciones/Agentes/LauncherAgentes.cpp     ${COMMON_SRC})
-add_executable(${OUT_DIR}TerminatorAgentes                  ${SRC_DIR}Comunicaciones/Agentes/TerminatorAgentes.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalSalidaAgente                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaAgente.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalEntradaAgente                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaAgente.cpp  ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalSalidaBroker                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaBroker.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalEntradaBroker                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaBroker.cpp  ${COMMON_SRC})
-add_executable(${OUT_DIR}LauncherBrokers                    ${SRC_DIR}Comunicaciones/Brokers/LauncherBrokers.cpp     ${COMMON_SRC})
-add_executable(${OUT_DIR}TerminatorBrokers                  ${SRC_DIR}Comunicaciones/Brokers/TerminatorBrokers.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}Broker                             ${SRC_DIR}Comunicaciones/Brokers/Broker.cpp              ${COMMON_SRC})
+add_executable(${OUT_DIR}LauncherAgentes                    ${SRC_DIR}Comunicaciones/Agentes/LauncherAgentes.cpp      ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorAgentes                  ${SRC_DIR}Comunicaciones/Agentes/TerminatorAgentes.cpp    ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaAgente                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaAgente.cpp    ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaAgente                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaAgente.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaBroker                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaBroker.cpp    ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaBroker                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaBroker.cpp   ${COMMON_SRC})
+add_executable(${OUT_DIR}AdministradorMemoria               ${SRC_DIR}Comunicaciones/Brokers/AdministradorMemoria.cpp ${COMMON_SRC})
+add_executable(${OUT_DIR}LauncherBrokers                    ${SRC_DIR}Comunicaciones/Brokers/LauncherBrokers.cpp      ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorBrokers                  ${SRC_DIR}Comunicaciones/Brokers/TerminatorBrokers.cpp    ${COMMON_SRC})
+add_executable(${OUT_DIR}Broker                             ${SRC_DIR}Comunicaciones/Brokers/Broker.cpp               ${COMMON_SRC})
 
 
 
@@ -193,7 +194,7 @@ target_link_libraries(${OUT_DIR}Cliente                                     IPCL
 target_link_libraries(${OUT_DIR}Vendedor                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}AlmacenPiezas                               IPCLibrary)
 #target_link_libraries(${OUT_DIR}MonitorAlmacenPiezas                       IPCLibrary)
-target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCLibrary)
+#target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)
 
@@ -204,6 +205,7 @@ target_link_libraries(${OUT_DIR}CanalSalidaAgente                           IPCL
 target_link_libraries(${OUT_DIR}CanalEntradaAgente                          IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaBroker                           IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalEntradaBroker                          IPCLibrary)
+target_link_libraries(${OUT_DIR}AdministradorMemoria                        IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherBrokers                             IPCLibrary)
 target_link_libraries(${OUT_DIR}TerminatorBrokers                           IPCLibrary)
 target_link_libraries(${OUT_DIR}Broker                                      IPCLibrary)
