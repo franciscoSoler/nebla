@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalSalidaBroker:");
     char buffer[TAM_BUFFER];
     char bufferSocket[TAM_BUFFER];
+    char bufferMsgQueue[MSG_BROKER_SIZE];
     CommunicationsUtil util;
     int idSd = 0;
     long idAgente = 0;
@@ -52,8 +53,12 @@ int main(int argc, char* argv[]) {
         
         while ( true ) {
             MsgCanalSalidaBroker mensaje;
-            colaBroker.recv(idAgente, mensaje);
-            Logger::logMessage(Logger::COMM, "Recibe mensaje de Broker");
+            //colaBroker.recv(idAgente, mensaje);
+            colaBroker.recv(idAgente, bufferMsgQueue, MSG_BROKER_SIZE);
+            memcpy(&mensaje, bufferMsgQueue, sizeof(MsgCanalSalidaBroker));
+            
+            sprintf(buffer, "Recibe mensaje de Broker, con tamaño %lud", sizeof(mensaje));
+            Logger::logMessage(Logger::COMM, buffer);
 
             /*msg_pedido_t pedido;
             memcpy(&pedido, mensaje.msg.msg.msg, sizeof(msg_pedido_t));

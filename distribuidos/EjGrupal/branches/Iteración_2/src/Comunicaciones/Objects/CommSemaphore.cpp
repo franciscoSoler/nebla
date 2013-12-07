@@ -77,7 +77,6 @@ int CommSemaphore::getId(const char *fileName, int id, int qty, int flags)
 void CommSemaphore::wait(int numSem)
 {	
     //receive()
-    //escribo en shMem
     struct sembuf oper;
     oper.sem_num = numSem;
     oper.sem_op = -1;
