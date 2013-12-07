@@ -38,9 +38,9 @@ private:
     SmMemAlmacenProductosTerminados shMem_APT_;
     
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
-    IPC::Semaphore semMutex_shMem_R14_R16_;
-    IPC::Semaphore semMutex_shMem_APT_;
-    IPC::Semaphore semMutex_sincronismo_R16_;
+    IPC::SemaphoreMutex semMutex_shMem_R14_R16_;
+    IPC::SemaphoreMutex semMutex_shMem_APT_;
+    IPC::SemaphoreMutex semMutex_sincronismo_R16_;
     IPC::Semaphore semR14_Cinta15_;
 
     CommMsgHandler inputQueueR16_Cinta15_;

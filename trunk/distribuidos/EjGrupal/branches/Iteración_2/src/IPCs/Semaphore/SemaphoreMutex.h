@@ -12,7 +12,7 @@ public:
     virtual ~SemaphoreMutex();
     
     void wait(int numSem = 0);
-    
+        
 private:
 
 };
