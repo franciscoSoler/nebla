@@ -15,7 +15,7 @@
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("CanalEntradaBroker:");
-    char buffer[TAM_BUFFER];
+    //char buffer[TAM_BUFFER];
     char bufferSocket[TAM_BUFFER];
     CommunicationsUtil util;
     int idSd = 0;
@@ -47,8 +47,8 @@ int main(int argc, char* argv[]) {
             sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
-            sprintf(buffer, "parametros mensaje: mtype del siguiente salto: %ld, idReceptor %ld, idTipoReceptor %d ", mensaje.msg.mtype, mensaje.idReceptor, mensaje.idTipoReceptor);
-            Logger::logMessage(Logger::COMM, buffer);
+            //sprintf(buffer, "parametros mensaje: mtype del siguiente salto: %ld, idReceptor %ld, idTipoReceptor %d ", mensaje.msg.mtype, mensaje.idReceptor, mensaje.idTipoReceptor);
+            //Logger::logMessage(Logger::COMM, buffer);
             
             colaAgente.getMsgQueue(DIRECTORY_BROKER, mensaje.idTipoReceptor);
             colaAgente.send(mensaje.msg);
