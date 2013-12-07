@@ -39,19 +39,19 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semBloqueoRobot5 = IPC::Semaphore("semBloqueoRobot5");
         this->semBloqueoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
         
-        this->semMemEstadoRobot5 = IPC::Semaphore("semMemEstadoRobot5");
+        this->semMemEstadoRobot5 = IPC::SemaphoreMutex("semMemEstadoRobot5");
         this->semMemEstadoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
 
         this->semBloqueoRobot11 = IPC::Semaphore("semBloqueoRobot11");
         this->semBloqueoRobot11.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
 
-        this->semBufferCinta6 = IPC::Semaphore("semBufferCinta6");
+        this->semBufferCinta6 = IPC::SemaphoreMutex("semBufferCinta6");
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semBufferCanastos = IPC::Semaphore("semMemCanastos");
+        this->semBufferCanastos = IPC::SemaphoreMutex("semMemCanastos");
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->semMutex_shMem_R11_R14_ = IPC::Semaphore ("semMutex_shMem_R11_R14");
+        this->semMutex_shMem_R11_R14_ = IPC::SemaphoreMutex ("semMutex_shMem_R11_R14");
         this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
         this->semR11_Cinta13_ = IPC::Semaphore ("semR11_Cinta13");

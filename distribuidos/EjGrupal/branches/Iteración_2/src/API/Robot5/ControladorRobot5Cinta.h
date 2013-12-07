@@ -18,7 +18,7 @@
 
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/Semaphore/SemaphoreMutex.h"
 
 #include "../AlmacenPiezas/EspacioAlmacenPiezas/EspacioAlmacenPiezas.h"
 

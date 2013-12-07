@@ -12,7 +12,7 @@
 #include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
-#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/Semaphore/SemaphoreMutex.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 #include "../Objects/DataSM_R11_R14.h"

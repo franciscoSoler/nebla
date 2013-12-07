@@ -30,10 +30,10 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->semBloqueoAGV = IPC::Semaphore("semBloqueoAGV");
         this->semBloqueoAGV.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 
-        this->semBufferAGV_5 = IPC::Semaphore("semBufferAGV_5");
+        this->semBufferAGV_5 = IPC::SemaphoreMutex("semBufferAGV_5");
         this->semBufferAGV_5.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
 
-        this->semMemCanastos = IPC::Semaphore("semMemCanastos");
+        this->semMemCanastos = IPC::SemaphoreMutex("semMemCanastos");
         this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_AGV, ID_TIPO_AGV);

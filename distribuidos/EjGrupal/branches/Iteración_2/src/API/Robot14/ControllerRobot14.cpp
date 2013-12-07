@@ -1,7 +1,6 @@
 #include "ControllerRobot14.h"
 #include "MsgQueue.h"
 #include <Logger/Logger.h>
-#include <IPCs/Semaphore/Semaphore.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <API/Objects/DataSM_R11_R14.h>
 #include <API/Objects/Util.h>
@@ -30,10 +29,10 @@ ControllerRobot14::ControllerRobot14() {
         shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("ShMem_R14_R16");
         shMem_R14_R16_.getSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
    
-        semMutex_shMem_R11_R14_ = IPC::Semaphore ("semMutex_shMem_R11_R14");
+        semMutex_shMem_R11_R14_ = IPC::SemaphoreMutex ("semMutex_shMem_R11_R14");
         semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
-        semMutex_shMem_R14_R16_ = IPC::Semaphore ("semMutex_shMem_R14_R16");
+        semMutex_shMem_R14_R16_ = IPC::SemaphoreMutex ("semMutex_shMem_R14_R16");
         semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
     
         semR11_Cinta13_ = IPC::Semaphore ("semR11_Cinta13");

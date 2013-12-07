@@ -2,7 +2,7 @@
 #define	CONTROLLER_R16_DESPACHO_H_
 
 #include <API/Robot16_Despacho/IControllerR16_Despacho.h>
-#include <IPCs/Semaphore/Semaphore.h>
+#include <IPCs/Semaphore/SemaphoreMutex.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <API/Objects/DataSM_R14_R16.h>
 #include <definedTypes.h>

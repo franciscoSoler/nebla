@@ -2,7 +2,7 @@
 #define	CONTROLLER_R16_CINTA_15_H
 
 #include <API/Robot16_Cinta15/IControllerR16_Cinta15.h>
-#include <IPCs/Semaphore/Semaphore.h>
+#include <IPCs/Semaphore/SemaphoreMutex.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <API/Objects/DataSM_R14_R16.h>
 #include <definedTypes.h>

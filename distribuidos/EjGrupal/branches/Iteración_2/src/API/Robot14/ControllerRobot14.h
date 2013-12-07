@@ -2,7 +2,7 @@
 #define	CONTROLLERROBOT14_H
 
 #include <API/Robot14/IControllerRobot14.h>
-#include <IPCs/Semaphore/Semaphore.h>
+#include <IPCs/Semaphore/SemaphoreMutex.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <API/Objects/DataSM_R11_R14.h>
 #include <API/Objects/DataSM_R14_R16.h>

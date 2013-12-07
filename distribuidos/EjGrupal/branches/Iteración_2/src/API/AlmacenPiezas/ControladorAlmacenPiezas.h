@@ -19,7 +19,7 @@
 #include "../../Common.h"
 #include "IControladorAlmacenPiezas.h"
 
-#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/Semaphore/SemaphoreMutex.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
