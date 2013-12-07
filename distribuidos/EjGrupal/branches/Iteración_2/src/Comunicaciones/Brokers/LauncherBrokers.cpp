@@ -6,13 +6,16 @@
 #include <middlewareCommon.h>
 #include <Exceptions/Exception.h>
 #include "Logger/Logger.h"
+#include <ConfigFileParser/ConfigFileParser.h>
 
 #include <API/Objects/Util.h>
 #include "IPCs/IPCTemplate/MsgQueue.h"
+
 #include <Comunicaciones/Objects/ServersManager.h>
 
 void createIPCs();
 void createDirectory(std::string directoryName);
+void createSharedMemoryAdministrators();
 
 int main(int argc, char* argv[]) {
     try {
@@ -21,6 +24,7 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_BROKER);
         
         createIPCs();
+        //createSharedMemoryAdministrators();
 
         ServersManager serversManager;
         serversManager.createServer("ServidorCanalEntradaBroker");
@@ -80,5 +84,16 @@ void createIPCs() {
     
     colaAgente.create(DIRECTORY_BROKER, ID_TIPO_DESPACHO);
     Logger::logMessage(Logger::COMM, "Cola Despacho creada"); 
+}
+
+void createSharedMemoryAdministrators() {
+    std::auto_ptr<IConfigFileParser*> cfg( new ConfigFileParser(SH_MEM_CONFIG_FILE)) ;
+    std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
+    int listSize = sharedMemoryListIds.size();
+
+    for (int i = 0; i < sharedMemoryListIds; ++i) {
+        Util::createProcess("AdministradorMemoria", sharedMemoryListIds.front());
+        sharedMemoryListIds.pop_front();
+    }
 }
 

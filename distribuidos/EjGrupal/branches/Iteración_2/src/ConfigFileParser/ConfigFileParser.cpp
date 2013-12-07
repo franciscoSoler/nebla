@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <iostream>
 
 
 ConfigFileParser::ConfigFileParser(std::string configFilePath) {
@@ -82,6 +83,38 @@ std::string ConfigFileParser::getConfigFileParam(std::string param, std::string 
     else {
         return defaultValue;
     }
+}
+
+std::list<std::string> ConfigFileParser::getParamStringList(std::string param) const {
+    std::transform(param.begin(), param.end(), param.begin(), ::tolower);
+    std::list<std::string> listOfStrings;
+    std::map<std::string, std::string>::const_iterator it;
+
+    for (it = dictionary_.begin(); it != dictionary_.end(); ++it) {
+        std::string key = it->first;
+        key = key.substr(0, param.size());
+
+        if (key == param) {
+            listOfStrings.push_back( it->second );
+        }
+    }
+
+    return listOfStrings;
+}
+
+std::list<int> ConfigFileParser::getParamIntList(std::string param) const {
+    std::list<std::string> stringList = this->getParamStringList( param );
+    std::list<std::string>::iterator it;
+    std::list<int> intList;
+
+    for (it = stringList.begin(); it != stringList.end(); ++it) {
+        int value;
+        // TODO: Check that the string is a int!!
+        std::istringstream( *it ) >> value;
+        intList.push_back( value );
+    }
+
+    return intList;
 }
 
 void ConfigFileParser::setConfigFileParam(std::string param, const int value) {

@@ -14,6 +14,18 @@ public:
     void parse();
     int getConfigFileParam(std::string param, const int defaultValue) const;
     std::string getConfigFileParam(std::string param, std::string defaultValue) const;
+
+    /* @brief: Returna list of value that starts with the key std::string param
+     *
+     */
+    std::list<std::string> getParamStringList(std::string param) const;
+
+    /* @brief: Returna list of std::string value that starts with
+     * the key std::string param
+     *
+     */
+    std::list<int> getParamIntList(std::string param) const;
+
     void setConfigFileParam(std::string param, const int value);
     void setConfigFileParam(std::string param, std::string value);
     virtual ~ConfigFileParser();
