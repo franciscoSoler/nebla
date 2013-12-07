@@ -13,6 +13,7 @@
 ControladorRobot5Cinta::ControladorRobot5Cinta() :
         //colaPedidosProduccion("PedidosProduccionMessageQueue", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP),
         estadoRobot5("EstadoRobot5SharedMemory"),        
+        semaforoAccesoEstadoRobot5("AccesoEstadoRobot5"),
         semaforoBloqueoRobot5("BloqueoRobot5"),
         semaforoBloqueoRobot11("BloqueoRobot11"),
         semaforoApiRobot5("ApiRobot5")
@@ -43,8 +44,6 @@ void ControladorRobot5Cinta::iniciarControlador()
 
 	/* Obtengo la memoria compartida del estado del robot 5 y su semaforo de acceso */
 	estadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
-        
-        semaforoAccesoEstadoRobot5 = IPC::SemaphoreMutex("AccesoEstadoRobot5");
 	semaforoAccesoEstadoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
 	semaforoBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
 

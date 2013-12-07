@@ -18,7 +18,7 @@
 
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
-#include "../../IPCs/Semaphore/SemaphoreMutex.h"
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 
 #include "../AlmacenPiezas/EspacioAlmacenPiezas/EspacioAlmacenPiezas.h"
 
@@ -52,10 +52,10 @@ private:
     
     IPC::PedidosProduccionMessageQueue colaPedidosProduccion;
     IPC::EstadoRobot5SharedMemory estadoRobot5;
-    IPC::SemaphoreMutex semaforoAccesoEstadoRobot5;
-    IPC::Semaphore semaforoBloqueoRobot5;
+    IPC::CommSemaphoreMutex semaforoAccesoEstadoRobot5;
+    IPC::CommSemaphore semaforoBloqueoRobot5;
 
-    IPC::Semaphore semaforoBloqueoRobot11;
+    IPC::CommSemaphore semaforoBloqueoRobot11;
     
     IPC::Semaphore semaforoApiRobot5;
     

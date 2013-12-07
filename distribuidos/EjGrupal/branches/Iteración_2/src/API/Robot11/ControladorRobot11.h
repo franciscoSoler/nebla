@@ -12,7 +12,7 @@
 #include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
-#include "../../IPCs/Semaphore/SemaphoreMutex.h"
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 #include "../../IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 #include "../Objects/DataSM_R11_R14.h"
@@ -43,11 +43,11 @@ private:
     int id_semMemCanastos;
     int id_Robot;
     //int posicionPieza;
-    IPC::Semaphore semBloqueoRobot11;
-    IPC::SemaphoreMutex semBufferCanastos;
-    IPC::SemaphoreMutex semBufferCinta6;
-    IPC::SemaphoreMutex semMemEstadoRobot5;
-    IPC::Semaphore semBloqueoRobot5;
+    IPC::CommSemaphore semBloqueoRobot11;
+    IPC::CommSemaphoreMutex semBufferCanastos;
+    IPC::CommSemaphoreMutex semBufferCinta6;
+    IPC::CommSemaphoreMutex semMemEstadoRobot5;
+    IPC::CommSemaphore semBloqueoRobot5;
 
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
     IPC::Barrera1112MessageQueue cola11_A_12;
@@ -58,9 +58,9 @@ private:
     
     DataSM_R11_R14* shMem_R11_R14_Data_;
     IPC::SharedMemory<DataSM_R11_R14> shMem_R11_R14_;
-    IPC::SemaphoreMutex semMutex_shMem_R11_R14_;
-    IPC::Semaphore semR11_Cinta13_;
-    IPC::Semaphore semR14_Cinta13_;
+    IPC::CommSemaphoreMutex semMutex_shMem_R11_R14_;
+    IPC::CommSemaphore semR11_Cinta13_;
+    IPC::CommSemaphore semR14_Cinta13_;
     
     bool poseePieza(int id_pieza);
     //void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);

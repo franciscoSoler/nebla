@@ -27,13 +27,13 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
 
         this->id_AGV = id_AGV;
 
-        this->semBloqueoAGV = IPC::Semaphore("semBloqueoAGV");
+        this->semBloqueoAGV = IPC::CommSemaphore("semBloqueoAGV");
         this->semBloqueoAGV.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 
-        this->semBufferAGV_5 = IPC::SemaphoreMutex("semBufferAGV_5");
+        this->semBufferAGV_5 = IPC::CommSemaphoreMutex("semBufferAGV_5");
         this->semBufferAGV_5.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
 
-        this->semMemCanastos = IPC::SemaphoreMutex("semMemCanastos");
+        this->semMemCanastos = IPC::CommSemaphoreMutex("semMemCanastos");
         this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_AGV, ID_TIPO_AGV);
@@ -42,7 +42,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5", this->id_AGV + 1, ID_TIPO_AGV, ID_TIPO_ROBOT5_AGV);
         this->colaPedidosAGV_5.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
-        this->semRobotCinta = IPC::Semaphore("semRobotCinta");
+        this->semRobotCinta = IPC::CommSemaphore("semRobotCinta");
         
         this->shMemBuffer5yAGV = IPC::BufferCanastoEntre5yAGVSharedMemory("shMemBuffer5yAGV");
         switch (id_AGV) {

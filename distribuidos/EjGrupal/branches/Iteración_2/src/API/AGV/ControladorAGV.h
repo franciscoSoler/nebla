@@ -9,7 +9,7 @@
 #define	CONTROLADORAGV_H
 
 #include "IControladorAGV.h"
-#include "../../IPCs/Semaphore/SemaphoreMutex.h"
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 
@@ -33,10 +33,10 @@ private:
     int id_semMemCanastos;
     int posicionCanasto;
     
-    IPC::SemaphoreMutex semBufferAGV_5;
-    IPC::SemaphoreMutex semMemCanastos;
-    IPC::Semaphore semRobotCinta;
-    IPC::Semaphore semBloqueoAGV;
+    IPC::CommSemaphoreMutex semBufferAGV_5;
+    IPC::CommSemaphoreMutex semMemCanastos;
+    IPC::CommSemaphore semRobotCinta;
+    IPC::CommSemaphore semBloqueoAGV;
 
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
     IPC::PedidosAgvMessageQueue colaPedidosAGV_5;

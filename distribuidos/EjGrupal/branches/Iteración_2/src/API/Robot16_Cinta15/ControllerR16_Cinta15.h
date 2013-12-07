@@ -2,7 +2,7 @@
 #define	CONTROLLER_R16_CINTA_15_H
 
 #include <API/Robot16_Cinta15/IControllerR16_Cinta15.h>
-#include <IPCs/Semaphore/SemaphoreMutex.h>
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <API/Objects/DataSM_R14_R16.h>
 #include <definedTypes.h>
@@ -38,10 +38,10 @@ private:
     SmMemAlmacenProductosTerminados shMem_APT_;
     
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
-    IPC::SemaphoreMutex semMutex_shMem_R14_R16_;
-    IPC::SemaphoreMutex semMutex_shMem_APT_;
-    IPC::SemaphoreMutex semMutex_sincronismo_R16_;
-    IPC::Semaphore semR14_Cinta15_;
+    IPC::CommSemaphoreMutex semMutex_shMem_R14_R16_;
+    IPC::CommSemaphoreMutex semMutex_shMem_APT_;
+    IPC::Semaphore semMutex_sincronismo_R16_;
+    IPC::CommSemaphore semR14_Cinta15_;
 
     CommMsgHandler inputQueueR16_Cinta15_;
     CommMsgHandler inputQueueDespacho_;

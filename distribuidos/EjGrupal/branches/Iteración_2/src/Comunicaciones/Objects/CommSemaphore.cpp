@@ -1,20 +1,20 @@
-#include "Semaphore.h"
+#include "CommSemaphore.h"
 #include <Logger/Logger.h>
 
 namespace IPC {
 
-Semaphore::Semaphore(std::string IPCName) : IPCObject(IPCName),
+CommSemaphore::CommSemaphore(std::string IPCName) : IPCObject(IPCName),
                                             id(0),
                                             cantSem(1)
                                             
 {
 }
 
-Semaphore::~Semaphore() 
+CommSemaphore::~CommSemaphore() 
 {
 }
 
-void Semaphore::destroy(void)
+void CommSemaphore::destroy(void)
 {
 	if (semctl(this->id, 0, IPC_RMID, (struct semid_ds *) 0) == -1) {
         sprintf(buffer_, "Semaphore %s Warning - destroy: %s",
@@ -23,7 +23,7 @@ void Semaphore::destroy(void)
 	}
 }
 
-void Semaphore::initializeSemaphore(int numSem, int val)
+void CommSemaphore::initializeSemaphore(int numSem, int val)
 {
 	// Structure used in semctl
 	union semun {
@@ -42,7 +42,7 @@ void Semaphore::initializeSemaphore(int numSem, int val)
 	}
 } 
 
-void Semaphore::getSemaphore(const char *fileName, int id, int qty) {
+void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
 	if (this->getId(fileName, id, qty, 0666) == -1) {
         sprintf(buffer_, "Semaphore %s Warning - getSemaphore: %s",
 				getIPCName().c_str(), strerror(errno));
@@ -50,7 +50,7 @@ void Semaphore::getSemaphore(const char *fileName, int id, int qty) {
     }
 }
 
-void Semaphore::createSemaphore(const char *fileName, int id, int qty) {
+void CommSemaphore::createSemaphore(const char *fileName, int id, int qty) {
 	if (this->getId(fileName, id, qty, 0666|IPC_CREAT|IPC_EXCL) == -1) {
         sprintf(buffer_, "Semaphore %s Warning - createSemaphore: %s",
 				getIPCName().c_str(), strerror(errno));
@@ -59,7 +59,7 @@ void Semaphore::createSemaphore(const char *fileName, int id, int qty) {
 }
 
 //-----------------------------------------------------------------------------
-int Semaphore::getId(const char *fileName, int id, int qty, int flags)
+int CommSemaphore::getId(const char *fileName, int id, int qty, int flags)
 { 
 	key_t clave = ftok (fileName, id);
 	if ( clave == -1 ) {
@@ -74,8 +74,10 @@ int Semaphore::getId(const char *fileName, int id, int qty, int flags)
 }
 
 //-----------------------------------------------------------------------------
-void Semaphore::wait(int numSem)
-{
+void CommSemaphore::wait(int numSem)
+{	
+    //receive()
+    //escribo en shMem
     struct sembuf oper;
     oper.sem_num = numSem;
     oper.sem_op = -1;
@@ -88,8 +90,9 @@ void Semaphore::wait(int numSem)
     }
 }
 
-void Semaphore::signal(int numSem)
+void CommSemaphore::signal(int numSem)
 {
+    // envio el mismo mensaje que el administrador de la shMem del broker pero con idShMem = 0 para el receive
     struct sembuf oper;
     oper.sem_num = numSem;
     oper.sem_op = 1;

@@ -38,7 +38,7 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         this->shMemBufferCanastos[1].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
         this->shMemBufferCanastos[2].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
 
-        this->semMemCanastos = IPC::SemaphoreMutex("semMemCanastos");
+        this->semMemCanastos = IPC::CommSemaphoreMutex("semMemCanastos");
         this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
     }
     catch (Exception & e) {
