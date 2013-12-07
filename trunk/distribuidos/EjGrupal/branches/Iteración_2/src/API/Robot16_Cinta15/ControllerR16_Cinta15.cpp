@@ -18,6 +18,9 @@ ControllerR16_Cinta15::ControllerR16_Cinta15() {
         shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("shMem_R14_R16");
         shMem_R14_R16_.getSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
         
+        shmemAlmacenTerminados = IPC::SharedMemory<AlmacenProductosTerminados>("shMemAlmacenTerminados");
+        shmemAlmacenTerminados.getSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
+        
         semMutex_shMem_R14_R16_ = IPC::CommSemaphoreMutex ("semMutex_shMem_R14_R16");
         semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
         
@@ -114,10 +117,17 @@ bool ControllerR16_Cinta15::depositarCajaEnAPT(Caja unaCaja, long & idNroOrdenAP
         obtenerMutexSincronismo();
         semMutex_shMem_APT_.wait();
         
+        AlmacenProductosTerminados almacenPT;
+        shmemAlmacenTerminados.read(&almacenPT);
+        
         sprintf(buffer_, "Deposita Caja en APT - TipoProducto: %d, idNroOrden: %ld", unaCaja.idProducto_, idNroOrdenAPT);
         Logger::logMessage(Logger::TRACE, buffer_);
-
+        
+        shMem_APT_.establecerMatriz(almacenPT.almacen);
         bool resultado = shMem_APT_.depositarCaja(unaCaja, idNroOrdenAPT);
+        
+        shMem_APT_.obtenerMatriz(almacenPT.almacen);
+        shmemAlmacenTerminados.write(&almacenPT);
         semMutex_shMem_APT_.signal();
         
         //sprintf(buffer_, "Deposito Caja en APT - TipoProducto: %d, idNroOrdenVieja: %ld idNroOrdenNueva: %ld", unaCaja.idProducto_, unaCaja.idOrdenDeCompra_, idNroOrdenAPT);

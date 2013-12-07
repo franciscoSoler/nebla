@@ -12,6 +12,7 @@
 
 #include "../../Numerador/numerador.h"
 #include "../../Numerador/commonNumerador.h"
+#include "SharedMemory.h"
 
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
 
@@ -38,8 +39,11 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
         this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
         /* Informacion sobre las ordenes de produccion y compra. */
-        this->shmemNumeroOrdenCompra = MemoriaCompartida(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, sizeof(int));
-        this->numeroOrdenCompra = (int*) shmemNumeroOrdenCompra.obtener();
+        this->shmemNumeroOrdenCompra = IPC::SharedMemory<int>("ultimaOrdenCompra");
+        shmemNumeroOrdenCompra.getSharedMemory(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC);
+        
+        this->shmemAlmacenTerminados = IPC::SharedMemory<AlmacenProductosTerminados>("shMemAlmacenTerminados");
+        shmemAlmacenTerminados.getSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
 
         /* Comunicacion con el almacen de piezas. */
         this->colaEnvioOrdenProduccion = CommMsgHandler(numVendedor, ID_TIPO_VENDEDOR, ID_TIPO_AP);
@@ -133,9 +137,11 @@ void ControladorVendedor::vendedorLibre() {
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
 {
     try {
+        int idOrdenDeCompra;
         mutexOrdenDeCompra.wait();
-        int idOrdenDeCompra = *numeroOrdenCompra;
-        (*numeroOrdenCompra)++;
+        this->shmemNumeroOrdenCompra.read(&idOrdenDeCompra);
+        idOrdenDeCompra++;
+        this->shmemNumeroOrdenCompra.write(&idOrdenDeCompra);
         mutexOrdenDeCompra.signal();
         return idOrdenDeCompra;
     }
@@ -398,10 +404,16 @@ void ControladorVendedor::buscarUbicacionDeProductoEnArchivo(Parser parser, ifst
 bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompra* ordenDeCompra, int cantPedidos)
 {
     char mensajePantalla[1024];
+    AlmacenProductosTerminados almacenPT;
+    
     mutexAlmacenTerminados.wait();
     sprintf(mensajePantalla, "Paso el mutex del almacen de terminados, "
             "trabajara con la orden Nº: %ld", ordenDeCompra->idOrden_);
     Logger::getInstance().logMessage(Logger::IMPORTANT, mensajePantalla);
+    
+    this->shmemAlmacenTerminados.read(&almacenPT);
+    this->almacenProductosTerminados.establecerMatriz(almacenPT.almacen);
+    
     bool ordenDeCompraEsValida = true;
     pedido_fabricacion_t pedidosProduccion[CANT_MAX_PEDIDOS];
 
@@ -431,6 +443,9 @@ bool ControladorVendedor::realizarOrdenDeCompra(pedido_t pedidos[], OrdenDeCompr
         confirmarPedidos(pedidosProduccion, *ordenDeCompra, cantPedidos);
     else
         almacenProductosTerminados.anularReservas();
+    
+    this->almacenProductosTerminados.obtenerMatriz(almacenPT.almacen);
+    this->shmemAlmacenTerminados.write(&almacenPT);
     
     mutexAlmacenTerminados.signal();
 

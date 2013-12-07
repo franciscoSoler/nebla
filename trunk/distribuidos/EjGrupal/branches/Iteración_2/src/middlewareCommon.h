@@ -3,9 +3,7 @@
 
 #define DIRECTORY_COMM             "./DComm"
 #define DIRECTORY_BROKER           "./DBroker"
-
 #define DIRECTORY_ADM              "./DAdm"
-
 #define SH_MEM_CONFIG_FILE          "SharedMemoryConfigFile.txt"
 
 typedef enum {

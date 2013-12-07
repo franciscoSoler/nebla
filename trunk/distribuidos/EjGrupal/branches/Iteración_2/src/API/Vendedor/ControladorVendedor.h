@@ -19,7 +19,7 @@
 
 #include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 
-#include "../../IPCs/Barrios/MemoriaCompartida.h"
+#include <IPCs/IPCTemplate/SharedMemory.h>
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
 #include "../../Common.h"
 #include "../../Parser/Parser.h"
@@ -49,8 +49,8 @@ private:
     IPC::VendedorLibreMessageQueue vendedores;
     IPC::ClientesMessageQueue clientes;
     IPC::PedidosVendedorMessageQueue pedidos;
-    MemoriaCompartida shmemNumeroOrdenCompra;
-    int* numeroOrdenCompra;
+    IPC::SharedMemory<int> shmemNumeroOrdenCompra;
+    IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados;
 
     CommMsgHandler colaEnvioOrdenProduccion;
 
