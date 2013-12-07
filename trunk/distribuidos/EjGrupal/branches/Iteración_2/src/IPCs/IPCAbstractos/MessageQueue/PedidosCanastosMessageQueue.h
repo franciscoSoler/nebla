@@ -56,7 +56,7 @@ public:
             wrapper.setReceiverType( idDuenioColaRemota_ );
             wrapper.setReceiverId( idReceptor );
             MsgCanalSalidaAgente msg;
-            wrapper.createPacket(msg, dato);
+            wrapper.createPacketForQueues(msg, dato);
 
             if ( sizeof(MensajePedidoRobotCinta_6) > MSG_QUEUE_FIXED_SIZE ) {
                 sprintf(this->buffer, "MsgQueue %s Error - send: Mensaje demasiado largo",

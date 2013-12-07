@@ -62,7 +62,7 @@ public:
         wrapper.setReceiverType( receiverTypeId_ );
         wrapper.setReceiverId( receiverId );
         MsgCanalSalidaAgente msg;
-        wrapper.createPacket(msg, data);
+        wrapper.createPacketForQueues(msg, data);
 
         try {
             senderMsgQueue_.send(msg);

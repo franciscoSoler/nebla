@@ -34,7 +34,7 @@ public:
         wrapper.setReceiverType( idDuenioColaRemota_ );
         wrapper.setReceiverId( idReceptor );
         MsgCanalSalidaAgente msg;
-        wrapper.createPacket(msg, dato);
+        wrapper.createPacketForQueues(msg, dato);
 
 
         if ( sizeof(msg_respuesta_pedido_t) > MSG_QUEUE_FIXED_SIZE ) {

@@ -32,7 +32,7 @@ public:
             wrapper.setReceiverType( idDuenioColaRemota_ );
             wrapper.setReceiverId( idReceptor );
             MsgCanalSalidaAgente msg;
-            wrapper.createPacket(msg, dato);
+            wrapper.createPacketForQueues(msg, dato);
 
 
             if ( sizeof(MensajePedidoAgv_5) > MSG_QUEUE_FIXED_SIZE ) {
