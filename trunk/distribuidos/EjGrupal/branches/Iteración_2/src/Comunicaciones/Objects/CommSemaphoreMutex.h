@@ -1,15 +1,15 @@
 #ifndef SEMAPHOREMUTEX_H
 #define	SEMAPHOREMUTEX_H
 
-#include "Semaphore.h"
+#include "CommSemaphore.h"
 
 namespace IPC {
 
-class SemaphoreMutex : public Semaphore {
+class CommSemaphoreMutex : public CommSemaphore {
 public:
-    SemaphoreMutex(std::string IPCName = "");
+    CommSemaphoreMutex(std::string IPCName = "");
     
-    virtual ~SemaphoreMutex();
+    virtual ~CommSemaphoreMutex();
     
     void wait(int numSem = 0);
         

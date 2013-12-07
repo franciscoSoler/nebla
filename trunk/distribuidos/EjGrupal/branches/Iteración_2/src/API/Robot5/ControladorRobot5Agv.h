@@ -10,7 +10,7 @@
 
 #include "../../Common.h"
 
-#include "../../IPCs/Semaphore/SemaphoreMutex.h"
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 
@@ -35,8 +35,8 @@ private:
     
     IPC::PedidosAgvMessageQueue colaPedidos;
     IPC::BufferCanastoEntre5yAGVSharedMemory bufferCanasto[CANTIDAD_AGVS]; 
-    IPC::SemaphoreMutex semaforoAccesoBufferAgv; 
-    IPC::Semaphore semaforoBloqueoAgv;
+    IPC::CommSemaphoreMutex semaforoAccesoBufferAgv; 
+    IPC::CommSemaphore semaforoBloqueoAgv;
     IPC::Semaphore semaforoApiRobot5;
     
     EspacioAlmacenPiezas almacen;

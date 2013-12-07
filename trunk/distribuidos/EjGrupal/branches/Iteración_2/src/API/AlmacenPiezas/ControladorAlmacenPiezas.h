@@ -19,7 +19,7 @@
 #include "../../Common.h"
 #include "IControladorAlmacenPiezas.h"
 
-#include "../../IPCs/Semaphore/SemaphoreMutex.h"
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastosSharedMemory.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
@@ -48,7 +48,7 @@ private:
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
 
     IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
-    IPC::SemaphoreMutex semMemCanastos;
+    IPC::CommSemaphoreMutex semMemCanastos;
 
     void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
     void imprimirEspecificacionProducto(EspecifProd especifProd);

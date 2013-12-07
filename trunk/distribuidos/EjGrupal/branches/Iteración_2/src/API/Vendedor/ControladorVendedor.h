@@ -17,7 +17,7 @@
 #include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
-#include "../../IPCs/Semaphore/SemaphoreMutex.h"
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"
@@ -54,8 +54,8 @@ private:
 
     CommMsgHandler colaEnvioOrdenProduccion;
 
-    IPC::Semaphore mutexAlmacenTerminados;
-    IPC::Semaphore mutexOrdenDeCompra;
+    IPC::CommSemaphoreMutex mutexAlmacenTerminados;
+    IPC::CommSemaphoreMutex mutexOrdenDeCompra;
     SmMemAlmacenProductosTerminados almacenProductosTerminados;
     CommMsgHandler inputQueueDespacho;
 

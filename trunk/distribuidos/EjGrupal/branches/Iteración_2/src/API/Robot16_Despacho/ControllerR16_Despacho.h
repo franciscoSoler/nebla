@@ -2,7 +2,7 @@
 #define	CONTROLLER_R16_DESPACHO_H_
 
 #include <API/Robot16_Despacho/IControllerR16_Despacho.h>
-#include <IPCs/Semaphore/SemaphoreMutex.h>
+#include <Comunicaciones/Objects/CommSemaphoreMutex.h>
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <API/Objects/DataSM_R14_R16.h>
 #include <definedTypes.h>
@@ -35,8 +35,8 @@ private:
     SmMemAlmacenProductosTerminados shMem_APT_;
     
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
-    IPC::SemaphoreMutex semMutex_shMem_R14_R16_;
-    IPC::SemaphoreMutex semMutex_shMem_APT_;
+    IPC::CommSemaphoreMutex semMutex_shMem_R14_R16_;
+    IPC::CommSemaphoreMutex semMutex_shMem_APT_;
     CommMsgHandler inputQueueR16_Despacho_;
     CommMsgHandler R16_Cliente_Queue_;
     Msg_FinProductoR16 mensaje_;
