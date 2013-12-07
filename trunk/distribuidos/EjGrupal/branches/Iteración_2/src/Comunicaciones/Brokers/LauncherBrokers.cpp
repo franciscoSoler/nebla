@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <memory>
 
 #include <Common.h>
 #include <middlewareCommon.h>
@@ -87,11 +88,11 @@ void createIPCs() {
 }
 
 void createSharedMemoryAdministrators() {
-    std::auto_ptr<IConfigFileParser*> cfg( new ConfigFileParser(SH_MEM_CONFIG_FILE)) ;
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SH_MEM_CONFIG_FILE) );
     std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
     int listSize = sharedMemoryListIds.size();
 
-    for (int i = 0; i < sharedMemoryListIds; ++i) {
+    for (int i = 0; i < listSize; ++i) {
         Util::createProcess("AdministradorMemoria", sharedMemoryListIds.front());
         sharedMemoryListIds.pop_front();
     }
