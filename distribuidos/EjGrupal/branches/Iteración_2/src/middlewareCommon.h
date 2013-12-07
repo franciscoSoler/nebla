@@ -4,6 +4,8 @@
 #define DIRECTORY_COMM             "./DComm"
 #define DIRECTORY_BROKER           "./DBroker"
 
+#define DIRECTORY_ADM              "./DAdm"
+
 #define SH_MEM_CONFIG_FILE          "SharedMemoryConfigFile.txt"
 
 typedef enum {
@@ -19,12 +21,16 @@ typedef enum {
     ID_TIPO_ROBOT14,
     ID_TIPO_ROBOT16_CINTA,
     ID_TIPO_ROBOT16_DESPACHO,
-    ID_TIPO_DESPACHO
+    ID_TIPO_DESPACHO,
+    ID_TIPO_MEMORIA,
+    ID_TIPO_PEDIDO_MEMORIA
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
 #define MSG_QUEUE_FIXED_SIZE    300
 #define MSG_BROKER_SIZE         400
+
+#define ID_SHMEM_SIGUIENTE      1
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
@@ -47,11 +53,23 @@ typedef struct {
     MsgCanalEntradaAgente msg;
 } MsgCanalSalidaBroker;
 
+typedef struct {  
+    long mtype; // idReceptor
+    TipoAgente idTipoReceptor;
+    long idReceptor;
+} MsgPedidoMemoriaAdministrador;
+
+typedef struct {  
+    long mtype; // idReceptor
+    char memoria[MSG_QUEUE_FIXED_SIZE];
+} MsgEntregaMemoriaAdministrador;
+
+
 typedef struct { 
     TipoAgente idTipoReceptor;
     long idReceptor;
     //MsgCanalSalidaBroker msg;
-    char msg[MSG_BROKER_SIZE];
+    char msg[MSG_BROKER_SIZE]; // MsgCanalSalidaBroker o MsgPedidoMemoriaAdministrador o MsgEntregaMemoriaAdministrador
 } MsgCanalEntradaBroker;
 
 typedef struct {
