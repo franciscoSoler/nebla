@@ -34,10 +34,10 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         this->semBloqueoRobot12 = IPC::Semaphore("semBloqueoRobot12");
         this->semBloqueoRobot12.getSemaphore((char*) DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
 
-        this->semBufferCinta6 = IPC::Semaphore("semBufferCinta6");
+        this->semBufferCinta6 = IPC::SemaphoreMutex("semBufferCinta6");
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semBufferCanastos = IPC::Semaphore("semMemCanastos");
+        this->semBufferCanastos = IPC::SemaphoreMutex("semMemCanastos");
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_Robot + 1, ID_TIPO_ROBOT12, ID_TIPO_AGV);

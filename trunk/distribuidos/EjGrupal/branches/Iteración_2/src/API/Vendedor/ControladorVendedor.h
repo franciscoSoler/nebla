@@ -17,7 +17,7 @@
 #include "../../IPCs/IPCAbstractos/MessageQueue/ClientesMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosVendedorMessageQueue.h"
 
-#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/Semaphore/SemaphoreMutex.h"
 
 #include "../../IPCs/Barrios/MemoriaCompartida.h"
 #include "../Objects/SmMemAlmacenProductosTerminados.h"

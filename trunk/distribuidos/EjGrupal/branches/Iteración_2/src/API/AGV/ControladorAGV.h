@@ -9,7 +9,7 @@
 #define	CONTROLADORAGV_H
 
 #include "IControladorAGV.h"
-#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/Semaphore/SemaphoreMutex.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosCanastosMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/Barrera1112MessageQueue.h"
 

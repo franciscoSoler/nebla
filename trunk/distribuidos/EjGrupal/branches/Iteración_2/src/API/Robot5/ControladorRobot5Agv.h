@@ -10,7 +10,7 @@
 
 #include "../../Common.h"
 
-#include "../../IPCs/Semaphore/Semaphore.h"
+#include "../../IPCs/Semaphore/SemaphoreMutex.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/BufferCanastoEntre5yAGVSharedMemory.h"
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosAgvMessageQueue.h"
 

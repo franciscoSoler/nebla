@@ -76,30 +76,33 @@ int Semaphore::getId(const char *fileName, int id, int qty, int flags)
 //-----------------------------------------------------------------------------
 void Semaphore::wait(int numSem)
 {	
-	struct sembuf oper;
-	oper.sem_num = numSem;
-	oper.sem_op = -1;
-	oper.sem_flg = 0;
+    //receive()
+    //escribo en shMem
+    struct sembuf oper;
+    oper.sem_num = numSem;
+    oper.sem_op = -1;
+    oper.sem_flg = 0;
 
-	if (semop(this->id, &oper, 1) == -1) {
-		sprintf(buffer_, "Semaphore %s Error - wait: %s",
-				getIPCName().c_str(), strerror(errno));
-		throw Exception(std::string(buffer_));
-	}
+    if (semop(this->id, &oper, 1) == -1) {
+            sprintf(buffer_, "Semaphore %s Error - wait: %s",
+                            getIPCName().c_str(), strerror(errno));
+            throw Exception(std::string(buffer_));
+    }
 }
 
 void Semaphore::signal(int numSem)
 {
-	struct sembuf oper;
-	oper.sem_num = numSem;
-	oper.sem_op = 1;
-	oper.sem_flg = 0;
+    // envio el mismo mensaje que el administrador de la shMem del broker pero con idShMem = 0 para el receive
+    struct sembuf oper;
+    oper.sem_num = numSem;
+    oper.sem_op = 1;
+    oper.sem_flg = 0;
 
-	if (semop(this->id, &oper, 1) == -1) {
-		sprintf(buffer_, "Semaphore %s Error - signal: %s",
-				getIPCName().c_str(), strerror(errno));
-		throw Exception(std::string(buffer_));
-	}
+    if (semop(this->id, &oper, 1) == -1) {
+            sprintf(buffer_, "Semaphore %s Error - signal: %s",
+                            getIPCName().c_str(), strerror(errno));
+            throw Exception(std::string(buffer_));
+    }
 } 	
 
 }

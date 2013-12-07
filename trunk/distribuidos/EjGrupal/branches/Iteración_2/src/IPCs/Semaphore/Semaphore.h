@@ -41,7 +41,7 @@ public:
 
 	void destroy(void);
 
-	void wait(int numSem = 0);
+	virtual void wait(int numSem = 0);
 
 	void signal(int numSem = 0);
 };

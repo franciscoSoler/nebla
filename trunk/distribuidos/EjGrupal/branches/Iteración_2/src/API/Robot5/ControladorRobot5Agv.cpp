@@ -12,7 +12,6 @@
 
 ControladorRobot5Agv::ControladorRobot5Agv() : 
         colaPedidos("PedidosAgvMessageQueue", 1, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV),
-        semaforoAccesoBufferAgv("Acceso al buffer AGV - 5"),
         semaforoBloqueoAgv("Bloqueo AGV"),
         semaforoApiRobot5("Api Robot 5")
 {
@@ -45,6 +44,7 @@ void ControladorRobot5Agv::iniciarControlador()
 	bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
 
 	/* Obtengo los semaforos de acceso a los buffer */
+        semaforoAccesoBufferAgv = IPC::SemaphoreMutex("Acceso al buffer AGV - 5");
 	semaforoAccesoBufferAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
 
 	/* Obtengo los semaforos de bloqueo de los Agv */
