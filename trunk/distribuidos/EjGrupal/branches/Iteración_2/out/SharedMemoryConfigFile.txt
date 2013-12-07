@@ -1,0 +1,2 @@
+# Este archivo debe poseer todas las memorias compartidas que se desean que levante
+# un Broker. A las mismas se les asignará un identificador unequívoco.
