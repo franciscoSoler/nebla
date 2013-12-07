@@ -6,6 +6,7 @@
  */
 
 #include "SemaphoreMutex.h"
+#include "Logger.h"
 
 namespace IPC {
 
@@ -17,7 +18,7 @@ SemaphoreMutex::~SemaphoreMutex() {
 
 
 void SemaphoreMutex::wait(int numSem)
-{	
+{
     // enviar por una cola el pedido de la shMem!!!
     Semaphore::wait(numSem);
 }

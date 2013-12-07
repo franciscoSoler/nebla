@@ -71,8 +71,8 @@ private:
     
     IPC::SharedMemory<DataSM_R11_R14> shMem_R11_R14_;
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
-    IPC::Semaphore semMutex_shMem_R11_R14_;
-    IPC::Semaphore semMutex_shMem_R14_R16_;
+    IPC::SemaphoreMutex semMutex_shMem_R11_R14_;
+    IPC::SemaphoreMutex semMutex_shMem_R14_R16_;
     IPC::Semaphore semR11_Cinta13_;
     IPC::Semaphore semR14_Cinta13;
     IPC::Semaphore semR14_Cinta15;
