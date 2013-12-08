@@ -5,8 +5,9 @@
 
 namespace COMM {
 
-CommSemaphore::CommSemaphore(std::string CommName, 
+CommSemaphore::CommSemaphore(std::string CommName, TipoAgente idDuenioSem, 
         TipoAgente idDuenioSemRemoto) : CommObject(CommName),
+                                        idDuenioSem_(idDuenioSem),
                                         idDuenioSemRemoto_(idDuenioSemRemoto)
                                                 
 {
@@ -25,6 +26,10 @@ void CommSemaphore::initializeSemaphore(int numSem, int val)
 } 
 
 void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
+    initializeQueues(fileName, id);
+}
+
+void CommSemaphore::initializeQueues(const char *fileName, int id) {
     // Get the ID of the CommObject from the ConfigFile
     std::stringstream ss;
     ss << id;
@@ -38,7 +43,7 @@ void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
     findCommId();
     
     try {
-        this->senderMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_SALIDA);
+        this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->idDuenioSem_);
         this->receiverMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
     }
     catch(Exception & e) {
@@ -50,7 +55,7 @@ void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
 
 //-----------------------------------------------------------------------------
 void CommSemaphore::wait(int numSem)
-{	
+{	    
     MsgAgenteReceptor msg;
     
     try {

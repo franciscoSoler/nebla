@@ -20,6 +20,7 @@ class CommSemaphore : public CommObject
 {
 private:
     // Buffer for output errors
+    TipoAgente idDuenioSem_;
     TipoAgente idDuenioSemRemoto_;
     char buffer_[TAM_BUFFER];
     IPC::MsgQueue senderMsgQueue_;
@@ -28,7 +29,7 @@ private:
 	
 public:
 
-    CommSemaphore(std::string CommName = "", TipoAgente idDuenioSemRemoto = ID_TIPO_VACIO);
+    CommSemaphore(std::string CommName = "", TipoAgente idDuenioSem = ID_TIPO_VACIO, TipoAgente idDuenioSemRemoto = ID_TIPO_VACIO);
 
     virtual ~CommSemaphore();
 
@@ -39,6 +40,9 @@ public:
     void wait(int numSem = 0);
 
     void signal(int numSem = 0);
+protected:
+    
+    void initializeQueues(const char *fileName, int id);
 };
 
 }
