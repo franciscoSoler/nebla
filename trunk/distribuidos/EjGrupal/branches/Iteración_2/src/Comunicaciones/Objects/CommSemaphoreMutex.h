@@ -3,18 +3,18 @@
 
 #include "CommSemaphore.h"
 
-namespace IPC {
+namespace COMM {
 
 class CommSemaphoreMutex : public CommSemaphore {
 public:
-    CommSemaphoreMutex(std::string IPCName = "");
+    CommSemaphoreMutex(std::string CommName = "", int idShMem = 0);
     
     virtual ~CommSemaphoreMutex();
     
     void wait(int numSem = 0);
         
 private:
-
+    int idShMem_;
 };
 }
 

@@ -57,6 +57,31 @@ public:
     }
     
     template <class T>
+    void createPacketForSemaphores(MsgCanalSalidaAgente & msg) {
+
+        MsgAgenteReceptor msgAgenteReceptor;
+        msgAgenteReceptor.mtype = receiverId_;
+
+        MsgCanalEntradaAgente msgCanalEntradaAgente;
+        strcpy(msgCanalEntradaAgente.directorioIPC, dirIPC_);
+        msgCanalEntradaAgente.idIPC = idDirIPC_;
+        memcpy(& msgCanalEntradaAgente.msg, &msgAgenteReceptor, sizeof(MsgAgenteReceptor));
+
+        MsgCanalSalidaBroker msgCanalSalidaBroker;
+        msgCanalSalidaBroker.mtype = receiverId_;
+        msgCanalSalidaBroker.msg = msgCanalEntradaAgente;
+        memcpy(& msgCanalSalidaBroker.msg, &msgCanalEntradaAgente, sizeof(MsgCanalEntradaAgente));
+
+        MsgCanalEntradaBroker msgCanalEntradaBroker;
+        msgCanalEntradaBroker.idReceptor = receiverId_;
+        msgCanalEntradaBroker.idTipoReceptor = receiverType_;
+        memcpy(&msgCanalEntradaBroker.msg, &msgCanalSalidaBroker, sizeof(MsgCanalSalidaBroker));
+
+        msg.mtype = senderId_;
+        memcpy(&msg.msg, &msgCanalEntradaBroker, sizeof(MsgCanalEntradaBroker));
+    }
+    
+    template <class T>
     void createPacketRequestShMem(MsgCanalSalidaAgente & msg) {
 
         MsgPedidoMemoriaAdministrador msgPedidoMemoriaAdministrador;

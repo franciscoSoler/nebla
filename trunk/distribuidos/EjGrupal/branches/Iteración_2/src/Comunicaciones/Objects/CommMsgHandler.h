@@ -10,6 +10,8 @@
 #include <middlewareCommon.h>
 #include <Comunicaciones/Objects/CommPacketWrapper.h>
 
+namespace COMM {
+
 class CommMsgHandler {
 public:
     CommMsgHandler(long senderId = 0,
@@ -99,6 +101,8 @@ private:
     TipoAgente receiverTypeId_;
 
 };
+
+}
 
 #endif /* COMM_MSG_HANDLER */
 
