@@ -76,7 +76,7 @@ CintaTransportadora_6 ControladorRobot12::esperarProximoGabinete() {
         //EspecifProd especifProductoAux;
         MensajeBarrera messageBarrera;
         
-        this->cola11_A_12.receive(0, &messageBarrera);
+        this->cola11_A_12.receive(this->id_Robot + 1, &messageBarrera);
         Logger::logMessage(Logger::TRACE, "hay gabinete posicionado, comienzo a trabajar");
         
         
