@@ -97,7 +97,7 @@ void createIPCs() {
 }
 
 void createSharedMemoryAdministrators() {
-    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SH_MEM_CONFIG_FILE) );
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
     std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
     int listSize = sharedMemoryListIds.size();
 

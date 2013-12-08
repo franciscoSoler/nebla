@@ -4,7 +4,7 @@
 #define DIRECTORY_COMM             "./DComm"
 #define DIRECTORY_BROKER           "./DBroker"
 #define DIRECTORY_ADM              "./DAdm"
-#define SH_MEM_CONFIG_FILE          "SharedMemoryConfigFile.txt"
+#define COMM_OBJECTS_CONFIG_FILE   "CommObjectsConfigFile.txt"
 
 typedef enum {
     ID_TIPO_VACIO = 0,
