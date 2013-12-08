@@ -9,6 +9,8 @@ public:
     virtual ~CommObject();
     std::string getCommName() const;
     void setCommName(std::string name);
+
+protected:
     void findCommId(std::string key);
 
 protected:

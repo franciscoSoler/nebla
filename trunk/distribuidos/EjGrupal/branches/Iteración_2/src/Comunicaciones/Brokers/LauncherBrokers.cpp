@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_BROKER);
         
         createIPCs();
-        //createSharedMemoryAdministrators();
+        // createSharedMemoryAdministrators();
 
         ServersManager serversManager;
         serversManager.createServer("ServidorCanalEntradaBroker");
@@ -98,6 +98,7 @@ void createIPCs() {
 
 void createSharedMemoryAdministrators() {
     std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
+    cfg->parse();
     std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
     int listSize = sharedMemoryListIds.size();
 

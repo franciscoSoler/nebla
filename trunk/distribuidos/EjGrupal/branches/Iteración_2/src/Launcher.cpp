@@ -160,7 +160,7 @@ void createIPCs() {
         cinta6_1.writeInfo(&cinta6);
     }
     semaforoAccesoCinta6.signal(1);
-    
+
     //Robot 5 - AGV
     IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV1("BufferCanastoEntre5yAGVSharedMemory 0");
     IPC::BufferCanastoEntre5yAGVSharedMemory shMemPasajeCanastoEntre5yAGV2("BufferCanastoEntre5yAGVSharedMemory 1");
@@ -313,7 +313,6 @@ void createIPCs() {
     IPC::PedidosVendedorMessageQueue pedidos("Pedidos Msg Queue");
     pedidos.createMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
-
     IPC::MsgQueue consultasAlmacen("ConsultasAlmacen");
     consultasAlmacen.create(DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
     
@@ -323,7 +322,7 @@ void createIPCs() {
     IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados("shMemAlmacenTerminados");
     shmemAlmacenTerminados.createSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
     
-    IPC::SharedMemory<int> shmemNumeroOrdenCompra("ultimaOrdenCompra");
+    IPC::SharedMemory<int> shmemNumeroOrdenCompra("shmemNumeroOrdenCompra");
     shmemNumeroOrdenCompra.createSharedMemory(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC);
     
     IPC::Semaphore mutexAlmacenTerminados("Acceso Almacen Terminados");

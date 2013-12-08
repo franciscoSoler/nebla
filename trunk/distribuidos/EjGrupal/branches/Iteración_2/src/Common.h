@@ -90,22 +90,21 @@
 #define MSGQUEUE_VENDOR_OUTPUT_ID       2
 
 // ipcs del APT (usar DIRECTORY_APT)
-#define LETRA_SHMEM_ALMACEN_TERMINADOS  'a'
 #define SEM_MUTEX_SM_APT_ID             1
 
 
 // ipcs del APiezas (usar DIRECTORY_APIEZAS)
-#define LETRA_SHMEM_ALMACEN_PIEZAS	'r'
-#define LETRA_SEM_ALMACEN_PIEZAS	's'
+#define LETRA_SHMEM_ALMACEN_PIEZAS      1
+#define LETRA_SEM_ALMACEN_PIEZAS        1
 
-#define LETRA_SEM_ESPERA_REPOSITOR_GABINETES 'i'
-#define LETRA_SEM_ESPERA_REPOSITOR_CANASTOS  'j'   
+#define LETRA_SEM_ESPERA_REPOSITOR_GABINETES 2
+#define LETRA_SEM_ESPERA_REPOSITOR_CANASTOS  3
 
 //mtype colas
 
 #define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
 #define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
-#define ID_ALMACEN_PIEZAS	1 // Tipo utilizado entre robot 5 almacen de productos
+#define ID_ALMACEN_PIEZAS               1 // Tipo utilizado entre robot 5 almacen de productos
 
 #define TIPO_PEDIDO_DESPACHO            1
 #define TIPO_PEDIDO_ODC_DESPACHO        2
@@ -144,25 +143,24 @@
 
 /* Constantes IPC internas. */
 // User DIRECTORY_VENDEDOR
-#define ID_COLA_VENDEDORES 'b'
-#define ID_COLA_CLIENTES 'i'
-#define ID_COLA_PEDIDOS 'j'
+#define ID_COLA_VENDEDORES                      'b'
+#define ID_COLA_CLIENTES                        'i'
+#define ID_COLA_PEDIDOS                         'j'
 
-#define ID_COLA_VENDEDORES_C 'y'
-#define ID_COLA_CLIENTES_C 'x'
-#define ID_COLA_PEDIDOS_C 'z'
+#define ID_COLA_VENDEDORES_C                    'y'
+#define ID_COLA_CLIENTES_C                      'x'
+#define ID_COLA_PEDIDOS_C                       'z'
 
-#define ID_COLA_RESPUESTAS_ALMACEN_PIEZAS 'e'
-#define ID_COLA_CONSULTAS_ALMACEN_PIEZAS 'f'
-#define ID_ALMACEN_TERMINADOS 'c'
-#define ID_SHMEM_NRO_OC 'g'
+#define ID_COLA_RESPUESTAS_ALMACEN_PIEZAS       'e'
+#define ID_COLA_CONSULTAS_ALMACEN_PIEZAS        'f'
+#define ID_ALMACEN_TERMINADOS                    1
+#define ID_SHMEM_NRO_OC                          2
 
 #define TIPO_BUSCANDO_VENDEDOR 1
 #define TIPO_VENDEDOR_LIBRE 2
 
 /* Constantes relacionadas con el Middleware */
-#define SERVERS_CONFIG_FILE             "ServersConfigFile.txt"
-#define MSG_MUX                         1
+#define SERVERS_CONFIG_FILE                      "ServersConfigFile.txt"
 
 typedef enum {
     GABINETE_1 = 1,
