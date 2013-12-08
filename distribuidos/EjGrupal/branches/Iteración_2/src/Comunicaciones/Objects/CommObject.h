@@ -11,7 +11,7 @@ public:
     void setCommName(std::string name);
     void findCommId(std::string key);
 
-private:
+protected:
     std::string commName_;
     int commId_;
 };

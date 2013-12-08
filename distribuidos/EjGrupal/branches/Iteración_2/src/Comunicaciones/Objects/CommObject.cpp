@@ -5,6 +5,8 @@
 #include <memory>
 #include <Logger/Logger.h>
 
+namespace COMM {
+
 CommObject::CommObject(std::string name)
     : commName_(name),
       commId_(0) {}
@@ -33,4 +35,4 @@ void CommObject::findCommId(std::string key) {
 
 }
 
-
+}

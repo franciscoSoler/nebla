@@ -4,6 +4,8 @@
 #include "CommObject.h"
 #include <sstream>
 
+namespace COMM {
+
 template< class T, unsigned int SIZE = sizeof(T) >
 class CommSharedMemory : public CommObject {
 public:
@@ -33,4 +35,5 @@ public:
     }
 };
 
+}
 #endif // COMMSHAREDMEMORY_H

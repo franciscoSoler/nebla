@@ -4,6 +4,7 @@
 #define DIRECTORY_COMM             "./DComm"
 #define DIRECTORY_BROKER           "./DBroker"
 #define DIRECTORY_ADM              "./DAdm"
+#define DIRECTORY_SEM              "./DSem"
 #define COMM_OBJECTS_CONFIG_FILE   "CommObjectsConfigFile.txt"
 
 typedef enum {
@@ -29,6 +30,8 @@ typedef enum {
 #define MSG_BROKER_SIZE         400
 
 #define ID_SHMEM_SIGUIENTE      1
+#define ID_COMM_SEM_SALIDA      2
+#define ID_COMM_SEM_ENTRADA     3
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que

@@ -1,12 +1,14 @@
 #include "CommSemaphore.h"
 #include <Logger/Logger.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
+#include <middlewareCommon.h>
 
-namespace IPC {
+namespace COMM {
 
-CommSemaphore::CommSemaphore(std::string IPCName) : IPCObject(IPCName),
-                                            id(0),
-                                            cantSem(1)
-                                            
+CommSemaphore::CommSemaphore(std::string CommName, 
+        TipoAgente idDuenioSemRemoto) : CommObject(CommName),
+                                        idDuenioSemRemoto_(idDuenioSemRemoto)
+                                                
 {
 }
 
@@ -14,93 +16,69 @@ CommSemaphore::~CommSemaphore()
 {
 }
 
-void CommSemaphore::destroy(void)
-{
-	if (semctl(this->id, 0, IPC_RMID, (struct semid_ds *) 0) == -1) {
-        sprintf(buffer_, "Semaphore %s Warning - destroy: %s",
-				getIPCName().c_str(), strerror(errno));
-        Logger::logMessage(Logger::WARNING, buffer_);
-	}
-}
-
 void CommSemaphore::initializeSemaphore(int numSem, int val)
 {
-	// Structure used in semctl
-	union semun {
-		int val;					// Value for SETVAL
-		struct semid_ds *buf;		// Buffer por IPC_STAT, IPC_SET
-		unsigned short *array;		// Array for GETALL, SETALL
-		struct seminfo *__buf;		// Buffer for IPC_INFO(Linux specific)
-	} arg;
-
-	arg.val = val;
-
-	if (semctl(this->id, numSem, SETVAL, arg) == -1) {
-		sprintf(buffer_, "Semaphore %s Error - initializeSemaphore: %s",
-				getIPCName().c_str(), strerror(errno));
-		throw Exception(std::string(buffer_));
-	}
+    // este deberia enviar la cantidad de mensajes como tiene que ser!!!!
+    if (val != 0) {
+        this->signal(numSem);
+    }
 } 
 
 void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
-	if (this->getId(fileName, id, qty, 0666) == -1) {
-        sprintf(buffer_, "Semaphore %s Warning - getSemaphore: %s",
-				getIPCName().c_str(), strerror(errno));
-        Logger::logMessage(Logger::WARNING, buffer_);
+    // Get the ID of the CommObject from the ConfigFile
+    std::stringstream ss;
+    ss << id;
+
+    std::string key;
+    key += "sem-";
+    key += fileName;
+    key += "-";
+    key += ss.str();
+
+    findCommId();
+    
+    try {
+        this->senderMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_SALIDA);
+        this->receiverMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
     }
-}
-
-void CommSemaphore::createSemaphore(const char *fileName, int id, int qty) {
-	if (this->getId(fileName, id, qty, 0666|IPC_CREAT|IPC_EXCL) == -1) {
-        sprintf(buffer_, "Semaphore %s Warning - createSemaphore: %s",
-				getIPCName().c_str(), strerror(errno));
-        Logger::logMessage(Logger::WARNING, buffer_);
-	}
-}
-
-//-----------------------------------------------------------------------------
-int CommSemaphore::getId(const char *fileName, int id, int qty, int flags)
-{ 
-	key_t clave = ftok (fileName, id);
-	if ( clave == -1 ) {
-		return -1;
-	}
-
-	this->id =  semget( clave, qty, flags);
-	if ( this->id == -1 ) {
-		return -1;
-	}
-	return 0;
+    catch(Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+    
 }
 
 //-----------------------------------------------------------------------------
 void CommSemaphore::wait(int numSem)
 {	
-    //receive()
-    struct sembuf oper;
-    oper.sem_num = numSem;
-    oper.sem_op = -1;
-    oper.sem_flg = 0;
-
-    if (semop(this->id, &oper, 1) == -1) {
-            sprintf(buffer_, "Semaphore %s Error - wait: %s",
-                            getIPCName().c_str(), strerror(errno));
-            throw Exception(std::string(buffer_));
+    MsgAgenteReceptor msg;
+    
+    try {
+        this->receiverMsgQueue_.recv(this->commId_ + numSem, &msg);
+    }
+    catch(Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
     }
 }
 
 void CommSemaphore::signal(int numSem)
 {
-    // envio el mismo mensaje que el administrador de la shMem del broker pero con idShMem = 0 para el receive
-    struct sembuf oper;
-    oper.sem_num = numSem;
-    oper.sem_op = 1;
-    oper.sem_flg = 0;
-
-    if (semop(this->id, &oper, 1) == -1) {
-            sprintf(buffer_, "Semaphore %s Error - signal: %s",
-                            getIPCName().c_str(), strerror(errno));
-            throw Exception(std::string(buffer_));
+    CommPacketWrapper wrapper;
+    wrapper.setDirIPC( DIRECTORY_SEM );
+    wrapper.setIdDirIPC( ID_COMM_SEM_ENTRADA );
+    wrapper.setSenderId( ID_COMM_SEM_SALIDA );
+    wrapper.setReceiverType( idDuenioSemRemoto_ );
+    wrapper.setReceiverId( this->commId_ + numSem );
+    MsgCanalSalidaAgente msg;
+    wrapper.createPacketForSemaphores(msg);
+    
+    try {
+        this->senderMsgQueue_.send(msg);
+    }
+    catch(Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
     }
 } 	
 

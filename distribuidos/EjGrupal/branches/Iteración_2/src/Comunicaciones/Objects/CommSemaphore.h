@@ -10,40 +10,35 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../../Exceptions/Exception.h"
-#include "../IPCObject/IPCObject.h"
+#include "CommObject.h"
 #include "../../Common.h"
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
-namespace IPC {
+namespace COMM {
 
-class CommSemaphore : public IPCObject
+class CommSemaphore : public CommObject
 {
 private:
-
-	int getId(const char *fileName, int id, int qty, int flags);
-
-	int id;
-	// Cantidad de semáforos declarados en el set
-	int cantSem;
-	// Buffer for output errors
-	char buffer_[TAM_BUFFER];
+    // Buffer for output errors
+    TipoAgente idDuenioSemRemoto_;
+    char buffer_[TAM_BUFFER];
+    IPC::MsgQueue senderMsgQueue_;
+    IPC::MsgQueue receiverMsgQueue_;
+        
 	
 public:
 
-	CommSemaphore(std::string IPCName = "");
+    CommSemaphore(std::string CommName = "", TipoAgente idDuenioSemRemoto = ID_TIPO_VACIO);
 
-	virtual ~CommSemaphore();
+    virtual ~CommSemaphore();
 
-	void createSemaphore(const char *fileName, int id, int qty);
+    void getSemaphore(const char *fileName, int id, int qty);
 
-	void getSemaphore(const char *fileName, int id, int qty);
-		
-	void initializeSemaphore(int numSem, int val);
+    void initializeSemaphore(int numSem, int val);
 
-	void destroy(void);
+    void wait(int numSem = 0);
 
-	void wait(int numSem = 0);
-
-	void signal(int numSem = 0);
+    void signal(int numSem = 0);
 };
 
 }
