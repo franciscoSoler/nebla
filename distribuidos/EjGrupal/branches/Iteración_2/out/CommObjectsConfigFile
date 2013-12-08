@@ -1,0 +1,76 @@
+# Este archivo debe poseer todas las memorias compartidas que se desean que levante
+# un Broker. A las mismas se les asignará un identificador unequívoco. 
+# Lo mismo se realiza con los semáforos
+
+#### SharedMemorys ####
+# Estado Robot 5
+shMem-./DRobot5-4 = 400
+# Cinta 6-0
+shMem-./DRobot11-2 = 401
+# Cinta 6-1
+shMem-./DRobot11-3 = 402
+# BufferCanastoEntre5yAGVSharedMemory 0
+shMem-./DAGV-3 = 403
+# BufferCanastoEntre5yAGVSharedMemory 1
+shMem-./DAGV-4 = 404
+# BufferCanastoEntre5yAGVSharedMemory 2
+shMem-./DAGV-5 = 405
+# BufferCanastos 0
+shMem-./DAGV-9 = 406
+# BufferCanastos 0
+shMem-./DAGV-10 = 407
+# BufferCanastos 0
+shMem-./DAGV-11 = 408
+# SM-R11-R14
+shMem-./DRobot11-6 = 409
+# SM-R14-R16 
+shMem-./DRobot14-2 = 410
+# AlmacenTerminados
+shMem-./DVendedor-1 = 411
+# NumeroOrdenCompra
+shMem-./DVendedor-2 = 412
+# AlmacenDePiezas
+shMem-./DAPiezas-1 = 413
+
+#### Semaphores ####
+# Api Robot 5
+sem-./DRobot5-1 = 200
+# Estado Robot 5
+sem-./DRobot5-4 = 201
+# Bloqueo Robot 5
+sem-./DRobot5-3 = 202
+# Bloque Robot 11 (2)
+sem-./DRobot11-4 = 203
+# Bloqueo Robot 12 (2)
+sem-./DRobot12-1 = 205
+# Acceso Cinta 6 (2)
+sem-./DRobot11-1 = 207
+# Bloqueo AGV (3)
+sem-./DAGV-1 = 209
+# Buffer AGV_5 (3)
+sem-./DAGV-2 = 212
+# Mem Canastos (3)
+sem-./DAGV-7 = 215
+# Mutex sincronismo R16
+sem-./DRobot16-1 = 218
+# R11-Cinta13 (2)
+sem-./DRobot11-5 = 219
+# R14-Cinta13
+sem-./DRobot14-1 = 221
+# R14-Cinta15
+sem-./DRobot14-4 = 222
+# Mutex Almacen Terminados
+sem-./DVendedor-1 = 223
+# Mutex Orden De Compra
+sem-./DVendedor-2 = 224
+# Mutex AP
+sem-./DAPiezas-1 = 225
+# Espera Repositor Canasto
+sem-./DAPiezas-3 = 226
+# Espera Repositor Gabinete
+sem-./DAPiezas-2 = 227
+
+
+
+
+
