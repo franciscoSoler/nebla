@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace COMM {
+
 class CommObject {
 public:
     CommObject(std::string CommName);
@@ -17,5 +19,7 @@ protected:
     std::string commName_;
     int commId_;
 };
+
+}
 
 #endif // COMMOBJECT_H
