@@ -12,8 +12,8 @@
 
 ControladorRobot5Agv::ControladorRobot5Agv() : 
         colaPedidos("PedidosAgvMessageQueue", 1, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV),
-        semaforoAccesoBufferAgv("Acceso al buffer AGV - 5"),
-        semaforoBloqueoAgv("Bloqueo AGV"),
+        semaforoAccesoBufferAgv("Acceso al buffer AGV - 5", 1, ID_TIPO_ROBOT5_AGV),
+        semaforoBloqueoAgv("Bloqueo AGV", 1, ID_TIPO_ROBOT5_AGV, ID_TIPO_AGV),
         semaforoApiRobot5("Api Robot 5")
 {
 
@@ -36,7 +36,6 @@ void ControladorRobot5Agv::iniciarControlador()
     try
     {
 	/* Obtengo la cola de pedidos */
-    /*colaPedidos = IPC::PedidosAgvMessageQueue("colaPedidos", 1, ID_TIPO_AP);*/
 	colaPedidos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
 	/* Obtengo el buffer para depositar los canastos */

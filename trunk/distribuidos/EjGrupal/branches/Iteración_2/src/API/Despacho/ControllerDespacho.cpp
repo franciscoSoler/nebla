@@ -9,14 +9,16 @@ ControllerDespacho::ControllerDespacho() {
 
         MiddlewareAPI middleware;
         middleware.crearCanales(1, ID_TIPO_DESPACHO);
+        
+        int idEmisor = 1;
 
-        inputQueueDespacho_ = COMM::CommMsgHandler(1, ID_TIPO_DESPACHO);
+        inputQueueDespacho_ = COMM::CommMsgHandler(idEmisor, ID_TIPO_DESPACHO);
         inputQueueDespacho_.setReceptorInfo("inputQueueDespacho", DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
-        inputQueueCliente_ = COMM::CommMsgHandler(1, ID_TIPO_DESPACHO, ID_TIPO_CLIENTE);
+        inputQueueCliente_ = COMM::CommMsgHandler(idEmisor, ID_TIPO_DESPACHO, ID_TIPO_CLIENTE);
         inputQueueCliente_.setReceptorInfo("inputQueueCliente", DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
 
-        inputQueueR16_Despacho_ = COMM::CommMsgHandler(1, ID_TIPO_DESPACHO, ID_TIPO_ROBOT16_DESPACHO);
+        inputQueueR16_Despacho_ = COMM::CommMsgHandler(idEmisor, ID_TIPO_DESPACHO, ID_TIPO_ROBOT16_DESPACHO);
         inputQueueR16_Despacho_.setReceptorInfo("inputQueueR16_Despacho", DIRECTORY_ROBOT_16, MSGQUEUE_R16_DESPACHO_INPUT_ID);
     }
     catch (Exception & e) {

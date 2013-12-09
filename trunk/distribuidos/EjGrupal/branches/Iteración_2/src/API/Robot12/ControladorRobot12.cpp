@@ -30,17 +30,19 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         MiddlewareAPI middleware;
         middleware.crearCanales(this->id_Robot + 1, ID_TIPO_ROBOT12);
         
+        int idEmisor = this->id_Robot + 1;
+        
         /* Obtengo el semaforo de sincronizacion de Robot12 con AGVs y robot 5*/
         this->semBloqueoRobot12 = COMM::CommSemaphore("semBloqueoRobot12");
         this->semBloqueoRobot12.getSemaphore((char*) DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
 
-        this->semBufferCinta6 = COMM::CommSemaphoreMutex<CintaTransportadora_6>("semBufferCinta6");
+        this->semBufferCinta6 = COMM::CommSemaphoreMutex<CintaTransportadora_6>("semBufferCinta6", idEmisor, ID_TIPO_ROBOT12);
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semBufferCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos");
+        this->semBufferCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos", idEmisor, ID_TIPO_ROBOT12);
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_Robot + 1, ID_TIPO_ROBOT12, ID_TIPO_AGV);
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", idEmisor, ID_TIPO_ROBOT12, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
@@ -48,9 +50,9 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         this->semBufferCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
 
 
-        this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", this->id_Robot + 1, ID_TIPO_ROBOT12, ID_TIPO_ROBOT11);
+        this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", idEmisor, ID_TIPO_ROBOT12, ID_TIPO_ROBOT11);
         this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12);
-        this->cola12_A_11 = IPC::Barrera1112MessageQueue("cola12_A_11", this->id_Robot + 1, ID_TIPO_ROBOT12, ID_TIPO_ROBOT11);
+        this->cola12_A_11 = IPC::Barrera1112MessageQueue("cola12_A_11", idEmisor, ID_TIPO_ROBOT12, ID_TIPO_ROBOT11);
         this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11);
         
         if (numRobot == 0) {

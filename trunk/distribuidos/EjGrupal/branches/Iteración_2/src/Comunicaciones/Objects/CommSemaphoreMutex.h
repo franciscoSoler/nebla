@@ -47,6 +47,7 @@ public:
         wrapper.setReceiverId( this->idShMem[numSem] );
         wrapper.setReceiverType( ID_TIPO_PEDIDO_MEMORIA );
         wrapper.setSenderId( this->idEmisor_ );
+        wrapper.setSenderType( this->typeDuenioSem_ );
 
         MsgCanalSalidaAgente msg;
         wrapper.createPacketRequestShMem(msg);

@@ -21,19 +21,20 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
 
         MiddlewareAPI middleware;
         middleware.crearCanales(1, ID_TIPO_AP);
+        int idEmisor = 1;
 
-        this->colaReciboOrdenProduccion = COMM::CommMsgHandler(1, ID_TIPO_AP, ID_TIPO_VENDEDOR);
+        this->colaReciboOrdenProduccion = COMM::CommMsgHandler(idEmisor, ID_TIPO_AP, ID_TIPO_VENDEDOR);
         this->colaReciboOrdenProduccion.setReceptorInfo("colaReciboOrdenProduccion",
                                                         DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         this->colaEnvioMensajePedidoProduccion =
-        IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", 1, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
+        IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", idEmisor, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
         colaEnvioMensajePedidoProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", 1, ID_TIPO_AP, ID_TIPO_AGV);
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", idEmisor, ID_TIPO_AP, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
-        this->semMemCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos");
+        this->semMemCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos", idEmisor, ID_TIPO_AP);
         this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
         this->shMemBufferCanastos[CANTIDAD_AGVS] = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
