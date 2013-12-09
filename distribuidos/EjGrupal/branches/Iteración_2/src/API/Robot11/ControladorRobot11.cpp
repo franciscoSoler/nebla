@@ -35,33 +35,35 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         MiddlewareAPI middleware;
         middleware.crearCanales(this->nroCinta_, ID_TIPO_ROBOT11);
         
+        int idEmisor = this->nroCinta_;
+        
         /* Obtengo el semaforo de sincronizacion de Robot11 con AGVs y robot 5*/
-        this->semBloqueoRobot5 = COMM::CommSemaphore("semBloqueoRobot5");
+        this->semBloqueoRobot5 = COMM::CommSemaphore("semBloqueoRobot5", idEmisor, ID_TIPO_ROBOT11, ID_TIPO_ROBOT5_CINTA);
         this->semBloqueoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
         
-        this->semMemEstadoRobot5 = COMM::CommSemaphoreMutex<EstadoRobot5>("semMemEstadoRobot5");
+        this->semMemEstadoRobot5 = COMM::CommSemaphoreMutex<EstadoRobot5>("semMemEstadoRobot5", idEmisor, ID_TIPO_ROBOT11);
         this->semMemEstadoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
         this->semMemEstadoRobot5.setShMem(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
         this->semBloqueoRobot11 = COMM::CommSemaphore("semBloqueoRobot11");
         this->semBloqueoRobot11.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
 
-        this->semBufferCinta6 = COMM::CommSemaphoreMutex<CintaTransportadora_6>("semBufferCinta6");
+        this->semBufferCinta6 = COMM::CommSemaphoreMutex<CintaTransportadora_6>("semBufferCinta6", idEmisor, ID_TIPO_ROBOT11);
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semBufferCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos");
+        this->semBufferCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos", idEmisor, ID_TIPO_ROBOT11);
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<DataSM_R11_R14> ("semMutex_shMem_R11_R14");
+        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<DataSM_R11_R14> ("semMutex_shMem_R11_R14", idEmisor, ID_TIPO_ROBOT11);
         this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
         this->semR11_Cinta13_ = COMM::CommSemaphore ("semR11_Cinta13");
         this->semR11_Cinta13_.getSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
         
-        this->semR14_Cinta13_ = COMM::CommSemaphore("semR14_Cinta13");
+        this->semR14_Cinta13_ = COMM::CommSemaphore("semR14_Cinta13", idEmisor, ID_TIPO_ROBOT11, ID_TIPO_ROBOT14);
         this->semR14_Cinta13_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA13_ID, 1);
         
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->nroCinta_, ID_TIPO_ROBOT11, ID_TIPO_AGV);
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", idEmisor, ID_TIPO_ROBOT11, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
         
         this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
@@ -73,9 +75,9 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         
-        this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", this->nroCinta_, ID_TIPO_ROBOT11, ID_TIPO_ROBOT12);
+        this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", idEmisor, ID_TIPO_ROBOT11, ID_TIPO_ROBOT12);
         this->cola11_A_12.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_11_A_12);
-        this->cola12_A_11 = IPC::Barrera1112MessageQueue("cola12_A_11", this->nroCinta_, ID_TIPO_ROBOT11, ID_TIPO_ROBOT12);
+        this->cola12_A_11 = IPC::Barrera1112MessageQueue("cola12_A_11", idEmisor, ID_TIPO_ROBOT11, ID_TIPO_ROBOT12);
         this->cola12_A_11.getMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11);
         
         if (numRobot == 0) {

@@ -82,13 +82,13 @@ int main(int argc, char* argv[]) {
                 wrapper.setDirIPC(DIRECTORY_SEM);
                 wrapper.setIdDirIPC(ID_COMM_SEM_ENTRADA);
                 wrapper.setReceiverId(mensajePedido.idReceptor);
-                wrapper.setReceiverType(mensajePedido.idTipoReceptor);
+                wrapper.setReceiverType(mensajePedido.idTipoEmisor);
 
                 MsgCanalSalidaBroker msgSalida;
                 wrapper.createPacketReplyShMem(msgSalida, mensajeMemoria.memoria);
 
                 IPC::MsgQueue colaAgente = IPC::MsgQueue("Cola Agente");
-                colaAgente.getMsgQueue(DIRECTORY_BROKER, mensajePedido.idTipoReceptor);
+                colaAgente.getMsgQueue(DIRECTORY_BROKER, mensajePedido.idTipoEmisor);
                 colaAgente.send(msgSalida);
 
                 // Espero que el agente devuelva la memoria compartida

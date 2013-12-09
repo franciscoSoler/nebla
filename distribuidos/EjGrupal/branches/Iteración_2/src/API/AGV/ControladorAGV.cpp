@@ -26,23 +26,27 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         middleware.crearCanales(id_AGV + 1, ID_TIPO_AGV);
 
         this->id_AGV = id_AGV;
+        int idEmisor = this->id_AGV  + 1;
 
-        this->semBloqueoAGV = COMM::CommSemaphore("semBloqueoAGV");
+        this->semBloqueoAGV = COMM::CommSemaphore("semBloqueoAGV", idEmisor, ID_TIPO_AGV);
         this->semBloqueoAGV.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 
-        this->semBufferAGV_5 = COMM::CommSemaphoreMutex<Canasto>("semBufferAGV_5");
+        this->semBufferAGV_5 = COMM::CommSemaphoreMutex<Canasto>("semBufferAGV_5", idEmisor, ID_TIPO_AGV);
         this->semBufferAGV_5.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, 3);
 
-        this->semMemCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos");
+        this->semMemCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos", idEmisor, ID_TIPO_AGV);
         this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->id_AGV, ID_TIPO_AGV);
+        this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", idEmisor, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
-        this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5", this->id_AGV + 1, ID_TIPO_AGV, ID_TIPO_ROBOT5_AGV);
+        this->colaPedidosAGV_5 = IPC::PedidosAgvMessageQueue("colaPedidosAGV_5", idEmisor, ID_TIPO_AGV, ID_TIPO_ROBOT5_AGV);
         this->colaPedidosAGV_5.getMessageQueue((char*) DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
-
-        this->semRobotCinta = COMM::CommSemaphore("semRobotCinta");
+        
+        if (this->id_AGV == 1)
+            this->semRobotCinta = COMM::CommSemaphore("semRobotCinta", idEmisor, ID_TIPO_AGV, ID_TIPO_ROBOT12);
+        else
+            this->semRobotCinta = COMM::CommSemaphore("semRobotCinta", idEmisor, ID_TIPO_AGV, ID_TIPO_ROBOT11);
         
         this->shMemBuffer5yAGV = IPC::BufferCanastoEntre5yAGVSharedMemory("shMemBuffer5yAGV");
         switch (id_AGV) {

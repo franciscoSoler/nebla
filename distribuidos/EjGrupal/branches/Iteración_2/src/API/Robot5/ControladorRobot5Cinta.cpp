@@ -11,11 +11,11 @@
 #include "../../Parser/Parser.h"
 
 ControladorRobot5Cinta::ControladorRobot5Cinta() :
-        //colaPedidosProduccion("PedidosProduccionMessageQueue", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP),
+        colaPedidosProduccion("PedidosProduccionMessageQueue", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP),
         estadoRobot5("EstadoRobot5SharedMemory"),        
-        semaforoAccesoEstadoRobot5("AccesoEstadoRobot5"),
+        semaforoAccesoEstadoRobot5("AccesoEstadoRobot5", 1, ID_TIPO_ROBOT5_CINTA),
         semaforoBloqueoRobot5("BloqueoRobot5"),
-        semaforoBloqueoRobot11("BloqueoRobot11"),
+        semaforoBloqueoRobot11("BloqueoRobot11", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_ROBOT11),
         semaforoApiRobot5("ApiRobot5")
 {
 
@@ -35,7 +35,6 @@ void ControladorRobot5Cinta::iniciarControlador()
     try
     {
 	/* Obtengo la cola de pedidos */
-    colaPedidosProduccion = IPC::PedidosProduccionMessageQueue("ColaPedidoProduccion", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP);
 	colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
 	/* Obtengo las cintas transportadoras */

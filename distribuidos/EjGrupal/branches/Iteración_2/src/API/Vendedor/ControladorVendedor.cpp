@@ -51,11 +51,11 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
                                                        DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         /* Comunicacion con el almacen de productos terminados. */
-        this->mutexAlmacenTerminados = COMM::CommSemaphoreMutex<AlmacenProductosTerminados>("Acceso Almacen Terminados");
+        this->mutexAlmacenTerminados = COMM::CommSemaphoreMutex<AlmacenProductosTerminados>("Acceso Almacen Terminados", numVendedor, ID_TIPO_VENDEDOR);
         this->mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
         this->mutexAlmacenTerminados.setShMem(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
 
-        this->mutexOrdenDeCompra = COMM::CommSemaphoreMutex<int>("mutexOrdenDeCompra");
+        this->mutexOrdenDeCompra = COMM::CommSemaphoreMutex<int>("mutexOrdenDeCompra", numVendedor, ID_TIPO_VENDEDOR);
         this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
         this->mutexOrdenDeCompra.setShMem(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC);
 
