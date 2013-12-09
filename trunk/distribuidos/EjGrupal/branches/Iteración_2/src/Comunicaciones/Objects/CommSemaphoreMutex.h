@@ -13,9 +13,9 @@ namespace COMM {
 template< class T >
 class CommSemaphoreMutex : public CommSemaphore {
 public:
-    CommSemaphoreMutex(std::string CommName = "", 
-                        TipoAgente idDuenioSem = ID_TIPO_VACIO) : 
-                                CommSemaphore (CommName, idDuenioSem),
+    CommSemaphoreMutex(std::string CommName = "", long idEmisor = 0,
+                        TipoAgente typeDuenioSem = ID_TIPO_VACIO) : 
+                                CommSemaphore (CommName, idEmisor, typeDuenioSem),
                                 cantShMen(0) {}
                             
     void getSemaphore(const char *fileName, int id, int qty) {
@@ -46,7 +46,7 @@ public:
         wrapper.setIdShMem( this->idShMem[numSem] );
         wrapper.setReceiverId( this->idShMem[numSem] );
         wrapper.setReceiverType( ID_TIPO_PEDIDO_MEMORIA );
-        wrapper.setSenderId( ID_COMM_SEM_SALIDA );
+        wrapper.setSenderId( this->idEmisor_ );
 
         MsgCanalSalidaAgente msg;
         wrapper.createPacketRequestShMem(msg);
@@ -78,7 +78,7 @@ public:
         wrapper.setIdShMem( this->idShMem[numSem] );
         wrapper.setReceiverId( this->idShMem[numSem] );
         wrapper.setReceiverType( ID_TIPO_MEMORIA );
-        wrapper.setSenderId( ID_COMM_SEM_SALIDA );
+        wrapper.setSenderId( this->idEmisor_ );
 
         MsgCanalSalidaAgente msg;
         wrapper.createPacketReturnShMem(msg, buffer);
