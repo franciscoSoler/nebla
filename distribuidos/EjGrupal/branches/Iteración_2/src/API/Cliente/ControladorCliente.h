@@ -46,9 +46,9 @@ private:
     IPC::ClientesMessageQueue clientes;
     IPC::PedidosVendedorMessageQueue pedidos;
 
-    CommMsgHandler inputQueueCliente;
-    CommMsgHandler inputQueueDespacho;
-    CommMsgHandler R16_Cliente_Queue_;
+    COMM::CommMsgHandler inputQueueCliente;
+    COMM::CommMsgHandler inputQueueDespacho;
+    COMM::CommMsgHandler R16_Cliente_Queue_;
 
     long numCliente;
     long numVendedorAsociado;

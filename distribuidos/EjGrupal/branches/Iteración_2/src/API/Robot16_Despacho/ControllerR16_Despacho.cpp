@@ -20,7 +20,7 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
         shmemAlmacenTerminados = IPC::SharedMemory<AlmacenProductosTerminados>("shMemAlmacenTerminados");
         shmemAlmacenTerminados.getSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
         
-        semMutex_shMem_R14_R16_ = COMM::CommSemaphoreMutex ("semMutex_shMem_R14_R16");
+        semMutex_shMem_R14_R16_ = COMM::CommSemaphoreMutex<int> ("semMutex_shMem_R14_R16");
         semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
         
         inputQueueR16_Despacho_ = COMM::CommMsgHandler(1, ID_TIPO_ROBOT16_DESPACHO, ID_TIPO_DESPACHO);
@@ -31,7 +31,7 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
         R16_Cliente_Queue_.setReceptorInfo("R16_Cliente_Queue",
                                            DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
 
-        semMutex_shMem_APT_ = COMM::CommSemaphoreMutex("semMutex_shMem_APT");
+        semMutex_shMem_APT_ = COMM::CommSemaphoreMutex<int>("semMutex_shMem_APT");
         semMutex_shMem_APT_.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
     }
     catch (Exception & e) {

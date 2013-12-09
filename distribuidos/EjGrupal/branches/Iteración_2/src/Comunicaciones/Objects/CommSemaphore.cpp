@@ -2,6 +2,8 @@
 #include <Logger/Logger.h>
 #include <IPCs/IPCTemplate/MsgQueue.h>
 #include <middlewareCommon.h>
+#include <Comunicaciones/Objects/CommPacketWrapper.h>
+#include <sstream>
 
 namespace COMM {  
     
@@ -40,7 +42,7 @@ void CommSemaphore::initializeQueues(const char *fileName, int id) {
     key += "-";
     key += ss.str();
 
-    findCommId(key);
+    this->findCommId( key );
     
     try {
         this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->idDuenioSem_);
@@ -59,7 +61,7 @@ void CommSemaphore::wait(int numSem)
     MsgAgenteReceptor msg;
     
     try {
-        this->receiverMsgQueue_.recv(this->commId_ + numSem, &msg);
+        this->receiverMsgQueue_.recv(this->commId_ + numSem, msg);
     }
     catch(Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

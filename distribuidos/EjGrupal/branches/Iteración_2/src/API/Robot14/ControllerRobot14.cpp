@@ -29,10 +29,10 @@ ControllerRobot14::ControllerRobot14() {
         shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("ShMem_R14_R16");
         shMem_R14_R16_.getSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
    
-        semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex ("semMutex_shMem_R11_R14");
+        semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<int> ("semMutex_shMem_R11_R14");
         semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
-        semMutex_shMem_R14_R16_ = COMM::CommSemaphoreMutex ("semMutex_shMem_R14_R16");
+        semMutex_shMem_R14_R16_ = COMM::CommSemaphoreMutex<int> ("semMutex_shMem_R14_R16");
         semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
     
         semR11_Cinta13_ = COMM::CommSemaphore ("semR11_Cinta13");
@@ -44,7 +44,7 @@ ControllerRobot14::ControllerRobot14() {
         semR14_Cinta15 = COMM::CommSemaphore("semR14_Cinta15");
         semR14_Cinta15.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA15_ID, 1);
         
-        inputQueueR16_Cinta15_ = CommMsgHandler(1, ID_TIPO_ROBOT14, ID_TIPO_ROBOT16_CINTA);
+        inputQueueR16_Cinta15_ = COMM::CommMsgHandler(1, ID_TIPO_ROBOT14, ID_TIPO_ROBOT16_CINTA);
         inputQueueR16_Cinta15_.setReceptorInfo("inputQueueR16_Cinta15",
                                                DIRECTORY_ROBOT_16, MSGQUEUE_R16_CINTA15_INPUT_ID);
 

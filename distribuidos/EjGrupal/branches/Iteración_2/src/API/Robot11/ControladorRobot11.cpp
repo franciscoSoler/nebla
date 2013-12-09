@@ -39,19 +39,19 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semBloqueoRobot5 = COMM::CommSemaphore("semBloqueoRobot5");
         this->semBloqueoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
         
-        this->semMemEstadoRobot5 = COMM::CommSemaphoreMutex("semMemEstadoRobot5");
+        this->semMemEstadoRobot5 = COMM::CommSemaphoreMutex<int>("semMemEstadoRobot5");
         this->semMemEstadoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
 
         this->semBloqueoRobot11 = COMM::CommSemaphore("semBloqueoRobot11");
         this->semBloqueoRobot11.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
 
-        this->semBufferCinta6 = COMM::CommSemaphoreMutex("semBufferCinta6");
+        this->semBufferCinta6 = COMM::CommSemaphoreMutex<int>("semBufferCinta6");
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semBufferCanastos = COMM::CommSemaphoreMutex("semMemCanastos");
+        this->semBufferCanastos = COMM::CommSemaphoreMutex<int>("semMemCanastos");
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex ("semMutex_shMem_R11_R14");
+        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<int> ("semMutex_shMem_R11_R14");
         this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
         this->semR11_Cinta13_ = COMM::CommSemaphore ("semR11_Cinta13");

@@ -32,13 +32,13 @@ ControladorCliente::ControladorCliente(long numCliente) {
         this->pedidos = IPC::PedidosVendedorMessageQueue("Vendedor - PedidosMsgQueue", numCliente, ID_TIPO_CLIENTE, ID_TIPO_VENDEDOR);
         this->pedidos.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_PEDIDOS);
 
-        this->inputQueueDespacho = CommMsgHandler(numCliente, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
+        this->inputQueueDespacho = COMM::CommMsgHandler(numCliente, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
         this->inputQueueDespacho.setReceptorInfo("inputQueueDespacho", DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
 
-        this->R16_Cliente_Queue_ = CommMsgHandler(numCliente, ID_TIPO_CLIENTE, ID_TIPO_ROBOT16_DESPACHO);
+        this->R16_Cliente_Queue_ = COMM::CommMsgHandler(numCliente, ID_TIPO_CLIENTE, ID_TIPO_ROBOT16_DESPACHO);
         this->R16_Cliente_Queue_.setReceptorInfo("R16_Cliente_Queue_", DIRECTORY_ROBOT_16, MSGQUEUE_R16_CLIENT_ID);
 
-        this->inputQueueCliente = CommMsgHandler(numCliente, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
+        this->inputQueueCliente = COMM::CommMsgHandler(numCliente, ID_TIPO_CLIENTE, ID_TIPO_DESPACHO);
         this->inputQueueCliente.setReceptorInfo("inputQueueCliente", DIRECTORY_CLIENTE, MSGQUEUE_CLIENT_INPUT_ID);
     }
     catch (Exception & e) {
