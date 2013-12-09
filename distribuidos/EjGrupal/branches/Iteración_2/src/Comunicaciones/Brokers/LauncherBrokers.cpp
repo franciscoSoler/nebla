@@ -98,15 +98,6 @@ void createIPCs() {
         colaAgente.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
         Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");
 
-        IPC::MsgQueue colaMemoria("Cola Memoria");
-        colaMemoria.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
-        Logger::logMessage(Logger::COMM, "Cola ColaMemoria creada");
-
-        // Obtengo la cola por la cual recibo los pedidos por memoria compartida
-        IPC::MsgQueue colaPedidosMemoria("Cola Pedidos Memoria");
-        colaPedidosMemoria.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
-        Logger::logMessage(Logger::COMM, "Cola PedidosMemoria creada");
-
         std::list<int> shMemIdList = cfg->getParamIntList("shMem");
         while ( not shMemIdList.empty() ) {
             IPC::SharedMemory<int> contadoraSharedMemory("Contadora Pedidos ShMem");
