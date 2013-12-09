@@ -41,8 +41,11 @@ void ControladorRobot5Agv::iniciarControlador()
 
 	/* Obtengo el buffer para depositar los canastos */
 	bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+    semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_0, 0);
 	bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
+    semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_1, 1);
 	bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
+    semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_2, 2);
 
 	/* Obtengo los semaforos de acceso a los buffer */
 	semaforoAccesoBufferAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);

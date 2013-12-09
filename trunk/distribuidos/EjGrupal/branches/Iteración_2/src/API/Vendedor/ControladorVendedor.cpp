@@ -51,11 +51,13 @@ ControladorVendedor::ControladorVendedor(long numVendedor)
                                                        DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
         /* Comunicacion con el almacen de productos terminados. */
-        this->mutexAlmacenTerminados = COMM::CommSemaphoreMutex<int>("Acceso Almacen Terminados");
+        this->mutexAlmacenTerminados = COMM::CommSemaphoreMutex<AlmacenProductosTerminados>("Acceso Almacen Terminados");
         this->mutexAlmacenTerminados.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
+        this->mutexAlmacenTerminados.setShMem(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
 
         this->mutexOrdenDeCompra = COMM::CommSemaphoreMutex<int>("mutexOrdenDeCompra");
         this->mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
+        this->mutexOrdenDeCompra.setShMem(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC);
 
         inputQueueDespacho = COMM::CommMsgHandler(numVendedor, ID_TIPO_VENDEDOR, ID_TIPO_DESPACHO);
         inputQueueDespacho.setReceptorInfo("inputQueueDespacho", DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);

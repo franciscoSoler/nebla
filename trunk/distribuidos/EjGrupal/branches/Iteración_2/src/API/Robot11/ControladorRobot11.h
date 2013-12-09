@@ -44,9 +44,9 @@ private:
     int id_Robot;
     //int posicionPieza;
     COMM::CommSemaphore semBloqueoRobot11;
-    COMM::CommSemaphoreMutex<int> semBufferCanastos;
-    COMM::CommSemaphoreMutex<int> semBufferCinta6;
-    COMM::CommSemaphoreMutex<int> semMemEstadoRobot5;
+    COMM::CommSemaphoreMutex<BufferCanastos> semBufferCanastos;
+    COMM::CommSemaphoreMutex<CintaTransportadora_6> semBufferCinta6;
+    COMM::CommSemaphoreMutex<EstadoRobot5> semMemEstadoRobot5;
     COMM::CommSemaphore semBloqueoRobot5;
 
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
@@ -58,7 +58,7 @@ private:
     
     DataSM_R11_R14* shMem_R11_R14_Data_;
     IPC::SharedMemory<DataSM_R11_R14> shMem_R11_R14_;
-    COMM::CommSemaphoreMutex<int> semMutex_shMem_R11_R14_;
+    COMM::CommSemaphoreMutex<DataSM_R11_R14> semMutex_shMem_R11_R14_;
     COMM::CommSemaphore semR11_Cinta13_;
     COMM::CommSemaphore semR14_Cinta13_;
     

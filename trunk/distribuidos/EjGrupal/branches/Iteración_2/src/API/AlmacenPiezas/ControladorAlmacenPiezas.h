@@ -48,7 +48,7 @@ private:
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
 
     IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
-    COMM::CommSemaphoreMutex<int> semMemCanastos;
+    COMM::CommSemaphoreMutex<BufferCanastos> semMemCanastos;
 
     void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
     void imprimirEspecificacionProducto(EspecifProd especifProd);
