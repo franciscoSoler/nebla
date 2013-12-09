@@ -12,25 +12,39 @@ class CommSemaphoreMutex : public CommSemaphore {
 public:
     CommSemaphoreMutex(std::string CommName = "", 
                         TipoAgente idDuenioSem = ID_TIPO_VACIO) : 
-                                CommSemaphore (CommName, idDuenioSem) {}
+                                CommSemaphore (CommName, idDuenioSem),
+                                cantShMen(0) {}
                             
     void getSemaphore(const char *fileName, int id, int qty) {
         initializeQueues(fileName, id);
-
+        this->cantShMen = qty;
         //ahora tengo que conseguir desde el id las cosas de la shMem para luego hacer getshMem
         char dirIPC[DIR_FIXED_SIZE];
         int idIPC;
         //get desde un id a idIPC y dirIPC
     }
     
-    void setShMem(const char * dirIPC, int idIPC) {
-        this->shMem.getSharedMemory(dirIPC, idIPC);
+    void setShMem(const char * dirIPC, int idIPC, int numSem = 0) {
+        this->shMem[numSem].getSharedMemory(dirIPC, idIPC);
+        
+        std::stringstream ss;
+        ss << idIPC;
+        
+        std::string key;
+        key += "shMem-";
+        key += dirIPC;
+        key += "-";
+        key += ss.str();
+
+        findCommId(key);
+        
+        this->idShMem[numSem] = this->commId_;
     }
     
     void wait(int numSem = 0) {
         CommPacketWrapper wrapper;
-        wrapper.setIdShMem( this->commId_ + numSem );
-        wrapper.setReceiverId( this->commId_ + numSem );
+        wrapper.setIdShMem( this->idShMem[numSem] );
+        wrapper.setReceiverId( this->idShMem[numSem] );
         wrapper.setReceiverType( ID_TIPO_PEDIDO_MEMORIA );
         wrapper.setSenderId( ID_COMM_SEM_SALIDA );
 
@@ -47,7 +61,7 @@ public:
             // guardo lo recibido en la shMem
             T buffer;
             memcpy(&buffer, msg.msg, sizeof(T));
-            this->shMem.write(&buffer);
+            this->shMem[numSem].write(&buffer);
         }
         catch(Exception & e) {
             Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -58,11 +72,11 @@ public:
     void signal(int numSem = 0) {
         // enviarle al broker la shMem diciendo que termine de utilizarla
         T buffer;
-        this->shMem.read(&buffer);
+        this->shMem[numSem].read(&buffer);
         
         CommPacketWrapper wrapper;
-        wrapper.setIdShMem( this->commId_ + numSem );
-        wrapper.setReceiverId( this->commId_ + numSem );
+        wrapper.setIdShMem( this->idShMem[numSem] );
+        wrapper.setReceiverId( this->idShMem[numSem] );
         wrapper.setReceiverType( ID_TIPO_MEMORIA );
         wrapper.setSenderId( ID_COMM_SEM_SALIDA );
 
@@ -78,12 +92,11 @@ public:
             abort();
         }
     }
-    
-    
-    
-    
+
 private:
-    IPC::SharedMemory<T> shMem;
+    int cantShMen;
+    int idShMem[SEM_ARRAY_MAX_SIZE];
+    IPC::SharedMemory<T> shMem[SEM_ARRAY_MAX_SIZE];
 };
 }
 

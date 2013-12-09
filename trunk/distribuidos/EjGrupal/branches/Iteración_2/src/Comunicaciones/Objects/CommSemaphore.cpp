@@ -40,7 +40,7 @@ void CommSemaphore::initializeQueues(const char *fileName, int id) {
     key += "-";
     key += ss.str();
 
-    findCommId();
+    findCommId(key);
     
     try {
         this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->idDuenioSem_);
