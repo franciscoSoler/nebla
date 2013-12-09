@@ -17,6 +17,10 @@ public:
     void setReceiverType(TipoAgente receiverType) {
         receiverType_ = receiverType;
     }
+    
+    void setSenderType(TipoAgente receiverType) {
+        receiverType_ = receiverType;
+    }
 
     void setIdDirIPC(int idDirIPC) {
         idDirIPC_ = idDirIPC;
@@ -85,7 +89,7 @@ public:
         MsgPedidoMemoriaAdministrador msgPedidoMemoriaAdministrador;
         msgPedidoMemoriaAdministrador.mtype = idShMem_;
         msgPedidoMemoriaAdministrador.idReceptor = receiverId_;
-        msgPedidoMemoriaAdministrador.idTipoReceptor = receiverType_;
+        msgPedidoMemoriaAdministrador.idTipoEmisor = senderType_;
 
         MsgCanalEntradaBroker msgCanalEntradaBroker;
         msgCanalEntradaBroker.idReceptor = receiverId_;
@@ -133,6 +137,7 @@ private:
     long receiverId_;
     long senderId_;
     TipoAgente receiverType_;
+    TipoAgente senderType_;
     int idDirIPC_;
     int idShMem_;
     const char* dirIPC_;

@@ -56,7 +56,7 @@ typedef struct {
 
 typedef struct {  
     long mtype; // idReceptor
-    TipoAgente idTipoReceptor;
+    TipoAgente idTipoEmisor;
     long idReceptor;
 } MsgPedidoMemoriaAdministrador;
 
