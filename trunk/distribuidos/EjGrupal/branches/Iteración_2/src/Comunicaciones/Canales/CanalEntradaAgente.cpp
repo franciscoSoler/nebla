@@ -75,8 +75,8 @@ int main(int argc, char* argv[]) {
             sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
-            sprintf(buffer, "directorioIPC: %s, idIPC: %d",
-            mensaje.directorioIPC, mensaje.idIPC);
+            sprintf(buffer, "directorioIPC: %s, idIPC: %d, mtype del mensaje a enviar %ld",
+            mensaje.directorioIPC, mensaje.idIPC, mensaje.msg.mtype);
             Logger::logMessage(Logger::COMM, buffer);
             
             colaAgente = obtenerColaAgente(mensaje.directorioIPC, mensaje.idIPC);

@@ -82,13 +82,6 @@ int main(int argc, char* argv[]) {
         colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
         colaAgente.destroy();     
         Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias destruida"); 
-    
-        // Obtengo la cola por la cual recibo los pedidos por memoria compartida
-        IPC::MsgQueue colaPedidosMemoria("Cola Pedidos Memoria");
-        colaPedidosMemoria.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
-        colaPedidosMemoria.destroy();
-        Logger::logMessage(Logger::COMM, "Cola PedidosMemoria destruida");
-
 
         std::list<int> shMemListId = cfg->getParamIntList( "shMem" );
         while ( not shMemListId.empty() ) {
