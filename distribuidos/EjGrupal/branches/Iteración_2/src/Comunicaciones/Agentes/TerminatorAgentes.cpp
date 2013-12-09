@@ -68,6 +68,10 @@ int main(int argc, char* argv[]) {
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_DESPACHO);
         commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Despacho destruida");
+        
+        commColaSalida.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
+        commColaSalida.destroy();
+        Logger::logMessage(Logger::COMM, "Cola CanalEntrada-Semaforos destruida");
 
     }
     catch (Exception & e) {
