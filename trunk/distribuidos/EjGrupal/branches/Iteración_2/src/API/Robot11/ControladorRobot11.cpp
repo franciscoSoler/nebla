@@ -36,28 +36,28 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         middleware.crearCanales(this->nroCinta_, ID_TIPO_ROBOT11);
         
         /* Obtengo el semaforo de sincronizacion de Robot11 con AGVs y robot 5*/
-        this->semBloqueoRobot5 = IPC::CommSemaphore("semBloqueoRobot5");
+        this->semBloqueoRobot5 = COMM::CommSemaphore("semBloqueoRobot5");
         this->semBloqueoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
         
-        this->semMemEstadoRobot5 = IPC::CommSemaphoreMutex("semMemEstadoRobot5");
+        this->semMemEstadoRobot5 = COMM::CommSemaphoreMutex("semMemEstadoRobot5");
         this->semMemEstadoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
 
-        this->semBloqueoRobot11 = IPC::CommSemaphore("semBloqueoRobot11");
+        this->semBloqueoRobot11 = COMM::CommSemaphore("semBloqueoRobot11");
         this->semBloqueoRobot11.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
 
-        this->semBufferCinta6 = IPC::CommSemaphoreMutex("semBufferCinta6");
+        this->semBufferCinta6 = COMM::CommSemaphoreMutex("semBufferCinta6");
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semBufferCanastos = IPC::CommSemaphoreMutex("semMemCanastos");
+        this->semBufferCanastos = COMM::CommSemaphoreMutex("semMemCanastos");
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->semMutex_shMem_R11_R14_ = IPC::CommSemaphoreMutex ("semMutex_shMem_R11_R14");
+        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex ("semMutex_shMem_R11_R14");
         this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
-        this->semR11_Cinta13_ = IPC::CommSemaphore ("semR11_Cinta13");
+        this->semR11_Cinta13_ = COMM::CommSemaphore ("semR11_Cinta13");
         this->semR11_Cinta13_.getSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
         
-        this->semR14_Cinta13_ = IPC::CommSemaphore("semR14_Cinta13");
+        this->semR14_Cinta13_ = COMM::CommSemaphore("semR14_Cinta13");
         this->semR14_Cinta13_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA13_ID, 1);
         
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", this->nroCinta_, ID_TIPO_ROBOT11, ID_TIPO_AGV);

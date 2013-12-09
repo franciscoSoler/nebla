@@ -21,21 +21,21 @@ ControllerR16_Cinta15::ControllerR16_Cinta15() {
         shmemAlmacenTerminados = IPC::SharedMemory<AlmacenProductosTerminados>("shMemAlmacenTerminados");
         shmemAlmacenTerminados.getSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
         
-        semMutex_shMem_R14_R16_ = IPC::CommSemaphoreMutex ("semMutex_shMem_R14_R16");
+        semMutex_shMem_R14_R16_ = COMM::CommSemaphoreMutex ("semMutex_shMem_R14_R16");
         semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
         
-        semR14_Cinta15_ = IPC::CommSemaphore("semR14_Cinta15");
+        semR14_Cinta15_ = COMM::CommSemaphore("semR14_Cinta15");
         semR14_Cinta15_.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA15_ID, 1);
         
-        inputQueueR16_Cinta15_ = CommMsgHandler(1, ID_TIPO_ROBOT16_CINTA, ID_TIPO_ROBOT14);
+        inputQueueR16_Cinta15_ = COMM::CommMsgHandler(1, ID_TIPO_ROBOT16_CINTA, ID_TIPO_ROBOT14);
         inputQueueR16_Cinta15_.setReceptorInfo("inputQueueR16_Cinta15",
                                                DIRECTORY_ROBOT_16, MSGQUEUE_R16_CINTA15_INPUT_ID);
         
-        inputQueueDespacho_ = CommMsgHandler(1, ID_TIPO_ROBOT16_CINTA, ID_TIPO_DESPACHO);
+        inputQueueDespacho_ = COMM::CommMsgHandler(1, ID_TIPO_ROBOT16_CINTA, ID_TIPO_DESPACHO);
         inputQueueDespacho_.setReceptorInfo("inputQueueDespacho",
                                             DIRECTORY_DESPACHO, MSGQUEUE_DESPACHO_INPUT_ID);
         
-        semMutex_shMem_APT_ = IPC::CommSemaphoreMutex("semMutex_shMem_APT");
+        semMutex_shMem_APT_ = COMM::CommSemaphoreMutex("semMutex_shMem_APT");
         semMutex_shMem_APT_.getSemaphore(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, 1);
 
         semMutex_sincronismo_R16_ = IPC::Semaphore("semMutex_sincronismo_R16");

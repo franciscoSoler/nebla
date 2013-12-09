@@ -43,12 +43,12 @@ public:
     
 private:
     char buffer[TAM_BUFFER];
-    CommMsgHandler colaReciboOrdenProduccion;
+    COMM::CommMsgHandler colaReciboOrdenProduccion;
     IPC::PedidosProduccionMessageQueue colaEnvioMensajePedidoProduccion;
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
 
     IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
-    IPC::CommSemaphoreMutex semMemCanastos;
+    COMM::CommSemaphoreMutex semMemCanastos;
 
     void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
     void imprimirEspecificacionProducto(EspecifProd especifProd);

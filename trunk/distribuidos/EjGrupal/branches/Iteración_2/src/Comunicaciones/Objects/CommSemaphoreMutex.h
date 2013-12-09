@@ -1,5 +1,5 @@
 #ifndef SEMAPHOREMUTEX_H
-#define	SEMAPHOREMUTEX_H
+#define	SEMAPHOREMU_H
 
 #include "CommSemaphore.h"
 #include "CommPacketWrapper.h"

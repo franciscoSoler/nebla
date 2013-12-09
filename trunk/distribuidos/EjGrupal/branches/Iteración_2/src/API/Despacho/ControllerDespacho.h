@@ -22,12 +22,12 @@ private:
     char buffer_[255];
     
     // Cola por la cual recibe mensajes de varios procesos
-    CommMsgHandler inputQueueDespacho_;
+    COMM::CommMsgHandler inputQueueDespacho_;
     // Cola con la cual le envía mensajes al cliente
-    CommMsgHandler inputQueueCliente_;
+    COMM::CommMsgHandler inputQueueCliente_;
     // Cola para avisarle al R16 que tiene que sacar
     // cajas del APT para darselas al cliente
-    CommMsgHandler inputQueueR16_Despacho_;
+    COMM::CommMsgHandler inputQueueR16_Despacho_;
 };
 
 #endif /* CONTROLLER_DESPACHO_ */

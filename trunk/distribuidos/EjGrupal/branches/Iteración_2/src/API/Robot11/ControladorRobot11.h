@@ -43,11 +43,11 @@ private:
     int id_semMemCanastos;
     int id_Robot;
     //int posicionPieza;
-    IPC::CommSemaphore semBloqueoRobot11;
-    IPC::CommSemaphoreMutex semBufferCanastos;
-    IPC::CommSemaphoreMutex semBufferCinta6;
-    IPC::CommSemaphoreMutex semMemEstadoRobot5;
-    IPC::CommSemaphore semBloqueoRobot5;
+    COMM::CommSemaphore semBloqueoRobot11;
+    COMM::CommSemaphoreMutex semBufferCanastos;
+    COMM::CommSemaphoreMutex semBufferCinta6;
+    COMM::CommSemaphoreMutex semMemEstadoRobot5;
+    COMM::CommSemaphore semBloqueoRobot5;
 
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
     IPC::Barrera1112MessageQueue cola11_A_12;
@@ -58,9 +58,9 @@ private:
     
     DataSM_R11_R14* shMem_R11_R14_Data_;
     IPC::SharedMemory<DataSM_R11_R14> shMem_R11_R14_;
-    IPC::CommSemaphoreMutex semMutex_shMem_R11_R14_;
-    IPC::CommSemaphore semR11_Cinta13_;
-    IPC::CommSemaphore semR14_Cinta13_;
+    COMM::CommSemaphoreMutex semMutex_shMem_R11_R14_;
+    COMM::CommSemaphore semR11_Cinta13_;
+    COMM::CommSemaphore semR14_Cinta13_;
     
     bool poseePieza(int id_pieza);
     //void buscarPosicionPieza(BufferCanastos canastos, int id_pieza);
