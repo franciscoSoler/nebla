@@ -19,6 +19,18 @@ namespace COMM {
 
 class CommSemaphore : public CommObject
 {
+public:
+
+    CommSemaphore(std::string CommName = "", TipoAgente idDuenioSem = ID_TIPO_VACIO, TipoAgente idDuenioSemRemoto = ID_TIPO_VACIO);
+    virtual ~CommSemaphore();
+    void getSemaphore(const char *fileName, int id, int qty);
+    void initializeSemaphore(int numSem, int val);
+    void wait(int numSem = 0);
+    void signal(int numSem = 0);
+
+protected:
+    void initializeQueues(const char *fileName, int id);
+
 protected:
     // Buffer for output errors
     TipoAgente idDuenioSem_;
@@ -26,24 +38,6 @@ protected:
     char buffer_[TAM_BUFFER];
     IPC::MsgQueue senderMsgQueue_;
     IPC::MsgQueue receiverMsgQueue_;
-        
-	
-public:
-
-    CommSemaphore(std::string CommName = "", TipoAgente idDuenioSem = ID_TIPO_VACIO, TipoAgente idDuenioSemRemoto = ID_TIPO_VACIO);
-
-    virtual ~CommSemaphore();
-
-    void getSemaphore(const char *fileName, int id, int qty);
-
-    void initializeSemaphore(int numSem, int val);
-
-    void wait(int numSem = 0);
-
-    void signal(int numSem = 0);
-protected:
-    
-    void initializeQueues(const char *fileName, int id);
 };
 
 }

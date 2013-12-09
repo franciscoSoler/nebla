@@ -3,6 +3,7 @@
 #include "middlewareCommon.h"
 #include <Exceptions/Exception.h>
 #include <memory>
+#include <sstream>
 #include <Logger/Logger.h>
 
 namespace COMM {
@@ -22,16 +23,33 @@ void CommObject::setCommName(std::string name) {
     commName_ = name;
 }
 
-void CommObject::findCommId(std::string key) {
+std::string CommObject::createKey(const char* commType,
+                                  const char* fileName, int id) {
+    std::stringstream ss;
+    ss << id;
+
+    std::string key;
+    key += commType;
+    key += "-";
+    key += fileName;
+    key += "-";
+    key += ss.str();
+
+    return key;
+}
+
+int CommObject::findCommId(std::string key) {
     std::auto_ptr<IConfigFileParser> cfg(
     new ConfigFileParser( COMM_OBJECTS_CONFIG_FILE ) );
 
     cfg->parse();
-    commId_ = cfg->getConfigFileParam(key, -1);
+    int commId = cfg->getConfigFileParam(key, -1);
 
-    if (commId_ == -1) {
+    if (commId == -1) {
         throw Exception( this->commName_ +  ": - No existe ID asociado al CommObject" );
     }
+
+    return commId;
 
 }
 

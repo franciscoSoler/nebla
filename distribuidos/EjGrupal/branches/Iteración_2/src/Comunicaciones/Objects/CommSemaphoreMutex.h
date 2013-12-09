@@ -21,27 +21,24 @@ public:
     void getSemaphore(const char *fileName, int id, int qty) {
         initializeQueues(fileName, id);
         this->cantShMen = qty;
+
         //ahora tengo que conseguir desde el id las cosas de la shMem para luego hacer getshMem
         // char dirIPC[DIR_FIXED_SIZE];
         // int idIPC;
         //get desde un id a idIPC y dirIPC
     }
     
-    void setShMem(const char * dirIPC, int idIPC, int numSem = 0) {
-        this->shMem[numSem].getSharedMemory(dirIPC, idIPC);
-        
-        std::stringstream ss;
-        ss << idIPC;
-        
-        std::string key;
-        key += "shMem-";
-        key += dirIPC;
-        key += "-";
-        key += ss.str();
+    void setShMem(const char * dirIPC, int idIPC, int numSem = 0) {        
+        std::string key = this->createKey("shMem", dirIPC, idIPC);
+        int commId = this->findCommId( key );
 
-        findCommId(key);
+        /* Logger::logMessage(Logger::IMPORTANT, "Key: " + key);
+        ss.str("");
+        ss << commId_;
+        Logger::logMessage(Logger::IMPORTANT, "Value: " + ss.str()); */
         
-        this->idShMem[numSem] = this->commId_;
+        this->idShMem[numSem] = commId;
+        this->shMem[numSem].getSharedMemory(dirIPC, idIPC);
     }
     
     void wait(int numSem = 0) {

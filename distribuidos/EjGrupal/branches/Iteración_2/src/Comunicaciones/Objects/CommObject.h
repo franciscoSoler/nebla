@@ -13,7 +13,9 @@ public:
     void setCommName(std::string name);
 
 protected:
-    void findCommId(std::string key);
+    std::string createKey(const char* commType,
+                          const char* fileName, int id);
+    int findCommId(std::string key);
 
 protected:
     std::string commName_;
