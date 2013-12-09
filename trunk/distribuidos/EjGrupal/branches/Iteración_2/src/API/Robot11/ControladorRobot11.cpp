@@ -69,6 +69,7 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
 
         this->shMem_R11_R14_ = IPC::SharedMemory<DataSM_R11_R14>("ShMem_R11_R14");
         this->shMem_R11_R14_.getSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);        
+        this->semMutex_shMem_R11_R14_.setShMem(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
         
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         

@@ -28,22 +28,12 @@ void CommSemaphore::initializeSemaphore(int numSem, int val)
 } 
 
 void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
-    initializeQueues(fileName, id);
+    this->initializeQueues(fileName, id);
+    std::string key = this->createKey("sem", fileName, id);
+    this->commId_ = this->findCommId( key );
 }
 
 void CommSemaphore::initializeQueues(const char *fileName, int id) {
-    // Get the ID of the CommObject from the ConfigFile
-    std::stringstream ss;
-    ss << id;
-
-    std::string key;
-    key += "sem-";
-    key += fileName;
-    key += "-";
-    key += ss.str();
-
-    this->findCommId( key );
-    
     try {
         this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->idDuenioSem_);
         this->receiverMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
@@ -52,7 +42,6 @@ void CommSemaphore::initializeQueues(const char *fileName, int id) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
         abort();
     }
-    
 }
 
 //-----------------------------------------------------------------------------

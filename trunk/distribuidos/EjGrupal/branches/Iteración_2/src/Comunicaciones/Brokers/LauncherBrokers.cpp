@@ -52,81 +52,87 @@ void createIPCs() {
     std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser( COMM_OBJECTS_CONFIG_FILE ));
     cfg->parse();
     
-    // Se crea una cola por cada Agente
-    IPC::MsgQueue colaAgente;
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_CLIENTE);
-    Logger::logMessage(Logger::COMM, "Cola cliente creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
-    Logger::logMessage(Logger::COMM, "Cola vendedor creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_AP);
-    Logger::logMessage(Logger::COMM, "Cola AlmacenDePiezas creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_AGV);
-    Logger::logMessage(Logger::COMM, "Cola AGV creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
-    Logger::logMessage(Logger::COMM, "Cola Robot5AGV creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
-    Logger::logMessage(Logger::COMM, "Cola Robot5Cinta creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT11);
-    Logger::logMessage(Logger::COMM, "Cola Robot11 creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT12);
-    Logger::logMessage(Logger::COMM, "Cola Robot12 creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT14);
-    Logger::logMessage(Logger::COMM, "Cola Robot14 creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
-    Logger::logMessage(Logger::COMM, "Cola Robot16Cinta creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
-    Logger::logMessage(Logger::COMM, "Cola Robot16Despacho creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_DESPACHO);
-    Logger::logMessage(Logger::COMM, "Cola Despacho creada"); 
+    try {
+        // Se crea una cola por cada Agente
+        IPC::MsgQueue colaAgente;
 
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
-    Logger::logMessage(Logger::COMM, "Cola Memorias creada");
-    
-    colaAgente.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
-    Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");    
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_CLIENTE);
+        Logger::logMessage(Logger::COMM, "Cola cliente creada");
 
-    IPC::MsgQueue colaMemoria("Cola Memoria");
-    colaMemoria.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
-    Logger::logMessage(Logger::COMM, "Cola ColaMemoria creada");
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
+        Logger::logMessage(Logger::COMM, "Cola vendedor creada");
 
-    // Obtengo la cola por la cual recibo los pedidos por memoria compartida
-    IPC::MsgQueue colaPedidosMemoria("Cola Pedidos Memoria");
-    colaPedidosMemoria.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
-    Logger::logMessage(Logger::COMM, "Cola PedidosMemoria creada");
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_AP);
+        Logger::logMessage(Logger::COMM, "Cola AlmacenDePiezas creada");
 
-    std::list<int> shMemIdList = cfg->getParamIntList("shMem");
-    while ( not shMemIdList.empty() ) {
-        IPC::SharedMemory<int> contadoraSharedMemory("Contadora Pedidos ShMem");
-        contadoraSharedMemory.createSharedMemory(DIRECTORY_ADM, shMemIdList.front());
-        Logger::logMessage(Logger::COMM, "shMemContadoraPedidos creada");
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_AGV);
+        Logger::logMessage(Logger::COMM, "Cola AGV creada");
 
-        IPC::Semaphore semaforoContadora("Semaforo Contadora Pedidos");
-        semaforoContadora.createSemaphore(DIRECTORY_ADM, shMemIdList.front(), 1);
-        Logger::logMessage(Logger::COMM, "Semaforo Contadora Pedidos creado");
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
+        Logger::logMessage(Logger::COMM, "Cola Robot5AGV creada");
 
-        shMemIdList.pop_front();
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
+        Logger::logMessage(Logger::COMM, "Cola Robot5Cinta creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT11);
+        Logger::logMessage(Logger::COMM, "Cola Robot11 creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT12);
+        Logger::logMessage(Logger::COMM, "Cola Robot12 creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT14);
+        Logger::logMessage(Logger::COMM, "Cola Robot14 creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
+        Logger::logMessage(Logger::COMM, "Cola Robot16Cinta creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
+        Logger::logMessage(Logger::COMM, "Cola Robot16Despacho creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_DESPACHO);
+        Logger::logMessage(Logger::COMM, "Cola Despacho creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+        Logger::logMessage(Logger::COMM, "Cola Memorias creada");
+
+        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+        Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");
+
+        IPC::MsgQueue colaMemoria("Cola Memoria");
+        colaMemoria.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+        Logger::logMessage(Logger::COMM, "Cola ColaMemoria creada");
+
+        // Obtengo la cola por la cual recibo los pedidos por memoria compartida
+        IPC::MsgQueue colaPedidosMemoria("Cola Pedidos Memoria");
+        colaPedidosMemoria.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+        Logger::logMessage(Logger::COMM, "Cola PedidosMemoria creada");
+
+        std::list<int> shMemIdList = cfg->getParamIntList("shMem");
+        while ( not shMemIdList.empty() ) {
+            IPC::SharedMemory<int> contadoraSharedMemory("Contadora Pedidos ShMem");
+            contadoraSharedMemory.createSharedMemory(DIRECTORY_ADM, shMemIdList.front());
+            Logger::logMessage(Logger::COMM, "shMemContadoraPedidos creada");
+
+            IPC::Semaphore semaforoContadora("Semaforo Contadora Pedidos");
+            semaforoContadora.createSemaphore(DIRECTORY_ADM, shMemIdList.front(), 1);
+            Logger::logMessage(Logger::COMM, "Semaforo Contadora Pedidos creado");
+
+            shMemIdList.pop_front();
+        }
+
+        // Obtengo la memoria compartida con el siguiente broker
+        IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
+        siguienteSharedMemory.createSharedMemory(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
+
+        IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
+        semaforoSiguiente.createSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
     }
-
-    // Obtengo la memoria compartida con el siguiente broker
-    IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-    siguienteSharedMemory.createSharedMemory(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
-    Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
-
-    IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-    semaforoSiguiente.createSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
-    Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
+    catch (Exception & e) {
+        Logger::getInstance().logMessage(Logger::ERROR, e.get_error_description().c_str());
+        abort();
+    }
 }
 
 void createSharedMemoryAdministrators() {
