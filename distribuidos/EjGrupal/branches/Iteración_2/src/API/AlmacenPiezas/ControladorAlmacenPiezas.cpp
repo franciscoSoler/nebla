@@ -33,13 +33,16 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", 1, ID_TIPO_AP, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
+        this->semMemCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos");
+        this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
+
         this->shMemBufferCanastos[CANTIDAD_AGVS] = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         this->shMemBufferCanastos[0].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+        this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0, 0);
         this->shMemBufferCanastos[1].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
+        this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0, 1);
         this->shMemBufferCanastos[2].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
-
-        this->semMemCanastos = COMM::CommSemaphoreMutex<int>("semMemCanastos");
-        this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
+        this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0, 2);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());

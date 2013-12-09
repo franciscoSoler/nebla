@@ -54,7 +54,7 @@ private:
 
     COMM::CommMsgHandler colaEnvioOrdenProduccion;
 
-    COMM::CommSemaphoreMutex<int> mutexAlmacenTerminados;
+    COMM::CommSemaphoreMutex<AlmacenProductosTerminados> mutexAlmacenTerminados;
     COMM::CommSemaphoreMutex<int> mutexOrdenDeCompra;
     SmMemAlmacenProductosTerminados almacenProductosTerminados;
     COMM::CommMsgHandler inputQueueDespacho;

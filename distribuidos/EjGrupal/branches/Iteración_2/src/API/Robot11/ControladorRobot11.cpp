@@ -39,19 +39,20 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semBloqueoRobot5 = COMM::CommSemaphore("semBloqueoRobot5");
         this->semBloqueoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
         
-        this->semMemEstadoRobot5 = COMM::CommSemaphoreMutex<int>("semMemEstadoRobot5");
+        this->semMemEstadoRobot5 = COMM::CommSemaphoreMutex<EstadoRobot5>("semMemEstadoRobot5");
         this->semMemEstadoRobot5.getSemaphore((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
+        this->semMemEstadoRobot5.setShMem(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
         this->semBloqueoRobot11 = COMM::CommSemaphore("semBloqueoRobot11");
         this->semBloqueoRobot11.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_BLOQUEO_ROBOT_11, 2);
 
-        this->semBufferCinta6 = COMM::CommSemaphoreMutex<int>("semBufferCinta6");
+        this->semBufferCinta6 = COMM::CommSemaphoreMutex<CintaTransportadora_6>("semBufferCinta6");
         this->semBufferCinta6.getSemaphore((char*) DIRECTORY_ROBOT_11, ID_SEM_CINTA_6, 2);
 
-        this->semBufferCanastos = COMM::CommSemaphoreMutex<int>("semMemCanastos");
+        this->semBufferCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos");
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<int> ("semMutex_shMem_R11_R14");
+        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<DataSM_R11_R14> ("semMutex_shMem_R11_R14");
         this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
         this->semR11_Cinta13_ = COMM::CommSemaphore ("semR11_Cinta13");
@@ -78,12 +79,16 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         
         if (numRobot == 0) {
             this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
+            this->semBufferCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0, 0);
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_0");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_0);
+            this->semBufferCinta6.setShMem(DIRECTORY_ROBOT_11, ID_CINTA_6_0, 0);
         } else {
             this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
+            this->semBufferCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1, 0);
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_1");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_1);
+            this->semBufferCinta6.setShMem(DIRECTORY_ROBOT_11, ID_CINTA_6_1, 1);
         }
     }
     catch (Exception & e) {
