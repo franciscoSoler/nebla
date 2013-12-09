@@ -76,4 +76,7 @@ void createIPCs() {
 
     commColaSalida.create(DIRECTORY_COMM, ID_TIPO_DESPACHO);
     Logger::logMessage(Logger::COMM, "Cola CanalSalida-Despacho creada");
+    
+    commColaSalida.create(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
+    Logger::logMessage(Logger::COMM, "Cola CanalEntrada-Semaforos creada");
 }
