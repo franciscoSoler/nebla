@@ -55,8 +55,8 @@ int main(int argc, char* argv[]) {
         semaforoSiguiente.getSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
 
         char bufferMsgQueue[MSG_BROKER_SIZE];
-        char directorioIPC[DIR_FIXED_SIZE];
-        int identificadorIPC;
+        //char directorioIPC[DIR_FIXED_SIZE];
+        //int identificadorIPC;
         int cantidad = 0;
 
         while (true) {
@@ -78,9 +78,9 @@ int main(int argc, char* argv[]) {
                 // Envio a la cola del agente que realizo el pedido, la memoria compartida
                 CommPacketWrapper wrapper;
 
-                /==== DIRETORIO IPC e IDENTIFICADOR IPC NO ESTAN DEFINIDOS, ESTO EXPLOTA!!====/
-                wrapper.setDirIPC(directorioIPC);
-                wrapper.setIdDirIPC(identificadorIPC);
+                //==== DIRETORIO IPC e IDENTIFICADOR IPC NO ESTAN DEFINIDOS, ESTO EXPLOTA!!====/
+                wrapper.setDirIPC(DIRECTORY_SEM);
+                wrapper.setIdDirIPC(ID_COMM_SEM_ENTRADA);
                 wrapper.setReceiverId(mensajePedido.idReceptor);
                 wrapper.setReceiverType(mensajePedido.idTipoReceptor);
 

@@ -7,10 +7,11 @@
 
 namespace COMM {  
     
-CommSemaphore::CommSemaphore(std::string CommName, TipoAgente idDuenioSem, 
-        TipoAgente idDuenioSemRemoto) : CommObject(CommName),
-                                        idDuenioSem_(idDuenioSem),
-                                        idDuenioSemRemoto_(idDuenioSemRemoto)
+CommSemaphore::CommSemaphore(std::string CommName, long idEmisor, TipoAgente typeDuenioSem, 
+        TipoAgente typeDuenioSemRemoto) : CommObject(CommName),
+                                        idEmisor_(idEmisor),
+                                        typeDuenioSem_(typeDuenioSem),
+                                        typeDuenioSemRemoto_(typeDuenioSemRemoto)
                                                 
 {
 }
@@ -35,7 +36,7 @@ void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
 
 void CommSemaphore::initializeQueues(const char *fileName, int id) {
     try {
-        this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->idDuenioSem_);
+        this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->typeDuenioSem_);
         this->receiverMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
     }
     catch(Exception & e) {
@@ -63,8 +64,8 @@ void CommSemaphore::signal(int numSem)
     CommPacketWrapper wrapper;
     wrapper.setDirIPC( DIRECTORY_SEM );
     wrapper.setIdDirIPC( ID_COMM_SEM_ENTRADA );
-    wrapper.setSenderId( ID_COMM_SEM_SALIDA );
-    wrapper.setReceiverType( idDuenioSemRemoto_ );
+    wrapper.setSenderId( this->idEmisor_ );
+    wrapper.setReceiverType( typeDuenioSemRemoto_ );
     wrapper.setReceiverId( this->commId_ + numSem );
     MsgCanalSalidaAgente msg;
     wrapper.createPacketForSemaphores(msg);
