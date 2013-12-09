@@ -22,7 +22,7 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         MiddlewareAPI middleware;
         middleware.crearCanales(1, ID_TIPO_AP);
 
-        this->colaReciboOrdenProduccion = CommMsgHandler(1, ID_TIPO_AP, ID_TIPO_VENDEDOR);
+        this->colaReciboOrdenProduccion = COMM::CommMsgHandler(1, ID_TIPO_AP, ID_TIPO_VENDEDOR);
         this->colaReciboOrdenProduccion.setReceptorInfo("colaReciboOrdenProduccion",
                                                         DIRECTORY_VENDEDOR, ID_COLA_CONSULTAS_ALMACEN_PIEZAS);
 
@@ -38,7 +38,7 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         this->shMemBufferCanastos[1].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
         this->shMemBufferCanastos[2].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
 
-        this->semMemCanastos = IPC::CommSemaphoreMutex("semMemCanastos");
+        this->semMemCanastos = COMM::CommSemaphoreMutex("semMemCanastos");
         this->semMemCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
     }
     catch (Exception & e) {

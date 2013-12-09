@@ -39,13 +39,13 @@ private:
     
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
     IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados;
-    IPC::CommSemaphoreMutex semMutex_shMem_R14_R16_;
-    IPC::CommSemaphoreMutex semMutex_shMem_APT_;
+    COMM::CommSemaphoreMutex semMutex_shMem_R14_R16_;
+    COMM::CommSemaphoreMutex semMutex_shMem_APT_;
     IPC::Semaphore semMutex_sincronismo_R16_;
-    IPC::CommSemaphore semR14_Cinta15_;
+    COMM::CommSemaphore semR14_Cinta15_;
 
-    CommMsgHandler inputQueueR16_Cinta15_;
-    CommMsgHandler inputQueueDespacho_;
+    COMM::CommMsgHandler inputQueueR16_Cinta15_;
+    COMM::CommMsgHandler inputQueueDespacho_;
     Msg_AvisoCajaEnCinta15 mensaje_;
 };
 

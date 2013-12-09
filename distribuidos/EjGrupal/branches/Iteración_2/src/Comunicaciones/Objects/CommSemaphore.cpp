@@ -3,8 +3,8 @@
 #include <IPCs/IPCTemplate/MsgQueue.h>
 #include <middlewareCommon.h>
 
-namespace COMM {
-
+namespace COMM {  
+    
 CommSemaphore::CommSemaphore(std::string CommName, TipoAgente idDuenioSem, 
         TipoAgente idDuenioSemRemoto) : CommObject(CommName),
                                         idDuenioSem_(idDuenioSem),

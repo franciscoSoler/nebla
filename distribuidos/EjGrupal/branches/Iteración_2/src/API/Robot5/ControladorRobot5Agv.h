@@ -35,8 +35,8 @@ private:
     
     IPC::PedidosAgvMessageQueue colaPedidos;
     IPC::BufferCanastoEntre5yAGVSharedMemory bufferCanasto[CANTIDAD_AGVS]; 
-    IPC::CommSemaphoreMutex semaforoAccesoBufferAgv; 
-    IPC::CommSemaphore semaforoBloqueoAgv;
+    COMM::CommSemaphoreMutex semaforoAccesoBufferAgv; 
+    COMM::CommSemaphore semaforoBloqueoAgv;
     IPC::Semaphore semaforoApiRobot5;
     
     EspacioAlmacenPiezas almacen;

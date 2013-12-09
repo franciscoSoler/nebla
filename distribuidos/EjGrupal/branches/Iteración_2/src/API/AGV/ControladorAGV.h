@@ -33,10 +33,10 @@ private:
     int id_semMemCanastos;
     int posicionCanasto;
     
-    IPC::CommSemaphoreMutex semBufferAGV_5;
-    IPC::CommSemaphoreMutex semMemCanastos;
-    IPC::CommSemaphore semRobotCinta;
-    IPC::CommSemaphore semBloqueoAGV;
+    COMM::CommSemaphoreMutex semBufferAGV_5;
+    COMM::CommSemaphoreMutex semMemCanastos;
+    COMM::CommSemaphore semRobotCinta;
+    COMM::CommSemaphore semBloqueoAGV;
 
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
     IPC::PedidosAgvMessageQueue colaPedidosAGV_5;

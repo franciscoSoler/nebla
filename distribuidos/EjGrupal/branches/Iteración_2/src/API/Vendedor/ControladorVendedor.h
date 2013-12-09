@@ -52,12 +52,12 @@ private:
     IPC::SharedMemory<int> shmemNumeroOrdenCompra;
     IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados;
 
-    CommMsgHandler colaEnvioOrdenProduccion;
+    COMM::CommMsgHandler colaEnvioOrdenProduccion;
 
-    IPC::CommSemaphoreMutex mutexAlmacenTerminados;
-    IPC::CommSemaphoreMutex mutexOrdenDeCompra;
+    COMM::CommSemaphoreMutex mutexAlmacenTerminados;
+    COMM::CommSemaphoreMutex mutexOrdenDeCompra;
     SmMemAlmacenProductosTerminados almacenProductosTerminados;
-    CommMsgHandler inputQueueDespacho;
+    COMM::CommMsgHandler inputQueueDespacho;
 
     pedido_fabricacion_t reservarPedido(pedido_t pedido, bool* pedidoEnStock);
     void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);

@@ -71,11 +71,11 @@ private:
     
     IPC::SharedMemory<DataSM_R11_R14> shMem_R11_R14_;
     IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
-    IPC::CommSemaphoreMutex semMutex_shMem_R11_R14_;
-    IPC::CommSemaphoreMutex semMutex_shMem_R14_R16_;
-    IPC::CommSemaphore semR11_Cinta13_;
-    IPC::CommSemaphore semR14_Cinta13;
-    IPC::CommSemaphore semR14_Cinta15;
+    COMM::CommSemaphoreMutex semMutex_shMem_R11_R14_;
+    COMM::CommSemaphoreMutex semMutex_shMem_R14_R16_;
+    COMM::CommSemaphore semR11_Cinta13_;
+    COMM::CommSemaphore semR14_Cinta13;
+    COMM::CommSemaphore semR14_Cinta15;
     
     // IPC::Semaphore semR16_;
     CommMsgHandler inputQueueR16_Cinta15_;
