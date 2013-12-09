@@ -39,8 +39,8 @@ private:
     //int posicionPieza;
     int posEsperaDelOtroRobot12;
     COMM::CommSemaphore semBloqueoRobot12;
-    COMM::CommSemaphoreMutex semBufferCinta6;
-    COMM::CommSemaphoreMutex semBufferCanastos;
+    COMM::CommSemaphoreMutex<int> semBufferCinta6;
+    COMM::CommSemaphoreMutex<int> semBufferCanastos;
 
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
     IPC::Barrera1112MessageQueue cola11_A_12;

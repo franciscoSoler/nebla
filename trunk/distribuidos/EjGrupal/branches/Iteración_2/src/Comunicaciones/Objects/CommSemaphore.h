@@ -13,12 +13,13 @@
 #include "CommObject.h"
 #include "../../Common.h"
 #include <IPCs/IPCTemplate/MsgQueue.h>
+#include <middlewareCommon.h>
 
 namespace COMM {
 
 class CommSemaphore : public CommObject
 {
-private:
+protected:
     // Buffer for output errors
     TipoAgente idDuenioSem_;
     TipoAgente idDuenioSemRemoto_;

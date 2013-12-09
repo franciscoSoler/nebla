@@ -52,7 +52,7 @@ private:
     
     IPC::PedidosProduccionMessageQueue colaPedidosProduccion;
     IPC::EstadoRobot5SharedMemory estadoRobot5;
-    COMM::CommSemaphoreMutex semaforoAccesoEstadoRobot5;
+    COMM::CommSemaphoreMutex<int> semaforoAccesoEstadoRobot5;
     COMM::CommSemaphore semaforoBloqueoRobot5;
 
     COMM::CommSemaphore semaforoBloqueoRobot11;

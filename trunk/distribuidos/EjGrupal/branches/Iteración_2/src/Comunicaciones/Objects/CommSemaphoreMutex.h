@@ -1,13 +1,16 @@
-#ifndef SEMAPHOREMUTEX_H
-#define	SEMAPHOREMU_H
+#ifndef COMM_SEM_MUTEX_H_
+#define	COMM_SEM_MUTEX_H_
 
 #include "CommSemaphore.h"
 #include "CommPacketWrapper.h"
+#include <IPCs/IPCTemplate/SharedMemory.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 #include "Logger.h"
+#include <sstream>
 
 namespace COMM {
 
-template< class T, unsigned int SIZE = sizeof(T) >
+template< class T >
 class CommSemaphoreMutex : public CommSemaphore {
 public:
     CommSemaphoreMutex(std::string CommName = "", 
@@ -19,8 +22,8 @@ public:
         initializeQueues(fileName, id);
         this->cantShMen = qty;
         //ahora tengo que conseguir desde el id las cosas de la shMem para luego hacer getshMem
-        char dirIPC[DIR_FIXED_SIZE];
-        int idIPC;
+        // char dirIPC[DIR_FIXED_SIZE];
+        // int idIPC;
         //get desde un id a idIPC y dirIPC
     }
     
@@ -56,7 +59,7 @@ public:
 
             // ahora recibo la shMem y la guardo en la shMem
             MsgAgenteReceptor msg;
-            this->receiverMsgQueue_.recv(this->commId_, &msg);
+            this->receiverMsgQueue_.recv(this->commId_, msg);
 
             // guardo lo recibido en la shMem
             T buffer;

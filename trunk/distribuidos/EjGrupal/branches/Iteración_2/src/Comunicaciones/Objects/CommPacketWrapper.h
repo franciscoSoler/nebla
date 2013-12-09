@@ -56,7 +56,6 @@ public:
         memcpy(&msg.msg, &msgCanalEntradaBroker, sizeof(MsgCanalEntradaBroker));
     }
     
-    template <class T>
     void createPacketForSemaphores(MsgCanalSalidaAgente & msg) {
 
         MsgAgenteReceptor msgAgenteReceptor;
@@ -81,7 +80,6 @@ public:
         memcpy(&msg.msg, &msgCanalEntradaBroker, sizeof(MsgCanalEntradaBroker));
     }
     
-    template <class T>
     void createPacketRequestShMem(MsgCanalSalidaAgente & msg) {
 
         MsgPedidoMemoriaAdministrador msgPedidoMemoriaAdministrador;
