@@ -8,9 +8,11 @@
 #include <Exceptions/Exception.h>
 #include "Logger/Logger.h"
 #include <ConfigFileParser/ConfigFileParser.h>
-
 #include <API/Objects/Util.h>
-#include "IPCs/IPCTemplate/MsgQueue.h"
+
+#include <IPCs/IPCTemplate/MsgQueue.h>
+#include <IPCs/IPCTemplate/SharedMemory.h>
+#include <IPCs/Semaphore/Semaphore.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 
@@ -26,7 +28,7 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_BROKER);
         
         createIPCs();
-        // createSharedMemoryAdministrators();
+        createSharedMemoryAdministrators();
 
         ServersManager serversManager;
         serversManager.createServer("ServidorCanalEntradaBroker");
@@ -47,6 +49,8 @@ void createDirectory(std::string directoryName) {
 
 void createIPCs() {
     Logger::getInstance().setProcessInformation("LauncherBrokers:");
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser( COMM_OBJECTS_CONFIG_FILE ));
+    cfg->parse();
     
     // Se crea una cola por cada Agente
     IPC::MsgQueue colaAgente;
@@ -93,7 +97,36 @@ void createIPCs() {
     colaAgente.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
     Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");    
 
-    // TODO: Crear todas las memorias compartidas de contadoras bajo DIRECTORY_ADM
+    IPC::MsgQueue colaMemoria("Cola Memoria");
+    colaMemoria.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+    Logger::logMessage(Logger::COMM, "Cola ColaMemoria creada");
+
+    // Obtengo la cola por la cual recibo los pedidos por memoria compartida
+    IPC::MsgQueue colaPedidosMemoria("Cola Pedidos Memoria");
+    colaPedidosMemoria.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+    Logger::logMessage(Logger::COMM, "Cola PedidosMemoria creada");
+
+    std::list<int> shMemIdList = cfg->getParamIntList("shMem");
+    while ( not shMemIdList.empty() ) {
+        IPC::SharedMemory<int> contadoraSharedMemory("Contadora Pedidos ShMem");
+        contadoraSharedMemory.createSharedMemory(DIRECTORY_ADM, shMemIdList.front());
+        Logger::logMessage(Logger::COMM, "shMemContadoraPedidos creada");
+
+        IPC::Semaphore semaforoContadora("Semaforo Contadora Pedidos");
+        semaforoContadora.createSemaphore(DIRECTORY_ADM, shMemIdList.front(), 1);
+        Logger::logMessage(Logger::COMM, "Semaforo Contadora Pedidos creado");
+
+        shMemIdList.pop_front();
+    }
+
+    // Obtengo la memoria compartida con el siguiente broker
+    IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
+    siguienteSharedMemory.createSharedMemory(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+    Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
+
+    IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
+    semaforoSiguiente.createSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+    Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
 }
 
 void createSharedMemoryAdministrators() {
@@ -103,8 +136,7 @@ void createSharedMemoryAdministrators() {
     int listSize = sharedMemoryListIds.size();
 
     for (int i = 0; i < listSize; ++i) {
-        Util::createProcess("AdministradorMemoria", sharedMemoryListIds.front());
+        Util::createProcess("AdministradorMemoria", 1, sharedMemoryListIds.front());
         sharedMemoryListIds.pop_front();
     }
 }
-

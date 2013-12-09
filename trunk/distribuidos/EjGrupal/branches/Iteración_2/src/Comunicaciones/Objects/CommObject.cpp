@@ -30,7 +30,7 @@ void CommObject::findCommId(std::string key) {
     commId_ = cfg->getConfigFileParam(key, -1);
 
     if (commId_ == -1) {
-        throw Exception( "No existe ID asociado al CommObject" );
+        throw Exception( this->commName_ +  ": - No existe ID asociado al CommObject" );
     }
 
 }
