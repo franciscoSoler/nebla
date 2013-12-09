@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
     try {
         Util::getInstance();
         createDirectory(DIRECTORY_COMM);
+        createDirectory(DIRECTORY_SEM);
         createIPCs();
     }
     catch (Exception & e) {
