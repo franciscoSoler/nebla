@@ -40,9 +40,9 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         this->shMemBufferCanastos[0].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_0);
         this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0, 0);
         this->shMemBufferCanastos[1].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
-        this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0, 1);
+        this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1, 1);
         this->shMemBufferCanastos[2].getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
-        this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_0, 2);
+        this->semMemCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_2, 2);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
