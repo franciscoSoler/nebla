@@ -111,7 +111,7 @@
 
 
 //constantes del sistema
-#define TAM_BUFFER                              512
+#define TAM_BUFFER                              4000
 #define BUFF_SIZE_CINTA_6                       5
 #define CANTIDAD_CINTAS_6                       2
 #define CANTIDAD_AGVS                           3
