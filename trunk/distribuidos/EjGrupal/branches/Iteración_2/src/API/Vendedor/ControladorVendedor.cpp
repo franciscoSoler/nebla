@@ -139,8 +139,11 @@ void ControladorVendedor::vendedorLibre() {
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
 {
     try {
+        sleep(1);
         int idOrdenDeCompra;
         mutexOrdenDeCompra.wait();
+        Logger::logMessage(Logger::IMPORTANT, "paso el wait del primer mutex");
+        
         this->shmemNumeroOrdenCompra.read(&idOrdenDeCompra);
         idOrdenDeCompra++;
         this->shmemNumeroOrdenCompra.write(&idOrdenDeCompra);
@@ -157,6 +160,7 @@ pedido_t ControladorVendedor::recibirPedido()
 {
     try {
         msg_pedido_t msgPedido;
+        
         pedidos.recibirMensajePedido(numVendedor, &msgPedido);
 
         char buffer[255];

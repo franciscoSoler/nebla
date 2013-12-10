@@ -33,7 +33,7 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         int idEmisor = this->id_Robot + 1;
         
         /* Obtengo el semaforo de sincronizacion de Robot12 con AGVs y robot 5*/
-        this->semBloqueoRobot12 = COMM::CommSemaphore("semBloqueoRobot12");
+        this->semBloqueoRobot12 = COMM::CommSemaphore("semBloqueoRobot12", idEmisor, ID_TIPO_ROBOT12);
         this->semBloqueoRobot12.getSemaphore((char*) DIRECTORY_ROBOT_12, ID_SEM_BLOQUEO_ROBOT_12, 2);
 
         this->semBufferCinta6 = COMM::CommSemaphoreMutex<CintaTransportadora_6>("semBufferCinta6", idEmisor, ID_TIPO_ROBOT12);
