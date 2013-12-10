@@ -30,8 +30,10 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
     
-    sprintf(buffer, "Administrador Memoria: %d",idMemoria);
+    sprintf(buffer, "Administrador Memoria Nº%d:",idMemoria);
     Logger::setProcessInformation(buffer);
+
+    Logger::logMessage(Logger::DEBUG, "Administrador creado satisfactoriamente");
 
     try {
         // Obtengo la cola por la cual recibo la memoria compartida
@@ -64,6 +66,7 @@ int main(int argc, char* argv[]) {
             MsgEntregaMemoriaAdministrador mensajeMemoria;
             colaMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
             memcpy(&mensajeMemoria, bufferMsgQueue, sizeof(MsgEntregaMemoriaAdministrador));
+            Logger::logMessage(Logger::DEBUG, "Recibe mensaje de ColaMemoria");
 
             semaforoContadora.wait();
             contadoraSharedMemory.read(&cantidad);
@@ -74,6 +77,7 @@ int main(int argc, char* argv[]) {
                 MsgPedidoMemoriaAdministrador mensajePedido;
                 colaPedidosMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
                 memcpy(&mensajePedido, bufferMsgQueue, sizeof(MsgPedidoMemoriaAdministrador));
+                Logger::logMessage(Logger::DEBUG, "Recibe mensaje de ColaPedidoMemoria");
 
                 // Envio a la cola del agente que realizo el pedido, la memoria compartida
                 CommPacketWrapper wrapper;
