@@ -38,6 +38,33 @@ void ServersManager::createServer(const char* serverName) {
     }
 }
 
+void ServersManager::createBrokerServer(const char* brokerServerName, int brokerId) {
+    pid_t pid;
+    std::stringstream ss;
+    std::string processName = brokerServerName;
+    std::string processId;
+    ss << brokerId;
+    ss >> processId;
+
+    if ((pid = fork()) < 0) {
+        sprintf(buffer, "%s Error: %s", brokerServerName, strerror(errno));
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+    }
+    else if (pid == 0) {
+        // Register server pid
+        sprintf(buffer, "Creando Server - Pid %d", getpid());
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+        this->registerServer( getpid() );
+
+        execlp("./BrokerConcurrentServer", "BrokerConcurrentServer",
+               processName.c_str(), processId.c_str(), (char *) 0);
+        sprintf(buffer, "%s Error: %s", "BrokerConcurrentServer",
+                strerror(errno));
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+        return;
+    }
+}
+
 SocketStream* ServersManager::connectToServer(const char* serverName) {
     std::auto_ptr<IConfigFileParser> configFileParser(
                 new ConfigFileParser(SERVERS_CONFIG_FILE) );

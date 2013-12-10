@@ -22,9 +22,18 @@ public:
      * the configuration file
      */
     void createServer(const char* serverName);
+
+    /* The broker has to exists int the configuration file and the brokerId
+     * one of the Brokers in the same file
+     */
+    void createBrokerServer(const char* brokerServerName, int brokerId);
+
     /* The processHandler has to exists as a program */
     SocketStream* connectToServer(const char* serverName);
-    /* */
+
+    /* Execute a kill system call to all
+     * the servers registered in the REGISTRATION_FILE
+     */
     void killServers();
 
 private:
