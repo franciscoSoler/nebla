@@ -117,6 +117,7 @@ void createIPCs() {
 
             IPC::Semaphore semaforoContadora("Semaforo Contadora Pedidos");
             semaforoContadora.createSemaphore(DIRECTORY_ADM, shMemIdList.front(), 1);
+            semaforoContadora.initializeSemaphore(0, 1);
             Logger::logMessage(Logger::COMM, "Semaforo Contadora Pedidos creado");
 
             shMemIdList.pop_front();
@@ -268,7 +269,7 @@ void initializeSharedMemories() {
 
     // SM-R11-R16
     DataSM_R14_R16 dataSM_R14_R16;
-    mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DRobot11-6", -1);
+    mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DRobot14-2", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
             "a administrador de SharedMemory %ld", mensajeMemoria.mtype);
     Logger::logMessage(Logger::IMPORTANT, buffer);

@@ -66,7 +66,8 @@ int main(int argc, char* argv[]) {
             MsgEntregaMemoriaAdministrador mensajeMemoria;
             colaMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
             memcpy(&mensajeMemoria, bufferMsgQueue, sizeof(MsgEntregaMemoriaAdministrador));
-            Logger::logMessage(Logger::DEBUG, "Recibe mensaje de ColaMemoria");
+            // Saco este mensaje porque sino el Log se llena de basura por culpa del Polling
+            // Logger::logMessage(Logger::DEBUG, "Recibe mensaje de ColaMemoria");
 
             semaforoContadora.wait();
             contadoraSharedMemory.read(&cantidad);
@@ -82,7 +83,6 @@ int main(int argc, char* argv[]) {
                 // Envio a la cola del agente que realizo el pedido, la memoria compartida
                 CommPacketWrapper wrapper;
 
-                //==== DIRETORIO IPC e IDENTIFICADOR IPC NO ESTAN DEFINIDOS, ESTO EXPLOTA!!====/
                 wrapper.setDirIPC(DIRECTORY_SEM);
                 wrapper.setIdDirIPC(ID_COMM_SEM_ENTRADA);
                 wrapper.setReceiverId(mensajePedido.idReceptor);
@@ -99,6 +99,9 @@ int main(int argc, char* argv[]) {
                 colaMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
                 memcpy(&mensajeMemoria, bufferMsgQueue, sizeof(MsgEntregaMemoriaAdministrador));
             }
+
+            // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!!
+            sleep( 5 );
 
             // Le envio la memoria al siguietne broker, por ahora se vuelve a enviar a la cola de entrada del administrador
             memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
