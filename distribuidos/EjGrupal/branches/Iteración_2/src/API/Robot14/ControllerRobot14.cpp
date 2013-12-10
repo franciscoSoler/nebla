@@ -41,10 +41,10 @@ ControllerRobot14::ControllerRobot14() {
         semR11_Cinta13_ = COMM::CommSemaphore ("semR11_Cinta13", idEmisor, ID_TIPO_ROBOT14, ID_TIPO_ROBOT11);
         semR11_Cinta13_.getSemaphore(DIRECTORY_ROBOT_11, SEM_R11_CINTA_13, AMOUNT_CINTA_13);
         
-        semR14_Cinta13 = COMM::CommSemaphore("semR14_Cinta13");
+        semR14_Cinta13 = COMM::CommSemaphore("semR14_Cinta13", idEmisor, ID_TIPO_ROBOT14);
         semR14_Cinta13.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA13_ID, 1);
 
-        semR14_Cinta15 = COMM::CommSemaphore("semR14_Cinta15");
+        semR14_Cinta15 = COMM::CommSemaphore("semR14_Cinta15", idEmisor, ID_TIPO_ROBOT14);
         semR14_Cinta15.getSemaphore(DIRECTORY_ROBOT_14, SEM_R14_CINTA15_ID, 1);
         
         inputQueueR16_Cinta15_ = COMM::CommMsgHandler(idEmisor, ID_TIPO_ROBOT14, ID_TIPO_ROBOT16_CINTA);
