@@ -26,6 +26,9 @@ public:
         // char dirIPC[DIR_FIXED_SIZE];
         // int idIPC;
         //get desde un id a idIPC y dirIPC
+
+        senderMsgQueue_ = IPC::MsgQueue("senderMsgQueue");
+        receiverMsgQueue_ = IPC::MsgQueue("receiverMsgQueue");
     }
     
     void setShMem(const char * dirIPC, int idIPC, int numSem = 0) {        
