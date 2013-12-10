@@ -38,6 +38,10 @@ void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
 
 void CommSemaphore::initializeQueues(const char *fileName, int id) {
     try {
+        char buffer[TAM_BUFFER];
+        sprintf(buffer, "%s inicializoQueueSalida: dirIPC %s, tipoAgente: %d", this->commName_.c_str(), DIRECTORY_COMM, this->typeDuenioSem_);
+        Logger::logMessage(Logger::COMM, buffer);
+        
         this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->typeDuenioSem_);
         this->receiverMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
     }

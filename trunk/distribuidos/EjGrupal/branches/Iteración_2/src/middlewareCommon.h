@@ -6,7 +6,6 @@
 #define DIRECTORY_ADM              "./DAdm"
 #define COMM_OBJECTS_CONFIG_FILE   "CommObjectsConfigFile"
 #define DIRECTORY_SEM              "./DSem"
-
 typedef enum {
     ID_TIPO_VACIO = 0,
     ID_TIPO_CLIENTE,

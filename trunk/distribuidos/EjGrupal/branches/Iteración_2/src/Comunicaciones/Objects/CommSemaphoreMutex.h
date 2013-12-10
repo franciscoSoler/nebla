@@ -56,12 +56,21 @@ public:
         wrapper.createPacketRequestShMem(msg);
 
         try {
+            char bufferr[TAM_BUFFER];
+            sprintf(bufferr, "%s wait: envio el pedido de la shMem, idEmisor %ld, tipoEmisor: %d", 
+                    this->commName_.c_str(), msg.mtype, this->typeDuenioSem_);
+            Logger::logMessage(Logger::COMM, bufferr);
+            
             this->senderMsgQueue_.send(msg);
-
+            
+           
+            
             // ahora recibo la shMem y la guardo en la shMem
             MsgAgenteReceptor msg;
             this->receiverMsgQueue_.recv(this->commId_, msg);
 
+            Logger::logMessage(Logger::COMM, "recibi la shMem");
+            
             // guardo lo recibido en la shMem
             T buffer;
             memcpy(&buffer, msg.msg, sizeof(T));
