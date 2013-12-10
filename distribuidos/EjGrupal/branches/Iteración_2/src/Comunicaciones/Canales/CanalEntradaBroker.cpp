@@ -38,11 +38,14 @@ int main(int argc, char* argv[]) {
                 socketAgente.destroy();
                 abort();
             }
-            Logger::logMessage(Logger::COMM, "Recibe mensaje de Agente");
             
             MsgCanalEntradaBroker mensaje;
             memcpy(&mensaje, bufferSocket, sizeof(MsgCanalEntradaBroker));
 
+            char buffer[TAM_BUFFER];
+            sprintf(buffer, "Recibe mensaje de Agente: idReceptor: %ld, idTipoReceptor: %d", mensaje.idReceptor, mensaje.idTipoReceptor);
+            Logger::logMessage(Logger::COMM, buffer);
+            
             /*msg_pedido_t pedido;
             memcpy(&pedido, mensaje.msg.msg.msg.msg, sizeof(msg_pedido_t));
 
@@ -56,6 +59,8 @@ int main(int argc, char* argv[]) {
             colaAgente.send(mensaje.msg);
             
             if (mensaje.idTipoReceptor == ID_TIPO_PEDIDO_MEMORIA) {
+                Logger::logMessage(Logger::COMM, "Pedido memoria");
+                
                 IPC::SharedMemory<int> contadoraSharedMemory = IPC::SharedMemory<int>("Contadora Pedidos Sh Mem");
                 contadoraSharedMemory.getSharedMemory(DIRECTORY_ADM, mensaje.idReceptor); 
                 IPC::Semaphore semaforoContadora = IPC::Semaphore("Semaforo Contadora Pedidos");
