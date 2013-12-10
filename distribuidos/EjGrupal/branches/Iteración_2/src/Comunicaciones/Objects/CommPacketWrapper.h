@@ -90,6 +90,7 @@ public:
         msgPedidoMemoriaAdministrador.mtype = idShMem_;
         msgPedidoMemoriaAdministrador.idReceptor = receiverId_;
         msgPedidoMemoriaAdministrador.idTipoEmisor = senderType_;
+        msgPedidoMemoriaAdministrador.idEmisor = senderId_;
 
         MsgCanalEntradaBroker msgCanalEntradaBroker;
         msgCanalEntradaBroker.idReceptor = receiverId_;
@@ -112,7 +113,7 @@ public:
         msgCanalEntradaAgente.idIPC = idDirIPC_;
         memcpy(& msgCanalEntradaAgente.msg, &msgAgenteReceptor, sizeof(MsgAgenteReceptor));
         
-        msg.mtype = receiverId_;
+        msg.mtype = senderId_;
         msg.msg = msgCanalEntradaAgente;
         memcpy(& msg.msg, &msgCanalEntradaAgente, sizeof(MsgCanalEntradaAgente));
     }
