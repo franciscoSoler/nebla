@@ -17,9 +17,9 @@ shMem-./DAGV-4 = 404
 shMem-./DAGV-5 = 405
 # BufferCanastos 0
 shMem-./DAGV-9 = 406
-# BufferCanastos 0
+# BufferCanastos 1
 shMem-./DAGV-10 = 407
-# BufferCanastos 0
+# BufferCanastos 2
 shMem-./DAGV-11 = 408
 # SM-R11-R14
 shMem-./DRobot11-6 = 409

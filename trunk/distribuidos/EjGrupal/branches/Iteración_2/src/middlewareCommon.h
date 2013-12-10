@@ -25,8 +25,8 @@ typedef enum {
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
-#define MSG_QUEUE_FIXED_SIZE    300
-#define MSG_BROKER_SIZE         400
+#define MSG_QUEUE_FIXED_SIZE    3000
+#define MSG_BROKER_SIZE         3500
 #define SEM_ARRAY_MAX_SIZE       10
 
 #define ID_SHMEM_SIGUIENTE      1
