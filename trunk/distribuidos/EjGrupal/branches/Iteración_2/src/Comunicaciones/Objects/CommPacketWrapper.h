@@ -18,8 +18,8 @@ public:
         receiverType_ = receiverType;
     }
     
-    void setSenderType(TipoAgente receiverType) {
-        senderType_ = receiverType;
+    void setSenderType(TipoAgente senderType) {
+        senderType_ = senderType;
     }
 
     void setIdDirIPC(int idDirIPC) {
