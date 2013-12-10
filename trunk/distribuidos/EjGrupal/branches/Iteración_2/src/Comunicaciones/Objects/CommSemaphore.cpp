@@ -14,8 +14,8 @@ CommSemaphore::CommSemaphore(std::string CommName, long idEmisor, TipoAgente typ
                                         typeDuenioSemRemoto_(typeDuenioSemRemoto)
                                                 
 {
-    senderMsgQueue_ = IPC::MsgQueue("senderMsgQueue");
-    receiverMsgQueue_ = IPC::MsgQueue("receiverMsgQueue");
+    senderMsgQueue_ = IPC::MsgQueue("CommSemaphore - senderMsgQueue");
+    receiverMsgQueue_ = IPC::MsgQueue("CommSemaphore - receiverMsgQueue");
 }
 
 CommSemaphore::~CommSemaphore() 

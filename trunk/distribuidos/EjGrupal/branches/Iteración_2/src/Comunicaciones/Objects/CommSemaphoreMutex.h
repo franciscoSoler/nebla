@@ -16,7 +16,10 @@ public:
     CommSemaphoreMutex(std::string CommName = "", long idEmisor = 0,
                         TipoAgente typeDuenioSem = ID_TIPO_VACIO) : 
                                 CommSemaphore (CommName, idEmisor, typeDuenioSem),
-                                cantShMen(0) {}
+                                cantShMen(0) {
+        senderMsgQueue_ = IPC::MsgQueue("CommSemaphoreMutex - senderMsgQueue");
+        receiverMsgQueue_ = IPC::MsgQueue("CommSemaphoreMutex - receiverMsgQueue");
+    }
                             
     void getSemaphore(const char *fileName, int id, int qty) {
         initializeQueues(fileName, id);
@@ -26,9 +29,6 @@ public:
         // char dirIPC[DIR_FIXED_SIZE];
         // int idIPC;
         //get desde un id a idIPC y dirIPC
-
-        senderMsgQueue_ = IPC::MsgQueue("senderMsgQueue");
-        receiverMsgQueue_ = IPC::MsgQueue("receiverMsgQueue");
     }
     
     void setShMem(const char * dirIPC, int idIPC, int numSem = 0) {        
