@@ -287,7 +287,7 @@ Caja ControladorRobot11::cerrarYTomarCaja() {
         unaCaja.idProducto_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].tipoProducto;
         unaCaja.idOrdenDeCompra_ = ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].nroOrdenCompra;
 
-        sprintf(buffer, "el robot 12 termino, puedo cerrar y tomar la caja, la Orden de compra es: %ld", unaCaja.idOrdenDeCompra_);
+        sprintf(buffer, "el robot 12 termino, puedo cerrar y tomar la caja, la Orden de compra es: %ld, idProducto: %d", unaCaja.idOrdenDeCompra_, unaCaja.idProducto_);
         Logger::logMessage(Logger::IMPORTANT, buffer);
 
         if (ctrlCinta.productoProduccion[ctrlCinta.puntoLectura].falla || rand() % 100 > 98) {

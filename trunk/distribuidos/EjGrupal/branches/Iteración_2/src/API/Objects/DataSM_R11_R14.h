@@ -28,6 +28,9 @@ public:
     uint getCintaDeTrabajoRobot14() const;
     void setCintaDeTrabajoRobot14(uint nroCinta);
     
+    SerializedData serializeData();
+    void deserializeData(SerializedData data);
+    
     virtual ~DataSM_R11_R14();
     
 private:
@@ -44,4 +47,3 @@ private:
 };
 
 #endif	/* DATASM_R11_R14_H */
-

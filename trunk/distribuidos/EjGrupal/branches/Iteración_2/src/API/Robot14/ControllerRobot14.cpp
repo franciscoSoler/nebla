@@ -242,10 +242,34 @@ ControllerRobot14::~ControllerRobot14() {
 }
 
 bool ControllerRobot14::obtener_shMem_R11_R14() {
+    sleep(10);
+    Logger::logMessage(Logger::IMPORTANT, "metodo obtenershMem");
+    
     if (! estaMutex_R11_R14_tomado_) {
+        
+        
+        Logger::logMessage(Logger::IMPORTANT, "por tomar el wait");
+        
         semMutex_shMem_R11_R14_.wait();
-        // Logger::logMessage(Logger::TRACE, "Accede a memoria compartida R11-R14");
+        sleep(10);
+        Logger::logMessage(Logger::IMPORTANT, "Accede a memoria compartida R11-R14");
         shMem_R11_R14_.read(shMem_R11_R14_Data_);
+        
+        Logger::logMessage(Logger::IMPORTANT, "leyo la shMem....");
+        
+        if (shMem_R11_R14_Data_->estaRobot11Bloqueado(0))
+            Logger::logMessage(Logger::IMPORTANT, "robot 11-0 bloqueado");
+        if (shMem_R11_R14_Data_->estaRobot11Bloqueado(1))
+            Logger::logMessage(Logger::IMPORTANT, "robot 11-1 bloqueado");
+        if (shMem_R11_R14_Data_->estaRobot14Bloqueado())
+            Logger::logMessage(Logger::IMPORTANT, "robot 14 bloqueado");
+        
+        
+        sprintf(this->buffer_, "cantElementos cinta 0: %d", shMem_R11_R14_Data_->getCantidadElementosEnCinta(0));
+        Logger::logMessage(Logger::IMPORTANT, this->buffer_);
+        
+        sprintf(this->buffer_, "cantElementos cinta 1: %d", shMem_R11_R14_Data_->getCantidadElementosEnCinta(1));
+        Logger::logMessage(Logger::IMPORTANT, this->buffer_);
 
         estaMutex_R11_R14_tomado_ = true;
         return true;
@@ -324,8 +348,8 @@ void ControllerRobot14::depositarCajaEnCinta15(Caja unaCaja) {
                 continue;
             }
             else if (shMem_R14_R16_Data_->insertarCajaEnCinta(unaCaja)) {
-                sprintf(buffer_, "Caja depositada. Cinta15: %s", 
-                        shMem_R14_R16_Data_->cintaToString().c_str());
+                sprintf(buffer_, "Caja depositada. idProd %d, ODC: %ld Cinta15: %s", 
+                        unaCaja.idProducto_, unaCaja.idOrdenDeCompra_, shMem_R14_R16_Data_->cintaToString().c_str());
                 Logger::logMessage(Logger::DEBUG, buffer_);
                 cajaDepositada = true;
                 
@@ -346,8 +370,8 @@ void ControllerRobot14::depositarCajaEnCinta15(Caja unaCaja) {
                         "caja después de haber avanzado la cinta");
                 }
                 
-                sprintf(buffer_, "Caja depositada. Cinta15: %s", 
-                        shMem_R14_R16_Data_->cintaToString().c_str());
+                sprintf(buffer_, "Caja depositada. idProd %d, ODC: %ld Cinta15: %s", 
+                        unaCaja.idProducto_, unaCaja.idOrdenDeCompra_, shMem_R14_R16_Data_->cintaToString().c_str());
                 Logger::logMessage(Logger::DEBUG, buffer_);
                 cajaDepositada = true;
                 
