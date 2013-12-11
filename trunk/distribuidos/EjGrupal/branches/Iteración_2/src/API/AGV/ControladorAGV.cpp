@@ -88,7 +88,7 @@ TipoPieza ControladorAGV::atenderPedidos() {
         Logger::setProcessInformation(this->buffer);
         
         MensajePedidoRobotCinta_6 pedidoCanasto;
-
+        Logger::logMessage(Logger::DEBUG, "por recibir pedidos");
         this->colaPedidosCanastos.recibirPedidoCanasto(this->id_AGV + 1, &pedidoCanasto);
         Logger::logMessage(Logger::TRACE, "recibi un pedido para reponer un canasto");
         this->posicionCanasto = pedidoCanasto.pedidoCanastoAgv.lugar;
