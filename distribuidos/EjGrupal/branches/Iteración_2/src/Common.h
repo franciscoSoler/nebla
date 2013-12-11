@@ -1,6 +1,7 @@
 #ifndef COMMON_H
 #define	COMMON_H
 
+#include <sstream>
 #include <string.h>
 #include <stdio.h>
 #include <errno.h>
@@ -316,6 +317,12 @@ typedef struct
  * Estructuras utilizadas entre robot 11, 14 y 16
  */
 
+#define FIXED_SIZE      500
+
+typedef struct {
+  char data[FIXED_SIZE];
+} SerializedData;
+
 // Clases y Estructuras generales
 class Caja {
 public:
@@ -327,6 +334,30 @@ public:
     long getOrdenDeCompra() { return idOrdenDeCompra_;}
     bool estaVacio() { return idOrdenDeCompra_ == 0
             && idVendedor_ == 0 && idProducto_ == NULL_PRODUCT; };
+            
+    SerializedData serializeData() {
+        SerializedData data;
+        std::stringstream ss;
+
+        ss << this->fallado_ << " ";
+        ss << this->idOrdenDeCompra_ << " ";
+        ss << this->idProducto_ << " ";
+        ss << this->idVendedor_ << " ";
+
+        strcpy(data.data, ss.str().c_str());
+        return data;
+    }
+    void deserializeData(SerializedData data) {
+        int idProducto;
+        std::stringstream ss;
+        ss << data.data;
+
+        ss >> this->fallado_;
+        ss >> this->idOrdenDeCompra_;
+        ss >> idProducto;
+        this->idProducto_ = static_cast<TipoProducto> (idProducto);
+        ss >> this->idVendedor_;
+    }
 
 public:
     long idOrdenDeCompra_;

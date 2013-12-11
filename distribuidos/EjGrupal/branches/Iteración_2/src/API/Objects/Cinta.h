@@ -13,6 +13,7 @@
 
 #include <string.h>
 #include <iostream>
+#include <Common.h>
 
 // Solo para debugging
 #include <Logger/Logger.h>
@@ -44,6 +45,10 @@ public:
     bool insertarPaquete(PACKAGE paquete);
     
     unsigned int getCantidadDePaquetes() const;
+    
+    SerializedData serializeData();
+    
+    void deserializeData(SerializedData data);
     
     /* Impresión en ASCII art de la cinta
      */
@@ -125,6 +130,34 @@ unsigned int Cinta<PACKAGE, SIZE>::getCantidadDePaquetes() const {
 }
 
 
+template <class PACKAGE, unsigned int SIZE> 
+SerializedData Cinta<PACKAGE, SIZE>::serializeData() {
+    SerializedData data;
+    std::stringstream ss;
+    
+    for (unsigned int i = 0; i < SIZE; ++i) {
+        SerializedData dataCinta = array_[i].serializeData();
+        ss << dataCinta.data << " ";
+    }
+    ss << this->cantidadDePaquetes_ << " ";
+    
+    strcpy(data.data, ss.str().c_str());
+    return data;
+}
+    
+template <class PACKAGE, unsigned int SIZE> 
+void Cinta<PACKAGE, SIZE>::deserializeData(SerializedData data) {
+    std::stringstream ss;
+    ss << data.data;
+    
+    for (unsigned int i = 0; i < SIZE; ++i) {
+        SerializedData dataCinta;
+        ss >> dataCinta.data;
+        array_[i].deserializeData(dataCinta);
+    }
+    ss >> this->cantidadDePaquetes_;
+    
+}
 
 #endif	/* CINTA_H */
 

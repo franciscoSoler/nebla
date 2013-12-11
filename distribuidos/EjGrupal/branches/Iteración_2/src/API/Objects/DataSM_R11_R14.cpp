@@ -4,6 +4,8 @@
 
 // Only for debugging
 #include <sstream>
+//#include <iostream>
+
 #include <Logger/Logger.h>
 
 DataSM_R11_R14::DataSM_R11_R14() {    
@@ -90,3 +92,41 @@ std::string DataSM_R11_R14::cintaToString(uint nroCinta) {
     return cinta_[nroCinta-1].toString();
 }
 
+SerializedData DataSM_R11_R14::serializeData() {
+    SerializedData data;
+    std::stringstream ss;
+    
+    ss << this->cintaConPrioridad_ << " ";
+    ss << this->cintaDeTrabajoRobot14_ << " ";
+    
+    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
+        SerializedData dataCinta = this->cinta_[i].serializeData();
+        ss << dataCinta.data << " ";
+    }
+    
+    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
+        ss << this->robot11EstaBloqueado_[i] << " ";    
+    }
+    ss << this->robot14EstaBloqueado_; 
+    
+    strcpy(data.data, ss.str().c_str());
+    return data;
+}
+
+void DataSM_R11_R14::deserializeData(SerializedData data) {
+    std::stringstream ss;
+    ss << data.data;
+    
+    ss >> this->cintaConPrioridad_;
+    ss >> this->cintaDeTrabajoRobot14_;
+    
+    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
+        SerializedData dataCinta;
+        ss >> dataCinta.data;
+        this->cinta_[i].deserializeData(dataCinta);
+    }
+    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
+        ss >> this->robot11EstaBloqueado_[i];
+    }
+    ss >> this->robot14EstaBloqueado_; 
+}
