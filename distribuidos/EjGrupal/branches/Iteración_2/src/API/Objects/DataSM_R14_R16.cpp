@@ -58,3 +58,29 @@ void DataSM_R14_R16::setEstadoTrabajoRobot16(bool estado) {
 DataSM_R14_R16::~DataSM_R14_R16() {
 }
 
+SerializedData DataSM_R14_R16::serializeData() {
+    SerializedData data;
+    std::stringstream ss;
+    
+    SerializedData dataCinta = this->cinta_.serializeData();
+    ss << dataCinta.data << " ";
+    ss << this->estaRobot16Trabajando_ << " ";
+    ss << this->robot14EstaBloqueado_ << " ";
+    ss << this->robot16EstaBloqueado_ << " ";
+    
+    strcpy(data.data, ss.str().c_str());
+    return data;
+}
+
+void DataSM_R14_R16::deserializeData(SerializedData data) {
+    SerializedData dataCinta;
+    std::stringstream ss;
+    ss << data.data;
+
+    ss >> dataCinta.data;
+    this->cinta_.deserializeData(dataCinta);
+ 
+    ss >> this->estaRobot16Trabajando_; 
+    ss >> this->robot14EstaBloqueado_; 
+    ss >> this->robot16EstaBloqueado_; 
+}
