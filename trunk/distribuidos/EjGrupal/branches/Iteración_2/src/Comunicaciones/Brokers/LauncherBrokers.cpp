@@ -279,6 +279,13 @@ void initializeSharedMemories() {
 
     // AlmacenTerminados (No se lo inicializa en el Launcher, lo mismo se repite aqui)
     AlmacenProductosTerminados apt;
+    
+    for (int i = 0; i < TAM_ALMACEN; i++) {
+        apt.almacen[i].esTemporal = false;
+        apt.almacen[i].estado = VACIO;
+        apt.almacen[i].idOrdenDeCompra = 0;
+        apt.almacen[i].tipoProducto = 0;
+    }
     mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DVendedor-1", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
             "a administrador de SharedMemory %ld", mensajeMemoria.mtype);
