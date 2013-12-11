@@ -110,7 +110,6 @@ bool ControladorRobot11::buscarProximoGabinete(EspecifProd *piezas) {
 
         while (true) {
             this->semBufferCinta6.wait(this->id_Robot);
-            // Logger::logMessage(Logger::TRACE, "obtengo mem cinta 6");
             
             shMemBufferCinta6.readInfo(&ctrlCinta);
 
