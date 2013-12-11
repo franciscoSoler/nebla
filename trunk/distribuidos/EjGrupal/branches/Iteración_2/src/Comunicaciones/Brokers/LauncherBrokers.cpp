@@ -227,7 +227,6 @@ void initializeSharedMemories() {
     for (int i = 0; i < MAX_QUANTITY_CANASTOS; i++) {
         canastos.canastos[i].cantidadPiezas = 0;
         canastos.canastos[i].tipoPieza = NULL_PIEZA;
-        canastos.canastos[5].tipoPieza = PIEZA_2;
         canastos.robotCinta1EsperaPorElLugarNumero = -1;
         canastos.robotCinta2EsperaPorElLugarNumero = -1;
     }
@@ -267,7 +266,7 @@ void initializeSharedMemories() {
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 
-    // SM-R11-R16
+    // SM-R14-R16
     DataSM_R14_R16 dataSM_R14_R16;
     mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DRobot14-2", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
