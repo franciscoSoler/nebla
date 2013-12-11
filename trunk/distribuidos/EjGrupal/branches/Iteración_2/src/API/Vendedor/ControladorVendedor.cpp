@@ -139,7 +139,6 @@ void ControladorVendedor::vendedorLibre() {
 int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
 {
     try {
-        sleep(1);
         int idOrdenDeCompra;
         mutexOrdenDeCompra.wait();
         Logger::logMessage(Logger::IMPORTANT, "paso el wait del primer mutex");

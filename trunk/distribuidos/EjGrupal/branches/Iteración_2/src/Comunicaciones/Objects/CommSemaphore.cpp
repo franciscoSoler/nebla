@@ -31,19 +31,22 @@ void CommSemaphore::initializeSemaphore(int numSem, int val)
 } 
 
 void CommSemaphore::getSemaphore(const char *fileName, int id, int qty) {
-    this->initializeQueues(fileName, id);
+    this->initializeQueues();
     std::string key = this->createKey("sem", fileName, id);
     this->commId_ = this->findCommId( key );
 }
 
-void CommSemaphore::initializeQueues(const char *fileName, int id) {
+void CommSemaphore::initializeQueues() {
     try {
         char buffer[TAM_BUFFER];
         sprintf(buffer, "%s inicializoQueueSalida: dirIPC %s, tipoAgente: %d", this->commName_.c_str(), DIRECTORY_COMM, this->typeDuenioSem_);
         Logger::logMessage(Logger::COMM, buffer);
+        sprintf(buffer, "%s inicializoQueueEntrada: dirIPC %s, tipoAgente: %d", this->commName_.c_str(), DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
+        Logger::logMessage(Logger::COMM, buffer);
+        
         
         this->senderMsgQueue_.getMsgQueue(DIRECTORY_COMM, this->typeDuenioSem_);
-        this->receiverMsgQueue_.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
+        this->receiverMsgQueue_.getMsgQueue(DIRECTORY_SEM, this->typeDuenioSem_);
     }
     catch(Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -57,7 +60,7 @@ void CommSemaphore::wait(int numSem)
     MsgAgenteReceptor msg;
     
     try {
-        this->receiverMsgQueue_.recv(this->commId_ + numSem, msg);
+        this->receiverMsgQueue_.recv(this->idEmisor_, msg);
     }
     catch(Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -65,14 +68,14 @@ void CommSemaphore::wait(int numSem)
     }
 }
 
-void CommSemaphore::signal(int numSem)
+void CommSemaphore::signal(int idReceptor)
 {
     CommPacketWrapper wrapper;
     wrapper.setDirIPC( DIRECTORY_SEM );
     wrapper.setIdDirIPC( ID_COMM_SEM_ENTRADA );
     wrapper.setSenderId( this->idEmisor_ );
     wrapper.setReceiverType( typeDuenioSemRemoto_ );
-    wrapper.setReceiverId( this->commId_ + numSem );
+    wrapper.setReceiverId( idReceptor + 1 );
     MsgCanalSalidaAgente msg;
     wrapper.createPacketForSemaphores(msg);
     

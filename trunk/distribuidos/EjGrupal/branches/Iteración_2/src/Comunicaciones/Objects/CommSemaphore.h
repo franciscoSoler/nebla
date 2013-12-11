@@ -29,7 +29,7 @@ public:
     void signal(int numSem = 0);
 
 protected:
-    void initializeQueues(const char *fileName, int id);
+    void initializeQueues();
 
 protected:
     // Buffer for output errors

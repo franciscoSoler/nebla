@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
             sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
-            sprintf(buffer, "parametros: mtype del siguiente salto: %ld", 
+            sprintf(buffer, "parametros: mtype recibido (idAgente): %ld", 
             mensaje.mtype);
             Logger::logMessage(Logger::COMM, buffer);
             

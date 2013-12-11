@@ -113,7 +113,7 @@ public:
         msgCanalEntradaAgente.idIPC = idDirIPC_;
         memcpy(& msgCanalEntradaAgente.msg, &msgAgenteReceptor, sizeof(MsgAgenteReceptor));
         
-        msg.mtype = senderId_;
+        msg.mtype = receiverId_;
         msg.msg = msgCanalEntradaAgente;
         memcpy(& msg.msg, &msgCanalEntradaAgente, sizeof(MsgCanalEntradaAgente));
     }
