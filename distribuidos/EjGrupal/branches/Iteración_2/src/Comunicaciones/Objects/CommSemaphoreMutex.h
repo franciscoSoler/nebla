@@ -98,7 +98,7 @@ public:
 
         try {
             this->senderMsgQueue_.send(msg);
-            CommSemaphore::wait(numSem);
+            //CommSemaphore::wait(numSem);
         }
         catch(Exception & e) {
             Logger::logMessage(Logger::ERROR, e.get_error_description());
