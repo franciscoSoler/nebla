@@ -141,12 +141,14 @@ int ControladorVendedor::obtenerNumeroDeOrdenDeCompra()
     try {
         int idOrdenDeCompra;
         mutexOrdenDeCompra.wait();
-        Logger::logMessage(Logger::IMPORTANT, "paso el wait del primer mutex");
         
         this->shmemNumeroOrdenCompra.read(&idOrdenDeCompra);
         idOrdenDeCompra++;
         this->shmemNumeroOrdenCompra.write(&idOrdenDeCompra);
         mutexOrdenDeCompra.signal();
+        
+        Logger::logMessage(Logger::IMPORTANT, "paso el signal del mutex de ordenCompra");
+        
         return idOrdenDeCompra;
     }
     catch (Exception & e) {

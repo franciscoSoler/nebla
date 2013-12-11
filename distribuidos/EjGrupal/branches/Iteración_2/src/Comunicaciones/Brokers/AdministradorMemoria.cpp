@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
                 CommPacketWrapper wrapper;
 
                 wrapper.setDirIPC(DIRECTORY_SEM);
-                wrapper.setIdDirIPC(ID_COMM_SEM_ENTRADA);
+                wrapper.setIdDirIPC(mensajePedido.idTipoEmisor);
                 //wrapper.setReceiverId(mensajePedido.idReceptor);
                 wrapper.setReceiverId(mensajePedido.idEmisor);
                 //wrapper.setReceiverType(mensajePedido.idTipoEmisor);
