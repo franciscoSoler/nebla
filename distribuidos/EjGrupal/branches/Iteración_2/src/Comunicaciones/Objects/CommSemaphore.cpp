@@ -72,7 +72,7 @@ void CommSemaphore::signal(int idReceptor)
 {
     CommPacketWrapper wrapper;
     wrapper.setDirIPC( DIRECTORY_SEM );
-    wrapper.setIdDirIPC( ID_COMM_SEM_ENTRADA );
+    wrapper.setIdDirIPC( this->typeDuenioSemRemoto_ );
     wrapper.setSenderId( this->idEmisor_ );
     wrapper.setReceiverType( typeDuenioSemRemoto_ );
     wrapper.setReceiverId( idReceptor + 1 );
