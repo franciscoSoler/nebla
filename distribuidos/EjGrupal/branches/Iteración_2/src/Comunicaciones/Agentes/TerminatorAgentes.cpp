@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     try {
         Logger::getInstance().setProcessInformation("TerminatorAgentes:");
 
-        // Se crea una cola por cada Agente
+        // Colas para el envío de mensajes
         IPC::MsgQueue commColaSalida;
 
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_CLIENTE);
@@ -68,10 +68,60 @@ int main(int argc, char* argv[]) {
         commColaSalida.getMsgQueue(DIRECTORY_COMM, ID_TIPO_DESPACHO);
         commColaSalida.destroy();
         Logger::logMessage(Logger::COMM, "Cola CanalSalida-Despacho destruida");
-        
-        commColaSalida.getMsgQueue(DIRECTORY_SEM, ID_COMM_SEM_ENTRADA);
-        commColaSalida.destroy();
-        Logger::logMessage(Logger::COMM, "Cola CanalEntrada-Semaforos destruida");
+
+
+
+
+        // Colas para Semáforos y SharedMemories
+        IPC::MsgQueue commSemaphore;
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_CLIENTE);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-cliente destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_VENDEDOR);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-vendedor destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_AP);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-AlmacenDePiezas destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_AGV);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-AGV destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_ROBOT5_AGV);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Robot5AGV destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_ROBOT5_CINTA);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Robot5Cinta destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_ROBOT11);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Robot11 destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_ROBOT12);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Robot12 destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_ROBOT14);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Robot14 destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_ROBOT16_CINTA);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Robot16Cinta destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_ROBOT16_DESPACHO);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Robot16Despacho destruida");
+
+        commSemaphore.getMsgQueue(DIRECTORY_SEM, ID_TIPO_DESPACHO);
+        commSemaphore.destroy();
+        Logger::logMessage(Logger::COMM, "Cola Canal-Semaphore-SharedMemory-Despacho destruida");
 
     }
     catch (Exception & e) {
