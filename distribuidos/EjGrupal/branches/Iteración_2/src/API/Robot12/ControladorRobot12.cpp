@@ -47,7 +47,7 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
 
         this->shMemBufferCanastos = IPC::BufferCanastosSharedMemory("shMemBufferCanastos");
         this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
-        this->semBufferCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1);
+        this->semBufferCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1, 1);
 
 
         this->cola11_A_12 = IPC::Barrera1112MessageQueue("cola11_A_12", idEmisor, ID_TIPO_ROBOT12, ID_TIPO_ROBOT11);
