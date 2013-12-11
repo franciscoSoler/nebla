@@ -106,7 +106,8 @@ int main(int argc, char* argv[]) {
 
             // Le envio la memoria al siguietne broker, por ahora se vuelve a enviar a la cola de entrada del administrador
             memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
-            colaMemoria.send(mensajeMemoria);
+            //colaMemoria.send(mensajeMemoria);
+            colaMemoria.send(bufferMsgQueue, MSG_BROKER_SIZE);
         }
     }
     catch (Exception & e) {
