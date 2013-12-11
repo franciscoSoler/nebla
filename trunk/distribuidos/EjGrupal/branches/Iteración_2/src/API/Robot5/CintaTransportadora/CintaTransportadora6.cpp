@@ -9,17 +9,19 @@
 
 #include "../../../Common.h"
 #include "Logger.h"
+#include "middlewareCommon.h"
+#include "CommSemaphoreMutex.h"
 
 CintaTransportadora6::CintaTransportadora6(int idCinta) 
         : idCinta(idCinta),
-          semaforoAcceso("Cinta Transportadora"),
+          semaforoAcceso("Cinta Transportadora", 1, ID_TIPO_ROBOT5_CINTA),
           cinta("CintaTransportadoraSharedMemory")
 {
 }
 
 CintaTransportadora6::CintaTransportadora6() 
         : idCinta(idCinta),
-          semaforoAcceso("Cinta Transportadora"),
+          semaforoAcceso("Cinta Transportadora", 1, ID_TIPO_ROBOT5_CINTA),
           cinta("CintaTransportadoraSharedMemory")
 {
 }
@@ -30,9 +32,10 @@ CintaTransportadora6::CintaTransportadora6(const CintaTransportadora6& orig) {
 CintaTransportadora6::~CintaTransportadora6() {
 }
 
-void CintaTransportadora6::iniciarCinta(int idClaveMem, int idClaveSem) {
+void CintaTransportadora6::iniciarCinta(int idClaveMem, int idClaveSem, int idCinta) {
     semaforoAcceso.getSemaphore(DIRECTORY_ROBOT_11, idClaveSem, CANTIDAD_CINTAS_6);
     cinta.getSharedMemory(DIRECTORY_ROBOT_11, idClaveMem);
+    semaforoAcceso.setShMem(DIRECTORY_ROBOT_11, idClaveMem, idCinta);
 }
 
 void CintaTransportadora6::depositarProductoEnProduccion(ProductoEnProduccion producto) {

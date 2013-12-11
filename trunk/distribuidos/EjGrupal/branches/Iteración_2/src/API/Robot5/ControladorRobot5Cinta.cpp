@@ -38,8 +38,8 @@ void ControladorRobot5Cinta::iniciarControlador()
 	colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
 	/* Obtengo las cintas transportadoras */
-	cintaTransportadora[0].iniciarCinta(ID_CINTA_6_0, ID_SEM_CINTA_6);
-	cintaTransportadora[1].iniciarCinta(ID_CINTA_6_1, ID_SEM_CINTA_6);
+	cintaTransportadora[0].iniciarCinta(ID_CINTA_6_0, ID_SEM_CINTA_6, 0);
+	cintaTransportadora[1].iniciarCinta(ID_CINTA_6_1, ID_SEM_CINTA_6, 1);
 
 	/* Obtengo la memoria compartida del estado del robot 5 y su semaforo de acceso */
 	estadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);

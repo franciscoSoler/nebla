@@ -9,7 +9,7 @@
 #define	CINTATRANSPORTADORA6_H
 
 #include "../../../IPCs/IPCAbstractos/SharedMemory/Cinta6SharedMemory.h"
-#include "../../../IPCs/Semaphore/Semaphore.h"
+#include "Comunicaciones/Objects/CommSemaphoreMutex.h"
 
 typedef struct {
     bool ocupado;
@@ -23,7 +23,7 @@ public:
     CintaTransportadora6(int idCinta);
     virtual ~CintaTransportadora6();
     
-    void iniciarCinta(int idClave, int idClaveSem);
+    void iniciarCinta(int idClave, int idClaveSem, int idCinta);
     void depositarProductoEnProduccion(ProductoEnProduccion producto);
     EstadoCinta obtenerEstadoCinta();
     
@@ -36,7 +36,7 @@ private:
     CintaTransportadora6(const CintaTransportadora6& orig);
     
     int idCinta;  
-    IPC::Semaphore semaforoAcceso;
+    COMM::CommSemaphoreMutex<CintaTransportadora_6> semaforoAcceso;
     IPC::Cinta6SharedMemory cinta;
     
     void mostrarEstadoCinta(CintaTransportadora_6 cintaTransportadora);
