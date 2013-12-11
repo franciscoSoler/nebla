@@ -86,10 +86,6 @@ int main(int argc, char* argv[]) {
             //Logger::logMessage(Logger::COMM, buffer);
             
             colaAgente.send(mensaje.msg);
-            if (mensaje.msg.mtype == 412) {
-                colaAgente.send(mensaje.msg);
-                colaAgente.send(mensaje.msg);
-            }
         }
         
     }
