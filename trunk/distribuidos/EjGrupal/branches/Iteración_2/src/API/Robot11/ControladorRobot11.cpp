@@ -88,7 +88,7 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
             this->semBufferCinta6.setShMem(DIRECTORY_ROBOT_11, ID_CINTA_6_0, 0);
         } else {
             this->shMemBufferCanastos.getSharedMemory((char*) DIRECTORY_AGV, ID_BUFFER_CANASTOS_2);
-            this->semBufferCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1, 0);
+            this->semBufferCanastos.setShMem(DIRECTORY_AGV, ID_BUFFER_CANASTOS_1, 1);
             this->shMemBufferCinta6 = IPC::Cinta6SharedMemory("shMemBufferCinta6_1");
             this->shMemBufferCinta6.getSharedMemory(DIRECTORY_ROBOT_11, ID_CINTA_6_1);
             this->semBufferCinta6.setShMem(DIRECTORY_ROBOT_11, ID_CINTA_6_1, 1);
