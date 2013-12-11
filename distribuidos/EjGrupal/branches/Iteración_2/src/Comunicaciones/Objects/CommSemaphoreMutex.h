@@ -22,7 +22,7 @@ public:
     }
                             
     void getSemaphore(const char *fileName, int id, int qty) {
-        initializeQueues(fileName, id);
+        initializeQueues();
         this->cantShMen = qty;
 
         //ahora tengo que conseguir desde el id las cosas de la shMem para luego hacer getshMem
@@ -67,7 +67,7 @@ public:
             
             // ahora recibo la shMem y la guardo en la shMem
             MsgAgenteReceptor msg;
-            this->receiverMsgQueue_.recv(this->commId_, msg);
+            this->receiverMsgQueue_.recv(this->idEmisor_, msg);
 
             Logger::logMessage(Logger::COMM, "recibi la shMem");
             

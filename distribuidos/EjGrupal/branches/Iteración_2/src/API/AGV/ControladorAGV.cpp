@@ -27,7 +27,7 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
 
         this->id_AGV = id_AGV;
         int idEmisor = this->id_AGV  + 1;
-
+        
         this->semBloqueoAGV = COMM::CommSemaphore("semBloqueoAGV", idEmisor, ID_TIPO_AGV);
         this->semBloqueoAGV.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, 3);
 

@@ -85,9 +85,9 @@ int main(int argc, char* argv[]) {
 
                 wrapper.setDirIPC(DIRECTORY_SEM);
                 wrapper.setIdDirIPC(ID_COMM_SEM_ENTRADA);
-                wrapper.setReceiverId(mensajePedido.idReceptor);
-                wrapper.setReceiverType(mensajePedido.idTipoEmisor);
-                wrapper.setSenderId( mensajePedido.idEmisor );
+                //wrapper.setReceiverId(mensajePedido.idReceptor);
+                wrapper.setReceiverId(mensajePedido.idEmisor);
+                //wrapper.setReceiverType(mensajePedido.idTipoEmisor);
 
                 MsgCanalSalidaBroker msgSalida;
                 wrapper.createPacketReplyShMem(msgSalida, mensajeMemoria.memoria);
