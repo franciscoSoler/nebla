@@ -24,6 +24,9 @@ public:
     bool estaRobot16Trabajando() const;
     void setEstadoTrabajoRobot16(bool estado);
     
+    SerializedData serializeData();
+    void deserializeData(SerializedData data);
+    
     virtual ~DataSM_R14_R16();
     
 private:
