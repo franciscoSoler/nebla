@@ -32,10 +32,10 @@ CintaTransportadora6::CintaTransportadora6(const CintaTransportadora6& orig) {
 CintaTransportadora6::~CintaTransportadora6() {
 }
 
-void CintaTransportadora6::iniciarCinta(int idClaveMem, int idClaveSem, int idCinta) {
+void CintaTransportadora6::iniciarCinta(int idClaveMem, int idClaveSem) {
     semaforoAcceso.getSemaphore(DIRECTORY_ROBOT_11, idClaveSem, CANTIDAD_CINTAS_6);
     cinta.getSharedMemory(DIRECTORY_ROBOT_11, idClaveMem);
-    semaforoAcceso.setShMem(DIRECTORY_ROBOT_11, idClaveMem, idCinta);
+    semaforoAcceso.setShMem(DIRECTORY_ROBOT_11, idClaveMem, this->idCinta);
 }
 
 void CintaTransportadora6::depositarProductoEnProduccion(ProductoEnProduccion producto) {

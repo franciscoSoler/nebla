@@ -175,6 +175,7 @@ void initializeSharedMemories() {
     cinta6.cantLibres = BUFF_SIZE_CINTA_6;
     cinta6.puntoLectura = 0;
     cinta6.robot11Durmiendo = false;
+    for (int i = 0; i < BUFF_SIZE_CINTA_6; i++) cinta6.lugarVacio[i] = true;
     mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DRobot11-2", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
             "a administrador de SharedMemory %ld", mensajeMemoria.mtype);
@@ -184,7 +185,6 @@ void initializeSharedMemories() {
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 
     // Cinta 6-1
-    for (int i = 0; i < BUFF_SIZE_CINTA_6; i++) cinta6.lugarVacio[i] = true;
     mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DRobot11-3", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
             "a administrador de SharedMemory %ld", mensajeMemoria.mtype);

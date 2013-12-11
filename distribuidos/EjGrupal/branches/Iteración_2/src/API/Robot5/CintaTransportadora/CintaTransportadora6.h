@@ -23,7 +23,7 @@ public:
     CintaTransportadora6(int idCinta);
     virtual ~CintaTransportadora6();
     
-    void iniciarCinta(int idClave, int idClaveSem, int idCinta);
+    void iniciarCinta(int idClave, int idClaveSem);
     void depositarProductoEnProduccion(ProductoEnProduccion producto);
     EstadoCinta obtenerEstadoCinta();
     
