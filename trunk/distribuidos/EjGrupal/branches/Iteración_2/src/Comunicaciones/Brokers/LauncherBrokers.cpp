@@ -267,6 +267,7 @@ void initializeSharedMemories() {
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 
+    
     // SM-R14-R16
     DataSM_R14_R16 dataSM_R14_R16;
     data = dataSM_R14_R16.serializeData();

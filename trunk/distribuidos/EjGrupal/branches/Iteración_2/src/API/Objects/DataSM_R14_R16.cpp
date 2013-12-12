@@ -76,7 +76,6 @@ void DataSM_R14_R16::deserializeData(SerializedData data) {
     std::stringstream ss;
     ss << data.data;
 
-    // ss >> dataCinta.data;
     this->cinta_.deserializeData( ss );
  
     ss >> this->estaRobot16Trabajando_; 

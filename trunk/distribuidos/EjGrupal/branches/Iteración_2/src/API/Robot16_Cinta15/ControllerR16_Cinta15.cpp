@@ -133,9 +133,6 @@ bool ControllerR16_Cinta15::depositarCajaEnAPT(Caja unaCaja, long & idNroOrdenAP
         shMem_APT_.obtenerMatriz(almacenPT.almacen);
         shmemAlmacenTerminados.write(&almacenPT);
         semMutex_shMem_APT_.signal();
-        
-        //sprintf(buffer_, "Deposito Caja en APT - TipoProducto: %d, idNroOrdenVieja: %ld idNroOrdenNueva: %ld", unaCaja.idProducto_, unaCaja.idOrdenDeCompra_, idNroOrdenAPT);
-        //Logger::logMessage(Logger::TRACE, buffer_);
 
         obtener_shMem_R14_R16();
         shMem_R14_R16_Data_->setEstadoTrabajoRobot16(false);
