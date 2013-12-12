@@ -43,13 +43,13 @@ int main(int argc, char** argv)
 {
     long numCliente = 0;
     char mensajePantalla[TAM_BUFFER];
-
+/*
     std::stringstream ss;
     ss << argv[1];
     ss >> numCliente;
-
-    ControladorCliente controlador(numCliente);
-    //numCliente = controlador.obtenerNumeroCliente();
+*/
+    ControladorCliente controlador;
+    numCliente = controlador.obtenerNumeroCliente();
 
     if (numCliente == 0) {
         sprintf(mensajePantalla, "No se puo obtener un numero de cliente (vendedores ocupados).");
