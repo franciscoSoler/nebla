@@ -37,9 +37,9 @@ private:
     DataSM_R14_R16* shMem_R14_R16_Data_;
     SmMemAlmacenProductosTerminados shMem_APT_;
     
-    IPC::SharedMemory<DataSM_R14_R16> shMem_R14_R16_;
+    IPC::SharedMemory<SerializedData> shMem_R14_R16_;
     IPC::SharedMemory<AlmacenProductosTerminados> shmemAlmacenTerminados;
-    COMM::CommSemaphoreMutex<DataSM_R14_R16> semMutex_shMem_R14_R16_;
+    COMM::CommSemaphoreMutex<SerializedData> semMutex_shMem_R14_R16_;
     COMM::CommSemaphoreMutex<AlmacenProductosTerminados> semMutex_shMem_APT_;
     IPC::Semaphore semMutex_sincronismo_R16_;
     COMM::CommSemaphore semR14_Cinta15_;

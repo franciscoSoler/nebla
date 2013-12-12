@@ -258,21 +258,23 @@ void initializeSharedMemories() {
 
     // SM-R11-R14
     DataSM_R11_R14 dataSM_R11_R14;
+    SerializedData data = dataSM_R11_R14.serializeData();
     mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DRobot11-6", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
             "a administrador de SharedMemory %ld", mensajeMemoria.mtype);
     Logger::logMessage(Logger::IMPORTANT, buffer);
-    memcpy(mensajeMemoria.memoria, &dataSM_R11_R14, sizeof(DataSM_R11_R14));
+    memcpy(mensajeMemoria.memoria, &data, sizeof(SerializedData));
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 
     // SM-R14-R16
     DataSM_R14_R16 dataSM_R14_R16;
+    data = dataSM_R14_R16.serializeData();
     mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DRobot14-2", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
             "a administrador de SharedMemory %ld", mensajeMemoria.mtype);
     Logger::logMessage(Logger::IMPORTANT, buffer);
-    memcpy(mensajeMemoria.memoria, &dataSM_R14_R16, sizeof(DataSM_R14_R16));
+    memcpy(mensajeMemoria.memoria, &data, sizeof(SerializedData));
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 

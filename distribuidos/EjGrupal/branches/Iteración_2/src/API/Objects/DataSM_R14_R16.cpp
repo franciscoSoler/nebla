@@ -62,7 +62,7 @@ SerializedData DataSM_R14_R16::serializeData() {
     SerializedData data;
     std::stringstream ss;
     
-    SerializedData dataCinta = this->cinta_.serializeData();
+    SerializedCinta dataCinta = this->cinta_.serializeData();
     ss << dataCinta.data << " ";
     ss << this->estaRobot16Trabajando_ << " ";
     ss << this->robot14EstaBloqueado_ << " ";
@@ -73,12 +73,11 @@ SerializedData DataSM_R14_R16::serializeData() {
 }
 
 void DataSM_R14_R16::deserializeData(SerializedData data) {
-    SerializedData dataCinta;
     std::stringstream ss;
     ss << data.data;
 
-    ss >> dataCinta.data;
-    this->cinta_.deserializeData(dataCinta);
+    // ss >> dataCinta.data;
+    this->cinta_.deserializeData( ss );
  
     ss >> this->estaRobot16Trabajando_; 
     ss >> this->robot14EstaBloqueado_; 
