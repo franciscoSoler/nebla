@@ -29,7 +29,8 @@ public:
     //ControladorCliente(long numCliente);
     ControladorCliente();
     virtual ~ControladorCliente();
-	
+    
+    void inicializarControlador();
     int obtenerNumeroCliente();
     
     //void contactarVendedores();
