@@ -35,10 +35,11 @@ public:
         std::string key = this->createKey("shMem", dirIPC, idIPC);
         int commId = this->findCommId( key );
 
-        /* Logger::logMessage(Logger::IMPORTANT, "Key: " + key);
+        Logger::logMessage(Logger::IMPORTANT, "Key: " + key);
+        std::stringstream ss;
         ss.str("");
-        ss << commId_;
-        Logger::logMessage(Logger::IMPORTANT, "Value: " + ss.str()); */
+        ss << commId;
+        Logger::logMessage(Logger::IMPORTANT, "Value: " + ss.str());
         
         this->idShMem[numSem] = commId;
         this->shMem[numSem].getSharedMemory(dirIPC, idIPC);
@@ -62,8 +63,6 @@ public:
             Logger::logMessage(Logger::COMM, bufferr);
             
             this->senderMsgQueue_.send(msg);
-            
-           
             
             // ahora recibo la shMem y la guardo en la shMem
             MsgAgenteReceptor msg;
@@ -89,6 +88,14 @@ public:
         
         CommPacketWrapper wrapper;
         wrapper.setIdShMem( this->idShMem[numSem] );
+
+        char buffer_[255];
+        sprintf(buffer_, "idReceptor: %d - idSemaforo: %d", this->idShMem[numSem], numSem);
+        Logger::logMessage(Logger::IMPORTANT, buffer_);
+
+        if ( this->idShMem[numSem] == 0 ) {
+            Logger::logMessage(Logger::ERROR, "id de receptor inválido");
+        }
         wrapper.setReceiverId( this->idShMem[numSem] );
         wrapper.setReceiverType( ID_TIPO_MEMORIA );
         wrapper.setSenderId( this->idEmisor_ );
@@ -98,7 +105,6 @@ public:
 
         try {
             this->senderMsgQueue_.send(msg);
-            //CommSemaphore::wait(numSem);
         }
         catch(Exception & e) {
             Logger::logMessage(Logger::ERROR, e.get_error_description());

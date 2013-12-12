@@ -10,7 +10,7 @@
 
 DataSM_R11_R14::DataSM_R11_R14() {    
     for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
-        robot11EstaBloqueado_[i] = false;    
+        robot11EstaBloqueado_[i] = false;
     }
 
     // El estado inicial del robot es estar bloqueado.  
@@ -100,14 +100,14 @@ SerializedData DataSM_R11_R14::serializeData() {
     ss << this->cintaDeTrabajoRobot14_ << " ";
     
     for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
-        SerializedData dataCinta = this->cinta_[i].serializeData();
-        ss << dataCinta.data << " ";
-    }
-    
-    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
         ss << this->robot11EstaBloqueado_[i] << " ";    
     }
-    ss << this->robot14EstaBloqueado_; 
+    ss << this->robot14EstaBloqueado_ << " ";
+
+    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
+        SerializedCinta dataCinta = this->cinta_[i].serializeData();
+        ss << dataCinta.data << " ";
+    }
     
     strcpy(data.data, ss.str().c_str());
     return data;
@@ -119,14 +119,17 @@ void DataSM_R11_R14::deserializeData(SerializedData data) {
     
     ss >> this->cintaConPrioridad_;
     ss >> this->cintaDeTrabajoRobot14_;
-    
-    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
-        SerializedData dataCinta;
-        ss >> dataCinta.data;
-        this->cinta_[i].deserializeData(dataCinta);
-    }
+
     for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
         ss >> this->robot11EstaBloqueado_[i];
     }
+
     ss >> this->robot14EstaBloqueado_; 
+
+
+    for (int i = 0; i < AMOUNT_CINTA_13; ++i) {
+        // SerializedCinta dataCinta;
+        // ss >> dataCinta.data;
+        this->cinta_[i].deserializeData(ss);
+    }
 }

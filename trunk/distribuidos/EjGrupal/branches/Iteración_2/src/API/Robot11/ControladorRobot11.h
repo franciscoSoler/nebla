@@ -57,8 +57,8 @@ private:
     IPC::EstadoRobot5SharedMemory shMemEstadoRobot5;
     
     DataSM_R11_R14* shMem_R11_R14_Data_;
-    IPC::SharedMemory<DataSM_R11_R14> shMem_R11_R14_;
-    COMM::CommSemaphoreMutex<DataSM_R11_R14> semMutex_shMem_R11_R14_;
+    IPC::SharedMemory<SerializedData> shMem_R11_R14_;
+    COMM::CommSemaphoreMutex<SerializedData> semMutex_shMem_R11_R14_;
     COMM::CommSemaphore semR11_Cinta13_;
     COMM::CommSemaphore semR14_Cinta13_;
     

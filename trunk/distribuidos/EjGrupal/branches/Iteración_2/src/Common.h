@@ -317,11 +317,21 @@ typedef struct
  * Estructuras utilizadas entre robot 11, 14 y 16
  */
 
-#define FIXED_SIZE      500
+#define FIXED_SIZE_DATA      500
+#define FIXED_SIZE_CAJA      30
+#define FIXED_SIZE_CINTA     300
 
 typedef struct {
-  char data[FIXED_SIZE];
+  char data[FIXED_SIZE_DATA];
 } SerializedData;
+
+typedef struct {
+  char data[FIXED_SIZE_CAJA];
+} SerializedCinta;
+
+typedef struct {
+  char data[FIXED_SIZE_CAJA];
+} SerializedCaja;
 
 // Clases y Estructuras generales
 class Caja {
@@ -335,22 +345,20 @@ public:
     bool estaVacio() { return idOrdenDeCompra_ == 0
             && idVendedor_ == 0 && idProducto_ == NULL_PRODUCT; };
             
-    SerializedData serializeData() {
-        SerializedData data;
+    SerializedCaja serializeData() {
+        SerializedCaja data;
         std::stringstream ss;
 
         ss << this->fallado_ << " ";
         ss << this->idOrdenDeCompra_ << " ";
-        ss << this->idProducto_ << " ";
+        ss << static_cast<int>(this->idProducto_) << " ";
         ss << this->idVendedor_ << " ";
 
         strcpy(data.data, ss.str().c_str());
         return data;
     }
-    void deserializeData(SerializedData data) {
+    void deserializeData(std::stringstream & ss) {
         int idProducto;
-        std::stringstream ss;
-        ss << data.data;
 
         ss >> this->fallado_;
         ss >> this->idOrdenDeCompra_;

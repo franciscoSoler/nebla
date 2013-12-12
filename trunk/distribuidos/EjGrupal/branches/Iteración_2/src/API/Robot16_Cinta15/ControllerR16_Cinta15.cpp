@@ -17,13 +17,13 @@ ControllerR16_Cinta15::ControllerR16_Cinta15() {
         int idEmisor = 1;
         
         // Se crean los IPCs
-        shMem_R14_R16_ = IPC::SharedMemory<DataSM_R14_R16>("shMem_R14_R16");
+        shMem_R14_R16_ = IPC::SharedMemory<SerializedData>("shMem_R14_R16");
         shMem_R14_R16_.getSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
         
         shmemAlmacenTerminados = IPC::SharedMemory<AlmacenProductosTerminados>("shMemAlmacenTerminados");
         shmemAlmacenTerminados.getSharedMemory(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS);
         
-        semMutex_shMem_R14_R16_ = COMM::CommSemaphoreMutex<DataSM_R14_R16> ("semMutex_shMem_R14_R16", idEmisor, ID_TIPO_ROBOT16_CINTA);
+        semMutex_shMem_R14_R16_ = COMM::CommSemaphoreMutex<SerializedData> ("semMutex_shMem_R14_R16", idEmisor, ID_TIPO_ROBOT16_CINTA);
         semMutex_shMem_R14_R16_.getSemaphore(DIRECTORY_ROBOT_14, SEM_MUTEX_SM_R14_R16_ID, 1);
         semMutex_shMem_R14_R16_.setShMem(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
         
@@ -181,13 +181,20 @@ ControllerR16_Cinta15::~ControllerR16_Cinta15() {
 }
 
 void ControllerR16_Cinta15::obtener_shMem_R14_R16() {
+    SerializedData buffer;
+
     semMutex_shMem_R14_R16_.wait();
     // Logger::logMessage(Logger::TRACE, "Accede a memoria compartida R14-R16");
-    shMem_R14_R16_.read(shMem_R14_R16_Data_);
+    shMem_R14_R16_.read(&buffer);
+
+    shMem_R14_R16_Data_->deserializeData(buffer);
 }
 
 void ControllerR16_Cinta15::liberar_shMem_R14_R16() {
-    shMem_R14_R16_.write(shMem_R14_R16_Data_);
+    SerializedData buffer;
+    buffer = this->shMem_R14_R16_Data_->serializeData();
+
+    shMem_R14_R16_.write( &buffer );
     // Logger::logMessage(Logger::TRACE, "Libera memoria compartida R14-R16");
     semMutex_shMem_R14_R16_.signal();
 }

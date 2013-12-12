@@ -54,7 +54,7 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->semBufferCanastos = COMM::CommSemaphoreMutex<BufferCanastos>("semMemCanastos", idEmisor, ID_TIPO_ROBOT11);
         this->semBufferCanastos.getSemaphore((char*) DIRECTORY_AGV, ID_SEM_BUFFER_CANASTOS, 3);
 
-        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<DataSM_R11_R14> ("semMutex_shMem_R11_R14", idEmisor, ID_TIPO_ROBOT11);
+        this->semMutex_shMem_R11_R14_ = COMM::CommSemaphoreMutex<SerializedData> ("semMutex_shMem_R11_R14", idEmisor, ID_TIPO_ROBOT11);
         this->semMutex_shMem_R11_R14_.getSemaphore(DIRECTORY_ROBOT_11, SEM_MUTEX_SM_R11_R14_ID, 1);
         
         this->semR11_Cinta13_ = COMM::CommSemaphore ("semR11_Cinta13", idEmisor, ID_TIPO_ROBOT11);
@@ -69,7 +69,7 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         this->shMemEstadoRobot5 = IPC::EstadoRobot5SharedMemory("shMemEstadoRobot5");
         this->shMemEstadoRobot5.getSharedMemory((char*) DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
-        this->shMem_R11_R14_ = IPC::SharedMemory<DataSM_R11_R14>("ShMem_R11_R14");
+        this->shMem_R11_R14_ = IPC::SharedMemory<SerializedData>("ShMem_R11_R14");
         this->shMem_R11_R14_.getSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);        
         this->semMutex_shMem_R11_R14_.setShMem(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
         
@@ -362,7 +362,7 @@ void ControladorRobot11::depositarCaja(Caja unaCaja) {
           // Si se logró colocar la caja, se despierta al Robot14 si este estaba
           // bloqueado
           if (shMem_R11_R14_Data_->estaRobot14Bloqueado()) {
-              // shMem_R11_R14_Data_->setEstadoBloqueoRobot14(false);
+              shMem_R11_R14_Data_->setEstadoBloqueoRobot14(false);
              Logger::logMessage(Logger::TRACE, "Robot14 despertado para trabajar en cinta");
              semR14_Cinta13_.signal();
           }
@@ -422,16 +422,25 @@ void ControladorRobot11::bloquearRobot() {
 }
 
 void ControladorRobot11::obtener_shMem_R11_R14() {
+    SerializedData buffer;
+
     semMutex_shMem_R11_R14_.wait();
-    // Logger::logMessage(Logger::TRACE, "Accede a memoria compartida R11-R14");
-    shMem_R11_R14_.read(shMem_R11_R14_Data_);
+    // Logger::logMessage(Logger::TRACE, "Accede a memoria compartida R14-R16");
+    shMem_R11_R14_.read(&buffer);
+
+    shMem_R11_R14_Data_->deserializeData(buffer);
 }
 
 void ControladorRobot11::liberar_shMem_R11_R14() {
-    shMem_R11_R14_.write(shMem_R11_R14_Data_);
-    // Logger::logMessage(Logger::TRACE, "Libera memoria compartida R11-R14");
+    SerializedData buffer;
+    buffer = this->shMem_R11_R14_Data_->serializeData();
+
+    shMem_R11_R14_.write( &buffer );
+    // Logger::logMessage(Logger::TRACE, "Libera memoria compartida R14-R16");
     semMutex_shMem_R11_R14_.signal();
 }
+
+
 
 void ControladorRobot11::imprimirCinta(bool lugarVacio[BUFF_SIZE_CINTA_6], int puntoFinal) {
     std::stringstream ss;

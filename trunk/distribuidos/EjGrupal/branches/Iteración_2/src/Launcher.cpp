@@ -233,18 +233,18 @@ void createIPCs() {
     cola12_A_11.createMessageQueue(DIRECTORY_ROBOT_12, ID_COLA_12_A_11);
     
     /* IPCs Torres: R11-R14-R16-Despacho-Cliente-Vendedores */
-    DataSM_R11_R14 dataSM_R11_R14;
-    DataSM_R14_R16 dataSM_R14_R16;
+    // DataSM_R11_R14 dataSM_R11_R14;
+    // DataSM_R14_R16 dataSM_R14_R16;
 
     // Create and initialize ShMem
-    IPC::SharedMemory<DataSM_R11_R14> SM_R11_R14("SM_R11_R14");
+    IPC::SharedMemory<SerializedData> SM_R11_R14("SM_R11_R14");
     SM_R11_R14.createSharedMemory(DIRECTORY_ROBOT_11, SM_R11_R14_ID);
-    SM_R11_R14.write( & dataSM_R11_R14 );
+    // SM_R11_R14.write( & dataSM_R11_R14 );
     Logger::logMessage(Logger::IMPORTANT, "IPC SM_R11_R14 creado");
 
-    IPC::SharedMemory<DataSM_R14_R16> SM_R14_R16("SM_R14_R16");
+    IPC::SharedMemory<SerializedData> SM_R14_R16("SM_R14_R16");
     SM_R14_R16.createSharedMemory(DIRECTORY_ROBOT_14, SM_R14_R16_ID);
-    SM_R14_R16.write( & dataSM_R14_R16 );
+    // SM_R14_R16.write( & dataSM_R14_R16 );
     Logger::logMessage(Logger::IMPORTANT, "IPC SM_R14_R16 creado");
 
     // Do the same with the semaphores

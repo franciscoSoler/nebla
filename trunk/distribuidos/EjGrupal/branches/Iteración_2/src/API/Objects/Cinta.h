@@ -46,9 +46,9 @@ public:
     
     unsigned int getCantidadDePaquetes() const;
     
-    SerializedData serializeData();
+    SerializedCinta serializeData();
     
-    void deserializeData(SerializedData data);
+    void deserializeData(std::stringstream & ss);
     
     /* Impresión en ASCII art de la cinta
      */
@@ -131,12 +131,12 @@ unsigned int Cinta<PACKAGE, SIZE>::getCantidadDePaquetes() const {
 
 
 template <class PACKAGE, unsigned int SIZE> 
-SerializedData Cinta<PACKAGE, SIZE>::serializeData() {
-    SerializedData data;
+SerializedCinta Cinta<PACKAGE, SIZE>::serializeData() {
+    SerializedCinta data;
     std::stringstream ss;
     
     for (unsigned int i = 0; i < SIZE; ++i) {
-        SerializedData dataCinta = array_[i].serializeData();
+        SerializedCaja dataCinta = array_[i].serializeData();
         ss << dataCinta.data << " ";
     }
     ss << this->cantidadDePaquetes_ << " ";
@@ -146,14 +146,12 @@ SerializedData Cinta<PACKAGE, SIZE>::serializeData() {
 }
     
 template <class PACKAGE, unsigned int SIZE> 
-void Cinta<PACKAGE, SIZE>::deserializeData(SerializedData data) {
-    std::stringstream ss;
-    ss << data.data;
+void Cinta<PACKAGE, SIZE>::deserializeData(std::stringstream & ss) {
     
     for (unsigned int i = 0; i < SIZE; ++i) {
-        SerializedData dataCinta;
-        ss >> dataCinta.data;
-        array_[i].deserializeData(dataCinta);
+        // SerializedCaja dataCinta;
+        // ss >> dataCinta.data;
+        array_[i].deserializeData(ss);
     }
     ss >> this->cantidadDePaquetes_;
     
