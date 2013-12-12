@@ -15,6 +15,9 @@
 
 //ControladorCliente::ControladorCliente(long numCliente) {
 ControladorCliente::ControladorCliente() {
+}
+
+void ControladorCliente::inicializarControlador() {
     try {
 
         //this->numCliente = numCliente;
@@ -77,6 +80,8 @@ int ControladorCliente::obtenerNumeroCliente() {
     sprintf(mensajePantalla, "Cliente N°%ld:", numCliente);
     Logger::setProcessInformation(mensajePantalla);
 
+    this->inicializarControlador();
+    
     MiddlewareAPI middleware;
     middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
     
