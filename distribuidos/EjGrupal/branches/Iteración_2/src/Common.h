@@ -326,7 +326,7 @@ typedef struct {
 } SerializedData;
 
 typedef struct {
-  char data[FIXED_SIZE_CAJA];
+  char data[FIXED_SIZE_CINTA];
 } SerializedCinta;
 
 typedef struct {

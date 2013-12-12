@@ -140,7 +140,6 @@ SerializedCinta Cinta<PACKAGE, SIZE>::serializeData() {
         ss << dataCinta.data << " ";
     }
     ss << this->cantidadDePaquetes_ << " ";
-    
     strcpy(data.data, ss.str().c_str());
     return data;
 }
@@ -149,8 +148,6 @@ template <class PACKAGE, unsigned int SIZE>
 void Cinta<PACKAGE, SIZE>::deserializeData(std::stringstream & ss) {
     
     for (unsigned int i = 0; i < SIZE; ++i) {
-        // SerializedCaja dataCinta;
-        // ss >> dataCinta.data;
         array_[i].deserializeData(ss);
     }
     ss >> this->cantidadDePaquetes_;
