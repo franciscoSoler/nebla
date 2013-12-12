@@ -19,18 +19,12 @@ ControladorCliente::ControladorCliente() {
 
 void ControladorCliente::inicializarControlador() {
     try {
-
         //this->numCliente = numCliente;
         //this->numVendedorAsociado = 1;
 
         //MiddlewareAPI middleware;
         //middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
         
-        
-
-        sprintf(mensajePantalla, "Cliente N°x:");
-        Logger::setProcessInformation(mensajePantalla);
-
         this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue", numCliente, ID_TIPO_CLIENTE, ID_TIPO_VENDEDOR);
         this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
 
