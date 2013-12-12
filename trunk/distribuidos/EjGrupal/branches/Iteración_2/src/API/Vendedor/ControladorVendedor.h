@@ -28,13 +28,12 @@
 
 class ControladorVendedor {
 public:
-    ControladorVendedor(long numVendedor);
-    //ControladorVendedor();
+    ControladorVendedor();
     virtual ~ControladorVendedor();
 
     long obtenerNumeroVendedor();
     void vendedorLibre();
-    //void recibirLlamadoTelefonico();
+    void recibirLlamadoTelefonico();
     
     int obtenerNumeroDeOrdenDeCompra();
     pedido_t recibirPedido();
@@ -59,6 +58,7 @@ private:
     SmMemAlmacenProductosTerminados almacenProductosTerminados;
     COMM::CommMsgHandler inputQueueDespacho;
 
+    void inicializarControlador();
     pedido_fabricacion_t reservarPedido(pedido_t pedido, bool* pedidoEnStock);
     void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);
     int obtenerCantidadMinimaDeProduccion(int numProducto);
