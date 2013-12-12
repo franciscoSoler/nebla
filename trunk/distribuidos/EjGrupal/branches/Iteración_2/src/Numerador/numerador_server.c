@@ -30,7 +30,7 @@ void initIPCVendedor();
 int getShMemId(size_t tam, char *fileName, int id, int flags);
 int getVendedoresSharedMemory(char *fileName, int id);
 int getClientSharedMemory(char *fileName, int id);
-int attachMemory(void *data, int shMemId);
+int attachMemory(void **data, int shMemId);
 
 /* Semaphore */
 int getSemaphoreId(int *semaphoreId, char *fileName, int id, int qty, int flags);
@@ -210,7 +210,7 @@ obteneridvendedor_1_svc(void *argp, struct svc_req *rqstp)
     {
         vendedoresInfo = (VendedoresInfo*)dataVendedor;
         while ((exito == 0) && (i < MAX_VENDEDORES)) {
-            printf("Verificando vendedor numero: %d: %d.\n",i+1, vendedoresInfo->idVendedores[i]);
+            printf("Verificando vendedor numero: %d: %d.\n",i+1, (*vendedoresInfo).idVendedores[i]);
             if (vendedoresInfo->idVendedores[i] == NOASIGNADO) {
                 printf("Vendedores libre: %d.\n",i+1);
                 numeroVendedor = i+1;
@@ -333,13 +333,13 @@ void initIPCVendedor() {
 int getClientSharedMemory(char *fileName, int id) {
 	int result = getShMemId(sizeof(ClientesInfo),fileName, id, 0666);
 	if (result < 0) return -1;
-	return attachMemory(dataCliente, result);
+	return attachMemory(&dataCliente, result);
 }
 
 int getVendedoresSharedMemory(char *fileName, int id) {
 	int result = getShMemId(sizeof(VendedoresInfo),fileName, id, 0666);
 	if (result < 0) return -1;
-	return attachMemory(dataVendedor, result);
+	return attachMemory(&dataVendedor, result);
 }
 
 int getShMemId(size_t tam, char *fileName, int id, int flags) {
@@ -365,11 +365,13 @@ int getShMemId(size_t tam, char *fileName, int id, int flags) {
 	return shMemId;
 }
 
-int attachMemory(void *data, int shMemId) {
+int attachMemory(void **data, int shMemId) {
 	/* Me attacho a la memoria dejando al SO que elija donde ubicar la memoria 
 	 * (atributo en NULL)y para lectura/escritura (atributo en 0) */
 	char buffer[255];
-	void *shmaddr = shmat(shMemId, (void *)NULL, 0);
+	void *shmaddr;
+	shmaddr = shmat(shMemId, (void *)NULL, 0);
+
 	if (shmaddr == (void *)-1) {
 		strcpy(buffer, "Error en Shared Memory - shmat:");
 		strcat(buffer, strerror(errno));
@@ -377,7 +379,7 @@ int attachMemory(void *data, int shMemId) {
 		write(fileno(stdout), buffer, strlen(buffer)); 
 		return -1;
 	}
-	data = shmaddr;
+	(*data) = shmaddr;
 	return 0;
 }
 
