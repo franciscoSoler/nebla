@@ -1,6 +1,7 @@
 #ifndef COMMON_H
 #define	COMMON_H
 
+#include <sstream>
 #include <string.h>
 #include <stdio.h>
 #include <errno.h>
@@ -8,24 +9,24 @@
 #define NOMBRE_ARCHIVO_PRODUCTOS        "info_productos.csv"
 
 // Path utilizado para inicializar los semáforos a través de la función ftok()
-#define DIRECTORY_AGV 		"./DAGV"
-#define DIRECTORY_ROBOT_5 	"./DRobot5"
-#define DIRECTORY_ROBOT_11 	"./DRobot11"
-#define DIRECTORY_ROBOT_12 	"./DRobot12"
-#define DIRECTORY_ROBOT_14 	"./DRobot14"
-#define DIRECTORY_ROBOT_16 	"./DRobot16"
-#define DIRECTORY_CLIENTE       "./DCliente"
-#define DIRECTORY_VENDEDOR 	"./DVendedor"
-#define DIRECTORY_DESPACHO      "./DDespacho"
-#define DIRECTORY_APT           "./DAPT"
-#define DIRECTORY_APIEZAS	"./DAPiezas"
+#define DIRECTORY_AGV                   "./DAGV"
+#define DIRECTORY_ROBOT_5               "./DRobot5"
+#define DIRECTORY_ROBOT_11              "./DRobot11"
+#define DIRECTORY_ROBOT_12              "./DRobot12"
+#define DIRECTORY_ROBOT_14              "./DRobot14"
+#define DIRECTORY_ROBOT_16              "./DRobot16"
+#define DIRECTORY_CLIENTE               "./DCliente"
+#define DIRECTORY_VENDEDOR              "./DVendedor"
+#define DIRECTORY_DESPACHO              "./DDespacho"
+#define DIRECTORY_APT                   "./DAPT"
+#define DIRECTORY_APIEZAS               "./DAPiezas"
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
 #define ID_SEM_BUFFER_AGV_5            	2	// es el id para el semaforo de acceso al buffer
 #define ID_BUFFER_AGV_5_0           	3	// es el id tanto para shMemory como semaforo de acceso
-#define ID_BUFFER_AGV_5_1		4
-#define ID_BUFFER_AGV_5_2		5
+#define ID_BUFFER_AGV_5_1               4
+#define ID_BUFFER_AGV_5_2               5
 #define ID_COLA_PEDIDOS_AGV_5           6
 
 // ipcs entre AGV, robot 11 y robot 12 (usar DIRECTORY_AGV)
@@ -37,7 +38,7 @@
 
 
 //ipcs del Robot5 (usar DIRECTORY_ROBOT_5)
-#define ID_SEM_API_ROBOT_5 		1
+#define ID_SEM_API_ROBOT_5              1
 
 //ipcs entre Robot5 y almacen de piezas (usar DIRECTORY_ROBOT_5)
 #define ID_COLA_PEDIDOS_PRODUCCION      2
@@ -63,10 +64,8 @@
 #define ID_SEM_BLOQUEO_ROBOT_12         1
 
 // ipcs entre robot 11 y 12 (usar DIRECTORY_ROBOT_12)
-#define ID_COLA_11_A_12_1               1 // se lee cola de 11 a 12
-#define ID_COLA_11_A_12_2               2
-#define ID_COLA_12_A_11_1               3
-#define ID_COLA_12_A_11_2               4
+#define ID_COLA_11_A_12               1 
+#define ID_COLA_12_A_11               2
 
 //ipcs del robot 14 (usar DIRECTORY_ROBOT_14)
 #define SEM_R14_CINTA13_ID              1
@@ -78,51 +77,44 @@
 #define SEM_MUTEX_SINCRONISMO_R16_ID     1
 #define MSGQUEUE_R16_CINTA15_INPUT_ID    2
 #define MSGQUEUE_R16_DESPACHO_INPUT_ID   3
-#define MSGQUEUE_R16_DESPACHO_INPUT_ID_D 4
 #define MSGQUEUE_R16_CLIENT_ID           5
-#define MSGQUEUE_R16_CLIENT_ID_C         6
 
 // ipcs del despacho (usar DIRECTORY_DESPACHO)
 #define MSGQUEUE_DESPACHO_INPUT_ID      1
-#define MSGQUEUE_DESPACHO_INPUT_ID_C    2
-#define MSGQUEUE_DESPACHO_INPUT_ID_D    3
 
 // ipcs del cliente (usar DIRECTORY_CLIENTE)
 #define MSGQUEUE_CLIENT_INPUT_ID        1
 #define MSGQUEUE_CLIENT_OUTPUT_ID       2
-#define MSGQUEUE_CLIENT_INPUT_ID_C      3
-#define MSGQUEUE_CLIENT_INPUT_ID_D      4
 
 // ipcs del vendedor (usar DIRECTORY_VENDEDOR)
 #define MSGQUEUE_VENDOR_INPUT_ID        1
 #define MSGQUEUE_VENDOR_OUTPUT_ID       2
 
 // ipcs del APT (usar DIRECTORY_APT)
-#define LETRA_SHMEM_ALMACEN_TERMINADOS  'a'
 #define SEM_MUTEX_SM_APT_ID             1
 
 
 // ipcs del APiezas (usar DIRECTORY_APIEZAS)
-#define LETRA_SHMEM_ALMACEN_PIEZAS	'r'
-#define LETRA_SEM_ALMACEN_PIEZAS	's'
+#define LETRA_SHMEM_ALMACEN_PIEZAS      1
+#define LETRA_SEM_ALMACEN_PIEZAS        1
 
-#define LETRA_SEM_ESPERA_REPOSITOR_GABINETES 'i'
-#define LETRA_SEM_ESPERA_REPOSITOR_CANASTOS  'j'   
+#define LETRA_SEM_ESPERA_REPOSITOR_GABINETES 2
+#define LETRA_SEM_ESPERA_REPOSITOR_CANASTOS  3
 
 //mtype colas
 
 #define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
 #define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
-#define TIPO_PEDIDO_ROBOT_5_ALMACEN_PIEZAS	2 // Tipo utilizado entre robot 5 almacen de productos
+#define ID_ALMACEN_PIEZAS               1 // Tipo utilizado entre robot 5 almacen de productos
 
 #define TIPO_PEDIDO_DESPACHO            1
 #define TIPO_PEDIDO_ODC_DESPACHO        2
 
 
 //constantes del sistema
-#define TAM_BUFFER 				255
-#define BUFF_SIZE_CINTA_6               	5
-#define CANTIDAD_CINTAS_6               	2
+#define TAM_BUFFER                              4000
+#define BUFF_SIZE_CINTA_6                       5
+#define CANTIDAD_CINTAS_6                       2
 #define CANTIDAD_AGVS                           3
 #define MAX_QUANTITY_CANASTOS                   50
 #define MAX_PIEZAS_POR_PRODUCTO                 9
@@ -131,45 +123,45 @@
 #define CINTA_13_CAPACITY                       3
 #define CINTA_15_CAPACITY                       5
 #define CANTIDAD_PRODUCTOS                      3
-#define CANTIDAD_TIPOS_PIEZAS			6
-#define CANTIDAD_TIPOS_GABINETES		3
-#define CANTIDAD_MAXIMA_REPOSICION_PIEZAS	200
-#define CANTIDAD_MINIMA_REPOSICION_PIEZAS	100
-#define CANTIDAD_MAXIMA_ITEMS_REPOSICION	10
-#define CANTIDAD_MINIMA_ITEMS_REPOSICION	5
+#define CANTIDAD_TIPOS_PIEZAS                   6
+#define CANTIDAD_TIPOS_GABINETES                3
+#define CANTIDAD_MAXIMA_REPOSICION_PIEZAS       200
+#define CANTIDAD_MINIMA_REPOSICION_PIEZAS       100
+#define CANTIDAD_MAXIMA_ITEMS_REPOSICION        10
+#define CANTIDAD_MINIMA_ITEMS_REPOSICION    	5
 #define CANTIDAD_MAXIMA_ITEMS_POR_TIPO_ALMACEN  15
 
 /* Tipos de productos. */
 
-#define CANT_MAX_PEDIDOS			10
-#define CANT_PRODUCTOS				3
+#define CANT_MAX_PEDIDOS                        10
+#define CANT_PRODUCTOS                          3
 
-#define CANT_VENDEDORES				10
-#define CANT_CLIENTES				50
-#define TAM_ALMACEN				100
+#define CANT_VENDEDORES                         10
+#define CANT_CLIENTES                           50
+#define TAM_ALMACEN                             30
 
-#define CANT_MAX_COMPONENTES_PRODUCTO		10
+#define CANT_MAX_COMPONENTES_PRODUCTO           10
 
 /* Constantes IPC internas. */
 // User DIRECTORY_VENDEDOR
-#define ID_COLA_VENDEDORES 'b'
-#define ID_COLA_CLIENTES 'i'
-#define ID_COLA_PEDIDOS 'j'
+#define ID_COLA_VENDEDORES                      'b'
+#define ID_COLA_CLIENTES                        'i'
+#define ID_COLA_PEDIDOS                         'j'
 
-#define ID_COLA_VENDEDORES_C 'y'
-#define ID_COLA_CLIENTES_C 'x'
-#define ID_COLA_PEDIDOS_C 'z'
+#define ID_COLA_VENDEDORES_C                    'y'
+#define ID_COLA_CLIENTES_C                      'x'
+#define ID_COLA_PEDIDOS_C                       'z'
 
-#define ID_COLA_RESPUESTAS_ALMACEN_PIEZAS 'e'
-#define ID_COLA_CONSULTAS_ALMACEN_PIEZAS 'f'
-#define ID_ALMACEN_TERMINADOS 'c'
-#define ID_SHMEM_NRO_OC 'g'
+#define ID_COLA_RESPUESTAS_ALMACEN_PIEZAS       'e'
+#define ID_COLA_CONSULTAS_ALMACEN_PIEZAS        'f'
+#define ID_ALMACEN_TERMINADOS                    1
+#define ID_SHMEM_NRO_OC                          2
 
 #define TIPO_BUSCANDO_VENDEDOR 1
 #define TIPO_VENDEDOR_LIBRE 2
 
 /* Constantes relacionadas con el Middleware */
-#define SERVERS_CONFIG_FILE             "ServersConfigFile.txt"
+#define SERVERS_CONFIG_FILE                      "ServersConfigFile.txt"
 
 typedef enum {
     GABINETE_1 = 1,
@@ -208,6 +200,7 @@ typedef enum {
     PRODUCTO_DISPONIBLE 
 } EstadoEspacio;
 
+
 typedef struct {
     TipoPieza tipoPieza;
     int cantidadPiezas;
@@ -227,7 +220,6 @@ typedef struct {
 } PedidoCanastoAGV;
 
 typedef struct {
-	long mtype; // tipo = TIPO_PEDIDO_CANASTO
         PedidoCanastoAGV pedidoCanastoAgv;
 } MensajePedidoAgv_5;
 
@@ -266,7 +258,7 @@ typedef struct {
 } PedidoProduccion;
 
 typedef struct {
-    long mtype; // mtype = TIPO_PEDIDO_PRODUCCION
+    // mtype = TIPO_PEDIDO_PRODUCCION
     PedidoProduccion pedidoProduccion;    
 } MensajePedidoProduccion;
 
@@ -295,7 +287,6 @@ typedef struct {
 } PedidoCanastoRobotCinta6;
 
 typedef struct {
-	long mtype; // tipo = TIPO_PEDIDO_CANASTO
 	PedidoCanastoRobotCinta6 pedidoCanastoAgv;
 } MensajePedidoRobotCinta_6;
 
@@ -326,6 +317,22 @@ typedef struct
  * Estructuras utilizadas entre robot 11, 14 y 16
  */
 
+#define FIXED_SIZE_DATA      500
+#define FIXED_SIZE_CAJA      30
+#define FIXED_SIZE_CINTA     300
+
+typedef struct {
+  char data[FIXED_SIZE_DATA];
+} SerializedData;
+
+typedef struct {
+  char data[FIXED_SIZE_CINTA];
+} SerializedCinta;
+
+typedef struct {
+  char data[FIXED_SIZE_CAJA];
+} SerializedCaja;
+
 // Clases y Estructuras generales
 class Caja {
 public:
@@ -337,6 +344,28 @@ public:
     long getOrdenDeCompra() { return idOrdenDeCompra_;}
     bool estaVacio() { return idOrdenDeCompra_ == 0
             && idVendedor_ == 0 && idProducto_ == NULL_PRODUCT; };
+            
+    SerializedCaja serializeData() {
+        SerializedCaja data;
+        std::stringstream ss;
+
+        ss << this->fallado_ << " ";
+        ss << this->idOrdenDeCompra_ << " ";
+        ss << static_cast<int>(this->idProducto_) << " ";
+        ss << this->idVendedor_ << " ";
+
+        strcpy(data.data, ss.str().c_str());
+        return data;
+    }
+    void deserializeData(std::stringstream & ss) {
+        int idProducto;
+
+        ss >> this->fallado_;
+        ss >> this->idOrdenDeCompra_;
+        ss >> idProducto;
+        this->idProducto_ = static_cast<TipoProducto> (idProducto);
+        ss >> this->idVendedor_;
+    }
 
 public:
     long idOrdenDeCompra_;
@@ -421,48 +450,39 @@ public:
     TipoProducto idProducto_;
     long idCliente_;
     long idOrdenDeCompra_;
+    OrdenDeCompra odc_;
 };
 
 
 /*** Mensajes de colas, con sus respectivos IDs de mensajes definidos ***/
 
 // Utilizado por las colas que intercambian info con el despacho
-#define MSG_PEDIDO_DESPACHO             100
+#define ID_DESPACHO             1
 class Msg_PedidoDespacho {
 public:
-    Msg_PedidoDespacho() : mtype(MSG_PEDIDO_DESPACHO) {}
+    Msg_PedidoDespacho() {}
 
 public:
-    long mtype;
     PedidoDespacho pedido_;
     bool ultimoPedido_;
 };
-
-#define MSG_ENVIO_ODC_DESPACHO          2
-class Msg_EnvioODCDespacho {
-public:
-    Msg_EnvioODCDespacho() : mtype(MSG_ENVIO_ODC_DESPACHO) {}
-public:
-    long mtype;
-    OrdenDeCompra ordenDeCompra_;
-};
-
 
 // Mensaje del Robot14 al Robot16
 #define MSG_AVISO_CAJA_CINTA_15         1
 class Msg_AvisoCajaEnCinta15 {
 public:
-    Msg_AvisoCajaEnCinta15() : mtype(MSG_AVISO_CAJA_CINTA_15) {}
+    Msg_AvisoCajaEnCinta15() {}
 public:
-    long mtype;
+    // FIXXXXME: Please, do not touch this struct. 
+    // The universe could collapse
+    long prrrrrrr;
 };
 
-#define MSG_FIN_PRODUCTO_R16            4
+#define ID_R16_DESPACHO            1
 class Msg_FinProductoR16 {
 public:
-    Msg_FinProductoR16() : mtype(MSG_FIN_PRODUCTO_R16) {}
+    Msg_FinProductoR16() {}
 public:
-    long mtype;
     PedidoDespacho pedido_;
     bool ultimoProductoDeODC_;
 };
@@ -470,16 +490,14 @@ public:
 #define MSG_RETIRO_PRODUCTO             5
 class Msg_RetiroProducto {
 public:
-    Msg_RetiroProducto() : mtype(MSG_RETIRO_PRODUCTO) {}
+    Msg_RetiroProducto() {}
 public:
-    long mtype;
     PedidoDespacho datos_;
     bool ultimoPedido_;
 };
 
 class Msg_EnvioCajaCliente {
 public:
-    long mtype;
     Caja caja;
     bool ultimoProductoDeODC_;
 };
@@ -496,8 +514,6 @@ typedef struct _OrdenProduccion
     int tipoProducto;
 } OrdenDeProduccion;
 
-
-
 typedef struct _EspacioAlmacen
 {
     EstadoEspacio estado;
@@ -507,6 +523,11 @@ typedef struct _EspacioAlmacen
     bool esTemporal;
 } EspacioAlmacenProductos;
 
+
+typedef struct 
+{
+    EspacioAlmacenProductos almacen[TAM_ALMACEN];
+} AlmacenProductosTerminados;
 
 
 typedef struct _consulta_almacen_piezas
@@ -546,7 +567,6 @@ typedef struct _pedido_produccion
 } pedido_fabricacion_t;
 
 typedef struct {
-    long mtype;
     pedido_fabricacion_t pedidoFabricacion; 
 } mensaje_pedido_fabricacion_t;
 
@@ -556,7 +576,7 @@ typedef struct {
 
 typedef struct _mensaje_inicial
 {
-    long mtype; // receptor.
+    // mtype = receptor.
     long emisor; 
 } mensaje_inicial_t;
 
@@ -569,7 +589,7 @@ typedef struct _pedido
 } pedido_t;
 
 typedef struct {
-    long mtype; // receptor.
+    // receptor.
     int tipo; // indica si se debe terminar la comunicacion
     pedido_t pedido;
 } msg_pedido_t;
@@ -581,7 +601,6 @@ typedef struct _respuesta_pedido {
 } respuesta_pedido_t;
 
 typedef struct {
-    long mtype;
     int tipo;
     respuesta_pedido_t respuesta_pedido;
 } msg_respuesta_pedido_t;

@@ -1,0 +1,73 @@
+
+# Data de ServidorCanalEntradaBroker
+ServidorCanalEntradaBroker-Direccion = 127.0.0.1
+ServidorCanalEntradaBroker-Port = 5000
+ServidorCanalEntradaBroker-Dispatcher = CanalEntradaBroker
+
+# Data de ServidorCanalSalidaBroker
+ServidorCanalSalidaBroker-Direccion = 127.0.0.1
+ServidorCanalSalidaBroker-Port = 5001
+ServidorCanalSalidaBroker-Dispatcher = CanalSalidaBroker
+
+# IP del Servidor RPC
+RPCServer-Direccion = 127.0.0.1
+
+######## Esto va a ser utilizado a partir de la Iteración 3 (Múltiples Brokers) ########
+CantidadBrokers = 4
+ServidorCanalEntrada-Dispatcher = CanalEntradaBroker
+ServidorCanalSalida-Dispatcher = CanalSalidaBroker
+ServidorBrokerCanalEntrada-Dispatcher = BrokerCanalEntrada
+ServidorBrokerCanalSalida-Dispatcher = BrokerCanalSalida
+
+# Data de ServidorCanalEntradaBroker
+ServidorCanalEntradaBroker-1-Direccion = 127.0.0.1
+ServidorCanalEntradaBroker-1-Port = 5001
+
+ServidorCanalEntradaBroker-2-Direccion = 127.0.0.1
+ServidorCanalEntradaBroker-2-Port = 5002
+
+ServidorCanalEntradaBroker-3-Direccion = 127.0.0.1
+ServidorCanalEntradaBroker-3-Port = 5003
+
+ServidorCanalEntradaBroker-4-Direccion = 127.0.0.1
+ServidorCanalEntradaBroker-4-Port = 5004
+
+# Data de ServidorCanalSalidaBroker
+ServidorCanalSalidaBroker-1-Direccion = 127.0.0.1
+ServidorCanalSalidaBroker-1-Port = 6001
+
+ServidorCanalSalidaBroker-2-Direccion = 127.0.0.1
+ServidorCanalSalidaBroker-2-Port = 6002
+
+ServidorCanalSalidaBroker-3-Direccion = 127.0.0.1
+ServidorCanalSalidaBroker-3-Port = 6003
+
+ServidorCanalSalidaBroker-4-Direccion = 127.0.0.1
+ServidorCanalSalidaBroker-4-Port = 6004
+
+# Data de ServidorBrokerCanalEntrada
+ServidorBrokerCanalEntrada-1-Direccion = 127.0.0.1
+ServidorBrokerCanalEntrada-1-Port = 7001
+
+ServidorBrokerCanalEntrada-2-Direccion = 127.0.0.1
+ServidorBrokerCanalEntrada-2-Port = 7002
+
+ServidorBrokerCanalEntrada-3-Direccion = 127.0.0.1
+ServidorBrokerCanalEntrada-3-Port = 7003
+
+ServidorBrokerCanalEntrada-4-Direccion = 127.0.0.1
+ServidorBrokerCanalEntrada-4-Port = 7004
+
+# Data de ServidorBrokerCanalSalida
+ServidorBrokerCanalSalida-1-Direccion = 127.0.0.1
+ServidorBrokerCanalSalida-1-Port = 8001
+
+ServidorBrokerCanalSalida-2-Direccion = 127.0.0.1
+ServidorBrokerCanalSalida-2-Port = 8002
+
+ServidorBrokerCanalSalida-3-Direccion = 127.0.0.1
+ServidorBrokerCanalSalida-3-Port = 8003
+
+ServidorBrokerCanalSalida-4-Direccion = 127.0.0.1
+ServidorBrokerCanalSalida-4-Port = 8004
+
