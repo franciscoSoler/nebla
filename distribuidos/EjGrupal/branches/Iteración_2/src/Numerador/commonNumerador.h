@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <errno.h>
 
-#define HOST "LOCALHOST"
-
 #define MAX_CLIENTES 50
 #define MAX_VENDEDORES 10
 

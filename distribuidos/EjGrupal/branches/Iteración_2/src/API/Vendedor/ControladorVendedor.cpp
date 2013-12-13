@@ -15,6 +15,8 @@
 #include "SharedMemory.h"
 
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
+#include <ConfigFileParser/ConfigFileParser.h>
+#include <memory>
 
 ControladorVendedor::ControladorVendedor()
 {
@@ -27,11 +29,11 @@ void ControladorVendedor::inicializarControlador()
         /*char buffer[255];
         sprintf(buffer, "Vendedor N#%ld:", numVendedor);
         Logger::setProcessInformation(buffer);
+
+        this->numVendedor = numVendedor;*/
         
         MiddlewareAPI middleware;
         middleware.crearCanales(numVendedor, ID_TIPO_VENDEDOR);
-         
-        this->numVendedor = numVendedor;*/
 
         this->vendedores = IPC::VendedorLibreMessageQueue("Vendedor - VendedoresMsgQueue", numVendedor, ID_TIPO_VENDEDOR);
         this->vendedores.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_VENDEDORES);
@@ -82,9 +84,13 @@ long ControladorVendedor::obtenerNumeroVendedor() {
     retornoVendedor *result_1;
     char *obteneridvendedor_1_arg;
 
-    CLIENT *clnt = clnt_create(HOST, NUMERADORVENDEDOR, NUMERADORVENDEDOR1, "udp");
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+    std::string host = cfg->getConfigFileParam("RPCServer-Direccion", "LOCALHOST");
+
+    CLIENT *clnt = clnt_create(host.c_str(), NUMERADORVENDEDOR, NUMERADORVENDEDOR1, "udp");
     if (clnt == NULL) {
-        clnt_pcreateerror(HOST);
+        clnt_pcreateerror( host.c_str() );
         exit(1);
     }
 
@@ -116,9 +122,13 @@ void ControladorVendedor::vendedorLibre() {
     void *result_2;
     int vendedorlibre_1_arg = this->numVendedor;
 
-    CLIENT *clnt = clnt_create(HOST, NUMERADORVENDEDOR, NUMERADORVENDEDOR1, "udp");
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+    std::string host = cfg->getConfigFileParam("RPCServer-Direccion", "LOCALHOST");
+
+    CLIENT *clnt = clnt_create(host.c_str(), NUMERADORVENDEDOR, NUMERADORVENDEDOR1, "udp");
     if (clnt == NULL) {
-        clnt_pcreateerror(HOST);
+        clnt_pcreateerror( host.c_str() );
         exit(1);
     }
 

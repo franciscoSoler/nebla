@@ -32,8 +32,6 @@ void Logger::createLog(const std::string i_LogName) {
 void Logger::logMessage(LogLevelEnum i_Level, std::string i_Msg) {
 	LockFile file = LockFile(m_LogName.c_str());
 
-    if (i_Level == Logger::COMM) return;
-
 	std::stringstream ss;
     ss << currentDateTime();
 	ss << m_ForegroundColor[i_Level] << m_BackgroundColor[i_Level]

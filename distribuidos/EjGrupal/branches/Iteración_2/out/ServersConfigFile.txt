@@ -9,6 +9,9 @@ ServidorCanalSalidaBroker-Direccion = 127.0.0.1
 ServidorCanalSalidaBroker-Port = 5001
 ServidorCanalSalidaBroker-Dispatcher = CanalSalidaBroker
 
+# IP del Servidor RPC
+RPCServer-Direccion = 127.0.0.1
+
 ######## Esto va a ser utilizado a partir de la Iteración 3 (Múltiples Brokers) ########
 CantidadBrokers = 4
 ServidorCanalEntrada-Dispatcher = CanalEntradaBroker
