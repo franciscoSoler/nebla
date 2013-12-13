@@ -10,8 +10,6 @@
 
 SmMemAlmacenProductosTerminados::SmMemAlmacenProductosTerminados() 
 {
-    this->shmemAlmacenTerminados = MemoriaCompartida(DIRECTORY_VENDEDOR, ID_ALMACEN_TERMINADOS, TAM_ALMACEN * sizeof(EspacioAlmacenProductos));
-    this->almacenTerminados = (EspacioAlmacenProductos*) shmemAlmacenTerminados.obtener();
 }
 
 SmMemAlmacenProductosTerminados::~SmMemAlmacenProductosTerminados() 
@@ -19,9 +17,19 @@ SmMemAlmacenProductosTerminados::~SmMemAlmacenProductosTerminados()
     
 }
 
-EspacioAlmacenProductos* SmMemAlmacenProductosTerminados::obtenerMatriz()
+void SmMemAlmacenProductosTerminados::establecerMatriz(
+                              EspacioAlmacenProductos almacenTerminados[TAM_ALMACEN]) {
+    for (int i = 0; i < TAM_ALMACEN; i++) {
+        this->almacenTerminados[i] = almacenTerminados[i];
+    }
+    
+}
+
+void SmMemAlmacenProductosTerminados::obtenerMatriz(EspacioAlmacenProductos almacenTerminados[TAM_ALMACEN])
 {
-    return this->almacenTerminados;
+    for (int i = 0; i < TAM_ALMACEN; i++) {
+        almacenTerminados[i] = this->almacenTerminados[i];
+    }
 }
 
 int SmMemAlmacenProductosTerminados::obtenerEspaciosVacios()
@@ -40,13 +48,12 @@ int SmMemAlmacenProductosTerminados::obtenerCantidadDeStockDeProducto(int numPro
     int cantidadEnStock = 0;
     for(int numeroEspacio = 0; numeroEspacio < TAM_ALMACEN; numeroEspacio++)
     {
-        /*if(almacenTerminados[numeroEspacio].estado == RESERVADO_DISPONIBLE ||
-            almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE)*/
-        if(almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE)
-        {
-            if(almacenTerminados[numeroEspacio].tipoProducto == numProducto)
-            cantidadEnStock++;
-        }
+	if(almacenTerminados[numeroEspacio].estado == RESERVADO_DISPONIBLE ||
+		almacenTerminados[numeroEspacio].estado == PRODUCTO_DISPONIBLE)
+	{
+	    if(almacenTerminados[numeroEspacio].tipoProducto == numProducto)
+		cantidadEnStock++;
+	}
     }
     
     return cantidadEnStock;
