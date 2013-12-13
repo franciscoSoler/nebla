@@ -7,11 +7,13 @@
 
 #include "ControladorCliente.h"
 #include <Logger.h>
+#include <memory>
 
 #include "../../Numerador/numerador.h"
 #include "../../Numerador/commonNumerador.h"
 
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
+#include <ConfigFileParser/ConfigFileParser.h>
 
 //ControladorCliente::ControladorCliente(long numCliente) {
 ControladorCliente::ControladorCliente() {
@@ -22,8 +24,8 @@ void ControladorCliente::inicializarControlador() {
         //this->numCliente = numCliente;
         //this->numVendedorAsociado = 1;
 
-        //MiddlewareAPI middleware;
-        //middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
+        MiddlewareAPI middleware;
+        middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
         
         this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue", numCliente, ID_TIPO_CLIENTE, ID_TIPO_VENDEDOR);
         this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
@@ -52,9 +54,13 @@ int ControladorCliente::obtenerNumeroCliente() {
     retornoCliente *result_1;
     char *obteneridcliente_1_arg;
 
-    CLIENT *clnt = clnt_create(HOST, NUMERADORCLIENTE, NUMERADORCLIENTE1, "udp");
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+    std::string host = cfg->getConfigFileParam("RPCServer-Direccion", "LOCALHOST");
+
+    CLIENT *clnt = clnt_create(host.c_str(), NUMERADORCLIENTE, NUMERADORCLIENTE1, "udp");
     if (clnt == NULL) {
-        clnt_pcreateerror(HOST);
+        clnt_pcreateerror( host.c_str() );
         exit(1);
     }
 
