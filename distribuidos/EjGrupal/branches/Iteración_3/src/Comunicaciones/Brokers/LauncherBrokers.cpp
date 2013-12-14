@@ -40,8 +40,8 @@ int main(int argc, char* argv[]) {
         initializeSharedMemories();
 
         ServersManager serversManager;
-        serversManager.createServer("ServidorCanalEntradaBroker");
-        serversManager.createServer("ServidorCanalSalidaBroker");
+        serversManager.createServer("ServidorCanalEntradaBrokerAgente");
+        serversManager.createServer("ServidorCanalSalidaBrokerAgente");
 
 
     }

@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
     ServersManager serversManager;
     SocketStream::SocketStreamPtr socketBroker(
-    serversManager.connectToServer("ServidorCanalEntradaBroker") );
+    serversManager.connectToServer("ServidorCanalEntradaBrokerAgente") );
     assert( socketBroker.get() );
     
     sprintf(buffer, "CanalSalidaAgente - TipoAgente %d - idAgente %ld:",
