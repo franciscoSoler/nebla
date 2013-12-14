@@ -47,11 +47,12 @@ public:
     
     void wait(int numSem = 0) {
         CommPacketWrapper wrapper;
+        wrapper.setReceiverType( ADMINISTRADOR_MEMORIA );
+        
         wrapper.setIdShMem( this->idShMem[numSem] );
-        wrapper.setReceiverId( this->idShMem[numSem] );
-        wrapper.setReceiverType( ID_TIPO_PEDIDO_MEMORIA );
+        wrapper.setReceiverAdministratorType( ID_TIPO_PEDIDO_MEMORIA );
         wrapper.setSenderId( this->idEmisor_ );
-        wrapper.setSenderType( this->typeDuenioSem_ );
+        wrapper.setSenderAgentType( this->typeDuenioSem_ );
 
         MsgCanalSalidaAgente msg;
         wrapper.createPacketRequestShMem(msg);
@@ -87,6 +88,8 @@ public:
         this->shMem[numSem].read(&buffer);
         
         CommPacketWrapper wrapper;
+        wrapper.setReceiverType( ADMINISTRADOR_MEMORIA );
+        
         wrapper.setIdShMem( this->idShMem[numSem] );
 
         char buffer_[255];
@@ -96,8 +99,8 @@ public:
         if ( this->idShMem[numSem] == 0 ) {
             Logger::logMessage(Logger::ERROR, "id de receptor inválido");
         }
-        wrapper.setReceiverId( this->idShMem[numSem] );
-        wrapper.setReceiverType( ID_TIPO_MEMORIA );
+        
+        wrapper.setReceiverAdministratorType( ID_TIPO_MEMORIA );
         wrapper.setSenderId( this->idEmisor_ );
 
         MsgCanalSalidaAgente msg;

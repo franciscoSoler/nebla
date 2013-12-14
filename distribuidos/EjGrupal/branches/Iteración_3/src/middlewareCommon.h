@@ -6,6 +6,26 @@
 #define DIRECTORY_ADM              "./DAdm"
 #define COMM_OBJECTS_CONFIG_FILE   "CommObjectsConfigFile.txt"
 #define DIRECTORY_SEM              "./DSem"
+
+typedef enum {
+    AGENTE = 1,
+    ADMINISTRADOR_MEMORIA,
+    BROKER
+} TipoReceptor;
+
+typedef enum {
+    ID_TIPO_MEMORIA = 13,
+    ID_TIPO_PEDIDO_MEMORIA
+} CommTipoMensajeAgentes;
+
+typedef enum {
+    AGENTE_AGENTE = 15,
+    MEMORIA_AGENTE,
+    MENSAJE_LIDER,
+    MEMORIA_BROKERS,
+    AGENTE_CONECTADO
+} CommTipoMensajeBrokers;
+
 typedef enum {
     ID_TIPO_VACIO = 0,
     ID_TIPO_CLIENTE,
@@ -19,12 +39,11 @@ typedef enum {
     ID_TIPO_ROBOT14,
     ID_TIPO_ROBOT16_CINTA,
     ID_TIPO_ROBOT16_DESPACHO,
-    ID_TIPO_DESPACHO,
-    ID_TIPO_MEMORIA,
-    ID_TIPO_PEDIDO_MEMORIA
+    ID_TIPO_DESPACHO
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
+#define DIRECC_FIXED_SIZE       30
 #define MSG_QUEUE_FIXED_SIZE    3000
 #define MSG_BROKER_SIZE         3500
 #define SEM_ARRAY_MAX_SIZE       10
@@ -53,10 +72,23 @@ typedef struct {
     MsgCanalEntradaAgente msg;
 } MsgCanalSalidaBroker;
 
+typedef struct {
+    TipoAgente idReceiverAgentType;
+} DireccionamientoMsgAgente;
+
+typedef struct {
+    CommTipoMensajeAgentes idMsgAdmType;
+    long idMemory;
+} DireccionamientoMsgAdministrador;
+
+typedef struct {
+    CommTipoMensajeBrokers idMsgBrokerType;
+} DireccionamientoMsgBroker;
+
 typedef struct {  
     long mtype; // idReceptor
     TipoAgente idTipoEmisor;
-    long idReceptor;
+    //long idReceptor;
     long idEmisor;
 } MsgPedidoMemoriaAdministrador;
 
@@ -67,9 +99,10 @@ typedef struct {
 
 
 typedef struct { 
-    TipoAgente idTipoReceptor;
-    long idReceptor;
-    //MsgCanalSalidaBroker msg;
+    TipoReceptor receiverType;
+    //TipoAgente idTipoAgente;
+    //long idReceptor;
+    char direccionamiento[DIRECC_FIXED_SIZE];
     char msg[MSG_BROKER_SIZE]; // MsgCanalSalidaBroker o MsgPedidoMemoriaAdministrador o MsgEntregaMemoriaAdministrador
 } MsgCanalEntradaBroker;
 

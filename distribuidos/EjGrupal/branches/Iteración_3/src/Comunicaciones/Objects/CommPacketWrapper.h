@@ -13,13 +13,25 @@ public:
     void setSenderId(long senderId) {
         senderId_ = senderId;
     }
-
-    void setReceiverType(TipoAgente receiverType) {
+    
+    void setReceiverType(TipoReceptor receiverType) {
         receiverType_ = receiverType;
     }
+
+    void setReceiverAgentType(TipoAgente receiverAgentType) {
+        receiverAgentType_ = receiverAgentType;
+    }
     
-    void setSenderType(TipoAgente senderType) {
-        senderType_ = senderType;
+    void setReceiverAdministratorType(CommTipoMensajeAgentes receiverAdministratorType) {
+        receiverAdministratorType_ = receiverAdministratorType;
+    }
+    
+    void setReceiverBrokerType(CommTipoMensajeBrokers receiverBrokerType) {
+        receiverBrokerType_ = receiverBrokerType;
+    }
+    
+    void setSenderAgentType(TipoAgente senderType) {
+        senderAgentType_ = senderType;
     }
 
     void setIdDirIPC(int idDirIPC) {
@@ -51,9 +63,14 @@ public:
         msgCanalSalidaBroker.msg = msgCanalEntradaAgente;
         memcpy(& msgCanalSalidaBroker.msg, &msgCanalEntradaAgente, sizeof(MsgCanalEntradaAgente));
 
+        DireccionamientoMsgAgente dirAgente;
+        dirAgente.idReceiverAgentType = receiverAgentType_;
+        
         MsgCanalEntradaBroker msgCanalEntradaBroker;
-        msgCanalEntradaBroker.idReceptor = receiverId_;
-        msgCanalEntradaBroker.idTipoReceptor = receiverType_;
+        msgCanalEntradaBroker.receiverType = receiverType_;
+        //msgCanalEntradaBroker.idReceptor = receiverId_;
+        //msgCanalEntradaBroker.idTipoAgente = receiverAgentType_;
+        memcpy(&msgCanalEntradaBroker.direccionamiento, &dirAgente, sizeof(DireccionamientoMsgAgente));
         memcpy(&msgCanalEntradaBroker.msg, &msgCanalSalidaBroker, sizeof(MsgCanalSalidaBroker));
 
         msg.mtype = senderId_;
@@ -75,9 +92,14 @@ public:
         msgCanalSalidaBroker.msg = msgCanalEntradaAgente;
         memcpy(& msgCanalSalidaBroker.msg, &msgCanalEntradaAgente, sizeof(MsgCanalEntradaAgente));
 
+        DireccionamientoMsgAgente dirAgente;
+        dirAgente.idReceiverAgentType = receiverAgentType_;
+        
         MsgCanalEntradaBroker msgCanalEntradaBroker;
-        msgCanalEntradaBroker.idReceptor = receiverId_;
-        msgCanalEntradaBroker.idTipoReceptor = receiverType_;
+        msgCanalEntradaBroker.receiverType = receiverType_;
+        //msgCanalEntradaBroker.idReceptor = receiverId_;
+        //msgCanalEntradaBroker.idTipoAgente = receiverAgentType_;
+        memcpy(&msgCanalEntradaBroker.direccionamiento, &dirAgente, sizeof(DireccionamientoMsgAgente));
         memcpy(&msgCanalEntradaBroker.msg, &msgCanalSalidaBroker, sizeof(MsgCanalSalidaBroker));
 
         msg.mtype = senderId_;
@@ -88,13 +110,19 @@ public:
 
         MsgPedidoMemoriaAdministrador msgPedidoMemoriaAdministrador;
         msgPedidoMemoriaAdministrador.mtype = idShMem_;
-        msgPedidoMemoriaAdministrador.idReceptor = receiverId_;
-        msgPedidoMemoriaAdministrador.idTipoEmisor = senderType_;
+        //msgPedidoMemoriaAdministrador.idReceptor = receiverId_;
+        msgPedidoMemoriaAdministrador.idTipoEmisor = senderAgentType_;
         msgPedidoMemoriaAdministrador.idEmisor = senderId_;
 
+        DireccionamientoMsgAdministrador dirAdm;
+        dirAdm.idMemory = idShMem_;
+        dirAdm.idMsgAdmType = receiverAdministratorType_;
+        
         MsgCanalEntradaBroker msgCanalEntradaBroker;
-        msgCanalEntradaBroker.idReceptor = receiverId_;
-        msgCanalEntradaBroker.idTipoReceptor = receiverType_;
+        msgCanalEntradaBroker.receiverType = receiverType_;
+        //msgCanalEntradaBroker.idReceptor = receiverId_;
+        //msgCanalEntradaBroker.idTipoAgente = receiverAgentType_;
+        memcpy(&msgCanalEntradaBroker.direccionamiento, &dirAdm, sizeof(DireccionamientoMsgAdministrador));
         memcpy(&msgCanalEntradaBroker.msg, &msgPedidoMemoriaAdministrador, sizeof(MsgPedidoMemoriaAdministrador));
 
         msg.mtype = senderId_;
@@ -124,10 +152,16 @@ public:
         MsgEntregaMemoriaAdministrador msgEntregaMemoriaAdministrador;
         msgEntregaMemoriaAdministrador.mtype = idShMem_;
         memcpy(& msgEntregaMemoriaAdministrador.memoria, &data, sizeof(T));
-
+        
+        DireccionamientoMsgAdministrador dirAdm;
+        dirAdm.idMemory = idShMem_;
+        dirAdm.idMsgAdmType = receiverAdministratorType_;
+        
         MsgCanalEntradaBroker msgCanalEntradaBroker;
-        msgCanalEntradaBroker.idReceptor = receiverId_;
-        msgCanalEntradaBroker.idTipoReceptor = receiverType_;
+        msgCanalEntradaBroker.receiverType = receiverType_;
+        //msgCanalEntradaBroker.idReceptor = receiverId_;
+        //msgCanalEntradaBroker.idTipoAgente = receiverAgentType_;
+        memcpy(&msgCanalEntradaBroker.direccionamiento, &dirAdm, sizeof(DireccionamientoMsgAdministrador));
         memcpy(&msgCanalEntradaBroker.msg, &msgEntregaMemoriaAdministrador, sizeof(MsgEntregaMemoriaAdministrador));
 
         msg.mtype = senderId_;
@@ -137,8 +171,11 @@ public:
 private:
     long receiverId_;
     long senderId_;
-    TipoAgente receiverType_;
-    TipoAgente senderType_;
+    TipoReceptor receiverType_;
+    TipoAgente receiverAgentType_;
+    CommTipoMensajeAgentes receiverAdministratorType_;
+    CommTipoMensajeBrokers receiverBrokerType_;
+    TipoAgente senderAgentType_;
     int idDirIPC_;
     int idShMem_;
     const char* dirIPC_;
