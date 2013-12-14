@@ -16,7 +16,7 @@
 #include "SharedMemory.h"
 
 int main(int argc, char* argv[]) {
-    Logger::setProcessInformation("CanalEntradaBroker:");
+    Logger::setProcessInformation("CanalEntradaBrokerAgente:");
     //char buffer[TAM_BUFFER];
     char bufferSocket[TAM_BUFFER];
     CommunicationsUtil util;

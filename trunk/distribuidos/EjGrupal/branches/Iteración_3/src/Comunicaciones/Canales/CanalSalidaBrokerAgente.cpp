@@ -15,7 +15,7 @@
 #include "middlewareCommon.h"
 
 int main(int argc, char* argv[]) {
-    Logger::setProcessInformation("CanalSalidaBroker:");
+    Logger::setProcessInformation("CanalSalidaBrokerAgente:");
     char buffer[TAM_BUFFER];
     char bufferSocket[TAM_BUFFER];
     char bufferMsgQueue[MSG_BROKER_SIZE];
