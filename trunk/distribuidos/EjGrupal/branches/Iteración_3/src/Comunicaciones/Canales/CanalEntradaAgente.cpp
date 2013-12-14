@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     
     ServersManager serversManager;
     SocketStream::SocketStreamPtr socketBroker(
-    serversManager.connectToServer("ServidorCanalSalidaBroker") );
+    serversManager.connectToServer("ServidorCanalSalidaBrokerAgente") );
     assert( socketBroker.get() );
     
     // Se envían los datos del agente por el socket al CanalSalidaBroker

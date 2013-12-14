@@ -4,6 +4,7 @@ project("Ejercicio 15 - Iteración_2")
 set(SRC_DIR src/)
 set(OUT_DIR out/)
 set(LIB_DIR lib/)
+set(COMM_DIR ${SRC_DIR}Comunicaciones/)
 
 file(MAKE_DIRECTORY ${OUT_DIR})
 
@@ -70,8 +71,8 @@ aux_source_directory("${SRC_DIR}API/Robot11"                             ROBOT11
 aux_source_directory("${SRC_DIR}API/Robot12"                             ROBOT12_SRC)
 aux_source_directory("${SRC_DIR}API/Robot14"                             ROBOT14_SRC)
 aux_source_directory("${SRC_DIR}API/Robot14/State"                       ROBOT14_SRC)
-aux_source_directory("${SRC_DIR}API/Robot16_Despacho"                    ROBOT16_DESPACHO_SRC)               
-aux_source_directory("${SRC_DIR}API/Robot16_Cinta15"                     ROBOT16_CINTA15_SRC)               
+aux_source_directory("${SRC_DIR}API/Robot16_Despacho"                    ROBOT16_DESPACHO_SRC)
+aux_source_directory("${SRC_DIR}API/Robot16_Cinta15"                     ROBOT16_CINTA15_SRC)
 aux_source_directory("${SRC_DIR}API/Despacho"                            DESPACHO_SRC)
 aux_source_directory("${SRC_DIR}API/Cliente"                             CLIENTE_SRC)
 aux_source_directory("${SRC_DIR}API/Vendedor"                            VENDEDOR_SRC)
@@ -96,9 +97,9 @@ aux_source_directory("${SRC_DIR}Parser"                                  LIBRARY
 aux_source_directory("${SRC_DIR}ConfigFileParser"                        LIBRARY_SRC)
 
 aux_source_directory("${SRC_DIR}Socket"                                  LIBRARY_SRC)
-aux_source_directory("${SRC_DIR}Comunicaciones/Objects"                  LIBRARY_SRC)
-aux_source_directory("${SRC_DIR}Comunicaciones/Signals"                  LIBRARY_SRC)
-aux_source_directory("${SRC_DIR}Comunicaciones/Signals/Handlers"         LIBRARY_SRC)
+aux_source_directory("${COMM_DIR}Objects"                                LIBRARY_SRC)
+aux_source_directory("${COMM_DIR}Signals"                                LIBRARY_SRC)
+aux_source_directory("${COMM_DIR}Signals/Handlers"                       LIBRARY_SRC)
 
 # Only for QTcreator. With this, QTcreator can recognize headers files. The process is a
 # little bit annoying, but works :)
@@ -106,6 +107,7 @@ file(GLOB SRC_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/*.h")
 file(GLOB MSGQUEUE_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/IPCs/IPCTemplate/*.h")
 file(GLOB MESSAGE_QUEUE_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/IPCs/IPCAbstractos/MessageQueue/*.h")
 file(GLOB COMM_HEADERS RELATIVE ${CMAKE_SOURCE_DIR} "src/Comunicaciones/Objects/*.h")
+file(GLOB OBJ_HEADERS RELATIV ${CMAKE_SOURCE_DIR} "src/API/Objects/*.h")
 
 add_library(IPCLibrary
             SHARED
@@ -113,16 +115,17 @@ add_library(IPCLibrary
             ${MSGQUEUE_HEADERS}
             ${MESSAGE_QUEUE_HEADERS}
             ${COMM_HEADERS}
-            ${LIBRARY_SRC})
+            ${LIBRARY_SRC}
+            ${OBJ_HEADERS})
 
 
-set_target_properties(IPCLibrary PROPERTIES 
+set_target_properties(IPCLibrary PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY "${LIB_DIR}")
-          
+
 
 # Numerador
-add_executable(${OUT_DIR}PruebaNumerador                    ${SRC_DIR}Numerador/Ejecutables/numerador_client.c             ${COMMON_SRC} ${NUMERADOR_SRC} )   
-add_executable(${OUT_DIR}NumeradorServer                    ${SRC_DIR}Numerador/Ejecutables/numerador_svc.c             ${COMMON_SRC} ${NUMERADOR_SRC})   
+add_executable(${OUT_DIR}PruebaNumerador                    ${SRC_DIR}Numerador/Ejecutables/numerador_client.c             ${COMMON_SRC} ${NUMERADOR_SRC} )
+add_executable(${OUT_DIR}NumeradorServer                    ${SRC_DIR}Numerador/Ejecutables/numerador_svc.c             ${COMMON_SRC} ${NUMERADOR_SRC})
 
 
 add_executable(${OUT_DIR}Launcher                           ${SRC_DIR}Launcher.cpp                              ${COMMON_SRC})
@@ -152,22 +155,22 @@ add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorG
 #add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC} ${VENDEDOR_SRC} ${NUMERADOR_SRC})
 #add_executable(${OUT_DIR}MonitorAlmacenPiezas              ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC} ${NUMERADOR_SRC})
 
-add_executable(${OUT_DIR}ConcurrentServer                   ${SRC_DIR}Comunicaciones/ConcurrentServer.cpp          ${COMMON_SRC})
+add_executable(${OUT_DIR}ConcurrentServer                   ${COMM_DIR}ConcurrentServer.cpp                     ${COMMON_SRC})
 
 # Broker - Agente
-add_executable(${OUT_DIR}LauncherAgentes                    ${SRC_DIR}Comunicaciones/Agentes/LauncherAgentes.cpp        ${COMMON_SRC})
-add_executable(${OUT_DIR}TerminatorAgentes                  ${SRC_DIR}Comunicaciones/Agentes/TerminatorAgentes.cpp      ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalSalidaAgente                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaAgente.cpp      ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalEntradaAgente                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaAgente.cpp     ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalSalidaBroker                  ${SRC_DIR}Comunicaciones/Canales/CanalSalidaBroker.cpp      ${COMMON_SRC})
-add_executable(${OUT_DIR}CanalEntradaBroker                 ${SRC_DIR}Comunicaciones/Canales/CanalEntradaBroker.cpp     ${COMMON_SRC})
-add_executable(${OUT_DIR}BrokerCanalEntrada                 ${SRC_DIR}Comunicaciones/Canales/BrokerCanalEntrada.cpp     ${COMMON_SRC})
-add_executable(${OUT_DIR}BrokerCanalSalida                  ${SRC_DIR}Comunicaciones/Canales/BrokerCanalSalida.cpp      ${COMMON_SRC})
-add_executable(${OUT_DIR}AdministradorMemoria               ${SRC_DIR}Comunicaciones/Brokers/AdministradorMemoria.cpp   ${COMMON_SRC})
-add_executable(${OUT_DIR}BrokerConcurrentServer             ${SRC_DIR}Comunicaciones/Brokers/BrokerConcurrentServer.cpp ${COMMON_SRC})
-add_executable(${OUT_DIR}LauncherBrokers                    ${SRC_DIR}Comunicaciones/Brokers/LauncherBrokers.cpp        ${COMMON_SRC})
-add_executable(${OUT_DIR}TerminatorBrokers                  ${SRC_DIR}Comunicaciones/Brokers/TerminatorBrokers.cpp      ${COMMON_SRC})
-add_executable(${OUT_DIR}Broker                             ${SRC_DIR}Comunicaciones/Brokers/Broker.cpp                 ${COMMON_SRC})
+add_executable(${OUT_DIR}LauncherAgentes                    ${COMM_DIR}Agentes/LauncherAgentes.cpp              ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorAgentes                  ${COMM_DIR}Agentes/TerminatorAgentes.cpp            ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaAgente                 ${COMM_DIR}Canales/CanalEntradaAgente.cpp           ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaAgente                  ${COMM_DIR}Canales/CanalSalidaAgente.cpp            ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaBrokerAgente           ${COMM_DIR}Canales/CanalEntradaBrokerAgente.cpp     ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaBrokerAgente            ${COMM_DIR}Canales/CanalSalidaBrokerAgente.cpp      ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalEntradaBrokerBroker           ${COMM_DIR}Canales/CanalEntradaBrokerBroker.cpp     ${COMMON_SRC})
+add_executable(${OUT_DIR}CanalSalidaBrokerBroker            ${COMM_DIR}Canales/CanalSalidaBrokerBroker.cpp      ${COMMON_SRC})
+add_executable(${OUT_DIR}AdministradorMemoria               ${COMM_DIR}Brokers/AdministradorMemoria.cpp         ${COMMON_SRC})
+add_executable(${OUT_DIR}BrokerConcurrentServer             ${COMM_DIR}Brokers/BrokerConcurrentServer.cpp       ${COMMON_SRC})
+add_executable(${OUT_DIR}LauncherBrokers                    ${COMM_DIR}Brokers/LauncherBrokers.cpp              ${COMMON_SRC})
+add_executable(${OUT_DIR}TerminatorBrokers                  ${COMM_DIR}Brokers/TerminatorBrokers.cpp            ${COMMON_SRC})
+add_executable(${OUT_DIR}Broker                             ${COMM_DIR}Brokers/Broker.cpp                       ${COMMON_SRC})
 
 
 
@@ -202,12 +205,12 @@ target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCL
 target_link_libraries(${OUT_DIR}ConcurrentServer                            IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherAgentes                             IPCLibrary)
 target_link_libraries(${OUT_DIR}TerminatorAgentes                           IPCLibrary)
-target_link_libraries(${OUT_DIR}CanalSalidaAgente                           IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalEntradaAgente                          IPCLibrary)
-target_link_libraries(${OUT_DIR}CanalSalidaBroker                           IPCLibrary)
-target_link_libraries(${OUT_DIR}CanalEntradaBroker                          IPCLibrary)
-target_link_libraries(${OUT_DIR}BrokerCanalEntrada                          IPCLibrary)
-target_link_libraries(${OUT_DIR}BrokerCanalSalida                           IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalSalidaAgente                           IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalEntradaBrokerAgente                    IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalSalidaBrokerAgente                     IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalEntradaBrokerBroker                    IPCLibrary)
+target_link_libraries(${OUT_DIR}CanalSalidaBrokerBroker                     IPCLibrary)
 target_link_libraries(${OUT_DIR}AdministradorMemoria                        IPCLibrary)
 target_link_libraries(${OUT_DIR}BrokerConcurrentServer                      IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherBrokers                             IPCLibrary)
