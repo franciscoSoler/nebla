@@ -30,10 +30,12 @@ public:
 
     int enviarMensajePedido(long idReceptor, msg_pedido_t dato) {
         CommPacketWrapper wrapper;
+        wrapper.setReceiverType( AGENTE );
+        
         wrapper.setDirIPC( dirIPC );
         wrapper.setIdDirIPC( idIPC );
         wrapper.setSenderId( idEmisor );
-        wrapper.setReceiverType( idDuenioColaRemota_ );
+        wrapper.setReceiverAgentType( idDuenioColaRemota_ );
         wrapper.setReceiverId( idReceptor );
         MsgCanalSalidaAgente msg;
         wrapper.createPacketForQueues(msg, dato);

@@ -58,10 +58,12 @@ public:
     template<class T>
     void send( long receiverId, T& data ) {
         CommPacketWrapper wrapper;
+        wrapper.setReceiverType( AGENTE );
+        
         wrapper.setDirIPC( receiverDirIPC_ );
         wrapper.setIdDirIPC( receiverIdIPC_ );
         wrapper.setSenderId( senderId_ );
-        wrapper.setReceiverType( receiverTypeId_ );
+        wrapper.setReceiverAgentType( receiverTypeId_ );
         wrapper.setReceiverId( receiverId );
         MsgCanalSalidaAgente msg;
         wrapper.createPacketForQueues(msg, data);

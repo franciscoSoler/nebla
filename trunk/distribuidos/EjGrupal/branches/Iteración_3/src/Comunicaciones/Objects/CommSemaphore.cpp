@@ -71,10 +71,12 @@ void CommSemaphore::wait(int numSem)
 void CommSemaphore::signal(int idReceptor)
 {
     CommPacketWrapper wrapper;
+    wrapper.setReceiverType( AGENTE );
+    
     wrapper.setDirIPC( DIRECTORY_SEM );
     wrapper.setIdDirIPC( this->typeDuenioSemRemoto_ );
     wrapper.setSenderId( this->idEmisor_ );
-    wrapper.setReceiverType( typeDuenioSemRemoto_ );
+    wrapper.setReceiverAgentType( typeDuenioSemRemoto_ );
     wrapper.setReceiverId( idReceptor + 1 );
     MsgCanalSalidaAgente msg;
     wrapper.createPacketForSemaphores(msg);
