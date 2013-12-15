@@ -2,17 +2,29 @@
 #include <string.h>
 #include <assert.h>
 #include <sstream>
+#include <memory>
 
 #include <Logger/Logger.h>
+#include <ConfigFileParser/ConfigFileParser.h>
 #include <Common.h>
+
 #include <IPCs/IPCTemplate/MsgQueue.h>
+#include <IPCs/IPCTemplate/SharedMemory.h>
+#include <IPCs/Semaphore/Semaphore.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/CommunicationsUtil.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
+#include <Comunicaciones/Objects/CommPacketWrapper.h>
 #include <Socket/SocketStream.h>
 
 #include "middlewareCommon.h"
+
+static const char* C_DIRECTORY_BROKER = NULL;
+static const char* C_DIRECTORY_INFO_AGENTES = NULL;
+
+void elegirDirectorios(int brokerNumber);
+void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber);
 
 int main(int argc, char* argv[]) {
     char buffer[TAM_BUFFER];
@@ -53,10 +65,14 @@ int main(int argc, char* argv[]) {
     sprintf(buffer, "Se reciben los datos del agente: %ld - %d",
             idAgente, idTipoAgente);
     Logger::logMessage(Logger::COMM, buffer);
+
+    // Registro al agente que se registró en los Brokers
+    elegirDirectorios( brokerNumber );
+    registrarAgenteEnBrokers(idTipoAgente, idAgente, brokerNumber);
     
     try {
         IPC::MsgQueue colaBroker("cola Broker");
-        colaBroker.getMsgQueue(DIRECTORY_BROKER, idTipoAgente);
+        colaBroker.getMsgQueue(C_DIRECTORY_BROKER, idTipoAgente);
         
         while ( true ) {
             MsgCanalSalidaBroker mensaje;
@@ -64,7 +80,7 @@ int main(int argc, char* argv[]) {
             colaBroker.recv(idAgente, bufferMsgQueue, MSG_BROKER_SIZE);
             memcpy(&mensaje, bufferMsgQueue, sizeof(MsgCanalSalidaBroker));
             
-            sprintf(buffer, "Recibe mensaje de Broker, con tamaño %d", sizeof(mensaje));
+            sprintf(buffer, "Recibe mensaje de Broker, con tamaño %ld", sizeof(mensaje));
             Logger::logMessage(Logger::COMM, buffer);
             
             sprintf(buffer, "parametros: mtype recibido (idAgente): %ld", 
@@ -90,4 +106,77 @@ int main(int argc, char* argv[]) {
     socketAgente.destroy();
     Logger::logMessage(Logger::COMM, "Se destruye el canal.");
     return 0;
+}
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
+}
+
+void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber) {
+    // Primero registro al agente en el propio Broker
+    IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
+    shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, tipoAgente);
+    IPC::Semaphore semMutexShMemInfoAgentes;
+    semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES,
+                                          ID_INFO_AGENTES, AMOUNT_AGENTS);
+
+    semMutexShMemInfoAgentes.wait( tipoAgente - 1 );
+
+    DataInfoAgentes dataInfoAgentes;
+    shMemInfoAgentes.read( &dataInfoAgentes );
+    dataInfoAgentes.agenteEnBroker[idAgente] = brokerNumber;
+    shMemInfoAgentes.write( &dataInfoAgentes );
+
+    semMutexShMemInfoAgentes.signal( tipoAgente - 1 );
+
+    // Luego, se envía a el mensaje de Broadcast a todos los Brokers
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+    int cantidadBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
+
+    if ( cantidadBrokers == -1 ) {
+        Logger::logMessage(Logger::ERROR, "Error al parser parámetro");
+        abort();
+    }
+
+    // Se crea el mensaje y se envía al CSBB
+    IPC::MsgQueue colaSalidaBrokerBroker;
+    colaSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
+
+    MsgCanalEntradaBrokerBroker msgEntrada;
+    MsgCanalSalidaBrokerBroker msgSalida;
+
+    msgEntrada.tipoMensaje = MENSAJE_BROADCAST;
+    memcpy(msgEntrada.msg, &dataInfoAgentes, sizeof(DataInfoAgentes));
+    memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaAgente));
+
+    char buffer[255];
+    for (int i = 1; i <= cantidadBrokers; ++i) {
+        msgSalida.mtype = i;
+
+        sprintf(buffer, "Envía mensaje de broadcast a Broker N°%d", i);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
+        colaSalidaBrokerBroker.send( msgSalida );
+    }
 }
