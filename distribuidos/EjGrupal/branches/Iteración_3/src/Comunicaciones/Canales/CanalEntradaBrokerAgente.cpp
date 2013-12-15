@@ -15,6 +15,15 @@
 #include "middlewareCommon.h"
 #include "SharedMemory.h"
 
+/* Esto sólo lo vamos a utilizar para poder correr el sistema en una PC
+ */
+
+static const char* C_DIRECTORY_BROKER = NULL;
+static const char* C_DIRECTORY_ADM = NULL;
+static const char* C_DIRECTORY_INFO_AGENTES = NULL;
+
+void elegirDirectorios(int brokerNumber);
+
 int main(int argc, char* argv[]) {
     char buffer[TAM_BUFFER];
     char bufferSocket[TAM_BUFFER];
@@ -29,11 +38,14 @@ int main(int argc, char* argv[]) {
     if ( argParser.parseArgument(2, brokerNumber) == -1 ) {
         exit(-1);
     }
+
     sprintf(buffer, "CanalEntradaBrokerAgente N°%d", brokerNumber);
     Logger::setProcessInformation( buffer );
 
     SocketStream socketAgente(idSd);
     Logger::logMessage(Logger::COMM, "Canal de Entrada conectado");
+
+    elegirDirectorios( brokerNumber );
     
     try {
         IPC::MsgQueue colaAgente;
@@ -56,20 +68,20 @@ int main(int argc, char* argv[]) {
                 sprintf(buffer, "Recibe mensaje de Agente: idTipoReceptor: %d", dirMsgAgente.idReceiverAgentType);
                 Logger::logMessage(Logger::COMM, buffer);
                 
-                colaAgente.getMsgQueue(DIRECTORY_BROKER, dirMsgAgente.idReceiverAgentType);
+                colaAgente.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAgente.idReceiverAgentType);
             } else if (mensaje.receiverType == ADMINISTRADOR_MEMORIA) {
                 DireccionamientoMsgAdministrador dirMsgAdm;
                 memcpy(&dirMsgAdm, mensaje.direccionamiento, sizeof(DireccionamientoMsgAdministrador));                
                 
-                colaAgente.getMsgQueue(DIRECTORY_BROKER, dirMsgAdm.idMsgAdmType);
+                colaAgente.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAdm.idMsgAdmType);
                 
                 if (dirMsgAdm.idMsgAdmType == ID_TIPO_PEDIDO_MEMORIA) {
                     Logger::logMessage(Logger::COMM, "Pedido memoria");
 
                     IPC::SharedMemory<int> contadoraSharedMemory = IPC::SharedMemory<int>("Contadora Pedidos Sh Mem");
-                    contadoraSharedMemory.getSharedMemory(DIRECTORY_ADM, dirMsgAdm.idMemory); 
+                    contadoraSharedMemory.getSharedMemory(C_DIRECTORY_ADM, dirMsgAdm.idMemory);
                     IPC::Semaphore semaforoContadora = IPC::Semaphore("Semaforo Contadora Pedidos");
-                    semaforoContadora.getSemaphore(DIRECTORY_ADM, dirMsgAdm.idMemory, 1);
+                    semaforoContadora.getSemaphore(C_DIRECTORY_ADM, dirMsgAdm.idMemory, 1);
                     semaforoContadora.wait();
                     int cantidad;
                     contadoraSharedMemory.read(&cantidad);
@@ -78,7 +90,7 @@ int main(int argc, char* argv[]) {
                     semaforoContadora.signal();
                 }
             } else if (mensaje.receiverType == BROKER) {
-                Logger::logMessage(Logger::ERROR, "no tenia que entrar aca!!!");
+                Logger::logMessage(Logger::ERROR, "Flujo inválido");
                 // TODO 
             } else {
                 Logger::logMessage(Logger::ERROR, "mensaje mal formado - el receiverType no es valido");
@@ -96,5 +108,33 @@ int main(int argc, char* argv[]) {
     socketAgente.destroy();
     Logger::logMessage(Logger::COMM, "Se destruye el canal.");
     return 0;
+}
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
 }
     

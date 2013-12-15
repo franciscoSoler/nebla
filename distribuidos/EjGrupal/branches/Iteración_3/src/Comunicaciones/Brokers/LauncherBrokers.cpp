@@ -21,12 +21,17 @@
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
 
+static const char* C_DIRECTORY_BROKER = NULL;
+static const char* C_DIRECTORY_ADM = NULL;
+static const char* C_DIRECTORY_INFO_AGENTES = NULL;
+
 void createIPCs();
 void createDirectory(std::string directoryName);
 void createSharedMemoryAdministrators();
 // Hardcodeo de la inicializacion de las memorias compartidas (Esto lo deberia hacer el lider)
 void initializeSharedMemories();
 void initializeBroker(int brokerNumber);
+void elegirDirectorios(int brokerNumber);
 
 int main(int argc, char* argv[]) {
     try {
@@ -49,10 +54,12 @@ int main(int argc, char* argv[]) {
         // Se crean los servidores para recibir conexiones de otros Brokers, y
         // se intenta conectar con los mismos.
         initializeBroker( brokerNumber );
-        
-        createDirectory(DIRECTORY_ADM);
-        createDirectory(DIRECTORY_BROKER);
-        
+        elegirDirectorios( brokerNumber );
+
+        createDirectory(C_DIRECTORY_ADM);
+        createDirectory(C_DIRECTORY_BROKER);
+        createDirectory(C_DIRECTORY_INFO_AGENTES);
+
         createIPCs();
         createSharedMemoryAdministrators();
 
@@ -89,56 +96,56 @@ void createIPCs() {
         // Se crea una cola por cada Agente
         IPC::MsgQueue colaAgente;
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_CLIENTE);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_CLIENTE);
         Logger::logMessage(Logger::COMM, "Cola cliente creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
         Logger::logMessage(Logger::COMM, "Cola vendedor creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_AP);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_AP);
         Logger::logMessage(Logger::COMM, "Cola AlmacenDePiezas creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_AGV);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_AGV);
         Logger::logMessage(Logger::COMM, "Cola AGV creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
         Logger::logMessage(Logger::COMM, "Cola Robot5AGV creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
         Logger::logMessage(Logger::COMM, "Cola Robot5Cinta creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT11);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT11);
         Logger::logMessage(Logger::COMM, "Cola Robot11 creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT12);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT12);
         Logger::logMessage(Logger::COMM, "Cola Robot12 creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT14);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT14);
         Logger::logMessage(Logger::COMM, "Cola Robot14 creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
         Logger::logMessage(Logger::COMM, "Cola Robot16Cinta creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
         Logger::logMessage(Logger::COMM, "Cola Robot16Despacho creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_DESPACHO);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_DESPACHO);
         Logger::logMessage(Logger::COMM, "Cola Despacho creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
         Logger::logMessage(Logger::COMM, "Cola Memorias creada");
 
-        colaAgente.create(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
         Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");
 
         std::list<int> shMemIdList = cfg->getParamIntList("shMem");
         while ( not shMemIdList.empty() ) {
             IPC::SharedMemory<int> contadoraSharedMemory("Contadora Pedidos ShMem");
-            contadoraSharedMemory.createSharedMemory(DIRECTORY_ADM, shMemIdList.front());
+            contadoraSharedMemory.createSharedMemory(C_DIRECTORY_ADM, shMemIdList.front());
             Logger::logMessage(Logger::COMM, "shMemContadoraPedidos creada");
 
             IPC::Semaphore semaforoContadora("Semaforo Contadora Pedidos");
-            semaforoContadora.createSemaphore(DIRECTORY_ADM, shMemIdList.front(), 1);
+            semaforoContadora.createSemaphore(C_DIRECTORY_ADM, shMemIdList.front(), 1);
             semaforoContadora.initializeSemaphore(0, 1);
             Logger::logMessage(Logger::COMM, "Semaforo Contadora Pedidos creado");
 
@@ -147,12 +154,65 @@ void createIPCs() {
 
         // Obtengo la memoria compartida con el siguiente broker
         IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-        siguienteSharedMemory.createSharedMemory(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+        siguienteSharedMemory.createSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
         Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
 
         IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-        semaforoSiguiente.createSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+        semaforoSiguiente.createSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
         Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
+
+        // Cola para que los procesos del Broker se comuniquen con el canal de salida
+        // hacia otro Broker
+        IPC::MsgQueue colaCanalSalidaBrokerBroker;
+        colaCanalSalidaBrokerBroker.create(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
+
+        // Creación de las memorias compartidas que poseen información sobre agentes
+        // conectados
+        IPC::Semaphore semMutexShMemInfoAgentes;
+        semMutexShMemInfoAgentes.createSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
+        for (int i = 0; i < AMOUNT_AGENTS; ++i) {
+            semMutexShMemInfoAgentes.initializeSemaphore(i, 1);
+        }
+        Logger::logMessage(Logger::COMM, "sem InfoAgentes creado");
+
+
+        IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_CLIENTE);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Cliente creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_VENDEDOR);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Vendedor creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AP);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AP creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AGV);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AGV creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_CINTA);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_Cinta creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_AGV);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_AGV creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT11);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot11 creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT12);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot12 creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT14);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot14 creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_CINTA);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Cinta creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_DESPACHO);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Despacho creada");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho creada");
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, e.get_error_description().c_str());
@@ -179,7 +239,7 @@ void initializeSharedMemories() {
     cfg->parse();
 
     IPC::MsgQueue colaMemoria = IPC::MsgQueue("Cola Memoria");
-    colaMemoria.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+    colaMemoria.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
 
     // Estado Robot5
     EstadoRobot5 estadoRobot5;
@@ -366,3 +426,33 @@ void initializeBroker(int brokerNumber) {
         }
     }
 }
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
+}
+
+

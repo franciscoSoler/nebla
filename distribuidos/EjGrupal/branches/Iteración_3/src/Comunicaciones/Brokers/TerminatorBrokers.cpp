@@ -15,8 +15,11 @@
 
 #include <Comunicaciones/Objects/ServersManager.h>
 
-void getMsgQueueIPCs();
-void getMsgQueueDirectory(std::string directoryName);
+static const char* C_DIRECTORY_BROKER = NULL;
+static const char* C_DIRECTORY_ADM = NULL;
+static const char* C_DIRECTORY_INFO_AGENTES = NULL;
+
+void elegirDirectorios(int brokerNumber);
 
 int main(int argc, char* argv[]) {
     try {
@@ -110,6 +113,70 @@ int main(int argc, char* argv[]) {
         semaforoSiguiente.destroy();
         Logger::logMessage(Logger::COMM, "shMem SiguienteBroker destruida");
 
+        // Cola para que los procesos del Broker se comuniquen con el canal de salida
+        // hacia otro Broker
+        IPC::MsgQueue colaCanalSalidaBrokerBroker;
+        colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
+        colaCanalSalidaBrokerBroker.destroy();
+        Logger::logMessage(Logger::COMM, "cola CanalSalidaBrokerBroker destruida");
+
+        // Creación de las memorias compartidas que poseen información sobre agentes
+        // conectados
+        IPC::Semaphore semMutexShMemInfoAgentes;
+        semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
+        semMutexShMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "sem InfoAgentes destruído");
+
+        IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
+
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_CLIENTE);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Cliente destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_VENDEDOR);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Vendedor destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AP);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AP destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AGV);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AGV destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_CINTA);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_Cinta destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_AGV);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_AGV destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT11);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot11 destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT12);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot12 destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT14);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot14 destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_CINTA);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Cinta destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_DESPACHO);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Despacho destruída");
+
+        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
+        shMemInfoAgentes.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho destruída");
+
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -119,5 +186,33 @@ int main(int argc, char* argv[]) {
     serversManager.killServers();
     
     return 0;
+}
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
 }
     

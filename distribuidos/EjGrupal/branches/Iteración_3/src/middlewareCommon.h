@@ -4,8 +4,26 @@
 #define DIRECTORY_COMM             "./DComm"
 #define DIRECTORY_BROKER           "./DBroker"
 #define DIRECTORY_ADM              "./DAdm"
+#define DIRECTORY_INFO_AGENTES     "./DInfoAgentes"
 #define COMM_OBJECTS_CONFIG_FILE   "CommObjectsConfigFile.txt"
 #define DIRECTORY_SEM              "./DSem"
+
+
+/* Esto sólo lo vamos a utilizar para poder correr el sistema en una PC
+ */
+
+#define DIRECTORY_BROKER_1         "./DBroker1"
+#define DIRECTORY_BROKER_2         "./DBroker2"
+#define DIRECTORY_BROKER_3         "./DBroker3"
+#define DIRECTORY_BROKER_4         "./DBroker4"
+#define DIRECTORY_ADM_1            "./DAdm1"
+#define DIRECTORY_ADM_2            "./DAdm2"
+#define DIRECTORY_ADM_3            "./DAdm3"
+#define DIRECTORY_ADM_4            "./DAdm4"
+#define DIRECTORY_INFO_AGENTES_1   "./DInfoAgentes1"
+#define DIRECTORY_INFO_AGENTES_2   "./DInfoAgentes2"
+#define DIRECTORY_INFO_AGENTES_3   "./DInfoAgentes3"
+#define DIRECTORY_INFO_AGENTES_4   "./DInfoAgentes4"
 
 typedef enum {
     AGENTE = 1,
@@ -23,7 +41,8 @@ typedef enum {
     MEMORIA_AGENTE,
     MENSAJE_LIDER,
     MEMORIA_BROKERS,
-    AGENTE_CONECTADO
+    AGENTE_CONECTADO,
+    MENSAJE_BROADCAST
 } CommTipoMensajeBrokers;
 
 typedef enum {
@@ -46,10 +65,22 @@ typedef enum {
 #define DIRECC_FIXED_SIZE       30
 #define MSG_QUEUE_FIXED_SIZE    3000
 #define MSG_BROKER_SIZE         3500
-#define SEM_ARRAY_MAX_SIZE       10
+// Ver bien el tema de nombres de estos dos últimos defines
+#define MSG_BROKER_FIXED_SIZE   3750
+#define SEM_ARRAY_MAX_SIZE      10
+
+// Cantidad de agentes por tipo. Se utiliza en la shMem que posee
+// la información de que agente está conectado en cada Broker
+#define MAX_AMOUNT_AGENTS       10
+// Cantidad de Agentes en el sistema. Equivale al tamaño del
+// struct TipoAgente - 1 (por el tipo ID_TIPO_VACIO)
+#define AMOUNT_AGENTS           12
 
 #define ID_SHMEM_SIGUIENTE      1
 #define ID_COMM_SEM_ENTRADA     2
+// CSBB: CanalSalidaBrokerBroker
+#define ID_MSG_QUEUE_CSBB       3
+#define ID_INFO_AGENTES         4
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
@@ -103,7 +134,8 @@ typedef struct {
     //TipoAgente idTipoAgente;
     //long idReceptor;
     char direccionamiento[DIRECC_FIXED_SIZE];
-    char msg[MSG_BROKER_SIZE]; // MsgCanalSalidaBroker o MsgPedidoMemoriaAdministrador o MsgEntregaMemoriaAdministrador
+    // MsgCanalSalidaBroker o MsgPedidoMemoriaAdministrador o MsgEntregaMemoriaAdministrador
+    char msg[MSG_BROKER_SIZE];
 } MsgCanalEntradaBroker;
 
 typedef struct {
@@ -114,6 +146,32 @@ typedef struct {
 } MsgCanalSalidaAgente;
 
 
+
+/* Estructuras utilizadas comunicación entre Brokers
+ */
+
+typedef struct {
+    CommTipoMensajeBrokers tipoMensaje;
+    char msg[MSG_BROKER_FIXED_SIZE];
+} MsgCanalEntradaBrokerBroker;
+
+typedef struct {
+    long mtype;
+    MsgCanalEntradaBrokerBroker msg;
+} MsgCanalSalidaBrokerBroker;
+
+
+class DataInfoAgentes {
+public:
+    DataInfoAgentes() {
+        for (int i = 0; i < MAX_AMOUNT_AGENTS; ++i) {
+            agenteEnBroker[i] = 0;
+        }
+    }
+
+public:
+    int agenteEnBroker[MAX_AMOUNT_AGENTS];
+};
 
 #endif	/* MIDDLEWARECOMMON_H */
 
