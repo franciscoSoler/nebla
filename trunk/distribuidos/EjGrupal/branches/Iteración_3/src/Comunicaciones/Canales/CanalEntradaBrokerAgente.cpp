@@ -16,15 +16,21 @@
 #include "SharedMemory.h"
 
 int main(int argc, char* argv[]) {
-    Logger::setProcessInformation("CanalEntradaBrokerAgente:");
-    //char buffer[TAM_BUFFER];
+    char buffer[TAM_BUFFER];
     char bufferSocket[TAM_BUFFER];
-    CommunicationsUtil util;
+    ArgumentParser argParser(argc, argv);
     int idSd = 0;
+    int brokerNumber = 0;
 
-    if ( util.parseArgs(argc, argv, idSd) == -1 ) {
+    if ( argParser.parseArgument(1, idSd) == -1 ) {
         exit(-1);
     }
+
+    if ( argParser.parseArgument(2, brokerNumber) == -1 ) {
+        exit(-1);
+    }
+    sprintf(buffer, "CanalEntradaBrokerAgente N°%d", brokerNumber);
+    Logger::setProcessInformation( buffer );
 
     SocketStream socketAgente(idSd);
     Logger::logMessage(Logger::COMM, "Canal de Entrada conectado");
@@ -41,20 +47,6 @@ int main(int argc, char* argv[]) {
             
             MsgCanalEntradaBroker mensaje;
             memcpy(&mensaje, bufferSocket, sizeof(MsgCanalEntradaBroker));
-
-            
-            
-            /*msg_pedido_t pedido;
-            memcpy(&pedido, mensaje.msg.msg.msg.msg, sizeof(msg_pedido_t));
-
-            sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
-            Logger::logMessage(Logger::IMPORTANT, buffer);*/
-            
-            //sprintf(buffer, "parametros mensaje: mtype del siguiente salto: %ld, idReceptor %ld, idTipoReceptor %d ", mensaje.msg.mtype, mensaje.idReceptor, mensaje.idTipoReceptor);
-            //Logger::logMessage(Logger::COMM, buffer);
-            
-            
-            
             
             if (mensaje.receiverType == AGENTE) {
                 DireccionamientoMsgAgente dirMsgAgente;

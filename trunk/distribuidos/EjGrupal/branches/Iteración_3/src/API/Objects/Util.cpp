@@ -53,7 +53,8 @@ void Util::createProcess(std::string processName,
 }
 
 void Util::createProcess(std::string processName,
-                         std::string arg1, std::string arg2) {
+                         std::string arg1,
+                         std::string arg2) {
     pid_t pid;
     static char name[30];
     static char param1[30];
@@ -70,6 +71,36 @@ void Util::createProcess(std::string processName,
     else if (pid == 0) {
         // Child process. Pass the arguments to the process and call exec
         execlp(name, processName.c_str(), param1, param2, (char *) 0);
+
+        sprintf(name, "%s Error: %s", processName.c_str(), strerror(errno));
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+
+        return;
+    }
+}
+
+void Util::createProcess(std::string processName,
+                         std::string arg1,
+                         std::string arg2,
+                         std::string arg3) {
+    pid_t pid;
+    static char name[30];
+    static char param1[30];
+    static char param2[30];
+    static char param3[30];
+
+    sprintf(name, "./%s", processName.c_str());
+    strcpy(param1, arg1.c_str());
+    strcpy(param2, arg2.c_str());
+    strcpy(param3, arg3.c_str());
+
+    if ((pid = fork()) < 0) {
+        sprintf(name, "%s Error: %s", processName.c_str(), strerror(errno));
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+    }
+    else if (pid == 0) {
+        // Child process. Pass the arguments to the process and call exec
+        execlp(name, processName.c_str(), param1, param2, param3, (char *) 0);
 
         sprintf(name, "%s Error: %s", processName.c_str(), strerror(errno));
         Logger::getInstance().logMessage(Logger::ERROR, buffer);

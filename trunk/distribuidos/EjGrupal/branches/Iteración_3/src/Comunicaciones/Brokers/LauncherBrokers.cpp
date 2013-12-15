@@ -6,7 +6,7 @@
 #include <Common.h>
 #include <middlewareCommon.h>
 #include <Exceptions/Exception.h>
-#include "Logger/Logger.h"
+#include <Logger/Logger.h>
 #include <ConfigFileParser/ConfigFileParser.h>
 
 #include <API/Objects/Util.h>
@@ -19,31 +19,53 @@
 #include <IPCs/Semaphore/Semaphore.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
+#include <Comunicaciones/Objects/ArgumentParser.h>
 
 void createIPCs();
 void createDirectory(std::string directoryName);
 void createSharedMemoryAdministrators();
 // Hardcodeo de la inicializacion de las memorias compartidas (Esto lo deberia hacer el lider)
 void initializeSharedMemories();
+void initializeBroker(int brokerNumber);
 
 int main(int argc, char* argv[]) {
     try {
         Util::getInstance();
+        Logger::setProcessInformation("LauncherBroker");
+        ArgumentParser argParser(argc, argv);
+        int brokerNumber;
+
+        // Se recibe por parámetro que Broker se está inicializando
+        if (argc != 2) {
+            Logger::logMessage(Logger::ERROR, "Cantidad de parámetros inválidos");
+            exit( -1 );
+        }
+
+        if (argParser.parseArgument(1, brokerNumber) == -1) {
+            Logger::logMessage(Logger::ERROR, "Argumento inválido");
+            exit( -1 );
+        }
+
+        // Se crean los servidores para recibir conexiones de otros Brokers, y
+        // se intenta conectar con los mismos.
+        initializeBroker( brokerNumber );
         
         createDirectory(DIRECTORY_ADM);
         createDirectory(DIRECTORY_BROKER);
         
         createIPCs();
         createSharedMemoryAdministrators();
-        // Se hardcodea momentaneamente la inicializacion de las shMem
-        // por falta del algoritmo del lider
-        initializeSharedMemories();
+
+        if ( brokerNumber == 1 ) {
+            // Se hardcodea momentaneamente la inicializacion de las shMem
+            // por falta del algoritmo del lider. Ahora que tenemos muchos Brokers
+            // obligo a que el broker N°1 sea el "LIDER".
+            initializeSharedMemories();
+        }
 
         ServersManager serversManager;
-        serversManager.createServer("ServidorCanalEntradaBrokerAgente");
-        serversManager.createServer("ServidorCanalSalidaBrokerAgente");
-
-
+        serversManager.createBrokerServer("ServidorCanalEntradaBrokerAgente", brokerNumber);
+        serversManager.createBrokerServer("ServidorCanalSalidaBrokerAgente", brokerNumber);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, 
@@ -317,4 +339,30 @@ void initializeSharedMemories() {
     memcpy(mensajeMemoria.memoria, &estructuraAlmacen, sizeof(EstructuraAlmacenPiezas));
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
+}
+
+void initializeBroker(int brokerNumber) {
+    ServersManager serversManager;
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser( SERVERS_CONFIG_FILE ));
+    cfg->parse();
+
+    int amountBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
+    if ( amountBrokers != -1 ) {
+        std::string inputServer = "ServidorCanalEntradaBrokerBroker";
+        std::string outputServer = "ServidorCanalSalidaBrokerBroker";
+
+        // Create the servers to receive the connections from other Brokers
+        serversManager.createBrokerServer(inputServer.c_str(), brokerNumber);
+        serversManager.createBrokerServer(outputServer.c_str(), brokerNumber);
+
+        // Then, connect to other Brokers
+        for (int j = 1; j <= amountBrokers; ++j) {
+            if (brokerNumber != j) {
+                serversManager.createChannelToBroker("CanalEntradaBrokerBroker",
+                                                     brokerNumber, j);
+                serversManager.createChannelToBroker("CanalSalidaBrokerBroker",
+                                                     brokerNumber, j);
+            }
+        }
+    }
 }
