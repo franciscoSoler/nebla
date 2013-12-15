@@ -12,12 +12,14 @@
 #include <Socket/SocketConnector.h>
 #include <memory>
 #include <Common.h>
+#include <API/Objects/Util.h>
 
 
 ServersManager::ServersManager() {
 }
 
 void ServersManager::createServer(const char* serverName) {
+    Util::getInstance();
     pid_t pid;
     std::string processName = serverName;
 
@@ -65,6 +67,21 @@ void ServersManager::createBrokerServer(const char* brokerServerName, int broker
     }
 }
 
+void ServersManager::createChannelToBroker(const char* brokerChannelName,
+                                           int brokerId,
+                                           int remoteBrokerId) {
+    std::stringstream ssBrokerId;
+    std::stringstream ssRemoteBrokerId;
+    ssBrokerId << brokerId;
+    ssRemoteBrokerId << remoteBrokerId;
+    std::string socketNumber = "0";
+
+    Util::createProcess(brokerChannelName,
+                        socketNumber,
+                        ssBrokerId.str(),
+                        ssRemoteBrokerId.str());
+}
+
 SocketStream* ServersManager::connectToServer(const char* serverName) {
     std::auto_ptr<IConfigFileParser> configFileParser(
                 new ConfigFileParser(SERVERS_CONFIG_FILE) );
@@ -83,6 +100,32 @@ SocketStream* ServersManager::connectToServer(const char* serverName) {
 
     // Create the connection
     SocketConnector connector;
+    SocketStream* canal = connector.connect(puerto, serverDir.c_str());
+
+    return canal;
+}
+
+SocketStream* ServersManager::connectToBrokerServer(const char* serverName, int brokerNumber) {
+    std::auto_ptr<IConfigFileParser> configFileParser(
+                new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    configFileParser->parse();
+
+    std::stringstream ss;
+    ss << brokerNumber;
+    std::string server = std::string(serverName) + "-" + ss.str();
+
+    // First, obtain the parameters
+    std::string serverDir = configFileParser->getConfigFileParam(
+                server + "-Direccion", "");
+    int puerto = configFileParser->getConfigFileParam(server + "-Port", -1);
+
+    if (puerto == -1 || serverDir.empty() ) {
+        Logger::logMessage(Logger::COMM, "connectToBrokerServer(): Error en la carga de parámetros");
+    }
+
+    // Create the connection
+    SocketConnector connector;
+
     SocketStream* canal = connector.connect(puerto, serverDir.c_str());
 
     return canal;

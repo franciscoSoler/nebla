@@ -28,8 +28,17 @@ public:
      */
     void createBrokerServer(const char* brokerServerName, int brokerId);
 
+    /* The broker has to be up so the channel is formed
+     */
+    void createChannelToBroker(const char* brokerServerName,
+                               int brokerId,
+                               int removeBrokerId);
+
     /* The processHandler has to exists as a program */
     SocketStream* connectToServer(const char* serverName);
+
+    /* The processHandler has to exists as a program */
+    SocketStream* connectToBrokerServer(const char* serverName, int brokerNumber);
 
     /* Execute a kill system call to all
      * the servers registered in the REGISTRATION_FILE

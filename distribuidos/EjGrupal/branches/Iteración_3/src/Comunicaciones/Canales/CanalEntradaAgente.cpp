@@ -35,8 +35,9 @@ int main(int argc, char* argv[]) {
   
     
     ServersManager serversManager;
+    // FIXME: Por el momento, hago que todos los agentes se conecten al broker N°1
     SocketStream::SocketStreamPtr socketBroker(
-    serversManager.connectToServer("ServidorCanalSalidaBrokerAgente") );
+    serversManager.connectToBrokerServer("ServidorCanalSalidaBrokerAgente", 1) );
     assert( socketBroker.get() );
     
     // Se envían los datos del agente por el socket al CanalSalidaBroker

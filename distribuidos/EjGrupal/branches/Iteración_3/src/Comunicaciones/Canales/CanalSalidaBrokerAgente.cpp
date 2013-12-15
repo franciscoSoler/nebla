@@ -59,12 +59,6 @@ int main(int argc, char* argv[]) {
             
             sprintf(buffer, "Recibe mensaje de Broker, con tamaño %lud", sizeof(mensaje));
             Logger::logMessage(Logger::COMM, buffer);
-
-            /*msg_pedido_t pedido;
-            memcpy(&pedido, mensaje.msg.msg.msg, sizeof(msg_pedido_t));
-
-            sprintf(buffer, "MsgPedidoT: %d - %d", pedido.tipo, pedido.pedido.tipoProducto);
-            Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
             sprintf(buffer, "parametros: mtype recibido (idAgente): %ld", 
             mensaje.mtype);
