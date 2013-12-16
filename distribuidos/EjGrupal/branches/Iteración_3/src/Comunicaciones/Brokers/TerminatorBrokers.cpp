@@ -150,47 +150,47 @@ int main(int argc, char* argv[]) {
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Cliente destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_VENDEDOR);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_VENDEDOR);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Vendedor destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AP);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AP);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AP destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AGV);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AGV);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AGV destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_CINTA);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_CINTA);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_Cinta destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_AGV);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_AGV);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_AGV destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT11);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT11);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot11 destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT12);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT12);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot12 destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT14);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT14);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot14 destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_CINTA);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_CINTA);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Cinta destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_DESPACHO);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_DESPACHO);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Despacho destruída");
 
-        shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho destruída");
 
