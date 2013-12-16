@@ -79,10 +79,7 @@ int main(int argc, char* argv[]) {
             //colaBroker.recv(idAgente, mensaje);
             colaBroker.recv(idAgente, bufferMsgQueue, MSG_BROKER_SIZE);
             memcpy(&mensaje, bufferMsgQueue, sizeof(MsgCanalSalidaBroker));
-            
-            sprintf(buffer, "Recibe mensaje de Broker, con tamaño %ld", sizeof(mensaje));
-            Logger::logMessage(Logger::COMM, buffer);
-            
+
             sprintf(buffer, "parametros: mtype recibido (idAgente): %ld", 
             mensaje.mtype);
             Logger::logMessage(Logger::COMM, buffer);
@@ -160,6 +157,11 @@ void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber) {
     }
 
     // Se crea el mensaje y se envía al CSBB
+    TriadaInfoAgente triada;
+    triada.idTipoAgente = tipoAgente;
+    triada.idAgente = idAgente;
+    triada.idBroker = brokerNumber;
+
     IPC::MsgQueue colaSalidaBrokerBroker;
     colaSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
@@ -167,7 +169,7 @@ void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber) {
     MsgCanalSalidaBrokerBroker msgSalida;
 
     msgEntrada.tipoMensaje = MENSAJE_BROADCAST;
-    memcpy(msgEntrada.msg, &dataInfoAgentes, sizeof(DataInfoAgentes));
+    memcpy(msgEntrada.msg, &triada, sizeof(TriadaInfoAgente));
     memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaAgente));
 
     char buffer[255];
