@@ -5,9 +5,9 @@
 #define DIRECTORY_BROKER           "./DBroker"
 #define DIRECTORY_ADM              "./DAdm"
 #define DIRECTORY_INFO_AGENTES     "./DInfoAgentes"
-#define COMM_OBJECTS_CONFIG_FILE   "CommObjectsConfigFile.txt"
 #define DIRECTORY_SEM              "./DSem"
 
+#define COMM_OBJECTS_CONFIG_FILE   "CommObjectsConfigFile.txt"
 
 /* Esto sólo lo vamos a utilizar para poder correr el sistema en una PC
  */
@@ -78,9 +78,12 @@ typedef enum {
 
 #define ID_SHMEM_SIGUIENTE      1
 #define ID_COMM_SEM_ENTRADA     2
+
 // CSBB: CanalSalidaBrokerBroker
 #define ID_MSG_QUEUE_CSBB       3
 #define ID_INFO_AGENTES         4
+
+#define ID_ALGORITMO_LIDER      5
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
@@ -145,7 +148,16 @@ typedef struct {
     MsgCanalEntradaBroker msg;
 } MsgCanalSalidaAgente;
 
+typedef enum {
+    DESOCNOCIDO,
+    LIDER
+} StatusLider;
 
+typedef struct {
+    long mtype; //Id del grupo
+    int uid;
+    StatusLider status;
+} MsgAlgoritmoLider;
 
 /* Estructuras utilizadas comunicación entre Brokers
  */
