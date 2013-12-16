@@ -159,7 +159,7 @@ void createIPCs() {
 
         IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
         semaforoSiguiente.createSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
-        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
+        Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");
 
         // Cola para que los procesos del Broker se comuniquen con el canal de salida
         // hacia otro Broker
