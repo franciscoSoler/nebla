@@ -14,6 +14,7 @@
 #include <IPCs/Semaphore/Semaphore.h>
 
 #include <Comunicaciones/Objects/ServersManager.h>
+#include <Comunicaciones/Objects/ArgumentParser.h>
 
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
@@ -23,6 +24,22 @@ void elegirDirectorios(int brokerNumber);
 
 int main(int argc, char* argv[]) {
     try {
+        ArgumentParser argParser(argc, argv);
+        int brokerNumber = 0;
+
+        // Se recibe por parámetro que Broker se está inicializando
+        if (argc != 2) {
+            Logger::logMessage(Logger::ERROR, "Cantidad de parámetros inválidos");
+            exit( -1 );
+        }
+
+        if (argParser.parseArgument(1, brokerNumber) == -1) {
+            Logger::logMessage(Logger::ERROR, "Argumento inválido");
+            exit( -1 );
+        }
+
+        elegirDirectorios( brokerNumber );
+
         Logger::getInstance().setProcessInformation("TerminatorBrokers:");
         std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser( COMM_OBJECTS_CONFIG_FILE ));
         cfg->parse();
@@ -30,59 +47,59 @@ int main(int argc, char* argv[]) {
         // Se crea una cola por cada Agente
         IPC::MsgQueue colaAgente;
         
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_CLIENTE);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_CLIENTE);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola cliente destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola vendedor destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_AP);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_AP);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola AlmacenDePiezas destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_AGV);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_AGV);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola AGV destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Robot5AGV destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Robot5Cinta destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_ROBOT11);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_ROBOT11);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Robot11 destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_ROBOT12);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_ROBOT12);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Robot12 destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_ROBOT14);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_ROBOT14);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Robot14 destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Robot16Cinta destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Robot16Despacho destruida");
 
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_DESPACHO);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_DESPACHO);
         colaAgente.destroy();
         Logger::logMessage(Logger::COMM, "Cola Despacho destruida"); 
         
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
         colaAgente.destroy();  
         Logger::logMessage(Logger::COMM, "Cola Memorias destruida");
    
-        colaAgente.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
         colaAgente.destroy();     
         Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias destruida"); 
 
@@ -90,12 +107,12 @@ int main(int argc, char* argv[]) {
         while ( not shMemListId.empty() ) {
             // Obtengo la memoria compartida contadora
             IPC::SharedMemory<int> contadoraSharedMemory("Contadora Pedidos ShMem");
-            contadoraSharedMemory.getSharedMemory(DIRECTORY_ADM, shMemListId.front());
+            contadoraSharedMemory.getSharedMemory(C_DIRECTORY_ADM, shMemListId.front());
             contadoraSharedMemory.destroy();
             Logger::logMessage(Logger::COMM, "shMemContadoraPedidos destruida");
 
             IPC::Semaphore semaforoContadora("Semaforo Contadora Pedidos");
-            semaforoContadora.getSemaphore(DIRECTORY_ADM, shMemListId.front(), 1);
+            semaforoContadora.getSemaphore(C_DIRECTORY_ADM, shMemListId.front(), 1);
             semaforoContadora.destroy();
             Logger::logMessage(Logger::COMM, "Semaforo Contadora Pedidos destruida");
 
@@ -104,12 +121,12 @@ int main(int argc, char* argv[]) {
 
         // Obtengo la memoria compartida con el siguiente broker
         IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-        siguienteSharedMemory.getSharedMemory(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+        siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
         siguienteSharedMemory.destroy();
         Logger::logMessage(Logger::COMM, "shMem SiguienteBroker destruida");
 
         IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-        semaforoSiguiente.getSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+        semaforoSiguiente.getSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
         semaforoSiguiente.destroy();
         Logger::logMessage(Logger::COMM, "shMem SiguienteBroker destruida");
 
