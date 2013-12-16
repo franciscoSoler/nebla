@@ -56,6 +56,10 @@ int main(int argc, char* argv[]) {
         IPC::MsgQueue colaPedidosMemoria = IPC::MsgQueue("Cola Pedidos Memoria");
         colaPedidosMemoria.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
 
+        // Obtengo la cola por la cual envio los mensajes al siguiente en el anillo
+        IPC::MsgQueue colaBrokers = IPC::MsgQueue("Cola Bokers");
+        colaBrokers.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
+
         // Obtengo la memoria compartida contadora
         IPC::SharedMemory<int> contadoraSharedMemory = IPC::SharedMemory<int>("Contadora Pedidos Sh Mem");
         contadoraSharedMemory.getSharedMemory(C_DIRECTORY_ADM, idMemoria);
@@ -113,12 +117,32 @@ int main(int argc, char* argv[]) {
                 memcpy(&mensajeMemoria, bufferMsgQueue, sizeof(MsgEntregaMemoriaAdministrador));
             }
 
-            // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!!
-            sleep( 5 );
+            // Obtengo el siguiente broker del anillo
+            int siguiente;
+            semaforoSiguiente.wait();
+            siguienteSharedMemory.write(siguiente);
+            semaforoSiguiente.signal();
 
-            // Le envio la memoria al siguietne broker, por ahora se vuelve a enviar a la cola de entrada del administrador
-            memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
-            colaMemoria.send(bufferMsgQueue, MSG_BROKER_SIZE);
+            if (siguiente == brokerNumber) {
+                // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!!
+                sleep( 5 );
+
+                // El siguiente broker soy yo mismo, por lo tanto, "me reenvio" la memoria.
+                memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
+                colaMemoria.send(bufferMsgQueue, MSG_BROKER_SIZE);
+            }
+            else {
+                MsgCanalEntradaBrokerBroker msgEntrada;
+                memcpy(&msgEntrada.msg, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
+                msgEntrada.tipoMensaje = MEMORIA_AGENTE;
+
+                MsgCanalSalidaBrokerBroker msgSalida;
+                msgSalida.mtype = siguiente;
+                memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaBrokerBroker));
+                // Le envio la memoria al siguietne broker, por ahora se vuelve a enviar a la cola de entrada del administrador
+                memcpy(bufferMsgQueue, &msgSalida, sizeof(MsgCanalSalidaBrokerBroker));
+                colaBrokers.send(bufferMsgQueue, MSG_BROKER_SIZE);
+            }
         }
     }
     catch (Exception & e) {
