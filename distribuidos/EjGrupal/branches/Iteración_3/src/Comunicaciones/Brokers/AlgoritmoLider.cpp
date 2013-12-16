@@ -16,6 +16,11 @@
 
 #include "../Objects/CommPacketWrapper.h"
 
+static const char* C_DIRECTORY_BROKER = NULL;
+static const char* C_DIRECTORY_ADM = NULL;
+
+void elegirDirectorios(int brokerNumber);
+
 int main(int argc, char* argv[]) {
 
     Logger::setProcessInformation("Algoritmo Lider:");
@@ -48,7 +53,7 @@ int main(int argc, char* argv[]) {
 
         // Obtengo la cola por la cual envio los mensajes al siguiente en el anillo
         IPC::MsgQueue colaBrokers = IPC::MsgQueue("Cola Bokers");
-        colaBrokers.getMsgQueue(DIRECTORY_BROKER, );
+        colaBrokers.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
         // Obtengo la memoria compartida con el siguiente broker
         IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
@@ -104,6 +109,20 @@ int main(int argc, char* argv[]) {
                         msgAlgoritmo.mtype = idGrupo;
 
                         // Encapsulo y reenvio al siguiente
+
+                        int siguiente;
+                        semaforoSiguiente.wait();
+                        siguienteSharedMemory.write(siguiente);
+                        semaforoSiguiente.signal();
+
+                        MsgCanalSalidaBrokerBroker msgSalida;
+                        msgSalida.mtype = siguiente;
+                        memcpy(&msgSalida.mtype, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
+
+                        // Le envio la memoria al siguietne broker, por ahora se vuelve a enviar a la cola de entrada del administrador
+                        memcpy(bufferMsgQueue, &msgSalida, sizeof(MsgCanalSalidaBrokerBroker));
+                        colaBrokers.send(bufferMsgQueue, MSG_BROKER_SIZE);
+
                     }
                     else if (msgAlgoritmo.uid > idBroker) {
                         // Me llego un mensaje con un uid mayor, por lo tanto lo debo reenviar
@@ -129,3 +148,30 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
+}
