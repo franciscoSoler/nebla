@@ -4,8 +4,17 @@
 #include <Logger/Logger.h>
 #include <Socket/SocketConnector.h>
 
+#include <Common.h>
+#include <middlewareCommon.h>
+
+#include <IPCs/IPCTemplate/MsgQueue.h>
+
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ServersManager.h>
+
+static const char* C_DIRECTORY_BROKER = NULL;
+
+void elegirDirectorios(int brokerNumber);
 
 int main(int argc, char* argv[]) {
     ArgumentParser argParser(argc, argv);
@@ -32,6 +41,8 @@ int main(int argc, char* argv[]) {
             exit(-1);
         }
     }
+
+    elegirDirectorios( brokerNumber );
 
     sprintf(buffer, "CanalSalidaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
@@ -78,8 +89,61 @@ int main(int argc, char* argv[]) {
     Logger::setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conexión realizada correctamente");
 
-    // TODO: Insert code here
+
+    try {
+        IPC::MsgQueue colaCanalSalida("ColaCanalSalida");
+        colaCanalSalida.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
+
+        while ( true ) {
+
+            MsgCanalSalidaBrokerBroker mensaje;
+            colaCanalSalida.recv(brokerNumber, mensaje);
+
+            Logger::logMessage(Logger::COMM, "Recibe mensaje, procede a enviarlo");
+
+            memcpy(bufferSocket, &mensaje.msg, sizeof(MsgCanalEntradaBrokerBroker));
+            if ( socketBroker->send(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
+                Logger::logMessage(Logger::ERROR, "Error al enviar mensaje a Broker");
+                socketBroker->destroy();
+                abort();
+            }
+        }
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
+
+
     Logger::logMessage(Logger::COMM, "Destruyendo canal");
     socketBroker->destroy();
     return 0;
+}
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            // C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            // C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            // C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            // C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
 }

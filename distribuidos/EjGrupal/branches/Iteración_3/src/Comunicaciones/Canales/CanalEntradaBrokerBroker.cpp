@@ -3,13 +3,24 @@
  */
 
 #include <Common.h>
+#include <middlewareCommon.h>
 #include <stdlib.h>
 
 #include <Logger/Logger.h>
 #include <Socket/SocketConnector.h>
+#include <Exceptions/Exception.h>
+
+#include <IPCs/IPCTemplate/SharedMemory.h>
+#include <IPCs/Semaphore/Semaphore.h>
 
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ServersManager.h>
+
+static const char* C_DIRECTORY_BROKER = NULL;
+static const char* C_DIRECTORY_ADM = NULL;
+static const char* C_DIRECTORY_INFO_AGENTES = NULL;
+
+void elegirDirectorios(int brokerNumber);
 
 int main(int argc, char* argv[]) {
     ArgumentParser argParser(argc, argv);
@@ -36,6 +47,8 @@ int main(int argc, char* argv[]) {
             exit(-1);
         }
     }
+
+    elegirDirectorios( brokerNumber );
 
     sprintf(buffer, "CanalEntradaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
@@ -82,9 +95,92 @@ int main(int argc, char* argv[]) {
     Logger::setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conexión realizada correctamente");
 
-    // TODO: Insert code here
+
+    // Luego de la etapa de Conexión, el proceso comienza a recibir mensajes de otros
+    // Brokers y a procesarlos
+    try {
+        while( true ) {
+            if ( socketBroker->receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
+                Logger::logMessage(Logger::ERROR, "Error al recibir mensaje de un Broker");
+                socketBroker->destroy();
+                abort();
+            }
+
+            // Actúo en función del mensaje recibido
+            MsgCanalEntradaBrokerBroker mensaje;
+            memcpy(&mensaje, bufferSocket, sizeof(MsgCanalEntradaBrokerBroker));
+
+            if ( mensaje.tipoMensaje == AGENTE_AGENTE ) {
+                // TODO:
+            }
+            else if ( mensaje.tipoMensaje == MEMORIA_AGENTE ) {
+                // TODO:
+            }
+            else if ( mensaje.tipoMensaje == MENSAJE_LIDER ) {
+                // TODO:
+            }
+            else if ( mensaje.tipoMensaje == AGENTE_CONECTADO ) {
+                // TODO:
+            }
+            else if ( mensaje.tipoMensaje == MENSAJE_BROADCAST ) {
+                // Recibo la información del agente conectado y actualizo
+                // la información de Agentes del Broker
+                DataInfoAgentes dataInfoAgentes;
+                TriadaInfoAgente triada;
+                memcpy(&triada, mensaje.msg, sizeof(TriadaInfoAgente));
+
+                IPC::Semaphore semMutexDataInfoAgentes;
+                semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES,
+                                                     ID_INFO_AGENTES, AMOUNT_AGENTS);
+
+                IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
+                shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES,
+                                                     triada.idTipoAgente);
+
+                semMutexDataInfoAgentes.wait( triada.idTipoAgente - 1);
+                shMemDataInfoAgentes.read( &dataInfoAgentes );
+
+                dataInfoAgentes.agenteEnBroker[triada.idAgente] = triada.idBroker;
+
+                shMemDataInfoAgentes.write( &dataInfoAgentes );
+                semMutexDataInfoAgentes.signal( triada.idTipoAgente -1 );
+            }
+        }
+    }
+    catch( Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
+        abort();
+    }
 
     Logger::logMessage(Logger::COMM, "Destruyendo canal");
     socketBroker->destroy();
     return 0;
+}
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
 }

@@ -160,6 +160,13 @@ typedef struct {
     MsgCanalEntradaBrokerBroker msg;
 } MsgCanalSalidaBrokerBroker;
 
+typedef struct {
+    // Debería ser un TipoAgente en vez de un int
+    int idTipoAgente;
+    long idAgente;
+    int idBroker;
+} TriadaInfoAgente;
+
 
 class DataInfoAgentes {
 public:
