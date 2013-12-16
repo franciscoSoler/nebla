@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <memory>
+#include <sstream>
 
 #include <Common.h>
 #include <middlewareCommon.h>
@@ -27,7 +28,7 @@ static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void createIPCs();
 void createDirectory(std::string directoryName);
-void createSharedMemoryAdministrators();
+void createSharedMemoryAdministrators(int brokerNumber);
 // Hardcodeo de la inicializacion de las memorias compartidas (Esto lo deberia hacer el lider)
 void initializeSharedMemories();
 void initializeBroker(int brokerNumber);
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
         createDirectory(C_DIRECTORY_INFO_AGENTES);
 
         createIPCs();
-        createSharedMemoryAdministrators();
+        createSharedMemoryAdministrators( brokerNumber );
 
         if ( brokerNumber == 1 ) {
             // Se hardcodea momentaneamente la inicializacion de las shMem
@@ -220,14 +221,22 @@ void createIPCs() {
     }
 }
 
-void createSharedMemoryAdministrators() {
+void createSharedMemoryAdministrators(int brokerNumber) {
     std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
     cfg->parse();
     std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
     int listSize = sharedMemoryListIds.size();
 
     for (int i = 0; i < listSize; ++i) {
-        Util::createProcess("AdministradorMemoria", 1, sharedMemoryListIds.front());
+        std::stringstream ssSharedMemoryId;
+        ssSharedMemoryId << sharedMemoryListIds.front();
+
+        std::stringstream ssBrokerNumber;
+        ssBrokerNumber << brokerNumber;
+
+        Util::createProcess("AdministradorMemoria",
+                            ssSharedMemoryId.str().c_str(),
+                            ssBrokerNumber.str().c_str());
         sharedMemoryListIds.pop_front();
     }
 }
