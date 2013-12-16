@@ -16,11 +16,17 @@
 
 #include "../Objects/CommPacketWrapper.h"
 
+static const char* C_DIRECTORY_BROKER = NULL;
+static const char* C_DIRECTORY_ADM = NULL;
+
+void elegirDirectorios(int brokerNumber);
+
 int main(int argc, char* argv[]) {
     
     Logger::setProcessInformation("Administrador Memoria:");
     
     char buffer[TAM_BUFFER];
+    int brokerNumber = 0;
     ArgumentParser argParser(argc, argv);
     
     int idMemoria;
@@ -29,32 +35,38 @@ int main(int argc, char* argv[]) {
         Logger::logMessage(Logger::COMM, "ERROR: parseArgument 1");
         exit(-1);
     }
+
+    if ( argParser.parseArgument(2, brokerNumber) == -1 ) {
+        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 2");
+        exit(-1);
+    }
     
     sprintf(buffer, "Administrador Memoria Nº%d:",idMemoria);
     Logger::setProcessInformation(buffer);
-
     Logger::logMessage(Logger::DEBUG, "Administrador creado satisfactoriamente");
+
+    elegirDirectorios( brokerNumber );
 
     try {
         // Obtengo la cola por la cual recibo la memoria compartida
         IPC::MsgQueue colaMemoria = IPC::MsgQueue("Cola Memoria");
-        colaMemoria.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+        colaMemoria.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
 
         // Obtengo la cola por la cual recibo los pedidos por memoria compartida
         IPC::MsgQueue colaPedidosMemoria = IPC::MsgQueue("Cola Pedidos Memoria");
-        colaPedidosMemoria.getMsgQueue(DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+        colaPedidosMemoria.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
 
         // Obtengo la memoria compartida contadora
         IPC::SharedMemory<int> contadoraSharedMemory = IPC::SharedMemory<int>("Contadora Pedidos Sh Mem");
-        contadoraSharedMemory.getSharedMemory(DIRECTORY_ADM, idMemoria);
+        contadoraSharedMemory.getSharedMemory(C_DIRECTORY_ADM, idMemoria);
         IPC::Semaphore semaforoContadora = IPC::Semaphore("Semaforo Contadora Pedidos");
-        semaforoContadora.getSemaphore(DIRECTORY_ADM, idMemoria,1);
+        semaforoContadora.getSemaphore(C_DIRECTORY_ADM, idMemoria,1);
 
         // Obtengo la memoria compartida con el siguiente broker
         IPC::SharedMemory<int> siguienteSharedMemory = IPC::SharedMemory<int>("Siguiente Broker Sh Mem");
-        siguienteSharedMemory.getSharedMemory(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+        siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
         IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-        semaforoSiguiente.getSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+        semaforoSiguiente.getSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
 
         char bufferMsgQueue[MSG_BROKER_SIZE];
         //char directorioIPC[DIR_FIXED_SIZE];
@@ -93,7 +105,7 @@ int main(int argc, char* argv[]) {
                 wrapper.createPacketReplyShMem(msgSalida, mensajeMemoria.memoria);
 
                 IPC::MsgQueue colaAgente = IPC::MsgQueue("Cola Agente");
-                colaAgente.getMsgQueue(DIRECTORY_BROKER, mensajePedido.idTipoEmisor);
+                colaAgente.getMsgQueue(C_DIRECTORY_BROKER, mensajePedido.idTipoEmisor);
                 colaAgente.send(msgSalida);
 
                 // Espero que el agente devuelva la memoria compartida
@@ -115,5 +127,33 @@ int main(int argc, char* argv[]) {
     }
 
     return 0;
+}
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
 }
 
