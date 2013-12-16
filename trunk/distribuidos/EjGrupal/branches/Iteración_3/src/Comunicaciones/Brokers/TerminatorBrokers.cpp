@@ -193,15 +193,14 @@ int main(int argc, char* argv[]) {
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho destruída");
+        
+        ServersManager serversManager;
+        serversManager.killServers( brokerNumber );
 
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
-    }
-    
-    ServersManager serversManager;
-    serversManager.killServers();
-    
+    } 
     return 0;
 }
 

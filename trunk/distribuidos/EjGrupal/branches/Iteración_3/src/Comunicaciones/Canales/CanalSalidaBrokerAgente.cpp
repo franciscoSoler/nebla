@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
-    sprintf(buffer, "CanalEntradaBrokerAgente N°%d", brokerNumber);
+    sprintf(buffer, "CanalSalidaBrokerAgente N°%d", brokerNumber);
     Logger::setProcessInformation( buffer );
 
     SocketStream socketAgente(idSd);
@@ -173,7 +173,12 @@ void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber) {
     memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaAgente));
 
     char buffer[255];
+    sprintf(buffer, "Cantidad Brokers: %d - BrokerNumber: %d", cantidadBrokers, brokerNumber);
+    Logger::logMessage(Logger::IMPORTANT, buffer);
+    
     for (int i = 1; i <= cantidadBrokers; ++i) {
+        if (i == brokerNumber)
+            continue;
         msgSalida.mtype = i;
 
         sprintf(buffer, "Envía mensaje de broadcast a Broker N°%d", i);

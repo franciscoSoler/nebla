@@ -21,7 +21,7 @@ public:
     /* The data of the serverName used has to exists in
      * the configuration file
      */
-    void createServer(const char* serverName);
+    void createServer(const char* serverName, int brokerNumber);
 
     /* The broker has to exists int the configuration file and the brokerId
      * one of the Brokers in the same file
@@ -43,12 +43,12 @@ public:
     /* Execute a kill system call to all
      * the servers registered in the REGISTRATION_FILE
      */
-    void killServers();
+    void killServers(int brokerNumber);
 
 private:
     /* Save the server pid in a plain text file named RegisteredServers.txt */
-    void registerServer(pid_t serverPid);
-    std::list<pid_t> getRegisteredServers();
+    void registerServer(pid_t serverPid, int brokerNumber);
+    std::list<pid_t> getRegisteredServers(int brokerNumber);
 
 private:
     char buffer[255];

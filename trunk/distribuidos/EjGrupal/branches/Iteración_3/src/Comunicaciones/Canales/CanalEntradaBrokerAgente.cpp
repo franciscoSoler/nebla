@@ -23,6 +23,7 @@ static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void elegirDirectorios(int brokerNumber);
+int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente);
 
 int main(int argc, char* argv[]) {
     char buffer[TAM_BUFFER];
@@ -48,7 +49,6 @@ int main(int argc, char* argv[]) {
     elegirDirectorios( brokerNumber );
     
     try {
-        IPC::MsgQueue colaAgente;
         while ( true ) {
             if (socketAgente.receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir "
@@ -60,21 +60,44 @@ int main(int argc, char* argv[]) {
             MsgCanalEntradaBroker mensaje;
             memcpy(&mensaje, bufferSocket, sizeof(MsgCanalEntradaBroker));
             
+            
             if (mensaje.receiverType == AGENTE) {
                 DireccionamientoMsgAgente dirMsgAgente;
                 memcpy(&dirMsgAgente, mensaje.direccionamiento, sizeof(DireccionamientoMsgAgente));
-                
+
                 char buffer[TAM_BUFFER];
                 sprintf(buffer, "Recibe mensaje de Agente: idTipoReceptor: %d", dirMsgAgente.idReceiverAgentType);
                 Logger::logMessage(Logger::COMM, buffer);
-                
-                colaAgente.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAgente.idReceiverAgentType);
-            } else if (mensaje.receiverType == ADMINISTRADOR_MEMORIA) {
-                DireccionamientoMsgAdministrador dirMsgAdm;
+
+                int idBrokerAgente = obtenerNroBrokerDeAgente(dirMsgAgente.idReceiverAgentType, 
+                                                              dirMsgAgente.idReceptor);
+
+                if ( idBrokerAgente == brokerNumber ) {
+                    // TODO: Se reenvia al CanalSalidaBrokerAgente
+                    IPC::MsgQueue colaAgente("colaAgente");
+                    colaAgente.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAgente.idReceiverAgentType);
+                    colaAgente.send(mensaje.msg);
+                }
+                else {
+                    MsgCanalEntradaBrokerBroker msgEntrada;
+                    msgEntrada.tipoMensaje = AGENTE_AGENTE;
+                    memcpy(msgEntrada.msg, &mensaje, sizeof(MsgCanalEntradaBroker));
+
+                    MsgCanalSalidaBrokerBroker msgSalida;
+                    msgSalida.mtype = brokerNumber;
+                    memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaBrokerBroker));
+
+                    IPC::MsgQueue colaCanalSalidaBrokerBroker("colaCanalSalidaBrokerBroker");
+                    colaCanalSalidaBrokerBroker.send(msgSalida);
+                }
+            }
+            else if (mensaje.receiverType == ADMINISTRADOR_MEMORIA) {                    
+               DireccionamientoMsgAdministrador dirMsgAdm;
                 memcpy(&dirMsgAdm, mensaje.direccionamiento, sizeof(DireccionamientoMsgAdministrador));                
-                
-                colaAgente.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAdm.idMsgAdmType);
-                
+
+                IPC::MsgQueue colaAdministrador("colaAdministrador");
+                colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAdm.idMsgAdmType);
+
                 if (dirMsgAdm.idMsgAdmType == ID_TIPO_PEDIDO_MEMORIA) {
                     Logger::logMessage(Logger::COMM, "Pedido memoria");
 
@@ -89,14 +112,15 @@ int main(int argc, char* argv[]) {
                     contadoraSharedMemory.write(&cantidad);
                     semaforoContadora.signal();
                 }
-            } else if (mensaje.receiverType == BROKER) {
+                colaAdministrador.send(mensaje.msg);
+            } 
+            else if (mensaje.receiverType == BROKER) {
                 Logger::logMessage(Logger::ERROR, "Flujo inválido");
                 // TODO 
-            } else {
+            } 
+            else {
                 Logger::logMessage(Logger::ERROR, "mensaje mal formado - el receiverType no es valido");
-            }
-            
-            colaAgente.send(mensaje.msg);
+            }       
         }
     }
     catch (Exception & e) {
@@ -136,5 +160,22 @@ void elegirDirectorios(int brokerNumber) {
             Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
             abort();
     }
+}
+
+int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente) {
+    // chequear que el receptor pertenezca a este broker
+    IPC::Semaphore semMutexShMemInfoAgentes;
+    IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
+    DataInfoAgentes dataInfoAgentes;
+
+    semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_BROKER, ID_INFO_AGENTES, AMOUNT_AGENTS);
+    shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, idTipoAgente);
+
+    semMutexShMemInfoAgentes.wait( idTipoAgente - 1 );
+    shMemInfoAgentes.read( &dataInfoAgentes );
+
+    semMutexShMemInfoAgentes.signal( idTipoAgente - 1 );
+    
+    return dataInfoAgentes.agenteEnBroker[idAgente];
 }
     
