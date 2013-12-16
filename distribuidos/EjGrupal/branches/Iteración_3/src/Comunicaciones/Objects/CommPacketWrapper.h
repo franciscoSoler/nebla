@@ -65,6 +65,7 @@ public:
 
         DireccionamientoMsgAgente dirAgente;
         dirAgente.idReceiverAgentType = receiverAgentType_;
+        dirAgente.idReceptor = receiverId_;
         
         MsgCanalEntradaBroker msgCanalEntradaBroker;
         msgCanalEntradaBroker.receiverType = receiverType_;
@@ -94,6 +95,7 @@ public:
 
         DireccionamientoMsgAgente dirAgente;
         dirAgente.idReceiverAgentType = receiverAgentType_;
+        dirAgente.idReceptor = receiverId_;
         
         MsgCanalEntradaBroker msgCanalEntradaBroker;
         msgCanalEntradaBroker.receiverType = receiverType_;

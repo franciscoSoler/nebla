@@ -35,7 +35,6 @@
 
 #include "MsgQueue.h"
 
-#include <Comunicaciones/Objects/ServersManager.h>
 #include <signal.h>
 #include <list>
 #include <sys/types.h>
@@ -266,9 +265,5 @@ int main(int argc, char* argv[]) {
     IPC::Semaphore mutexOrdenDeCompra("mutexOrdenDeCompra");
     mutexOrdenDeCompra.getSemaphore(DIRECTORY_VENDEDOR, ID_SHMEM_NRO_OC, 1);
     mutexOrdenDeCompra.destroy();
-
-    // Elimino a los procesos servidores
-    ServersManager serversManager;
-    serversManager.killServers();
 }
 

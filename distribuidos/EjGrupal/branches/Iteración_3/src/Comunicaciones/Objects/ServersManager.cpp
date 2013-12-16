@@ -18,7 +18,7 @@
 ServersManager::ServersManager() {
 }
 
-void ServersManager::createServer(const char* serverName) {
+void ServersManager::createServer(const char* serverName, int brokerNumber) {
     Util::getInstance();
     pid_t pid;
     std::string processName = serverName;
@@ -31,7 +31,7 @@ void ServersManager::createServer(const char* serverName) {
         // Register server pid
         sprintf(buffer, "Creando Server - Pid %d", getpid());
         Logger::logMessage(Logger::IMPORTANT, buffer);
-        this->registerServer( getpid() );
+        this->registerServer( getpid(), brokerNumber );
 
         execlp("./ConcurrentServer", "ConcurrentServer", processName.c_str(), (char *) 0);
         sprintf(buffer, "%s Error: %s", "ConcurrentServer", strerror(errno));
@@ -56,7 +56,7 @@ void ServersManager::createBrokerServer(const char* brokerServerName, int broker
         // Register server pid
         sprintf(buffer, "Creando Server - Pid %d", getpid());
         Logger::logMessage(Logger::IMPORTANT, buffer);
-        this->registerServer( getpid() );
+        this->registerServer( getpid(), brokerId );
 
         execlp("./BrokerConcurrentServer", "BrokerConcurrentServer",
                processName.c_str(), processId.c_str(), (char *) 0);
@@ -132,19 +132,31 @@ SocketStream* ServersManager::connectToBrokerServer(const char* serverName, int 
 }
 
 
-void ServersManager::registerServer(pid_t serverPid) {
+void ServersManager::registerServer(pid_t serverPid, int brokerNumber) {
     std::stringstream ss;
     ss << serverPid << std::endl;
+    
+    std::string regFile = "";
+    regFile += REGISTRATION_FILE;
+    std::stringstream ssRegFile;
+    ssRegFile << brokerNumber;
+    regFile += ss.str().c_str();
 
-    LockFile lock(REGISTRATION_FILE);
+    LockFile lock(regFile.c_str());
     lock.takeLock();
     lock.writeToFile(ss.str().c_str(), ss.str().length());
     lock.releaseLock();
 }
 
-std::list<pid_t> ServersManager::getRegisteredServers() {
+std::list<pid_t> ServersManager::getRegisteredServers(int brokerNumber) {
+    std::string regFile = "";
+    regFile += REGISTRATION_FILE;
+    std::stringstream ss;
+    ss << brokerNumber;
+    regFile += ss.str().c_str();
+    
     pid_t serverPid;
-    std::ifstream input(REGISTRATION_FILE, std::ifstream::in);
+    std::ifstream input(regFile.c_str(), std::ifstream::in);
     std::list<pid_t> serverList;
 
     while( input >> serverPid ) {
@@ -158,8 +170,8 @@ std::list<pid_t> ServersManager::getRegisteredServers() {
 }
 
 
-void ServersManager::killServers() {
-    std::list<pid_t> serverList = this->getRegisteredServers();
+void ServersManager::killServers(int brokerNumber) {
+    std::list<pid_t> serverList = this->getRegisteredServers(brokerNumber);
     std::list<pid_t>::iterator it;
     char buffer[255];
 

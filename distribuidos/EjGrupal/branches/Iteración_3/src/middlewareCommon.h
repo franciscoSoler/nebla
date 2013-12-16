@@ -108,6 +108,7 @@ typedef struct {
 
 typedef struct {
     TipoAgente idReceiverAgentType;
+    long idReceptor;
 } DireccionamientoMsgAgente;
 
 typedef struct {
@@ -122,7 +123,6 @@ typedef struct {
 typedef struct {  
     long mtype; // idReceptor
     TipoAgente idTipoEmisor;
-    //long idReceptor;
     long idEmisor;
 } MsgPedidoMemoriaAdministrador;
 
@@ -134,8 +134,6 @@ typedef struct {
 
 typedef struct { 
     TipoReceptor receiverType;
-    //TipoAgente idTipoAgente;
-    //long idReceptor;
     char direccionamiento[DIRECC_FIXED_SIZE];
     // MsgCanalSalidaBroker o MsgPedidoMemoriaAdministrador o MsgEntregaMemoriaAdministrador
     char msg[MSG_BROKER_SIZE];

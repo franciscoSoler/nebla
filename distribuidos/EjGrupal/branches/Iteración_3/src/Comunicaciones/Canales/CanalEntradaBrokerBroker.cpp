@@ -12,6 +12,7 @@
 
 #include <IPCs/IPCTemplate/SharedMemory.h>
 #include <IPCs/Semaphore/Semaphore.h>
+#include <IPCs/IPCTemplate/MsgQueue.h>
 
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ServersManager.h>
@@ -21,6 +22,7 @@ static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void elegirDirectorios(int brokerNumber);
+int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente);
 
 int main(int argc, char* argv[]) {
     ArgumentParser argParser(argc, argv);
@@ -111,6 +113,33 @@ int main(int argc, char* argv[]) {
             memcpy(&mensaje, bufferSocket, sizeof(MsgCanalEntradaBrokerBroker));
 
             if ( mensaje.tipoMensaje == AGENTE_AGENTE ) {
+                MsgCanalEntradaBroker msg;
+                memcpy(&msg, mensaje.msg, sizeof(MsgCanalEntradaBroker));
+                
+                
+                if (msg.receiverType == AGENTE) {
+                    DireccionamientoMsgAgente dirMsgAgente;
+                    memcpy(&dirMsgAgente, msg.direccionamiento, sizeof(DireccionamientoMsgAgente));
+
+                    char buffer[TAM_BUFFER];
+                    sprintf(buffer, "Recibe mensaje de Agente: idTipoReceptor: %d", dirMsgAgente.idReceiverAgentType);
+                    Logger::logMessage(Logger::COMM, buffer);
+
+                    int idBrokerAgente = obtenerNroBrokerDeAgente(dirMsgAgente.idReceiverAgentType, 
+                                                                  dirMsgAgente.idReceptor);
+
+                    if ( idBrokerAgente == brokerNumber ) {
+                        // TODO: Se reenvia al CanalSalidaBrokerAgente
+                        IPC::MsgQueue colaAgente("colaAgente");
+                        colaAgente.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAgente.idReceiverAgentType);
+                        colaAgente.send(msg.msg);
+                    }
+                    else {
+                        Logger::logMessage(Logger::ERROR, "Flujo invalido - El mensaje no tenia que llegar a este broker");
+                    }
+                }
+                
+                
                 // TODO:
             }
             else if ( mensaje.tipoMensaje == MEMORIA_AGENTE ) {
@@ -128,6 +157,11 @@ int main(int argc, char* argv[]) {
                 DataInfoAgentes dataInfoAgentes;
                 TriadaInfoAgente triada;
                 memcpy(&triada, mensaje.msg, sizeof(TriadaInfoAgente));
+                
+                sprintf(buffer, "Se recibio mensaje broadcast: idAgente: %ld, "
+                        "idBroker: %d, idTipoAgente %d", triada.idAgente, 
+                        triada.idBroker, triada.idTipoAgente);
+                Logger::logMessage(Logger::COMM, buffer);
 
                 IPC::Semaphore semMutexDataInfoAgentes;
                 semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES,
@@ -183,4 +217,21 @@ void elegirDirectorios(int brokerNumber) {
             Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
             abort();
     }
+}
+
+int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente) {
+    // chequear que el receptor pertenezca a este broker
+    IPC::Semaphore semMutexShMemInfoAgentes;
+    IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
+    DataInfoAgentes dataInfoAgentes;
+
+    semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_BROKER, ID_INFO_AGENTES, AMOUNT_AGENTS);
+    shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, idTipoAgente);
+
+    semMutexShMemInfoAgentes.wait( idTipoAgente - 1 );
+    shMemInfoAgentes.read( &dataInfoAgentes );
+
+    semMutexShMemInfoAgentes.signal( idTipoAgente - 1 );
+    
+    return dataInfoAgentes.agenteEnBroker[idAgente];
 }
