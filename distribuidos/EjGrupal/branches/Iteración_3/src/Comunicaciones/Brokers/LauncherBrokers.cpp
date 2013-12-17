@@ -172,17 +172,16 @@ void createIPCs() {
         semaforoSiguiente.createSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
         semaforoSiguiente.initializeSemaphore(0, 1);
         Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");
-        
-        
+               
 
         // Cola para que los procesos del Broker se comuniquen con el canal de salida
         // hacia otro Broker
-        IPC::MsgQueue colaCanalSalidaBrokerBroker;
+        IPC::MsgQueue colaCanalSalidaBrokerBroker("colaCanalSalidaBrokerBroker");
         colaCanalSalidaBrokerBroker.create(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
         // Creación de las memorias compartidas que poseen información sobre agentes
         // conectados
-        IPC::Semaphore semMutexShMemInfoAgentes;
+        IPC::Semaphore semMutexShMemInfoAgentes("semMutexShMemInfoAgentes");
         semMutexShMemInfoAgentes.createSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
         for (int i = 0; i < AMOUNT_AGENTS; ++i) {
             semMutexShMemInfoAgentes.initializeSemaphore(i, 1);

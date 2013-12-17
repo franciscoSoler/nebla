@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
     
-    sprintf(buffer, "Administrador Memoria Nº%d:",idMemoria);
+    sprintf(buffer, "Administrador Memoria Nº%d - Broker N°%d:",idMemoria, brokerNumber);
     Logger::setProcessInformation(buffer);
     Logger::logMessage(Logger::DEBUG, "Administrador creado satisfactoriamente");
 
@@ -131,8 +131,7 @@ int main(int argc, char* argv[]) {
             sleep( 2 );
 
             if (siguiente == brokerNumber) {
-                // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!!
-
+                // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!
                 // El siguiente broker soy yo mismo, por lo tanto, "me reenvio" la memoria.
                 memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
                 colaMemoria.send(bufferMsgQueue, MSG_BROKER_SIZE);
