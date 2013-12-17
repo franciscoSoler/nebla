@@ -28,7 +28,10 @@ void ControladorRobot12::iniciarControlador(int numRobot) {
         this->id_Robot = numRobot;
         
         MiddlewareAPI middleware;
-        middleware.crearCanales(this->id_Robot + 1, ID_TIPO_ROBOT12);
+        if ( middleware.crearCanales("Robots12EnBroker", this->id_Robot + 1, ID_TIPO_ROBOT12) == -1 ) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
         
         int idEmisor = this->id_Robot + 1;
         

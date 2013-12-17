@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <Socket/SocketStream.h>
+#include <middlewareCommon.h>
 
 #define REGISTRATION_FILE               "RegisteredServers.txt"
 
@@ -32,7 +33,7 @@ public:
      */
     void createChannelToBroker(const char* brokerServerName,
                                int brokerId,
-                               int removeBrokerId);
+                               int remoteBrokerId);
 
     /* The processHandler has to exists as a program */
     SocketStream* connectToServer(const char* serverName);

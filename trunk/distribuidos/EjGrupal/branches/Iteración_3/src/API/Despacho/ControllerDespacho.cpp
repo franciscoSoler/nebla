@@ -8,8 +8,11 @@ ControllerDespacho::ControllerDespacho() {
         Logger::setProcessInformation("Despacho:");
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(1, ID_TIPO_DESPACHO);
-        
+        if ( middleware.crearCanales("DespachoEnBroker", 1, ID_TIPO_DESPACHO) == -1 ) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
+
         int idEmisor = 1;
 
         inputQueueDespacho_ = COMM::CommMsgHandler(idEmisor, ID_TIPO_DESPACHO);

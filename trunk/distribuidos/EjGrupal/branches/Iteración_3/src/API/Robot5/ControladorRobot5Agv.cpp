@@ -18,7 +18,10 @@ ControladorRobot5Agv::ControladorRobot5Agv() :
 {
 
     MiddlewareAPI middleware;
-    middleware.crearCanales(1, ID_TIPO_ROBOT5_AGV);
+    if ( middleware.crearCanales("Robot5EnBroker", 1, ID_TIPO_ROBOT5_AGV) == -1 ) {
+        Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+        abort();
+    }
 
     char buffer[TAM_BUFFER];
     for (int i = 0; i < CANTIDAD_AGVS; ++i) {

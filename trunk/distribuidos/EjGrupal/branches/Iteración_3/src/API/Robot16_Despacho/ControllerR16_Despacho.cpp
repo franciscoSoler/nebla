@@ -11,8 +11,11 @@ ControllerR16_Despacho::ControllerR16_Despacho() {
         shMem_R14_R16_Data_ = new DataSM_R14_R16();
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(1, ID_TIPO_ROBOT16_DESPACHO);
-        
+        if ( middleware.crearCanales("Robot16EnBroker", 1, ID_TIPO_ROBOT16_DESPACHO) == -1 ) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
+
         int idEmisor = 1;
         
         // Se crean los IPCs
