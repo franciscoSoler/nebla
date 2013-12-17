@@ -92,7 +92,7 @@ int main(int argc, char* argv[]) {
                 }
             }
             else if (mensaje.receiverType == ADMINISTRADOR_MEMORIA) {                    
-               DireccionamientoMsgAdministrador dirMsgAdm;
+                DireccionamientoMsgAdministrador dirMsgAdm;
                 memcpy(&dirMsgAdm, mensaje.direccionamiento, sizeof(DireccionamientoMsgAdministrador));                
 
                 IPC::MsgQueue colaAdministrador("colaAdministrador");
