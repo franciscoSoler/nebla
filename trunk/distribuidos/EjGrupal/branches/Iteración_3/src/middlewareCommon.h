@@ -80,7 +80,7 @@ typedef enum {
 #define ID_COMM_SEM_ENTRADA     2
 
 // CSBB: CanalSalidaBrokerBroker
-#define ID_MSG_QUEUE_CSBB       3
+#define ID_MSG_QUEUE_CSBB       20
 #define ID_INFO_AGENTES         4
 
 #define ID_ALGORITMO_LIDER      5
