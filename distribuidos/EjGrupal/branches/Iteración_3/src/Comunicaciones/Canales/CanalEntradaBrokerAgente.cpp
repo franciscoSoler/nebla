@@ -118,6 +118,9 @@ int main(int argc, char* argv[]) {
                     contadoraSharedMemory.write(&cantidad);
                     semaforoContadora.signal();
                 }
+                else {
+                    Logger::logMessage(Logger::COMM, "Devuelvo memoria");
+                }
                 colaAdministrador.send(mensaje.msg);
             } 
             else if (mensaje.receiverType == BROKER) {
