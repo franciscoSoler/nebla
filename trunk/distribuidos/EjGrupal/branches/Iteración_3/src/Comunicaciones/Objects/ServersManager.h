@@ -49,10 +49,6 @@ private:
     /* Save the server pid in a plain text file named RegisteredServers.txt */
     void registerServer(pid_t serverPid, int brokerNumber);
     std::list<pid_t> getRegisteredServers(int brokerNumber);
-    void createProcess(std::string processName,
-                         std::string arg1,
-                         std::string arg2,
-                         std::string arg3);
 
 private:
     char buffer[255];

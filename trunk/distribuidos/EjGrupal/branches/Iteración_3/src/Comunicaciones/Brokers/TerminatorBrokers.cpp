@@ -132,6 +132,7 @@ int main(int argc, char* argv[]) {
 
         // Cola para que los procesos del Broker se comuniquen con el canal de salida
         // hacia otro Broker
+
         IPC::MsgQueue colaCanalSalidaBrokerBroker;
         colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
         colaCanalSalidaBrokerBroker.destroy();

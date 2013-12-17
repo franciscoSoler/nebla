@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
                 
         createIPCs();
         
-        Util::createProcess("Robot5-Agv", 1);
+        /*Util::createProcess("Robot5-Agv", 1);
         Util::createProcess("Robot5-Cinta", 1);
         Util::createProcess("AlmacenPiezas", 1);
         Util::createProcess("Robot11", 2);
@@ -75,8 +75,8 @@ int main(int argc, char* argv[]) {
         Util::createProcess("Robot16_Cinta15");
         Util::createProcess("Robot16_Despacho");
         Util::createProcess("Despacho");
-        Util::createProcess("AGV", 3);
-        Util::createProcess("Vendedor", 5, 1);
+        Util::createProcess("AGV", 3);*/
+        Util::createProcess("Vendedor", 1, 1);
 
         
     }
