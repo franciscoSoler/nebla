@@ -143,7 +143,17 @@ int main(int argc, char* argv[]) {
                 // TODO:
             }
             else if ( mensaje.tipoMensaje == MEMORIA_AGENTE ) {
-                // TODO:
+                // TODO: hacer este mensaje francisco, no seas choto.... jaja
+                // se la da al administrador_Memoria!!!
+                MsgCanalEntradaBroker msg;
+                memcpy(&msg, mensaje.msg, sizeof(MsgCanalEntradaBroker));
+                
+                DireccionamientoMsgAdministrador dirMsgAdm;
+                memcpy(&dirMsgAdm, msg.direccionamiento, sizeof(DireccionamientoMsgAdministrador));                
+
+                IPC::MsgQueue colaAdministrador("colaAdministrador");
+                colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAdm.idMsgAdmType);
+                colaAdministrador.send(mensaje.msg);
             }
             else if ( mensaje.tipoMensaje == MENSAJE_LIDER ) {
                 // TODO:

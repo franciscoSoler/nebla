@@ -123,9 +123,10 @@ int main(int argc, char* argv[]) {
             siguienteSharedMemory.read(&siguiente);
             semaforoSiguiente.signal();
 
+            sleep( 2 );
+
             if (siguiente == brokerNumber) {
                 // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!!
-                sleep( 5 );
 
                 // El siguiente broker soy yo mismo, por lo tanto, "me reenvio" la memoria.
                 memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
