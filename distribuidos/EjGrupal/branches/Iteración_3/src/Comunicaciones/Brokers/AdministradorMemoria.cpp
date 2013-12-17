@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
             // Obtengo el siguiente broker del anillo
             int siguiente;
             semaforoSiguiente.wait();
-            siguienteSharedMemory.write(siguiente);
+            siguienteSharedMemory.read(&siguiente);
             semaforoSiguiente.signal();
 
             if (siguiente == brokerNumber) {

@@ -56,14 +56,24 @@ int main(int argc, char* argv[]) {
         // se intenta conectar con los mismos.
         initializeBroker( brokerNumber );
         elegirDirectorios( brokerNumber );
-
+        
         createDirectory(C_DIRECTORY_ADM);
         createDirectory(C_DIRECTORY_BROKER);
         createDirectory(C_DIRECTORY_INFO_AGENTES);
 
         createIPCs();
+        
+        // Obtengo la memoria compartida con el siguiente broker
+        IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
+        siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
+
+        int siguiente = (brokerNumber % 4)+1;
+        siguienteSharedMemory.write(&siguiente);
+        
         createSharedMemoryAdministrators( brokerNumber );
 
+        
         if ( brokerNumber == 1 ) {
             // Se hardcodea momentaneamente la inicializacion de las shMem
             // por falta del algoritmo del lider. Ahora que tenemos muchos Brokers
@@ -161,6 +171,8 @@ void createIPCs() {
         IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
         semaforoSiguiente.createSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
         Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");
+        
+        
 
         // Cola para que los procesos del Broker se comuniquen con el canal de salida
         // hacia otro Broker
