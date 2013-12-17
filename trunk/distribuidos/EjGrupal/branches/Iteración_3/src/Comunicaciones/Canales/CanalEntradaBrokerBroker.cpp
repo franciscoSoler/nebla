@@ -62,14 +62,12 @@ int main(int argc, char* argv[]) {
         // El proceso no fue creado por un servidor, debe conectarse al
         // mismo
         ServersManager serversManager;
-        SocketStream::SocketStreamPtr ptrSocketBroker(
-        serversManager.connectToBrokerServer("ServidorCanalSalidaBrokerBroker",
-                                                         remoteBrokerId) );
+        socketBroker = serversManager.connectToBrokerServer(
+                "ServidorCanalSalidaBrokerBroker", remoteBrokerId);
 
-        if ( ptrSocketBroker.get() == NULL ) {
+        if ( socketBroker == NULL ) {
             abort();
         }
-        socketBroker = ptrSocketBroker.get();
 
         // Envía al otro extremo del canal su número de Broker
         memcpy(bufferSocket, &brokerNumber, sizeof(int));
@@ -107,6 +105,8 @@ int main(int argc, char* argv[]) {
                 socketBroker->destroy();
                 abort();
             }
+            
+            Logger::logMessage(Logger::IMPORTANT, "Recibio mensaje");
 
             // Actúo en función del mensaje recibido
             MsgCanalEntradaBrokerBroker mensaje;
@@ -183,11 +183,18 @@ int main(int argc, char* argv[]) {
     }
     catch( Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
+        socketBroker->destroy();
+        if (socketDescriptor == 0) {
+            delete socketBroker;
+        }
         abort();
     }
 
     Logger::logMessage(Logger::COMM, "Destruyendo canal");
     socketBroker->destroy();
+    if (socketDescriptor == 0) {
+        delete socketBroker;
+    }
     return 0;
 }
 

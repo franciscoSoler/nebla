@@ -140,7 +140,7 @@ void ServersManager::registerServer(pid_t serverPid, int brokerNumber) {
     regFile += REGISTRATION_FILE;
     std::stringstream ssRegFile;
     ssRegFile << brokerNumber;
-    regFile += ss.str().c_str();
+    regFile += ssRegFile.str().c_str();
 
     LockFile lock(regFile.c_str());
     lock.takeLock();
@@ -184,3 +184,5 @@ void ServersManager::killServers(int brokerNumber) {
         kill(serverPid, SIGINT);
     }
 }
+
+
