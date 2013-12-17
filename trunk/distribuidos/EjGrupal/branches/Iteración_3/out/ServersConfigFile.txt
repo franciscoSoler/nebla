@@ -9,7 +9,7 @@ ServidorCanalSalidaBrokerBroker-Dispatcher = CanalSalidaBrokerBroker
 # Variables que indican a que Broker se conecta cada agente. Si el 
 # nùmero de broker es igual a 0, implica que el Agente se conectarà
 # a un Broker aleatorio entre los disponibles
-ClientesEnBroker = 1
+ClientesEnBroker = 3
 VendedoresEnBroker = 1
 Robot5EnBroker = 1
 AlmacenDePiezasEnBroker = 1
