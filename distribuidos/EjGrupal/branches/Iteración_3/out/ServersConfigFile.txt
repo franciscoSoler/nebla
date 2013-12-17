@@ -1,9 +1,24 @@
 # Variables Generales
 CantidadBrokers = 4
+CantidadVendedores = 5
 ServidorCanalEntradaBrokerAgente-Dispatcher = CanalEntradaBrokerAgente
 ServidorCanalSalidaBrokerAgente-Dispatcher = CanalSalidaBrokerAgente
 ServidorCanalEntradaBrokerBroker-Dispatcher = CanalEntradaBrokerBroker
 ServidorCanalSalidaBrokerBroker-Dispatcher = CanalSalidaBrokerBroker
+
+# Variables que indican a que Broker se conecta cada agente. Si el 
+# nùmero de broker es igual a 0, implica que el Agente se conectarà
+# a un Broker aleatorio entre los disponibles
+ClientesEnBroker = 1
+VendedoresEnBroker = 1
+Robot5EnBroker = 1
+AlmacenDePiezasEnBroker = 1
+Robots11EnBroker = 1
+Robots12EnBroker = 1
+AGVsEnBroker = 1
+Robot14EnBroker = 1
+Robot16EnBroker = 1
+DespachoEnBroker = 1
 
 # Data de ServidorCanalEntradaBrokerAgente
 ServidorCanalEntradaBrokerAgente-Direccion = 127.0.0.1

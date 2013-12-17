@@ -20,7 +20,10 @@ ControladorRobot5Cinta::ControladorRobot5Cinta() :
 {
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(1, ID_TIPO_ROBOT5_CINTA);
+        if ( middleware.crearCanales("Robot5EnBroker", 1, ID_TIPO_ROBOT5_CINTA) == -1 ) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
 
         cintaTransportadora[0] = CintaTransportadora6(0);
         cintaTransportadora[1] = CintaTransportadora6(1);

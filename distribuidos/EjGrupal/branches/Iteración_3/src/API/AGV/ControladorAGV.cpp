@@ -23,7 +23,10 @@ void ControladorAGV::iniciarControlador(int id_AGV) {
         Logger::setProcessInformation(this->buffer);
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(id_AGV + 1, ID_TIPO_AGV);
+        if ( middleware.crearCanales("AGVsEnBroker", id_AGV + 1, ID_TIPO_AGV) == -1) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
 
         this->id_AGV = id_AGV;
         int idEmisor = this->id_AGV  + 1;

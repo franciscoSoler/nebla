@@ -25,7 +25,10 @@ void ControladorCliente::inicializarControlador() {
         //this->numVendedorAsociado = 1;
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
+        if ( middleware.crearCanales("ClientesEnBroker", numCliente, ID_TIPO_CLIENTE) == -1 ) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
         
         this->clientes = IPC::ClientesMessageQueue("Vendedor - ClientesMsgQueue", numCliente, ID_TIPO_CLIENTE, ID_TIPO_VENDEDOR);
         this->clientes.getMessageQueue(DIRECTORY_VENDEDOR, ID_COLA_CLIENTES);
@@ -81,9 +84,6 @@ int ControladorCliente::obtenerNumeroCliente() {
     Logger::setProcessInformation(mensajePantalla);
 
     this->inicializarControlador();
-    
-    MiddlewareAPI middleware;
-    middleware.crearCanales(numCliente, ID_TIPO_CLIENTE);
     
     this->numVendedorAsociado = (*result_1).retornoCliente_u.retorno.idVendedorLibre;
     //this->numVendedorAsociado = 1;

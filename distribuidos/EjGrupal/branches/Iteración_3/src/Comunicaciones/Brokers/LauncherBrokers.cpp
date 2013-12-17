@@ -52,16 +52,15 @@ int main(int argc, char* argv[]) {
             exit( -1 );
         }
 
-        // Se crean los servidores para recibir conexiones de otros Brokers, y
-        // se intenta conectar con los mismos.
-        initializeBroker( brokerNumber );
-        elegirDirectorios( brokerNumber );
-        
+        elegirDirectorios( brokerNumber );        
         createDirectory(C_DIRECTORY_ADM);
         createDirectory(C_DIRECTORY_BROKER);
         createDirectory(C_DIRECTORY_INFO_AGENTES);
-
         createIPCs();
+
+        // Se crean los servidores para recibir conexiones de otros Brokers, y
+        // se intenta conectar con los mismos.
+        initializeBroker( brokerNumber );
         
         // Obtengo la memoria compartida con el siguiente broker
         IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");

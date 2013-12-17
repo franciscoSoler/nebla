@@ -19,7 +19,8 @@ int main(int argc, char* argv[]) {
     char bufferSocket[TAM_BUFFER];
     ArgumentParser argParser(argc, argv);
     long idAgente = 0;
-    int idTipoAgente;
+    int idTipoAgente = 0;
+    int idBroker = 0;
 
     if ( argParser.parseArgument(1, idAgente) == -1 ) {
         Logger::logMessage(Logger::COMM, "ERROR: parseArgument 1");
@@ -31,10 +32,15 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
+    if ( argParser.parseArgument(3, idBroker) == -1 ) {
+        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 3");
+        exit(-1);
+    }
+
     ServersManager serversManager;
     // FIXME: Por el momento, hago que todos los agentes se conecten al broker N°1
     SocketStream::SocketStreamPtr socketBroker(
-    serversManager.connectToBrokerServer("ServidorCanalEntradaBrokerAgente", 1) );
+    serversManager.connectToBrokerServer("ServidorCanalEntradaBrokerAgente", idBroker) );
     assert( socketBroker.get() );
     
     sprintf(buffer, "CanalSalidaAgente - TipoAgente %d - idAgente %ld:",

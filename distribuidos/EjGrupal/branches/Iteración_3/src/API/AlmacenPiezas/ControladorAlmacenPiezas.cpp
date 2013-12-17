@@ -20,7 +20,12 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         Logger::setProcessInformation("AlmacenDePiezas:");
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(1, ID_TIPO_AP);
+
+        if ( middleware.crearCanales("AlmacenDePiezasEnBroker", 1, ID_TIPO_AP) == -1) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
+
         int idEmisor = 1;
 
         this->colaReciboOrdenProduccion = COMM::CommMsgHandler(idEmisor, ID_TIPO_AP, ID_TIPO_VENDEDOR);

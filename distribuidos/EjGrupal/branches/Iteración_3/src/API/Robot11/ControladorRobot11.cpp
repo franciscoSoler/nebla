@@ -33,7 +33,10 @@ void ControladorRobot11::iniciarControlador(int numRobot) {
         
         
         MiddlewareAPI middleware;
-        middleware.crearCanales(this->nroCinta_, ID_TIPO_ROBOT11);
+        if ( middleware.crearCanales("Robots11EnBroker", this->nroCinta_, ID_TIPO_ROBOT11) == -1 ) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
         
         int idEmisor = this->nroCinta_;
         

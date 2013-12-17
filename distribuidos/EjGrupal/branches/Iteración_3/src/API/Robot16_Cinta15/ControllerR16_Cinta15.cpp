@@ -12,7 +12,10 @@ ControllerR16_Cinta15::ControllerR16_Cinta15() {
 
 
         MiddlewareAPI middleware;
-        middleware.crearCanales(1, ID_TIPO_ROBOT16_CINTA);
+        if ( middleware.crearCanales("Robot16EnBroker", 1, ID_TIPO_ROBOT16_CINTA) == -1 ) {
+            Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
+            abort();
+        }
              
         int idEmisor = 1;
         
