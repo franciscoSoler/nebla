@@ -145,15 +145,14 @@ int main(int argc, char* argv[]) {
             else if ( mensaje.tipoMensaje == MEMORIA_AGENTE ) {
                 // TODO: hacer este mensaje francisco, no seas choto.... jaja
                 // se la da al administrador_Memoria!!!
-                MsgCanalEntradaBroker msg;
-                memcpy(&msg, mensaje.msg, sizeof(MsgCanalEntradaBroker));
                 
-                DireccionamientoMsgAdministrador dirMsgAdm;
-                memcpy(&dirMsgAdm, msg.direccionamiento, sizeof(DireccionamientoMsgAdministrador));                
-
+                Logger::logMessage(Logger::IMPORTANT, "el mensaje llego del otro broker, se la doy al administrador");
+                MsgEntregaMemoriaAdministrador msg;
+                memcpy(&msg, mensaje.msg, sizeof(MsgEntregaMemoriaAdministrador));
+                
                 IPC::MsgQueue colaAdministrador("colaAdministrador");
-                colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAdm.idMsgAdmType);
-                colaAdministrador.send(mensaje.msg);
+                colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+                colaAdministrador.send(msg);
             }
             else if ( mensaje.tipoMensaje == MENSAJE_LIDER ) {
                 // TODO:
