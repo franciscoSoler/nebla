@@ -45,6 +45,7 @@ typedef enum {
     MENSAJE_BROADCAST
 } CommTipoMensajeBrokers;
 
+
 typedef enum {
     ID_TIPO_VACIO = 0,
     ID_TIPO_CLIENTE,

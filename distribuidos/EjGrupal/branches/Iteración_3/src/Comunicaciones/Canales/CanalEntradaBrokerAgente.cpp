@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
                 memcpy(&dirMsgAgente, mensaje.direccionamiento, sizeof(DireccionamientoMsgAgente));
 
                 char buffer[TAM_BUFFER];
-                sprintf(buffer, "Recibe mensaje de Agente: idTipoReceptor: %d", dirMsgAgente.idReceiverAgentType);
+                sprintf(buffer, "Recibe mensaje de Agente: idTipoReceptor: %d, idReceptor: %ld", dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
                 Logger::logMessage(Logger::COMM, buffer);
 
                 int idBrokerAgente = obtenerNroBrokerDeAgente(dirMsgAgente.idReceiverAgentType, 
@@ -79,15 +79,21 @@ int main(int argc, char* argv[]) {
                     colaAgente.send(mensaje.msg);
                 }
                 else {
+                    
+                    sprintf(buffer, "por enviar al broker %d: idTipoReceptor: %d, idReceptor: %ld", idBrokerAgente, dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
+                    Logger::logMessage(Logger::COMM, buffer);
+                    
+                    
                     MsgCanalEntradaBrokerBroker msgEntrada;
                     msgEntrada.tipoMensaje = AGENTE_AGENTE;
                     memcpy(msgEntrada.msg, &mensaje, sizeof(MsgCanalEntradaBroker));
 
                     MsgCanalSalidaBrokerBroker msgSalida;
-                    msgSalida.mtype = brokerNumber;
+                    msgSalida.mtype = idBrokerAgente;
                     memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaBrokerBroker));
 
                     IPC::MsgQueue colaCanalSalidaBrokerBroker("colaCanalSalidaBrokerBroker");
+                    colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
                     colaCanalSalidaBrokerBroker.send(msgSalida);
                 }
             }
