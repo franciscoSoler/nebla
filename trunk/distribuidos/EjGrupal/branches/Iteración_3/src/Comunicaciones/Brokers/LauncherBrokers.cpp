@@ -170,6 +170,7 @@ void createIPCs() {
 
         IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
         semaforoSiguiente.createSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+        semaforoSiguiente.initializeSemaphore(0, 1);
         Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");
         
         
