@@ -117,12 +117,17 @@ int main(int argc, char* argv[]) {
                 memcpy(&mensajeMemoria, bufferMsgQueue, sizeof(MsgEntregaMemoriaAdministrador));
             }
 
+            
+            
             // Obtengo el siguiente broker del anillo
             int siguiente;
             semaforoSiguiente.wait();
             siguienteSharedMemory.read(&siguiente);
             semaforoSiguiente.signal();
 
+            sprintf(buffer, "No realizo mas pedidos, envio shMem al siguiente broker: %d", siguiente);
+            Logger::logMessage(Logger::IMPORTANT, buffer);
+            
             sleep( 2 );
 
             if (siguiente == brokerNumber) {
