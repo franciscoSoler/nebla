@@ -108,6 +108,7 @@ public:
 
         try {
             this->senderMsgQueue_.send(msg);
+            Logger::logMessage(Logger::COMM, "Envié la shMem");
         }
         catch(Exception & e) {
             Logger::logMessage(Logger::ERROR, e.get_error_description());

@@ -76,6 +76,7 @@ int main(int argc, char* argv[]) {
         //char directorioIPC[DIR_FIXED_SIZE];
         //int identificadorIPC;
         int cantidad = 0;
+        int cantidadCero = 0;
 
         while (true) {
             // Recibo el token con la memoria compartida
@@ -86,8 +87,12 @@ int main(int argc, char* argv[]) {
             // Logger::logMessage(Logger::DEBUG, "Recibe mensaje de ColaMemoria");
 
             semaforoContadora.wait();
-            contadoraSharedMemory.read(&cantidad);
+            contadoraSharedMemory.read(&cantidad);            
+            contadoraSharedMemory.write(&cantidadCero);
             semaforoContadora.signal();
+
+            sprintf(buffer, "Tengo %d pedidos de memoria", cantidad);
+            Logger::logMessage(Logger::IMPORTANT, buffer);
 
             for (int i = 0; i < cantidad; ++i) {
                 // Obtengo un pedido por la memoria
@@ -116,8 +121,6 @@ int main(int argc, char* argv[]) {
                 colaMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
                 memcpy(&mensajeMemoria, bufferMsgQueue, sizeof(MsgEntregaMemoriaAdministrador));
             }
-
-            
             
             // Obtengo el siguiente broker del anillo
             int siguiente;
@@ -128,7 +131,11 @@ int main(int argc, char* argv[]) {
             sprintf(buffer, "No realizo mas pedidos, envio shMem al siguiente broker: %d", siguiente);
             Logger::logMessage(Logger::IMPORTANT, buffer);
             
-            sleep( 2 );
+            // Se pone este sleep para que el token no avance muy rapido cuando no hay pedidos
+            // del mismo
+            if ( not cantidad ) {
+                sleep( 1 );
+            }
 
             if (siguiente == brokerNumber) {
                 // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!
