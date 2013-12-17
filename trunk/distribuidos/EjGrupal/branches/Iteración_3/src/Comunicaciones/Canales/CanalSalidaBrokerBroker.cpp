@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
         // mismo
         ServersManager serversManager;
         socketBroker = serversManager.connectToBrokerServer(
-                "ServidorCanalSalidaBrokerBroker", remoteBrokerId);
+                "ServidorCanalEntradaBrokerBroker", remoteBrokerId);
 
         if ( socketBroker == NULL ) {
             abort();
