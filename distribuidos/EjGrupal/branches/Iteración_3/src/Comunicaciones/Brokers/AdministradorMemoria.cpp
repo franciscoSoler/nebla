@@ -133,6 +133,7 @@ int main(int argc, char* argv[]) {
             if (siguiente == brokerNumber) {
                 // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!
                 // El siguiente broker soy yo mismo, por lo tanto, "me reenvio" la memoria.
+                Logger::logMessage(Logger::IMPORTANT, "estoy autoenviando la shMem");
                 memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
                 colaMemoria.send(bufferMsgQueue, MSG_BROKER_SIZE);
             }
@@ -145,8 +146,9 @@ int main(int argc, char* argv[]) {
                 msgSalida.mtype = siguiente;
                 memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaBrokerBroker));
                 // Le envio la memoria al siguietne broker, por ahora se vuelve a enviar a la cola de entrada del administrador
-                memcpy(bufferMsgQueue, &msgSalida, sizeof(MsgCanalSalidaBrokerBroker));
-                colaBrokers.send(bufferMsgQueue, MSG_BROKER_SIZE);
+                //memcpy(bufferMsgQueue, &msgSalida, sizeof(MsgCanalSalidaBrokerBroker));
+                //colaBrokers.send(bufferMsgQueue, MSG_BROKER_SIZE);
+                colaBrokers.send(msgSalida);
             }
         }
     }
