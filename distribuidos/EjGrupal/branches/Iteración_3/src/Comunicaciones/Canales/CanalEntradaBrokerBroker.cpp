@@ -241,7 +241,7 @@ int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente) {
     IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
     DataInfoAgentes dataInfoAgentes;
 
-    semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_BROKER, ID_INFO_AGENTES, AMOUNT_AGENTS);
+    semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
     shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, idTipoAgente);
 
     semMutexShMemInfoAgentes.wait( idTipoAgente - 1 );

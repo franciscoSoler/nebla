@@ -37,7 +37,6 @@ void elegirDirectorios(int brokerNumber);
 int main(int argc, char* argv[]) {
     try {
         Util::getInstance();
-        Logger::setProcessInformation("LauncherBroker");
         ArgumentParser argParser(argc, argv);
         int brokerNumber;
 
@@ -51,6 +50,10 @@ int main(int argc, char* argv[]) {
             Logger::logMessage(Logger::ERROR, "Argumento inválido");
             exit( -1 );
         }
+
+        char buffer[255];
+        sprintf(buffer, "LauncherBroker Nº%d:", brokerNumber);
+        Logger::setProcessInformation(buffer);
 
         elegirDirectorios( brokerNumber );        
         createDirectory(C_DIRECTORY_ADM);
@@ -98,7 +101,6 @@ void createDirectory(std::string directoryName) {
 }
 
 void createIPCs() {
-    Logger::getInstance().setProcessInformation("LauncherBrokers:");
     std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser( COMM_OBJECTS_CONFIG_FILE ));
     cfg->parse();
     
