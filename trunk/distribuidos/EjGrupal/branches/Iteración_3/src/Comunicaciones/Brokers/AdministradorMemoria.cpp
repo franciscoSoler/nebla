@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
             }
             else {
                 MsgCanalEntradaBrokerBroker msgEntrada;
-                memcpy(&msgEntrada.msg, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
+                memcpy(msgEntrada.msg, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
                 msgEntrada.tipoMensaje = MEMORIA_AGENTE;
 
                 MsgCanalSalidaBrokerBroker msgSalida;
