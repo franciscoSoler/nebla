@@ -167,6 +167,8 @@ add_executable(${OUT_DIR}CanalSalidaBrokerAgente            ${COMM_DIR}Canales/C
 add_executable(${OUT_DIR}CanalEntradaBrokerBroker           ${COMM_DIR}Canales/CanalEntradaBrokerBroker.cpp     ${COMMON_SRC})
 add_executable(${OUT_DIR}CanalSalidaBrokerBroker            ${COMM_DIR}Canales/CanalSalidaBrokerBroker.cpp      ${COMMON_SRC})
 add_executable(${OUT_DIR}AdministradorMemoria               ${COMM_DIR}Brokers/AdministradorMemoria.cpp         ${COMMON_SRC})
+add_executable(${OUT_DIR}AlgoritmoLider                     ${COMM_DIR}Brokers/AlgoritmoLider.cpp               ${COMMON_SRC})
+
 add_executable(${OUT_DIR}BrokerConcurrentServer             ${COMM_DIR}Brokers/BrokerConcurrentServer.cpp       ${COMMON_SRC})
 add_executable(${OUT_DIR}LauncherBrokers                    ${COMM_DIR}Brokers/LauncherBrokers.cpp              ${COMMON_SRC})
 add_executable(${OUT_DIR}TerminatorBrokers                  ${COMM_DIR}Brokers/TerminatorBrokers.cpp            ${COMMON_SRC})
@@ -212,6 +214,8 @@ target_link_libraries(${OUT_DIR}CanalSalidaBrokerAgente                     IPCL
 target_link_libraries(${OUT_DIR}CanalEntradaBrokerBroker                    IPCLibrary)
 target_link_libraries(${OUT_DIR}CanalSalidaBrokerBroker                     IPCLibrary)
 target_link_libraries(${OUT_DIR}AdministradorMemoria                        IPCLibrary)
+target_link_libraries(${OUT_DIR}AlgoritmoLider                              IPCLibrary)
+
 target_link_libraries(${OUT_DIR}BrokerConcurrentServer                      IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherBrokers                             IPCLibrary)
 target_link_libraries(${OUT_DIR}TerminatorBrokers                           IPCLibrary)
