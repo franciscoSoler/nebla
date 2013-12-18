@@ -227,6 +227,16 @@ void createIPCs() {
 
         shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho creada");
+
+        /* Matriz para identificar qué brokers pertenecen a cada grupo de ShMem. */
+        IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+        shMemInfoGruposShMemBrokers.createSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+        Logger::logMessage(Logger::COMM, "shMem InforGruposBrokers creada.");
+
+        IPC::Semaphore semInfoGruposShMemBrokers;
+        semInfoGruposShMemBrokers.createSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+        Logger::logMessage(Logger::COMM, "sem InforGruposBrokers creado.");
+
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, e.get_error_description().c_str());
@@ -421,6 +431,7 @@ void initializeSharedMemories() {
     memcpy(mensajeMemoria.memoria, &estructuraAlmacen, sizeof(EstructuraAlmacenPiezas));
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
+
 }
 
 void initializeBroker(int brokerNumber) {
