@@ -80,6 +80,8 @@ typedef enum {
 #define ID_SHMEM_SIGUIENTE      1
 #define ID_COMM_SEM_ENTRADA     2
 
+#define ID_IPC_INFO_GRUPOS_BROKERS  6
+
 // CSBB: CanalSalidaBrokerBroker
 #define ID_MSG_QUEUE_CSBB       20
 #define ID_INFO_AGENTES         4
@@ -178,6 +180,15 @@ typedef struct {
     long idAgente;
     int idBroker;
 } TriadaInfoAgente;
+
+
+#define CANT_GRUPOS_SHMEM   14
+#define CANT_BROKERS        4
+
+typedef struct _InformacionGrupoMemBrokers
+{
+    unsigned int matriz[CANT_GRUPOS_SHMEM][CANT_BROKERS];
+} InformacionGrupoShMemBrokers;
 
 
 class DataInfoAgentes {

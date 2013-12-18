@@ -194,6 +194,17 @@ int main(int argc, char* argv[]) {
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
         shMemInfoAgentes.destroy();
         Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho destruída");
+
+        /* Matriz para identificar qué brokers pertenecen a cada grupo de ShMem. */
+        IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+        shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+        shMemInfoGruposShMemBrokers.destroy();
+        Logger::logMessage(Logger::COMM, "shMem InforGruposBrokers creada.");
+
+        IPC::Semaphore semInfoGruposShMemBrokers;
+        semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+        semInfoGruposShMemBrokers.destroy();
+        Logger::logMessage(Logger::COMM, "sem InforGruposBrokers creado.");
         
         ServersManager serversManager;
         serversManager.killServers( brokerNumber );

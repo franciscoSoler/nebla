@@ -153,7 +153,6 @@ add_executable(${OUT_DIR}AlmacenPiezas                      ${SRC_DIR}AlmacenPie
 add_executable(${OUT_DIR}RepositorCanastos                  ${SRC_DIR}RepositorCanastos.cpp                     ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
 add_executable(${OUT_DIR}RepositorGabinetes                 ${SRC_DIR}RepositorGabinetes.cpp                    ${COMMON_SRC} ${REPOSITOR_SRC} ${ALMACEN_SRC})
 #add_executable(${OUT_DIR}MonitorAlmacenProductosTerminados  ${SRC_DIR}MonitorAlmacenProductosTerminados.cpp     ${COMMON_SRC} ${VENDEDOR_SRC} ${NUMERADOR_SRC})
-#add_executable(${OUT_DIR}MonitorAlmacenPiezas              ${SRC_DIR}MonitorAlmacenPiezas.cpp                  ${COMMON_SRC} ${VENDEDOR_SRC} ${NUMERADOR_SRC})
 
 add_executable(${OUT_DIR}ConcurrentServer                   ${COMM_DIR}ConcurrentServer.cpp                     ${COMMON_SRC})
 
@@ -172,10 +171,7 @@ add_executable(${OUT_DIR}AlgoritmoLider                     ${COMM_DIR}Brokers/A
 add_executable(${OUT_DIR}BrokerConcurrentServer             ${COMM_DIR}Brokers/BrokerConcurrentServer.cpp       ${COMMON_SRC})
 add_executable(${OUT_DIR}LauncherBrokers                    ${COMM_DIR}Brokers/LauncherBrokers.cpp              ${COMMON_SRC})
 add_executable(${OUT_DIR}TerminatorBrokers                  ${COMM_DIR}Brokers/TerminatorBrokers.cpp            ${COMMON_SRC})
-add_executable(${OUT_DIR}Broker                             ${COMM_DIR}Brokers/Broker.cpp                       ${COMMON_SRC})
-
-
-
+add_executable(${OUT_DIR}Broker                             ${COMM_DIR}Brokers/Broker.cpp                        ${COMMON_SRC})
 
 target_link_libraries(${OUT_DIR}Launcher                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}LauncherClientes                            IPCLibrary)
@@ -199,7 +195,6 @@ target_link_libraries(${OUT_DIR}Despacho                                    IPCL
 target_link_libraries(${OUT_DIR}Cliente                                     IPCLibrary)
 target_link_libraries(${OUT_DIR}Vendedor                                    IPCLibrary)
 target_link_libraries(${OUT_DIR}AlmacenPiezas                               IPCLibrary)
-#target_link_libraries(${OUT_DIR}MonitorAlmacenPiezas                        IPCLibrary)
 #target_link_libraries(${OUT_DIR}MonitorAlmacenProductosTerminados           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorCanastos                           IPCLibrary)
 target_link_libraries(${OUT_DIR}RepositorGabinetes                          IPCLibrary)
