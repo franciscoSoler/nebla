@@ -148,7 +148,8 @@ typedef struct {
 } MsgCanalSalidaAgente;
 
 typedef enum {
-    DESOCNOCIDO,
+    INICIAR,
+    DESCONOCIDO,
     LIDER
 } StatusLider;
 
