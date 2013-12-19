@@ -27,6 +27,16 @@ int ArgumentParser::parseArgument(int index, long & argument) {
     return 0; 
 }
 
+int ArgumentParser::parseArgument(int index, ulong & argument) {
+    if (isIndexValid(index)) {
+        sscanf(argv_[index], "%lu", &argument);
+    }
+    else {
+        return -1;
+    }
+    return 0;
+}
+
 int ArgumentParser::parseArgument(int index, char argument[], 
                                    int argumentSize) {
     if (isIndexValid(index)) {

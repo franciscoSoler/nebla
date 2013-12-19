@@ -10,7 +10,7 @@
 bool Parser::obtenerLineaSiguiente(ifstream& stream)
 {
     if(stream.eof())
-	return false;
+        return false;
     stream.getline(bufferLinea, MAX_CHARS_LINEA);
     this->nroTokenLinea = 0;
     return true;
@@ -20,13 +20,13 @@ string Parser::obtenerProximoValor()
 {    
     char* valor;
     if(nroTokenLinea == 0)
-	valor = strtok(bufferLinea, DELIMITADOR);
+        valor = strtok(bufferLinea, DELIMITADOR);
     else
-	valor = strtok(0, DELIMITADOR);
+        valor = strtok(0, DELIMITADOR);
     
     this->nroTokenLinea++;
     
     if(!valor)
-	return "";
+        return "";
     return string(valor);
 }
