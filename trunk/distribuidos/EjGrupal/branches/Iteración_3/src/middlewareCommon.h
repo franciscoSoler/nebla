@@ -86,7 +86,7 @@ typedef enum {
 #define ID_MSG_QUEUE_CSBB       20
 #define ID_INFO_AGENTES         4
 
-#define ID_ALGORITMO_LIDER      5
+#define ID_ALGORITMO_LIDER      21
 
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que

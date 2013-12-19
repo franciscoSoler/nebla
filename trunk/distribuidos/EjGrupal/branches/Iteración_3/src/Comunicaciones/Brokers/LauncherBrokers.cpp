@@ -32,6 +32,8 @@ void createSharedMemoryAdministrators(int brokerNumber);
 // Hardcodeo de la inicializacion de las memorias compartidas (Esto lo deberia hacer el lider)
 void initializeSharedMemories();
 void initializeBroker(int brokerNumber);
+void createLeaders(int brokerNumber);
+
 void elegirDirectorios(int brokerNumber);
 
 int main(int argc, char* argv[]) {
@@ -74,14 +76,15 @@ int main(int argc, char* argv[]) {
         siguienteSharedMemory.write(&siguiente);
         
         createSharedMemoryAdministrators( brokerNumber );
-
+        createLeaders(brokerNumber);
         
-        if ( brokerNumber == 1 ) {
+        
+        /*if ( brokerNumber == 1 ) {
             // Se hardcodea momentaneamente la inicializacion de las shMem
             // por falta del algoritmo del lider. Ahora que tenemos muchos Brokers
             // obligo a que el broker N°1 sea el "LIDER".
             initializeSharedMemories();
-        }
+        }*/
 
         ServersManager serversManager;
         serversManager.createBrokerServer("ServidorCanalEntradaBrokerAgente", brokerNumber);
@@ -180,6 +183,11 @@ void createIPCs() {
         IPC::MsgQueue colaCanalSalidaBrokerBroker("colaCanalSalidaBrokerBroker");
         colaCanalSalidaBrokerBroker.create(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
+        
+        // Obtengo la cola por la cual recibo los mensajes del algoritmo
+        IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
+        colaLider.create(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
+        
         // Creación de las memorias compartidas que poseen información sobre agentes
         // conectados
         IPC::Semaphore semMutexShMemInfoAgentes("semMutexShMemInfoAgentes");
@@ -258,6 +266,26 @@ void createSharedMemoryAdministrators(int brokerNumber) {
         ssBrokerNumber << brokerNumber;
 
         Util::createProcess("AdministradorMemoria",
+                            ssSharedMemoryId.str().c_str(),
+                            ssBrokerNumber.str().c_str());
+        sharedMemoryListIds.pop_front();
+    }
+}
+
+void createLeaders(int brokerNumber) {
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
+    cfg->parse();
+    std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
+    int listSize = sharedMemoryListIds.size();
+
+    for (int i = 0; i < listSize; ++i) {
+        std::stringstream ssSharedMemoryId;
+        ssSharedMemoryId << sharedMemoryListIds.front();
+
+        std::stringstream ssBrokerNumber;
+        ssBrokerNumber << brokerNumber;
+
+        Util::createProcess("AlgoritmoLider",
                             ssSharedMemoryId.str().c_str(),
                             ssBrokerNumber.str().c_str());
         sharedMemoryListIds.pop_front();
