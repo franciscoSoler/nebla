@@ -155,7 +155,13 @@ int main(int argc, char* argv[]) {
                 colaAdministrador.send(msg);
             }
             else if ( mensaje.tipoMensaje == MENSAJE_LIDER ) {
-                // TODO:
+                Logger::logMessage(Logger::IMPORTANT, "el mensaje de lider llego del otro broker, se la doy al algoritmo del lider");
+                MsgAlgoritmoLider msg;
+                memcpy(&msg, mensaje.msg, sizeof(MsgAlgoritmoLider));
+                
+                IPC::MsgQueue colaLider("colaLider");
+                colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
+                colaLider.send(msg);
             }
             else if ( mensaje.tipoMensaje == AGENTE_CONECTADO ) {
                 // TODO:

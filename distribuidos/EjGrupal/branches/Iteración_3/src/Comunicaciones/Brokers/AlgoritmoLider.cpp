@@ -11,7 +11,6 @@
 #include <memory>
 #include <sstream>
 
-
 #include "../../Common.h"
 #include "../../middlewareCommon.h"
 
@@ -48,12 +47,12 @@ int main(int argc, char* argv[]) {
     int idBroker;
     int idGrupo;
 
-    if (argParser.parseArgument(1, idBroker) == -1) {
+    if (argParser.parseArgument(1, idGrupo) == -1) {
         Logger::logMessage(Logger::COMM, "ERROR: parseArgument 1");
         exit(-1);
     }
 
-    if (argParser.parseArgument(2, idGrupo) == -1) {
+    if (argParser.parseArgument(2, idBroker) == -1) {
         Logger::logMessage(Logger::COMM, "ERROR: parseArgument 2");
         exit(-1);
     }
@@ -62,15 +61,18 @@ int main(int argc, char* argv[]) {
     Logger::setProcessInformation(buffer);
 
     Logger::logMessage(Logger::DEBUG, "Algoritmo del lider iniciado satisfactoriamente");
+   
+    elegirDirectorios( idBroker );
 
     // Obtengo la cola por la cual recibo los mensajes del algoritmo
     IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
-    colaLider.getMsgQueue(DIRECTORY_BROKER, MENSAJE_LIDER);
+    colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     while (true) {
-        char bufferMsgQueue[MSG_BROKER_SIZE];
         // Me bloqueo esperando que deba iniciar el algoritmo
         MsgAlgoritmoLider msgAlgoritmo;
+        /*
+        char bufferMsgQueue[MSG_BROKER_SIZE];
         colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
         memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
 
@@ -78,7 +80,7 @@ int main(int argc, char* argv[]) {
             // Para desbloquear el algoritmo del lider el primer mensage debe ser de INICIAR
             Logger::logMessage(Logger::ERROR, "Se esta intentando iniciar el algoritmo del lider con un mensaqe invalido.");
             abort();
-        }
+        }*/
 
         bool hayLider = false;
 
@@ -108,6 +110,10 @@ int main(int argc, char* argv[]) {
 
                     // Envio un mensaje indicando que soy el lider          
                     enviarMensajeAlSiguiente(msgAlgoritmo, idGrupo, idBroker);
+                    
+                    sprintf(buffer, "SOY EL LIDER: %d:", idBroker);
+                    Logger::logMessage(Logger::COMM, buffer);
+                    
                     iniciarMemoria(idGrupo);
                     hayLider = true;
 
@@ -118,8 +124,11 @@ int main(int argc, char* argv[]) {
                     // Me llego un mensajes con un uid menor, por lo tanto se ignora el mensaje
                 }
             } else if (msgAlgoritmo.status == LIDER) {
+                
                 // Marcar en una memoria compartida quien es el nuevo lider.
-
+                sprintf(buffer, "SE ENCONTRO QUE EL LIDER ES: %d:", idBroker);
+                Logger::logMessage(Logger::COMM, buffer);
+                
                 int siguiente = obtenerSiguiente(idGrupo, idBroker);
                 if (msgAlgoritmo.uid != siguiente) {
                     // Si el siguiente broker es el lider, no hace falta mandarle un mensaje                        
@@ -330,17 +339,17 @@ int obtenerSiguiente(int idGrupo, int idBroker) {
 
     // Obtengo la memoria compartida con el siguiente broker
     IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-    siguienteSharedMemory.createSharedMemory(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+    siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
     Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
 
     IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-    semaforoSiguiente.createSemaphore(DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
-    Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");
+    semaforoSiguiente.getSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+    Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");            
     
     int siguiente;
-    semaforoSiguiente.wait(idGrupo - 1);
+    semaforoSiguiente.wait();
     siguienteSharedMemory.read(&siguiente);
-    semaforoSiguiente.signal(idGrupo - 1);
+    semaforoSiguiente.signal();
     return siguiente;
 }
 
