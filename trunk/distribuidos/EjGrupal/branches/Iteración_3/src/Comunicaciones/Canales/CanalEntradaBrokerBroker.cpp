@@ -300,7 +300,7 @@ void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers,
     }
 
     infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
-    enviarMensajeIniciacionLider(nroGrupo);
+    enviarMensajeIniciacionLider(ID_PRIMER_GRUPO_SHMEM + nroGrupo);
 }
 
 void enviarMensajeIniciacionLider(int nroGrupo)
