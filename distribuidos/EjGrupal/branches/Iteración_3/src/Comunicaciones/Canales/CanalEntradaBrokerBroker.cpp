@@ -17,17 +17,15 @@
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ServersManager.h>
 
-#include <Parser/Parser.h>
-
-#include <set>
-
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void elegirDirectorios(int brokerNumber);
 int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente);
-void obtenerTiposDeAgenteParaGrupo();
+void registrarDisponibilidadDeAgente(int tipoAgente);
+void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo);
+void enviarMensajeIniciacionLider(int nroGrupo);
 
 int main(int argc, char* argv[]) {
     ArgumentParser argParser(argc, argv);
@@ -56,9 +54,6 @@ int main(int argc, char* argv[]) {
     }
 
     elegirDirectorios( brokerNumber );
-
-    obtenerTiposDeAgenteParaGrupo();
-    sleep(50);
 
     sprintf(buffer, "CanalEntradaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
@@ -157,7 +152,7 @@ int main(int argc, char* argv[]) {
                 Logger::logMessage(Logger::IMPORTANT, "el mensaje llego del otro broker, se la doy al administrador");
                 MsgEntregaMemoriaAdministrador msg;
                 memcpy(&msg, mensaje.msg, sizeof(MsgEntregaMemoriaAdministrador));
-                
+
                 IPC::MsgQueue colaAdministrador("colaAdministrador");
                 colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
                 colaAdministrador.send(msg);
@@ -201,6 +196,8 @@ int main(int argc, char* argv[]) {
 
                 shMemDataInfoAgentes.write( &dataInfoAgentes );
                 semMutexDataInfoAgentes.signal( triada.idTipoAgente -1 );
+
+                registrarDisponibilidadDeAgente(triada.idTipoAgente);
             }
         }
     }
@@ -266,45 +263,53 @@ int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente) {
     return dataInfoAgentes.agenteEnBroker[idAgente];
 }
 
-void obtenerTiposDeAgenteParaGrupo()
+void registrarDisponibilidadDeAgente(int tipoAgente)
 {
-    std::set<TipoAgente> tiposDeAgenteEnGrupo[CANT_GRUPOS_SHMEM];
-    Logger::logMessage(Logger::COMM, "Cargando especificaciones de grupos de memoria compartida.");
+    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
 
-    Parser parser;
-    std::ifstream stream;
-    stream.open(NOMBRE_ARCHIVO_GRUPOS);
+    IPC::Semaphore semInfoGruposShMemBrokers;
+    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
 
-    char buffer[1024];
+    InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
+    semInfoGruposShMemBrokers.wait();
+    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
 
-    do
+    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
     {
-        int numeroGrupo = atoi(parser.obtenerProximoValor().c_str()) - 400; /* (no está hardcodeado) */
-
-        if(numeroGrupo < 0)
+        if(infoGrupoShMemBrokers.grupoCompleto[nroGrupo] == true)
             continue;
 
-        sprintf(buffer, "Memoria compartida %d compartida por los brokers:", numeroGrupo + 400);
-
-        bool finDeLinea = false;
-        while(!finDeLinea)
+        if(infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1] == 1)
         {
-            std::string idBroker = parser.obtenerProximoValor();
-            if(idBroker.empty())
-            {
-                finDeLinea = true;
-                continue;
-            }
-
-            TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idBroker.c_str()));
-            tiposDeAgenteEnGrupo[numeroGrupo].insert(tipoAgenteEnBroker);
-
-            strcat(buffer, idBroker.c_str());
-            strcat(buffer, " ");
+            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1] = 0;
+            verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo);
         }
+    }
 
-        Logger::logMessage(Logger::IMPORTANT, buffer);
+    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+    semInfoGruposShMemBrokers.signal();
+}
 
-    } while(parser.obtenerLineaSiguiente(stream));
+void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo)
+{
+    for(int nroAgente = 0; nroAgente < CANT_BROKERS; nroAgente++)
+    {
+        if(infoGrupoShMemBrokers->tiposDeAgenteRestantePorGrupo[nroGrupo][nroAgente] != 0)
+            return;
+    }
 
+    infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
+    enviarMensajeIniciacionLider(nroGrupo);
+}
+
+void enviarMensajeIniciacionLider(int nroGrupo)
+{
+    IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
+    colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
+
+    MsgAlgoritmoLider msgAlgoritmo;
+    msgAlgoritmo.mtype = static_cast<long>(nroGrupo);
+    msgAlgoritmo.status = INICIAR;
+    colaLider.send(msgAlgoritmo);
 }

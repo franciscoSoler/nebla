@@ -22,9 +22,13 @@
 
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
+static const char* C_DIRECTORY_ADM = NULL;
 
 void elegirDirectorios(int brokerNumber);
 void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber);
+void registrarDisponibilidadDeAgente(int tipoAgente);
+void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo);
+void enviarMensajeIniciacionLider(int nroGrupo);
 
 int main(int argc, char* argv[]) {
     char buffer[TAM_BUFFER];
@@ -110,18 +114,22 @@ void elegirDirectorios(int brokerNumber) {
         case 1:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
             C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
             break;
         case 2:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
             C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
             break;
         case 3:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
             C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
             break;
         case 4:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
             C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
             break;
         default:
             Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
@@ -186,4 +194,61 @@ void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber) {
 
         colaSalidaBrokerBroker.send( msgSalida );
     }
+
+    /* Luego, se escribe en la matriz como tipo agente disponible. */
+    registrarDisponibilidadDeAgente(tipoAgente);
 }
+
+void registrarDisponibilidadDeAgente(int tipoAgente)
+{
+    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+
+    IPC::Semaphore semInfoGruposShMemBrokers;
+    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+
+    InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
+    semInfoGruposShMemBrokers.wait();
+    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+
+    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
+    {
+        if(infoGrupoShMemBrokers.grupoCompleto[nroGrupo] == true)
+            continue;
+
+        if(infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1] == 1)
+        {
+            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1] = 0;
+            verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo);
+        }
+    }
+
+    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+    semInfoGruposShMemBrokers.signal();
+}
+
+void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo)
+{
+    for(int nroAgente = 0; nroAgente < CANT_BROKERS; nroAgente++)
+    {
+        if(infoGrupoShMemBrokers->tiposDeAgenteRestantePorGrupo[nroGrupo][nroAgente] != 0)
+            return;
+    }
+
+    infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
+    enviarMensajeIniciacionLider(nroGrupo);
+}
+
+void enviarMensajeIniciacionLider(int nroGrupo)
+{
+    IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
+    colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
+
+    MsgAlgoritmoLider msgAlgoritmo;
+    msgAlgoritmo.mtype = static_cast<long>(nroGrupo);
+    msgAlgoritmo.status = INICIAR;
+    colaLider.send(msgAlgoritmo);
+}
+
+
+

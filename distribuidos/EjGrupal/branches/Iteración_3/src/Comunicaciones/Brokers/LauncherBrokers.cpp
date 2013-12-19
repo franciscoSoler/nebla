@@ -22,6 +22,8 @@
 #include <Comunicaciones/Objects/ServersManager.h>
 #include <Comunicaciones/Objects/ArgumentParser.h>
 
+#include <Parser.h>
+
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
@@ -33,7 +35,7 @@ void createSharedMemoryAdministrators(int brokerNumber);
 void initializeSharedMemories();
 void initializeBroker(int brokerNumber);
 void createLeaders(int brokerNumber);
-
+void obtenerTiposDeAgenteParaGrupo();
 void elegirDirectorios(int brokerNumber);
 
 int main(int argc, char* argv[]) {
@@ -66,6 +68,9 @@ int main(int argc, char* argv[]) {
         // Se crean los servidores para recibir conexiones de otros Brokers, y
         // se intenta conectar con los mismos.
         initializeBroker( brokerNumber );
+
+        /* Se completa la matriz de grupo / tipoAgente. */
+        obtenerTiposDeAgenteParaGrupo();
         
         // Obtengo la memoria compartida con el siguiente broker
         IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
@@ -486,6 +491,64 @@ void initializeBroker(int brokerNumber) {
             }
         }
     }
+}
+
+void obtenerTiposDeAgenteParaGrupo()
+{
+    Logger::logMessage(Logger::COMM, "Cargando especificaciones de grupos de memoria compartida.");
+
+    Parser parser;
+    std::ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_GRUPOS);
+
+    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+
+    IPC::Semaphore semInfoGruposShMemBrokers;
+    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+
+    InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
+    semInfoGruposShMemBrokers.wait();
+    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+
+    char buffer[1024];
+
+    do
+    {
+        int numeroGrupo = atoi(parser.obtenerProximoValor().c_str()) - 400; /* (no está hardcodeado) */
+
+        if(numeroGrupo < 0)
+            continue;
+
+        sprintf(buffer, "Memoria compartida %d compartida por los brokers:", numeroGrupo + 400);
+
+        bool finDeLinea = false;
+        while(!finDeLinea)
+        {
+            std::string idBroker = parser.obtenerProximoValor();
+            if(idBroker.empty())
+            {
+                finDeLinea = true;
+                continue;
+            }
+
+            TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idBroker.c_str()));
+            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[numeroGrupo][tipoAgenteEnBroker - 1] = 1;
+
+            strcat(buffer, idBroker.c_str());
+            strcat(buffer, " ");
+        }
+
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
+    } while(parser.obtenerLineaSiguiente(stream));
+
+
+    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
+        infoGrupoShMemBrokers.grupoCompleto[nroGrupo] = false;
+
+    shMemInfoGruposShMemBrokers.write(&infoGrupoShMemBrokers);
+    semInfoGruposShMemBrokers.signal();
 }
 
 void elegirDirectorios(int brokerNumber) {
