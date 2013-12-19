@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     sprintf(buffer, "Algoritmo Lider Nº%d:", idGrupo);
     Logger::setProcessInformation(buffer);
 
-    Logger::logMessage(Logger::DEBUG, "Algoritmo del lider iniciado satisfactoriamente");
+    Logger::logMessage(Logger::DEBUG, "Iniciado satisfactoriamente");
    
     elegirDirectorios( idBroker );
 
@@ -74,6 +74,9 @@ int main(int argc, char* argv[]) {
 
         char bufferMsgQueue[MSG_BROKER_SIZE];
         colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
+        
+        Logger::logMessage(Logger::DEBUG, "Recibio mensaje de la cola");
+        
         memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
 
         if (msgAlgoritmo.status != INICIAR) {
@@ -126,7 +129,6 @@ int main(int argc, char* argv[]) {
             } else if (msgAlgoritmo.status == LIDER) {
                 
                 // Marcar en una memoria compartida quien es el nuevo lider.
-                sprintf(buffer, "SE ENCONTRO QUE EL LIDER ES: %d:", idBroker);
                 Logger::logMessage(Logger::COMM, buffer);
                 
                 int siguiente = obtenerSiguiente(idGrupo, idBroker);
@@ -138,6 +140,7 @@ int main(int argc, char* argv[]) {
                 hayLider = true;
             }
         }
+        Logger::logMessage(Logger::DEBUG, "Habemus Lider");
     }
 
     return 0;

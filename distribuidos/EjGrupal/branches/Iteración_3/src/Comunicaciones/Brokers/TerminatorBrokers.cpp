@@ -138,6 +138,12 @@ int main(int argc, char* argv[]) {
         colaCanalSalidaBrokerBroker.destroy();
         Logger::logMessage(Logger::COMM, "cola CanalSalidaBrokerBroker destruida");
 
+        // Obtengo la cola por la cual recibo los mensajes del algoritmo Lider
+        IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
+        colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
+        colaLider.destroy();
+        Logger::logMessage(Logger::COMM, "cola Lider destruida");
+        
         // Creación de las memorias compartidas que poseen información sobre agentes
         // conectados
         IPC::Semaphore semMutexShMemInfoAgentes;

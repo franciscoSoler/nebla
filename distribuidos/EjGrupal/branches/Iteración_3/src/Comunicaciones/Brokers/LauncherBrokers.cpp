@@ -189,7 +189,7 @@ void createIPCs() {
         colaCanalSalidaBrokerBroker.create(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
         
-        // Obtengo la cola por la cual recibo los mensajes del algoritmo
+        // Obtengo la cola por la cual recibo los mensajes del algoritmo Líder
         IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
         colaLider.create(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
         
@@ -248,6 +248,7 @@ void createIPCs() {
 
         IPC::Semaphore semInfoGruposShMemBrokers;
         semInfoGruposShMemBrokers.createSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+        semInfoGruposShMemBrokers.initializeSemaphore(0, 1);
         Logger::logMessage(Logger::COMM, "sem InforGruposBrokers creado.");
 
     }
@@ -515,7 +516,7 @@ void obtenerTiposDeAgenteParaGrupo()
 
     do
     {
-        int numeroGrupo = atoi(parser.obtenerProximoValor().c_str()) - 400; /* (no está hardcodeado) */
+        int numeroGrupo = atoi(parser.obtenerProximoValor().c_str()) - ID_PRIMER_GRUPO_SHMEM;
 
         if(numeroGrupo < 0)
             continue;
