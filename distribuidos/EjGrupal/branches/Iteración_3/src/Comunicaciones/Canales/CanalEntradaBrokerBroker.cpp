@@ -17,12 +17,17 @@
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ServersManager.h>
 
+#include <Parser/Parser.h>
+
+#include <set>
+
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void elegirDirectorios(int brokerNumber);
 int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente);
+void obtenerTiposDeAgenteParaGrupo();
 
 int main(int argc, char* argv[]) {
     ArgumentParser argParser(argc, argv);
@@ -51,6 +56,9 @@ int main(int argc, char* argv[]) {
     }
 
     elegirDirectorios( brokerNumber );
+
+    obtenerTiposDeAgenteParaGrupo();
+    sleep(50);
 
     sprintf(buffer, "CanalEntradaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
@@ -256,4 +264,47 @@ int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente) {
     semMutexShMemInfoAgentes.signal( idTipoAgente - 1 );
     
     return dataInfoAgentes.agenteEnBroker[idAgente];
+}
+
+void obtenerTiposDeAgenteParaGrupo()
+{
+    std::set<TipoAgente> tiposDeAgenteEnGrupo[CANT_GRUPOS_SHMEM];
+    Logger::logMessage(Logger::COMM, "Cargando especificaciones de grupos de memoria compartida.");
+
+    Parser parser;
+    std::ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_GRUPOS);
+
+    char buffer[1024];
+
+    do
+    {
+        int numeroGrupo = atoi(parser.obtenerProximoValor().c_str()) - 400; /* (no está hardcodeado) */
+
+        if(numeroGrupo < 0)
+            continue;
+
+        sprintf(buffer, "Memoria compartida %d compartida por los brokers:", numeroGrupo + 400);
+
+        bool finDeLinea = false;
+        while(!finDeLinea)
+        {
+            std::string idBroker = parser.obtenerProximoValor();
+            if(idBroker.empty())
+            {
+                finDeLinea = true;
+                continue;
+            }
+
+            TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idBroker.c_str()));
+            tiposDeAgenteEnGrupo[numeroGrupo].insert(tipoAgenteEnBroker);
+
+            strcat(buffer, idBroker.c_str());
+            strcat(buffer, " ");
+        }
+
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
+    } while(parser.obtenerLineaSiguiente(stream));
+
 }

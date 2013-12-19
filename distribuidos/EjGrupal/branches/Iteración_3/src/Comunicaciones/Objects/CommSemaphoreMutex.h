@@ -72,7 +72,7 @@ public:
             Logger::logMessage(Logger::COMM, "recibi la shMem");
             
             // guardo lo recibido en la shMem
-            T buffer;
+            T buffer;	
             memcpy(&buffer, msg.msg, sizeof(T));
             this->shMem[numSem].write(&buffer);
         }

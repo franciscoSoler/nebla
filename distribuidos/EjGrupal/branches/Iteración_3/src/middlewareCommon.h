@@ -88,6 +88,13 @@ typedef enum {
 
 #define ID_ALGORITMO_LIDER      21
 
+#define ID_SHMEM_TIMEOUT        3
+#define ID_SEM_TIMEOUT          3
+
+/* Define la cantidad de tiempo en segundos que se va a esperar
+ * antes de que se haga timeout. */
+#define TIEMPO_TIMEOUT          10
+
 /* Nomenclatura: Todos los mensajes hacen referencia a su receptor. 
  * Ejemplo: MsgCanalSalidaBroker. Esto indica que es un mensaje que
  * va dirigido a un CanalSalida del Broker.
@@ -182,8 +189,9 @@ typedef struct {
 } TriadaInfoAgente;
 
 
-#define CANT_GRUPOS_SHMEM   14
-#define CANT_BROKERS        4
+#define CANT_GRUPOS_SHMEM       14
+#define CANT_BROKERS            4
+#define NOMBRE_ARCHIVO_GRUPOS   "infoShMemTipoAgente.csv"
 
 typedef struct _InformacionGrupoMemBrokers
 {
