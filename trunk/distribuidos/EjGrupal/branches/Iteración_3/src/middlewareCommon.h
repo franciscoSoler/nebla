@@ -189,14 +189,17 @@ typedef struct {
 } TriadaInfoAgente;
 
 
+
 #define CANT_GRUPOS_SHMEM       14
 #define CANT_BROKERS            4
 #define NOMBRE_ARCHIVO_GRUPOS   "infoShMemTipoAgente.csv"
 
 typedef struct _InformacionGrupoMemBrokers
 {
-    unsigned int matriz[CANT_GRUPOS_SHMEM][CANT_BROKERS];
+    unsigned int tiposDeAgenteRestantePorGrupo[CANT_GRUPOS_SHMEM][CANT_BROKERS];
+    bool grupoCompleto[CANT_GRUPOS_SHMEM];
 } InformacionGrupoShMemBrokers;
+
 
 
 class DataInfoAgentes {

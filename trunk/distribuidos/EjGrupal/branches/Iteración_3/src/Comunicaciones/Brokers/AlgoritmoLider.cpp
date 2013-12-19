@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     while (true) {
         // Me bloqueo esperando que deba iniciar el algoritmo
         MsgAlgoritmoLider msgAlgoritmo;
-        /*
+
         char bufferMsgQueue[MSG_BROKER_SIZE];
         colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
         memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
             // Para desbloquear el algoritmo del lider el primer mensage debe ser de INICIAR
             Logger::logMessage(Logger::ERROR, "Se esta intentando iniciar el algoritmo del lider con un mensaqe invalido.");
             abort();
-        }*/
+        }
 
         bool hayLider = false;
 
