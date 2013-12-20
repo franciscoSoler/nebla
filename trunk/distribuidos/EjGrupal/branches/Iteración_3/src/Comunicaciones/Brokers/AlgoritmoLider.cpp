@@ -31,11 +31,12 @@
 
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
+static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
-int enviarMensajeAlSiguiente(MsgAlgoritmoLider msg, int idGrupo, int idBroker);
-int obtenerSiguiente(int idGrupo, int idBroker);
+void enviarMensajeAlSiguiente(MsgAlgoritmoLider msg, int idBroker, int idBrokerSiguiente);
 void elegirDirectorios(int brokerNumber);
 void iniciarMemoria(int idGrupo);
+int establecerSiguiente(int idGrupo, int idBroker);
 
 int main(int argc, char* argv[]) {
 
@@ -74,8 +75,11 @@ int main(int argc, char* argv[]) {
 
         char bufferMsgQueue[MSG_BROKER_SIZE];
         colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
-        
-        Logger::logMessage(Logger::DEBUG, "Recibio mensaje de la cola");
+
+        /* Establece cuál es el broker que le sigue en el anillo. */
+        int idBrokerSiguiente = establecerSiguiente(idBroker, idGrupo);
+        sprintf(buffer, "Recibió mensaje de la cola, se inicia el algoritmo, mi broker siguiente es el %d", idGrupo);
+        Logger::logMessage(Logger::DEBUG, buffer);
         
         memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
 
@@ -92,7 +96,7 @@ int main(int argc, char* argv[]) {
         msgAlgoritmo.uid = idBroker;
         msgAlgoritmo.mtype = idGrupo;
         
-        if (enviarMensajeAlSiguiente(msgAlgoritmo, idGrupo, idBroker) == idBroker) {
+        if (idBrokerSiguiente == idBroker) {
             // No hay otros brokers en el anillo, soy el lider
             hayLider = true;
             iniciarMemoria(idGrupo);
@@ -112,7 +116,7 @@ int main(int argc, char* argv[]) {
                     msgAlgoritmo.uid = idBroker;
 
                     // Envio un mensaje indicando que soy el lider          
-                    enviarMensajeAlSiguiente(msgAlgoritmo, idGrupo, idBroker);
+                    enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
                     
                     sprintf(buffer, "SOY EL LIDER: %d:", idBroker);
                     Logger::logMessage(Logger::COMM, buffer);
@@ -122,7 +126,7 @@ int main(int argc, char* argv[]) {
 
                 } else if (msgAlgoritmo.uid > idBroker) {
                     // Me llego un mensaje con un uid mayor, por lo tanto lo debo reenviar
-                    enviarMensajeAlSiguiente(msgAlgoritmo, idGrupo, idBroker);
+                    enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
                 } else {
                     // Me llego un mensajes con un uid menor, por lo tanto se ignora el mensaje
                 }
@@ -130,11 +134,10 @@ int main(int argc, char* argv[]) {
                 
                 // Marcar en una memoria compartida quien es el nuevo lider.
                 Logger::logMessage(Logger::COMM, buffer);
-                
-                int siguiente = obtenerSiguiente(idGrupo, idBroker);
-                if (msgAlgoritmo.uid != siguiente) {
+
+                if (msgAlgoritmo.uid != idBrokerSiguiente) {
                     // Si el siguiente broker es el lider, no hace falta mandarle un mensaje                        
-                    enviarMensajeAlSiguiente(msgAlgoritmo, idGrupo, idBroker);
+                    enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
                 }
                 
                 hayLider = true;
@@ -315,45 +318,22 @@ void iniciarMemoria(int idGrupo) {
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 }
 
-int enviarMensajeAlSiguiente(MsgAlgoritmoLider msg, int idGrupo, int idBroker) {
-    
+void enviarMensajeAlSiguiente(MsgAlgoritmoLider msg, int idBroker, int idBrokerSiguiente) {
     // Obtengo la cola por la cual envio los mensajes al siguiente en el anillo
     IPC::MsgQueue colaBrokers = IPC::MsgQueue("Cola Bokers");
     colaBrokers.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
-    
-    int siguiente = obtenerSiguiente(idGrupo, idBroker);
 
-    if (siguiente != idBroker) {
+    if (idBrokerSiguiente != idBroker) {
         // Solo mando el mensaje si hay un siguiente a quien mandarlo
         MsgCanalEntradaBrokerBroker msgEntrada;
         memcpy(msgEntrada.msg, &msg, sizeof (MsgAlgoritmoLider));
         msgEntrada.tipoMensaje = MENSAJE_LIDER;
 
         MsgCanalSalidaBrokerBroker msgSalida;
-        msgSalida.mtype = siguiente;
+        msgSalida.mtype = idBrokerSiguiente;
         memcpy(&msgSalida.msg, &msgEntrada, sizeof (MsgCanalEntradaBrokerBroker));
         colaBrokers.send(msgSalida);
     }
-
-    return siguiente;
-}
-
-int obtenerSiguiente(int idGrupo, int idBroker) {
-
-    // Obtengo la memoria compartida con el siguiente broker
-    IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-    siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
-    Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
-
-    IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-    semaforoSiguiente.getSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
-    Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");            
-    
-    int siguiente;
-    semaforoSiguiente.wait();
-    siguienteSharedMemory.read(&siguiente);
-    semaforoSiguiente.signal();
-    return siguiente;
 }
 
 void elegirDirectorios(int brokerNumber) {
@@ -361,25 +341,119 @@ void elegirDirectorios(int brokerNumber) {
         case 1:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
             C_DIRECTORY_ADM = DIRECTORY_ADM_1;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
             break;
         case 2:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
             C_DIRECTORY_ADM = DIRECTORY_ADM_2;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
             break;
         case 3:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
             C_DIRECTORY_ADM = DIRECTORY_ADM_3;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
             break;
         case 4:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
             C_DIRECTORY_ADM = DIRECTORY_ADM_4;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
             break;
         default:
             Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
             abort();
     }
+}
+
+/* Compara los números de broker. */
+int obtenerNroDeBrokerSiguientePreferida(int nroBrokerActual, int nroBrokerSiguienteActual, int nroBrokerSiguientePropuesto)
+{
+    if((nroBrokerSiguienteActual > nroBrokerActual) &&
+            (nroBrokerSiguientePropuesto > nroBrokerActual))
+        return std::min(nroBrokerSiguienteActual, nroBrokerSiguientePropuesto);
+
+    if((nroBrokerSiguienteActual <= nroBrokerActual) &&
+            (nroBrokerSiguientePropuesto <= nroBrokerActual))
+        return std::min(nroBrokerSiguienteActual, nroBrokerSiguientePropuesto);
+
+    if((nroBrokerSiguienteActual <= nroBrokerActual) &&
+            (nroBrokerSiguientePropuesto > nroBrokerActual))
+        return nroBrokerSiguientePropuesto;
+
+    if((nroBrokerSiguienteActual > nroBrokerActual) &&
+            (nroBrokerSiguientePropuesto <= nroBrokerActual))
+        return nroBrokerSiguienteActual;
+
+    return -1;
+}
+
+/* Dada la información de los agentes de un grupo, obtiene el
+   id del broker de manera tal que se forme el anillo.
+   Será seleccionado el siguiente según el criterio de tratar
+   de formar el anillo según el id de broker creciente. */
+int obtenerSiguienteEnGrupo(int nroBroker, unsigned int infoGrupoShMem[AMOUNT_AGENTS])
+{
+    int nroBrokerSiguiente = nroBroker;
+
+    /* Para todos los tipos de agente que tiene el grupo... */
+    for(int nroTipoAgente = 0; nroTipoAgente < AMOUNT_AGENTS; nroTipoAgente++)
+    {
+        /* Si no hay ningún agente en el grupo no se itera. */
+        if(infoGrupoShMem[nroTipoAgente] == 0)
+            continue;
+
+        /* Para todos los agentes conectados. */
+        IPC::Semaphore semMutexDataInfoAgentes;
+        semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES,
+                                             ID_INFO_AGENTES, AMOUNT_AGENTS);
+
+        IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
+        shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES,
+                                             nroTipoAgente);
+
+        DataInfoAgentes dataInfoAgentes;
+        semMutexDataInfoAgentes.wait(nroTipoAgente - 1);
+        shMemDataInfoAgentes.read(&dataInfoAgentes);
+        semMutexDataInfoAgentes.signal(nroTipoAgente - 1);
+
+        /* Itera conforme no se encuentre un número de broker igual a cero
+           (es decir que no haya más agentes de ese tipo conectados). */
+        int nroAgenteConectado = 0;
+        int nroBrokerAgenteConectado;
+        do
+        {
+            nroBrokerAgenteConectado = dataInfoAgentes.agenteEnBroker[nroAgenteConectado];
+            nroBrokerSiguiente = obtenerNroDeBrokerSiguientePreferida(nroBroker, nroBrokerSiguiente, nroBrokerAgenteConectado);
+            nroAgenteConectado++;
+        } while (nroBrokerAgenteConectado != 0);
+
+    }
+
+    return nroBrokerSiguiente;
+}
+
+int establecerSiguiente(int nroBroker, int nroGrupo)
+{
+    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+    IPC::Semaphore semInfoGruposShMemBrokers;
+    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+
+    InformacionGrupoShMemBrokers informacionGrupos;
+    semInfoGruposShMemBrokers.wait();
+    shMemInfoGruposShMemBrokers.read(&informacionGrupos);
+    semInfoGruposShMemBrokers.signal();
+
+    int siguiente = obtenerSiguienteEnGrupo(nroBroker, informacionGrupos.tiposDeAgenteRestantePorGrupo[nroGrupo]);
+
+    /* Obtengo la memoria compartida con el siguiente broker. */
+    IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
+    siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
+    IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
+    semaforoSiguiente.getSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
+
+    semaforoSiguiente.wait();
+    siguienteSharedMemory.read(&siguiente);
+    semaforoSiguiente.signal();
+
+    return siguiente;
 }

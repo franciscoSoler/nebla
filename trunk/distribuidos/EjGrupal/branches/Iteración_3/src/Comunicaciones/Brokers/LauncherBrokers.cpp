@@ -77,9 +77,11 @@ int main(int argc, char* argv[]) {
         siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
         Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
 
+        /* Se establece el siguiente según el grupo de shmem que corresponda.
         int siguiente = (brokerNumber % 4)+1;
         siguienteSharedMemory.write(&siguiente);
-        
+        */
+
         createSharedMemoryAdministrators( brokerNumber );
         createLeaders(brokerNumber);
         

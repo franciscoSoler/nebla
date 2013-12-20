@@ -20,6 +20,7 @@ static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
 
 void elegirDirectorios(int brokerNumber);
+void establecerSiguiente(int nroBroker, int nroGrupo);
 
 int main(int argc, char* argv[]) {
     
@@ -40,7 +41,7 @@ int main(int argc, char* argv[]) {
         Logger::logMessage(Logger::COMM, "ERROR: parseArgument 2");
         exit(-1);
     }
-    
+
     sprintf(buffer, "Administrador Memoria Nº%d - Broker N°%d:",idMemoria, brokerNumber);
     Logger::setProcessInformation(buffer);
     Logger::logMessage(Logger::DEBUG, "Administrador creado satisfactoriamente");
@@ -66,7 +67,7 @@ int main(int argc, char* argv[]) {
         IPC::Semaphore semaforoContadora = IPC::Semaphore("Semaforo Contadora Pedidos");
         semaforoContadora.getSemaphore(C_DIRECTORY_ADM, idMemoria,1);
 
-        // Obtengo la memoria compartida con el siguiente broker
+        /* Obtengo la memoria compartida que indica el siguiente broker. */
         IPC::SharedMemory<int> siguienteSharedMemory = IPC::SharedMemory<int>("Siguiente Broker Sh Mem");
         siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
         IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
@@ -194,4 +195,3 @@ void elegirDirectorios(int brokerNumber) {
             abort();
     }
 }
-
