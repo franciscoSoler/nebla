@@ -11,7 +11,7 @@
 #include <memory>
 #include <sstream>
 
-#include <Common.h
+#include <Common.h>
 #include <middlewareCommon.h>
 
 #include "../Objects/ArgumentParser.h"
@@ -412,12 +412,12 @@ int obtenerSiguienteEnGrupo(int nroBroker, unsigned int infoGrupoShMem[AMOUNT_AG
 
         IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
         shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES,
-                                             nroTipoAgente);
+                                             nroTipoAgente + 1);
 
         DataInfoAgentes dataInfoAgentes;
-        semMutexDataInfoAgentes.wait(nroTipoAgente - 1);
+        semMutexDataInfoAgentes.wait(nroTipoAgente);
         shMemDataInfoAgentes.read(&dataInfoAgentes);
-        semMutexDataInfoAgentes.signal(nroTipoAgente - 1);
+        semMutexDataInfoAgentes.signal(nroTipoAgente);
 
         /* Itera conforme no se encuentre un número de broker igual a cero
            (es decir que no haya más agentes de ese tipo conectados). */

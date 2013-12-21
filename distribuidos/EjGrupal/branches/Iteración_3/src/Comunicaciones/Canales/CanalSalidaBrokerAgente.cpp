@@ -236,7 +236,7 @@ void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers,
     }
 
     infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
-    enviarMensajeIniciacionLider(nroGrupo);
+    enviarMensajeIniciacionLider(nroGrupo + ID_PRIMER_GRUPO_SHMEM);
 }
 
 void enviarMensajeIniciacionLider(int nroGrupo)
@@ -245,9 +245,10 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
+    // que el primer grupo es el número 0...
     msgAlgoritmo.mtype = static_cast<long>(nroGrupo);
     msgAlgoritmo.status = INICIAR;
-    colaLider.send(msgAlgoritmo);
+    colaLider.send( msgAlgoritmo );
 }
 
 
