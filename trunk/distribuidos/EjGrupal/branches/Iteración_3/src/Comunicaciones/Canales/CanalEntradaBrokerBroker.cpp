@@ -279,13 +279,6 @@ void registrarDisponibilidadDeAgente(int tipoAgente)
 
     for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
     {
-        if(infoGrupoShMemBrokers.grupoCompleto[nroGrupo] == true)
-        {
-            sprintf(buffer, "Se quiere registrar un agente de tipo %d a pesar de estar el grupo completo (PRESELECCIÓN LÍDER).", tipoAgente);
-            Logger::logMessage(Logger::IMPORTANT, buffer);
-            continue;
-        }
-
         if(infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][tipoAgente - 1] != 0)
         {
             sprintf(buffer, "Se registra un agente de tipo %d (PRESELECCIÓN LÍDER).", tipoAgente);
