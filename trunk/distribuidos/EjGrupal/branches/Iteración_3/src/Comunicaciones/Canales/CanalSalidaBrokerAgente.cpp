@@ -70,11 +70,11 @@ int main(int argc, char* argv[]) {
             idAgente, idTipoAgente);
     Logger::logMessage(Logger::COMM, buffer);
 
-    // Registro al agente que se registró en los Brokers
-    elegirDirectorios( brokerNumber );
-    registrarAgenteEnBrokers(idTipoAgente, idAgente, brokerNumber);
-    
     try {
+        // Registro al agente que se registró en los Brokers
+        elegirDirectorios( brokerNumber );
+        registrarAgenteEnBrokers(idTipoAgente, idAgente, brokerNumber);
+    
         IPC::MsgQueue colaBroker("cola Broker");
         colaBroker.getMsgQueue(C_DIRECTORY_BROKER, idTipoAgente);
         

@@ -11,8 +11,8 @@
 #include <memory>
 #include <sstream>
 
-#include "../../Common.h"
-#include "../../middlewareCommon.h"
+#include <Common.h
+#include <middlewareCommon.h>
 
 #include "../Objects/ArgumentParser.h"
 
@@ -39,7 +39,6 @@ void iniciarMemoria(int idGrupo);
 int establecerSiguiente(int idGrupo, int idBroker);
 
 int main(int argc, char* argv[]) {
-
     Logger::setProcessInformation("Algoritmo Lider:");
 
     char buffer[TAM_BUFFER];
@@ -58,7 +57,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
-    sprintf(buffer, "Algoritmo Lider Nº%d:", idGrupo);
+    sprintf(buffer, "Algoritmo Lider Nº%d - Broker N°%d:", idGrupo, idBroker);
     Logger::setProcessInformation(buffer);
 
     Logger::logMessage(Logger::DEBUG, "Iniciado satisfactoriamente");
@@ -69,81 +68,86 @@ int main(int argc, char* argv[]) {
     IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
-    while (true) {
-        // Me bloqueo esperando que deba iniciar el algoritmo
-        MsgAlgoritmoLider msgAlgoritmo;
+    try {
+        while (true) {
+            // Me bloqueo esperando que deba iniciar el algoritmo
+            MsgAlgoritmoLider msgAlgoritmo;
 
-        char bufferMsgQueue[MSG_BROKER_SIZE];
-        colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
-
-        /* Establece cuál es el broker que le sigue en el anillo. */
-        int idBrokerSiguiente = establecerSiguiente(idBroker, idGrupo);
-        sprintf(buffer, "Recibió mensaje de la cola, se inicia el algoritmo, mi broker siguiente es el %d", idGrupo);
-        Logger::logMessage(Logger::DEBUG, buffer);
-        
-        memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
-
-        if (msgAlgoritmo.status != INICIAR) {
-            // Para desbloquear el algoritmo del lider el primer mensage debe ser de INICIAR
-            Logger::logMessage(Logger::ERROR, "Se esta intentando iniciar el algoritmo del lider con un mensaqe invalido.");
-            abort();
-        }
-
-        bool hayLider = false;
-
-        // Lo primero que hago es enviar mi id
-        msgAlgoritmo.status = DESCONOCIDO;
-        msgAlgoritmo.uid = idBroker;
-        msgAlgoritmo.mtype = idGrupo;
-        
-        if (idBrokerSiguiente == idBroker) {
-            // No hay otros brokers en el anillo, soy el lider
-            hayLider = true;
-            iniciarMemoria(idGrupo);
-        }
-
-        while (!hayLider) {
             char bufferMsgQueue[MSG_BROKER_SIZE];
-
-            // Espero un mensaje del broker anterior
             colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
+
+            /* Establece cuál es el broker que le sigue en el anillo. */
+            int idBrokerSiguiente = establecerSiguiente(idBroker, idGrupo);
+            sprintf(buffer, "Recibió mensaje de la cola, se inicia el algoritmo, mi broker siguiente es el %d", idGrupo);
+            Logger::logMessage(Logger::DEBUG, buffer);
+
             memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
 
-            if (msgAlgoritmo.status == DESCONOCIDO) {                
-                if (msgAlgoritmo.uid == idBroker) {
-                    // Me llego un mensaje con mi uid, por lo tanto soy el lider.
-                    msgAlgoritmo.status = LIDER;
-                    msgAlgoritmo.uid = idBroker;
-
-                    // Envio un mensaje indicando que soy el lider          
-                    enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
-                    
-                    sprintf(buffer, "SOY EL LIDER: %d:", idBroker);
-                    Logger::logMessage(Logger::COMM, buffer);
-                    
-                    iniciarMemoria(idGrupo);
-                    hayLider = true;
-
-                } else if (msgAlgoritmo.uid > idBroker) {
-                    // Me llego un mensaje con un uid mayor, por lo tanto lo debo reenviar
-                    enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
-                } else {
-                    // Me llego un mensajes con un uid menor, por lo tanto se ignora el mensaje
-                }
-            } else if (msgAlgoritmo.status == LIDER) {
-                
-                // Marcar en una memoria compartida quien es el nuevo lider.
-                Logger::logMessage(Logger::COMM, buffer);
-
-                if (msgAlgoritmo.uid != idBrokerSiguiente) {
-                    // Si el siguiente broker es el lider, no hace falta mandarle un mensaje                        
-                    enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
-                }
-                
-                hayLider = true;
+            if (msgAlgoritmo.status != INICIAR) {
+                // Para desbloquear el algoritmo del lider el primer mensage debe ser de INICIAR
+                Logger::logMessage(Logger::ERROR, "Se esta intentando iniciar el algoritmo del lider con un mensaqe invalido.");
+                abort();
             }
+
+            bool hayLider = false;
+
+            // Lo primero que hago es enviar mi id
+            msgAlgoritmo.status = DESCONOCIDO;
+            msgAlgoritmo.uid = idBroker;
+            msgAlgoritmo.mtype = idGrupo;
+
+            if (idBrokerSiguiente == idBroker) {
+                // No hay otros brokers en el anillo, soy el lider
+                hayLider = true;
+                iniciarMemoria(idGrupo);
+            }
+
+            while (!hayLider) {
+                char bufferMsgQueue[MSG_BROKER_SIZE];
+
+                // Espero un mensaje del broker anterior
+                colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
+                memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
+
+                if (msgAlgoritmo.status == DESCONOCIDO) {
+                    if (msgAlgoritmo.uid == idBroker) {
+                        // Me llego un mensaje con mi uid, por lo tanto soy el lider.
+                        msgAlgoritmo.status = LIDER;
+                        msgAlgoritmo.uid = idBroker;
+
+                        // Envio un mensaje indicando que soy el lider
+                        enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
+
+                        sprintf(buffer, "SOY EL LIDER: %d:", idBroker);
+                        Logger::logMessage(Logger::COMM, buffer);
+
+                        iniciarMemoria(idGrupo);
+                        hayLider = true;
+
+                    } else if (msgAlgoritmo.uid > idBroker) {
+                        // Me llego un mensaje con un uid mayor, por lo tanto lo debo reenviar
+                        enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
+                    } else {
+                        // Me llego un mensajes con un uid menor, por lo tanto se ignora el mensaje
+                    }
+                } else if (msgAlgoritmo.status == LIDER) {
+
+                    // Marcar en una memoria compartida quien es el nuevo lider.
+                    Logger::logMessage(Logger::COMM, buffer);
+
+                    if (msgAlgoritmo.uid != idBrokerSiguiente) {
+                        // Si el siguiente broker es el lider, no hace falta mandarle un mensaje
+                        enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idBrokerSiguiente);
+                    }
+
+                    hayLider = true;
+                }
+            }
+            Logger::logMessage(Logger::DEBUG, "Habemus Lider");
         }
-        Logger::logMessage(Logger::DEBUG, "Habemus Lider");
+    }
+    catch (Exception & e) {
+        Logger::logMessage(Logger::ERROR, e.get_error_description());
     }
 
     return 0;
@@ -402,7 +406,7 @@ int obtenerSiguienteEnGrupo(int nroBroker, unsigned int infoGrupoShMem[AMOUNT_AG
             continue;
 
         /* Para todos los agentes conectados. */
-        IPC::Semaphore semMutexDataInfoAgentes;
+        IPC::Semaphore semMutexDataInfoAgentes("semMutexDataInfoAgentes");
         semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES,
                                              ID_INFO_AGENTES, AMOUNT_AGENTS);
 
@@ -435,7 +439,7 @@ int establecerSiguiente(int nroBroker, int nroGrupo)
 {
     IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
     shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
-    IPC::Semaphore semInfoGruposShMemBrokers;
+    IPC::Semaphore semInfoGruposShMemBrokers("semInfoGruposShMemBrokers");
     semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
 
     InformacionGrupoShMemBrokers informacionGrupos;
