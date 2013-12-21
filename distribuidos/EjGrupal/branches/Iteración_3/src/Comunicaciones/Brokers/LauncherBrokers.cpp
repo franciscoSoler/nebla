@@ -458,8 +458,10 @@ void initializeSharedMemories() {
 
     // AlmacenDePiezas
     EstructuraAlmacenPiezas estructuraAlmacen;
-    for (int i = 0; i < CANTIDAD_TIPOS_PIEZAS; ++i) estructuraAlmacen.cantCanastos[i] = 1;
-    for (int i = 0; i < CANTIDAD_TIPOS_GABINETES; ++i) estructuraAlmacen.cantGabinetes[i] = 0;
+    for (int i = 0; i < CANTIDAD_TIPOS_PIEZAS; ++i)
+        estructuraAlmacen.cantCanastos[i] = 1;
+    for (int i = 0; i < CANTIDAD_TIPOS_GABINETES; ++i)
+        estructuraAlmacen.cantGabinetes[i] = 0;
     mensajeMemoria.mtype = cfg->getConfigFileParam("shMem-./DAPiezas-1", -1);
     sprintf(buffer, "Se manda mensaje de inicio "
             "a administrador de SharedMemory %ld", mensajeMemoria.mtype);
@@ -536,7 +538,7 @@ void obtenerTiposDeAgenteParaGrupo()
             }
 
             TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idBroker.c_str()));
-            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[numeroGrupo][tipoAgenteEnBroker - 1] = 1;
+            infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[numeroGrupo][tipoAgenteEnBroker - 1] = 1;
 
             strcat(buffer, idBroker.c_str());
             strcat(buffer, " ");
