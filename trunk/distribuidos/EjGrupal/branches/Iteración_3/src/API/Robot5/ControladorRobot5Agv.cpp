@@ -38,32 +38,32 @@ void ControladorRobot5Agv::iniciarControlador()
 {
     try
     {
-	/* Obtengo la cola de pedidos */
-	colaPedidos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
+        /* Obtengo la cola de pedidos */
+        colaPedidos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_AGV_5);
 
-	/* Obtengo el buffer para depositar los canastos */
-	bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
-    semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_0, 0);
-	bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
-    semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_1, 1);
-	bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
-    semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_2, 2);
+        /* Obtengo el buffer para depositar los canastos */
+        bufferCanasto[0].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_0);
+        semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_0, 0);
+        bufferCanasto[1].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_1);
+        semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_1, 1);
+        bufferCanasto[2].getSharedMemory(DIRECTORY_AGV, ID_BUFFER_AGV_5_2);
+        semaforoAccesoBufferAgv.setShMem(DIRECTORY_AGV, ID_BUFFER_AGV_5_2, 2);
 
-	/* Obtengo los semaforos de acceso a los buffer */
-	semaforoAccesoBufferAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
+        /* Obtengo los semaforos de acceso a los buffer */
+        semaforoAccesoBufferAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BUFFER_AGV_5, CANTIDAD_AGVS);
 
-	/* Obtengo los semaforos de bloqueo de los Agv */
-	semaforoBloqueoAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
+        /* Obtengo los semaforos de bloqueo de los Agv */
+        semaforoBloqueoAgv.getSemaphore(DIRECTORY_AGV, ID_SEM_BLOQUEO_AGV, CANTIDAD_AGVS);
 
-	/* Obtengo el semaforo para la api del robot 5 */
-	semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_API_ROBOT_5, 1);
+        /* Obtengo el semaforo para la api del robot 5 */
+        semaforoApiRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_API_ROBOT_5, 1);
 
-	almacen.iniciarEspacioAlmacen();
+        almacen.iniciarEspacioAlmacen();
     }    
     catch(Exception &e)
     {
-	Logger::logMessage(Logger::TRACE, e.what());
-	exit(-1);
+        Logger::logMessage(Logger::TRACE, e.what());
+        exit(-1);
     }
 }
     

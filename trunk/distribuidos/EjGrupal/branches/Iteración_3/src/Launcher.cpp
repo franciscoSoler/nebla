@@ -33,7 +33,6 @@
 #include "IPCs/IPCTemplate/SharedMemory.h"
 #include "IPCs/IPCTemplate/MsgQueue.h"
 
-//#include "IPCs/Barrios/MemoriaCompartida.h"
 #include "VendedorLibreMessageQueue.h"
 #include "ClientesMessageQueue.h"
 #include "PedidosVendedorMessageQueue.h"
@@ -336,7 +335,7 @@ void createIPCs() {
     /* Setea la orden de compra en uno por ser la primera. */
     mutexOrdenDeCompra.wait();
     {
-	int shMemData = 1;
+        int shMemData = 1;
         shmemNumeroOrdenCompra.write(&shMemData);
     }
     mutexOrdenDeCompra.signal();
@@ -353,15 +352,15 @@ void createIPCs() {
     IPC::Semaphore esperaRepositorGabinete("Espera Repositor Gabinete");
     esperaRepositorGabinete.createSemaphore(DIRECTORY_APIEZAS, LETRA_SEM_ESPERA_REPOSITOR_GABINETES, 1);
     esperaRepositorGabinete.initializeSemaphore(0, 0);
-    
-    
+        
     IPC::EspacioAlmacenPiezasSharedMemory shMemAlmacenDePiezas = IPC::EspacioAlmacenPiezasSharedMemory("shMemAlmacenDePiezas");
     shMemAlmacenDePiezas.createSharedMemory(DIRECTORY_APIEZAS, LETRA_SHMEM_ALMACEN_PIEZAS);
     
     EstructuraAlmacenPiezas estructuraAlmacen;
-    for (int i = 0; i < CANTIDAD_TIPOS_PIEZAS; ++i) estructuraAlmacen.cantCanastos[i] = 1;
-    for (int i = 0; i < CANTIDAD_TIPOS_GABINETES; ++i) estructuraAlmacen.cantGabinetes[i] = 0;
-    
+    for (int i = 0; i < CANTIDAD_TIPOS_PIEZAS; ++i)
+        estructuraAlmacen.cantCanastos[i] = 1;
+    for (int i = 0; i < CANTIDAD_TIPOS_GABINETES; ++i)
+        estructuraAlmacen.cantGabinetes[i] = 0;
     shMemAlmacenDePiezas.writeInfo(&estructuraAlmacen);
     
 }
