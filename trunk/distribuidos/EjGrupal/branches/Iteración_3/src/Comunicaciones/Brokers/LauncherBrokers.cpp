@@ -346,8 +346,16 @@ void obtenerTiposDeAgenteParaGrupo()
     InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
     semInfoGruposShMemBrokers.wait();
 
-    // Este read no esta bien, como no fue inicializada previamente, va a tener basura.
-    //shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+    /* Inicializo en 0 todos los tipos. */
+    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
+    {
+        for(int nroTipoAgente = 0; nroTipoAgente < AMOUNT_AGENTS; nroTipoAgente++)
+        {
+            infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroTipoAgente] = 0;
+            infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][nroTipoAgente] = 0;
+        }
+        infoGrupoShMemBrokers.grupoCompleto[nroGrupo] = false;
+    }
 
     char buffer[1024];
 
@@ -371,7 +379,8 @@ void obtenerTiposDeAgenteParaGrupo()
             }
 
             TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idAgente.c_str()));
-            infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[numeroGrupo][tipoAgenteEnBroker - 1] = 1;
+            infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[numeroGrupo][tipoAgenteEnBroker - 1]++;
+            infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[numeroGrupo][tipoAgenteEnBroker - 1]++;
 
             strcat(buffer, idAgente.c_str());
             strcat(buffer, " ");
@@ -380,14 +389,6 @@ void obtenerTiposDeAgenteParaGrupo()
         Logger::logMessage(Logger::IMPORTANT, buffer);
 
     } while(parser.obtenerLineaSiguiente(stream));
-
-
-    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++) {
-        for (int nroAgente = 0; nroAgente < AMOUNT_AGENTS; nroAgente++) {
-            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][nroAgente] = 0;
-        }
-        infoGrupoShMemBrokers.grupoCompleto[nroGrupo] = false;
-    }
 
     shMemInfoGruposShMemBrokers.write(&infoGrupoShMemBrokers);
     semInfoGruposShMemBrokers.signal();

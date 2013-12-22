@@ -11,13 +11,13 @@ ServidorCanalSalidaBrokerBroker-Dispatcher = CanalSalidaBrokerBroker
 # a un Broker aleatorio entre los disponibles
 ClientesEnBroker = 3
 VendedoresEnBroker = 1
-Robot5EnBroker = 1
-AlmacenDePiezasEnBroker = 1
-Robots11EnBroker = 1
+Robot5EnBroker = 2
+AlmacenDePiezasEnBroker = 3
+Robots11EnBroker = 4
 Robots12EnBroker = 1
-AGVsEnBroker = 1
-Robot14EnBroker = 1
-Robot16EnBroker = 1
+AGVsEnBroker = 2
+Robot14EnBroker = 3
+Robot16EnBroker = 4
 DespachoEnBroker = 1
 
 # Data de ServidorCanalEntradaBrokerAgente
