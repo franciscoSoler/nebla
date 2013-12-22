@@ -23,7 +23,7 @@ static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void elegirDirectorios(int brokerNumber);
 int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente);
-void registrarDisponibilidadDeAgente(int tipoAgente);
+void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker);
 void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo);
 void enviarMensajeIniciacionLider(int nroGrupo);
 
@@ -197,7 +197,7 @@ int main(int argc, char* argv[]) {
                 shMemDataInfoAgentes.write( &dataInfoAgentes );
                 semMutexDataInfoAgentes.signal( triada.idTipoAgente -1 );
 
-                registrarDisponibilidadDeAgente(triada.idTipoAgente);
+                registrarDisponibilidadDeAgente(triada.idTipoAgente, triada.idBroker);
             }
         }
     }
@@ -263,7 +263,7 @@ int obtenerNroBrokerDeAgente(TipoAgente idTipoAgente, long idAgente) {
     return dataInfoAgentes.agenteEnBroker[idAgente];
 }
 
-void registrarDisponibilidadDeAgente(int tipoAgente)
+void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
 {
     char buffer[1024];
 
@@ -277,13 +277,16 @@ void registrarDisponibilidadDeAgente(int tipoAgente)
     semInfoGruposShMemBrokers.wait();
     shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
 
+    // Recorro todos los grupos y verifico si el agente es necesario para cada uno.
     for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
     {
         if(infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][tipoAgente - 1] != 0)
         {
+            // El agente pertence al grupo
             sprintf(buffer, "Se registra un agente de tipo %d (PRESELECCIÓN LÍDER).", tipoAgente);
             Logger::logMessage(Logger::IMPORTANT, buffer);
-            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1]--;
+            //infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1]--;
+            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1] = idBroker;
             verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo);
         }
     }
@@ -294,14 +297,24 @@ void registrarDisponibilidadDeAgente(int tipoAgente)
 
 void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo)
 {
-    for(int nroAgente = 0; nroAgente < CANT_BROKERS; nroAgente++)
+    for(int nroAgente = 0; nroAgente < AMOUNT_AGENTS; nroAgente++)
     {
-        if(infoGrupoShMemBrokers->tiposDeAgenteRestantePorGrupo[nroGrupo][nroAgente] != 0)
-            return;
+        int necesario = infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroAgente];
+        if (necesario != 0) {
+            // Si es necesario, verifico si esta en algún broker
+            int broker = infoGrupoShMemBrokers->tiposDeAgenteRestantePorGrupo[nroGrupo][nroAgente];
+            if (broker == 0) {
+                // Si es necesario, y no esta en ningun broker, el grupo no esta completo
+                return;
+            }
+        }
     }
 
-    infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
-    //enviarMensajeIniciacionLider(nroGrupo);
+    if (! infoGrupoShMemBrokers->grupoCompleto[nroGrupo]) {
+        // Solo inicio el algoritmo del lider si el grupo no estaba previamente completo
+        infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
+        //enviarMensajeIniciacionLider(nroGrupo);
+    }
 }
 
 void enviarMensajeIniciacionLider(int nroGrupo)

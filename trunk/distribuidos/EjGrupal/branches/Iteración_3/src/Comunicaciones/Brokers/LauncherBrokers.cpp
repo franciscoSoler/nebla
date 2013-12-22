@@ -31,8 +31,10 @@ static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 void createIPCs();
 void createDirectory(std::string directoryName);
 void createSharedMemoryAdministrators(int brokerNumber);
+
 // Hardcodeo de la inicializacion de las memorias compartidas (Esto lo deberia hacer el lider)
-void initializeSharedMemories();
+// void initializeSharedMemories();
+
 void initializeBroker(int brokerNumber);
 void createLeaders(int brokerNumber);
 void obtenerTiposDeAgenteParaGrupo();
@@ -72,17 +74,18 @@ int main(int argc, char* argv[]) {
         /* Se completa la matriz de grupo / tipoAgente. */
         obtenerTiposDeAgenteParaGrupo();
         
+        /*
         // Obtengo la memoria compartida con el siguiente broker
         IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
         siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
         Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
 
-        /* Se establece el siguiente según el grupo de shmem que corresponda.
+        // Se establece el siguiente según el grupo de shmem que corresponda.
         int siguiente = (brokerNumber % 4)+1;
         siguienteSharedMemory.write(&siguiente);
         */
 
-        createSharedMemoryAdministrators( brokerNumber );
+        createSharedMemoryAdministrators(brokerNumber);
         createLeaders(brokerNumber);
         
         
@@ -116,49 +119,53 @@ void createIPCs() {
     
     try {
         // Se crea una cola por cada Agente
-        IPC::MsgQueue colaAgente;
+        IPC::MsgQueue colaBroker;
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_CLIENTE);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_CLIENTE);
         Logger::logMessage(Logger::COMM, "Cola cliente creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_VENDEDOR);
         Logger::logMessage(Logger::COMM, "Cola vendedor creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_AP);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_AP);
         Logger::logMessage(Logger::COMM, "Cola AlmacenDePiezas creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_AGV);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_AGV);
         Logger::logMessage(Logger::COMM, "Cola AGV creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_AGV);
         Logger::logMessage(Logger::COMM, "Cola Robot5AGV creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT5_CINTA);
         Logger::logMessage(Logger::COMM, "Cola Robot5Cinta creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT11);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT11);
         Logger::logMessage(Logger::COMM, "Cola Robot11 creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT12);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT12);
         Logger::logMessage(Logger::COMM, "Cola Robot12 creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT14);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT14);
         Logger::logMessage(Logger::COMM, "Cola Robot14 creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_CINTA);
         Logger::logMessage(Logger::COMM, "Cola Robot16Cinta creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_ROBOT16_DESPACHO);
         Logger::logMessage(Logger::COMM, "Cola Robot16Despacho creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_DESPACHO);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_DESPACHO);
         Logger::logMessage(Logger::COMM, "Cola Despacho creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
         Logger::logMessage(Logger::COMM, "Cola Memorias creada");
 
-        colaAgente.create(C_DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
+        colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
         Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");
+
+        // Obtengo la cola por la cual recibo los mensajes del algoritmo Líder
+        colaBroker.create(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
+        Logger::logMessage(Logger::COMM, "Cola Algoritmo Lider creada");
 
         std::list<int> shMemIdList = cfg->getParamIntList("shMem");
         while ( not shMemIdList.empty() ) {
@@ -189,9 +196,7 @@ void createIPCs() {
         IPC::MsgQueue colaCanalSalidaBrokerBroker("colaCanalSalidaBrokerBroker");
         colaCanalSalidaBrokerBroker.create(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
-        // Obtengo la cola por la cual recibo los mensajes del algoritmo Líder
-        IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
-        colaLider.create(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
+
         
         // Creación de las memorias compartidas que poseen información sobre agentes
         // conectados
@@ -298,7 +303,135 @@ void createLeaders(int brokerNumber) {
     }
 }
 
-void initializeSharedMemories() {
+void initializeBroker(int brokerNumber) {
+    ServersManager serversManager;
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser( SERVERS_CONFIG_FILE ));
+    cfg->parse();
+
+    int amountBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
+    if ( amountBrokers != -1 ) {
+        std::string inputServer = "ServidorCanalEntradaBrokerBroker";
+        std::string outputServer = "ServidorCanalSalidaBrokerBroker";
+
+        // Create the servers to receive the connections from other Brokers
+        serversManager.createBrokerServer(inputServer.c_str(), brokerNumber);
+        serversManager.createBrokerServer(outputServer.c_str(), brokerNumber);
+
+        // Then, connect to other Brokers
+        for (int j = 1; j <= amountBrokers; ++j) {
+            if (brokerNumber != j) {
+                serversManager.createChannelToBroker("CanalEntradaBrokerBroker",
+                                                     brokerNumber, j);
+                serversManager.createChannelToBroker("CanalSalidaBrokerBroker",
+                                                     brokerNumber, j);
+            }
+        }
+    }
+}
+
+void obtenerTiposDeAgenteParaGrupo()
+{
+    Logger::logMessage(Logger::COMM, "Cargando especificaciones de grupos de memoria compartida.");
+
+    Parser parser;
+    std::ifstream stream;
+    stream.open(NOMBRE_ARCHIVO_GRUPOS);
+
+    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+
+    IPC::Semaphore semInfoGruposShMemBrokers;
+    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+
+    InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
+    semInfoGruposShMemBrokers.wait();
+
+    // Este read no esta bien, como no fue inicializada previamente, va a tener basura.
+    //shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+
+    char buffer[1024];
+
+    do
+    {
+        int numeroGrupo = atoi(parser.obtenerProximoValor().c_str()) - ID_PRIMER_GRUPO_SHMEM;
+
+        if(numeroGrupo < 0)
+            continue;
+
+        sprintf(buffer, "Memoria compartida %d compartida por los agentes:", numeroGrupo + 400);
+
+        bool finDeLinea = false;
+        while(!finDeLinea)
+        {
+            std::string idAgente = parser.obtenerProximoValor();
+            if(idAgente.empty())
+            {
+                finDeLinea = true;
+                continue;
+            }
+
+            TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idAgente.c_str()));
+            infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[numeroGrupo][tipoAgenteEnBroker - 1] = 1;
+
+            strcat(buffer, idAgente.c_str());
+            strcat(buffer, " ");
+        }
+
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
+    } while(parser.obtenerLineaSiguiente(stream));
+
+
+    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++) {
+        for (int nroAgente = 0; nroAgente < AMOUNT_AGENTS; nroAgente++) {
+            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][nroAgente] = 0;
+        }
+        infoGrupoShMemBrokers.grupoCompleto[nroGrupo] = false;
+    }
+
+    shMemInfoGruposShMemBrokers.write(&infoGrupoShMemBrokers);
+    semInfoGruposShMemBrokers.signal();
+
+    /*for (int i = 0; i < CANT_GRUPOS_SHMEM; ++i) {
+        sprintf(buffer, "Grupo %d",i);
+        for (int j = 0; j < AMOUNT_AGENTS; ++j) {
+            char otroBuffer[250];
+            sprintf(otroBuffer, "%d|", infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[i][j]);
+            strcat(buffer, otroBuffer);
+        }
+        Logger::logMessage(Logger::IMPORTANT,buffer);
+    }*/
+}
+
+void elegirDirectorios(int brokerNumber) {
+    switch (brokerNumber) {
+        case 1:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            break;
+        case 2:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            break;
+        case 3:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            break;
+        case 4:
+            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
+            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            break;
+        default:
+            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
+            abort();
+    }
+}
+
+/*void initializeSharedMemories() {
     char buffer[MSG_BROKER_SIZE];
     MsgEntregaMemoriaAdministrador mensajeMemoria;
     std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
@@ -415,7 +548,7 @@ void initializeSharedMemories() {
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 
-    
+
     // SM-R14-R16
     DataSM_R14_R16 dataSM_R14_R16;
     data = dataSM_R14_R16.serializeData();
@@ -429,7 +562,7 @@ void initializeSharedMemories() {
 
     // AlmacenTerminados (No se lo inicializa en el Launcher, lo mismo se repite aqui)
     AlmacenProductosTerminados apt;
-    
+
     for (int i = 0; i < TAM_ALMACEN; i++) {
         apt.almacen[i].esTemporal = false;
         apt.almacen[i].estado = VACIO;
@@ -468,120 +601,4 @@ void initializeSharedMemories() {
     memcpy(buffer, &mensajeMemoria, MSG_BROKER_SIZE);
     colaMemoria.send(buffer, MSG_BROKER_SIZE);
 
-}
-
-void initializeBroker(int brokerNumber) {
-    ServersManager serversManager;
-    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser( SERVERS_CONFIG_FILE ));
-    cfg->parse();
-
-    int amountBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
-    if ( amountBrokers != -1 ) {
-        std::string inputServer = "ServidorCanalEntradaBrokerBroker";
-        std::string outputServer = "ServidorCanalSalidaBrokerBroker";
-
-        // Create the servers to receive the connections from other Brokers
-        serversManager.createBrokerServer(inputServer.c_str(), brokerNumber);
-        serversManager.createBrokerServer(outputServer.c_str(), brokerNumber);
-
-        // Then, connect to other Brokers
-        for (int j = 1; j <= amountBrokers; ++j) {
-            if (brokerNumber != j) {
-                serversManager.createChannelToBroker("CanalEntradaBrokerBroker",
-                                                     brokerNumber, j);
-                serversManager.createChannelToBroker("CanalSalidaBrokerBroker",
-                                                     brokerNumber, j);
-            }
-        }
-    }
-}
-
-void obtenerTiposDeAgenteParaGrupo()
-{
-    Logger::logMessage(Logger::COMM, "Cargando especificaciones de grupos de memoria compartida.");
-
-    Parser parser;
-    std::ifstream stream;
-    stream.open(NOMBRE_ARCHIVO_GRUPOS);
-
-    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
-    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
-
-    IPC::Semaphore semInfoGruposShMemBrokers;
-    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
-
-    InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
-    semInfoGruposShMemBrokers.wait();
-
-    // Este read no esta bien, como no fue inicializada previamente, va a tener basura.
-    //shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
-
-    char buffer[1024];
-
-    do
-    {
-        int numeroGrupo = atoi(parser.obtenerProximoValor().c_str()) - ID_PRIMER_GRUPO_SHMEM;
-
-        if(numeroGrupo < 0)
-            continue;
-
-        sprintf(buffer, "Memoria compartida %d compartida por los agentes:", numeroGrupo + 400);
-
-        bool finDeLinea = false;
-        while(!finDeLinea)
-        {
-            std::string idAgente = parser.obtenerProximoValor();
-            if(idAgente.empty())
-            {
-                finDeLinea = true;
-                continue;
-            }
-
-            TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idAgente.c_str()));
-            infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[numeroGrupo][tipoAgenteEnBroker - 1] = 1;
-
-            strcat(buffer, idAgente.c_str());
-            strcat(buffer, " ");
-        }
-
-        Logger::logMessage(Logger::IMPORTANT, buffer);
-
-    } while(parser.obtenerLineaSiguiente(stream));
-
-
-    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
-        infoGrupoShMemBrokers.grupoCompleto[nroGrupo] = false;
-
-    shMemInfoGruposShMemBrokers.write(&infoGrupoShMemBrokers);
-    semInfoGruposShMemBrokers.signal();
-}
-
-void elegirDirectorios(int brokerNumber) {
-    switch (brokerNumber) {
-        case 1:
-            C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
-            C_DIRECTORY_ADM = DIRECTORY_ADM_1;
-            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
-            break;
-        case 2:
-            C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
-            C_DIRECTORY_ADM = DIRECTORY_ADM_2;
-            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
-            break;
-        case 3:
-            C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
-            C_DIRECTORY_ADM = DIRECTORY_ADM_3;
-            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
-            break;
-        case 4:
-            C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
-            C_DIRECTORY_ADM = DIRECTORY_ADM_4;
-            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
-            break;
-        default:
-            Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
-            abort();
-    }
-}
-
-
+}*/
