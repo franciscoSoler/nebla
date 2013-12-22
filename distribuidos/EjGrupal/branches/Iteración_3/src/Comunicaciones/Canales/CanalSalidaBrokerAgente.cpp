@@ -28,8 +28,9 @@ void elegirDirectorios(int brokerNumber);
 void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber);
 //void registrarDisponibilidadDeAgente(int tipoAgente);
 void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker);
-void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo);
+void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo, int nroBroker);
 void enviarMensajeIniciacionLider(int nroGrupo);
+bool brokerPerteneceAGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo, int nroBroker);
 
 int main(int argc, char* argv[]) {
     char buffer[TAM_BUFFER];
@@ -227,7 +228,7 @@ void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
             if(infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][tipoAgente - 1] != 0)
             {
                 infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][tipoAgente - 1]--;
-                verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo);
+                verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo, idBroker);
             }
         }
     }
@@ -236,7 +237,7 @@ void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
     semInfoGruposShMemBrokers.signal();
 }
 
-void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo)
+void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo, int nroBroker)
 {
     char buffer[1024];
 
@@ -247,11 +248,53 @@ void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers,
             return;
     }
 
-    sprintf(buffer, "Grupo %d completo, se manda mensaje al algoritmo de líder (PRESELECCIÓN LÍDER FORÁNEO).", nroGrupo + 400);
-    Logger::logMessage(Logger::IMPORTANT, buffer);
-
     infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
-    //enviarMensajeIniciacionLider(nroGrupo);
+
+    if(brokerPerteneceAGrupo(infoGrupoShMemBrokers, nroGrupo, nroBroker))
+    {
+        sprintf(buffer, "Broker %d pertenece a grupo %d que está completo, manda mensaje a algoritmo de líder.", nroBroker, nroGrupo);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+        enviarMensajeIniciacionLider(nroGrupo);
+    }
+
+    else
+    {
+        sprintf(buffer, "Broker %d no inicia su algoritmo de líder en grupo %d completo por no pertenecer a él.", nroBroker, nroGrupo);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+    }
+}
+
+/* Verifica si un broker dado tiene algún agente conectado que use una memoria compartida
+ * que pertenezca al grupo pasado por parámetro. */
+bool brokerPerteneceAGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo, int nroBroker)
+{
+    IPC::Semaphore semMutexDataInfoAgentes;
+    semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
+
+    /* Se debe verificar para todo tipo de agente... */
+    for(int nroTipoAgente = 0; nroTipoAgente < AMOUNT_AGENTS; nroTipoAgente++)
+    {
+        /* ...que ese tipo pertenezca al grupo... */
+        if(infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo] <= 0)
+            continue;
+
+        IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
+        shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, nroTipoAgente + 1);
+
+        DataInfoAgentes dataInfoAgentes;
+        semMutexDataInfoAgentes.wait(nroTipoAgente);
+        shMemDataInfoAgentes.read(&dataInfoAgentes);
+        semMutexDataInfoAgentes.signal(nroTipoAgente);
+
+        /* ...y que tenga un agente conectado al broker pasado. */
+        for(int nroAgenteEnBroker = 0; nroAgenteEnBroker < MAX_AMOUNT_AGENTS; nroAgenteEnBroker++)
+        {
+            if(dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker] == nroBroker)
+                return true;
+        }
+    }
+
+    return false;
 }
 
 void enviarMensajeIniciacionLider(int nroGrupo)
@@ -264,3 +307,4 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     msgAlgoritmo.status = INICIAR;
     colaLider.send(msgAlgoritmo);
 }
+
