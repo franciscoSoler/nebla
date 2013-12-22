@@ -196,7 +196,7 @@ typedef struct {
 typedef struct _InformacionGrupoMemBrokers
 {
     unsigned int tiposDeAgenteNecesariosPorGrupo[CANT_GRUPOS_SHMEM][AMOUNT_AGENTS];
-    unsigned int tiposDeAgenteRestantePorGrupo[CANT_GRUPOS_SHMEM][AMOUNT_AGENTS];
+    int tiposDeAgenteRestantePorGrupo[CANT_GRUPOS_SHMEM][AMOUNT_AGENTS];
     bool grupoCompleto[CANT_GRUPOS_SHMEM];
 } InformacionGrupoShMemBrokers;
 
