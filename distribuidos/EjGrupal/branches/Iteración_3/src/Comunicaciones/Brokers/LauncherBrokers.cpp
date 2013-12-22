@@ -183,14 +183,12 @@ void createIPCs() {
         semaforoSiguiente.createSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
         semaforoSiguiente.initializeSemaphore(0, 1);
         Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");
-               
 
         // Cola para que los procesos del Broker se comuniquen con el canal de salida
         // hacia otro Broker
         IPC::MsgQueue colaCanalSalidaBrokerBroker("colaCanalSalidaBrokerBroker");
         colaCanalSalidaBrokerBroker.create(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
-        
         // Obtengo la cola por la cual recibo los mensajes del algoritmo Líder
         IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
         colaLider.create(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
@@ -514,7 +512,9 @@ void obtenerTiposDeAgenteParaGrupo()
 
     InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
     semInfoGruposShMemBrokers.wait();
-    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+
+    // Este read no esta bien, como no fue inicializada previamente, va a tener basura.
+    //shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
 
     char buffer[1024];
 
@@ -525,22 +525,22 @@ void obtenerTiposDeAgenteParaGrupo()
         if(numeroGrupo < 0)
             continue;
 
-        sprintf(buffer, "Memoria compartida %d compartida por los brokers:", numeroGrupo + 400);
+        sprintf(buffer, "Memoria compartida %d compartida por los agentes:", numeroGrupo + 400);
 
         bool finDeLinea = false;
         while(!finDeLinea)
         {
-            std::string idBroker = parser.obtenerProximoValor();
-            if(idBroker.empty())
+            std::string idAgente = parser.obtenerProximoValor();
+            if(idAgente.empty())
             {
                 finDeLinea = true;
                 continue;
             }
 
-            TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idBroker.c_str()));
+            TipoAgente tipoAgenteEnBroker = static_cast<TipoAgente>(atoi(idAgente.c_str()));
             infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[numeroGrupo][tipoAgenteEnBroker - 1] = 1;
 
-            strcat(buffer, idBroker.c_str());
+            strcat(buffer, idAgente.c_str());
             strcat(buffer, " ");
         }
 
