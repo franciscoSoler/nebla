@@ -283,11 +283,15 @@ void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
         if(infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][tipoAgente - 1] != 0)
         {
             // El agente pertence al grupo
-            sprintf(buffer, "Se registra un agente de tipo %d (PRESELECCIÓN LÍDER).", tipoAgente);
+            sprintf(buffer, "Registro de agente de tipo %d en grupo %d desde el broker %d (PRESELECCIÓN LÍDER FORÁNEO).", tipoAgente, nroGrupo + 400, idBroker);
             Logger::logMessage(Logger::IMPORTANT, buffer);
-            //infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1]--;
-            infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][tipoAgente - 1] = idBroker;
-            verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo);
+
+            /* Se puede dar que haya más tipos de agentes inscriptos que necesarios (caso vendedores) */
+            if(infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][tipoAgente - 1] != 0)
+            {
+                infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][tipoAgente - 1]--;
+                verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo);
+            }
         }
     }
 
@@ -297,24 +301,20 @@ void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
 
 void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo)
 {
+    char buffer[1024];
+
     for(int nroAgente = 0; nroAgente < AMOUNT_AGENTS; nroAgente++)
     {
-        int necesario = infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroAgente];
-        if (necesario != 0) {
-            // Si es necesario, verifico si esta en algún broker
-            int broker = infoGrupoShMemBrokers->tiposDeAgenteRestantePorGrupo[nroGrupo][nroAgente];
-            if (broker == 0) {
-                // Si es necesario, y no esta en ningun broker, el grupo no esta completo
-                return;
-            }
-        }
+        int cantRestantes = infoGrupoShMemBrokers->tiposDeAgenteRestantesPorGrupo[nroGrupo][nroAgente];
+        if (cantRestantes != 0)
+            return;
     }
 
-    if (! infoGrupoShMemBrokers->grupoCompleto[nroGrupo]) {
-        // Solo inicio el algoritmo del lider si el grupo no estaba previamente completo
-        infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
-        //enviarMensajeIniciacionLider(nroGrupo);
-    }
+    sprintf(buffer, "Grupo %d completo, se manda mensaje al algoritmo de líder (PRESELECCIÓN LÍDER FORÁNEO).", nroGrupo + 400);
+    Logger::logMessage(Logger::IMPORTANT, buffer);
+
+    infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
+    //enviarMensajeIniciacionLider(nroGrupo);
 }
 
 void enviarMensajeIniciacionLider(int nroGrupo)
@@ -323,7 +323,7 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
-    msgAlgoritmo.mtype = static_cast<long>(nroGrupo);
+    msgAlgoritmo.mtype = nroGrupo;
     msgAlgoritmo.status = INICIAR;
     colaLider.send(msgAlgoritmo);
 }

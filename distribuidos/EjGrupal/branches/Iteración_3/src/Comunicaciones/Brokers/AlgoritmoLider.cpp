@@ -193,7 +193,7 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
 
     while ((!encontrado) && (siguiente != nroBroker)) {
         for (int i = 0; i < AMOUNT_AGENTS; ++i) {
-            if (infoGrupoShMemBrokers.tiposDeAgenteRestantePorGrupo[nroGrupo][i] == siguiente) {
+            if (infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][i] == siguiente) {
                 encontrado = true;
             }
         }

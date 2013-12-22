@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Launcher.cpp
  * Author: francisco
  *
@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
         createDirectory(DIRECTORY_APIEZAS);
                 
         createIPCs();
-        
+
         Util::createProcess("Robot5-Agv", 1);
         Util::createProcess("Robot5-Cinta", 1);
         Util::createProcess("AlmacenPiezas", 1);
