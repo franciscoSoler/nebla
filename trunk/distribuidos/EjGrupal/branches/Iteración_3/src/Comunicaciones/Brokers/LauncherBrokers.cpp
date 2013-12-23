@@ -180,23 +180,11 @@ void createIPCs() {
             shMemIdList.pop_front();
         }
 
-        // Obtengo la memoria compartida con el siguiente broker
-        IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-        siguienteSharedMemory.createSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
-        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
-
-        IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-        semaforoSiguiente.createSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
-        semaforoSiguiente.initializeSemaphore(0, 1);
-        Logger::logMessage(Logger::COMM, "Semaforo shMem SiguienteBroker creado");
-
         // Cola para que los procesos del Broker se comuniquen con el canal de salida
         // hacia otro Broker
         IPC::MsgQueue colaCanalSalidaBrokerBroker("colaCanalSalidaBrokerBroker");
         colaCanalSalidaBrokerBroker.create(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
-
-        
         // Creación de las memorias compartidas que poseen información sobre agentes
         // conectados
         IPC::Semaphore semMutexShMemInfoAgentes("semMutexShMemInfoAgentes");

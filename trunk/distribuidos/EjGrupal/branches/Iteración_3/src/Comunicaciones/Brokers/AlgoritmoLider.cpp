@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
                 // No hay otros brokers en el anillo, soy el lider
                 hayLider = true;
                 lider = idBroker;
-                //iniciarMemoria(idGrupo);
+                iniciarMemoria(idGrupo);
             }
             else {
                 enviarMensajeAlSiguiente(msgAlgoritmo,idBroker,idGrupo);
@@ -121,8 +121,7 @@ int main(int argc, char* argv[]) {
                         // Envio un mensaje indicando que soy el lider
                         enviarMensajeAlSiguiente(msgAlgoritmo, idBroker, idGrupo);
 
-
-                        //iniciarMemoria(idGrupo);
+                        iniciarMemoria(idGrupo);
                         lider = idBroker;
                         hayLider = true;
 

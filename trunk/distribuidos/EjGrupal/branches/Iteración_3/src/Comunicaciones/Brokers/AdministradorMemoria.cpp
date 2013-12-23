@@ -16,11 +16,14 @@
 
 #include "../Objects/CommPacketWrapper.h"
 
+#include <list>
+
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
+static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void elegirDirectorios(int brokerNumber);
-void establecerSiguiente(int nroBroker, int nroGrupo);
+int obtenerSiguiente(int nroBroker, int nroGrupo);
 
 int main(int argc, char* argv[]) {
     
@@ -66,12 +69,6 @@ int main(int argc, char* argv[]) {
         contadoraSharedMemory.getSharedMemory(C_DIRECTORY_ADM, idMemoria);
         IPC::Semaphore semaforoContadora = IPC::Semaphore("Semaforo Contadora Pedidos");
         semaforoContadora.getSemaphore(C_DIRECTORY_ADM, idMemoria,1);
-
-        /* Obtengo la memoria compartida que indica el siguiente broker. */
-        IPC::SharedMemory<int> siguienteSharedMemory = IPC::SharedMemory<int>("Siguiente Broker Sh Mem");
-        siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
-        IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-        semaforoSiguiente.getSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
 
         char bufferMsgQueue[MSG_BROKER_SIZE];
         //char directorioIPC[DIR_FIXED_SIZE];
@@ -124,10 +121,7 @@ int main(int argc, char* argv[]) {
             }
             
             // Obtengo el siguiente broker del anillo
-            int siguiente;
-            semaforoSiguiente.wait();
-            siguienteSharedMemory.read(&siguiente);
-            semaforoSiguiente.signal();
+            int siguiente = obtenerSiguiente(brokerNumber,idMemoria);
 
             sprintf(buffer, "No realizo mas pedidos, envio shMem al siguiente broker: %d", siguiente);
             Logger::logMessage(Logger::IMPORTANT, buffer);
@@ -168,27 +162,95 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
+int obtenerSiguiente(int nroBroker, int nroGrupo)
+{
+    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+
+    IPC::Semaphore semInfoGruposShMemBrokers;
+    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+
+    InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
+    semInfoGruposShMemBrokers.wait();
+    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+    semInfoGruposShMemBrokers.signal();
+
+    IPC::Semaphore semMutexDataInfoAgentes;
+    semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
+
+
+    std::list<int> brokersEnElGrupo;
+    for (int i = 0; i < AMOUNT_AGENTS; ++i) {
+        // Ojo el 400
+        if (infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo-400][i] > 0) {
+            // El agente pertence al grupo, debo verificar a que broker esta conectado
+            IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
+            shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, i + 1);
+
+            DataInfoAgentes dataInfoAgentes;
+            semMutexDataInfoAgentes.wait(i);
+            shMemDataInfoAgentes.read(&dataInfoAgentes);
+            semMutexDataInfoAgentes.signal(i);
+
+            for(int nroAgenteEnBroker = 0; nroAgenteEnBroker < MAX_AMOUNT_AGENTS; nroAgenteEnBroker++) {
+                if (dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker] != 0) {
+                    brokersEnElGrupo.push_front(dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker]);
+                }
+            }
+        }
+    }
+
+    /*char buffer[TAM_BUFFER];
+    sprintf (buffer, "Brokers que pertencen al grupo %d:",nroGrupo);
+    for (std::list<int>::iterator it = brokersEnElGrupo.begin(); it != brokersEnElGrupo.end(); ++it) {
+        char otroBuffer[TAM_BUFFER];
+        sprintf(otroBuffer, "%d|", (*it));
+        strcat(buffer,otroBuffer);
+    }
+    Logger::logMessage(Logger::DEBUG, buffer);*/
+
+    int siguiente = (nroBroker % 4)+1;
+    bool encontrado = false;
+
+    while (!encontrado) {
+        for (std::list<int>::iterator it = brokersEnElGrupo.begin(); it != brokersEnElGrupo.end(); ++it) {
+            if ((*it) == siguiente) {
+                encontrado = true;
+            }
+        }
+        if (! encontrado) {
+            siguiente = (siguiente % 4)+1;
+        }
+    }
+
+    /*char buffer[TAM_BUFFER];
+    sprintf(buffer, "Siguiente: %d", siguiente);
+    Logger::logMessage(Logger::DEBUG, buffer);*/
+
+    return siguiente;
+}
+
 void elegirDirectorios(int brokerNumber) {
     switch (brokerNumber) {
         case 1:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;
             C_DIRECTORY_ADM = DIRECTORY_ADM_1;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_1;
             break;
         case 2:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_2;
             C_DIRECTORY_ADM = DIRECTORY_ADM_2;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_2;
             break;
         case 3:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_3;
             C_DIRECTORY_ADM = DIRECTORY_ADM_3;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_3;
             break;
         case 4:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_4;
             C_DIRECTORY_ADM = DIRECTORY_ADM_4;
-            // C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
+            C_DIRECTORY_INFO_AGENTES = DIRECTORY_INFO_AGENTES_4;
             break;
         default:
             Logger::logMessage(Logger::ERROR, "Error al elegir directorios del Broker");
