@@ -17,6 +17,8 @@
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ServersManager.h>
 
+#include <ConfigFileParser/ConfigFileParser.h>
+
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
@@ -110,7 +112,7 @@ int main(int argc, char* argv[]) {
                 abort();
             }
             
-            Logger::logMessage(Logger::IMPORTANT, "Recibio mensaje");
+            Logger::logMessage(Logger::COMM, "Recibio mensaje");
 
             // Actúo en función del mensaje recibido
             MsgCanalEntradaBrokerBroker mensaje;
@@ -150,7 +152,7 @@ int main(int argc, char* argv[]) {
                 // TODO: hacer este mensaje francisco, no seas choto.... jaja
                 // se la da al administrador_Memoria!!!
                 
-                Logger::logMessage(Logger::IMPORTANT, "el mensaje llego del otro broker, se la doy al administrador");
+                Logger::logMessage(Logger::COMM, "el mensaje llego del otro broker, se la doy al administrador");
                 MsgEntregaMemoriaAdministrador msg;
                 memcpy(&msg, mensaje.msg, sizeof(MsgEntregaMemoriaAdministrador));
 
@@ -159,7 +161,7 @@ int main(int argc, char* argv[]) {
                 colaAdministrador.send(msg);
             }
             else if ( mensaje.tipoMensaje == MENSAJE_LIDER ) {
-                Logger::logMessage(Logger::IMPORTANT, "el mensaje de lider llego del otro broker, se la doy al algoritmo del lider");
+                Logger::logMessage(Logger::COMM, "el mensaje de lider llego del otro broker, se la doy al algoritmo del lider");
                 MsgAlgoritmoLider msg;
                 memcpy(&msg, mensaje.msg, sizeof(MsgAlgoritmoLider));
                 
@@ -370,7 +372,17 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     sprintf(buffer, "Envio mensaje inicializacion para el grupo %d",nroGrupo);
     Logger::logMessage(Logger::DEBUG, buffer);
 
-    IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
+    // Semaforo de bloqueo de los algoritmo de lider
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
+    cfg->parse();
+    std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
+    int listSize = sharedMemoryListIds.size();
+    IPC::Semaphore semaforoLider = IPC::Semaphore("Semaforo Bloqueo Lider");
+    semaforoLider.getSemaphore(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER, listSize);
+
+    semaforoLider.signal(nroGrupo);
+
+    /*IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
@@ -378,5 +390,5 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     msgAlgoritmo.mtype = nroGrupo+400;
     msgAlgoritmo.uid = 0;
     msgAlgoritmo.status = INICIAR;
-    colaLider.send(msgAlgoritmo);
+    colaLider.send(msgAlgoritmo);*/
 }

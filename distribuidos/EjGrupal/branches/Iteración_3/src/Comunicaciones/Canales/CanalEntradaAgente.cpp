@@ -68,8 +68,7 @@ int main(int argc, char* argv[]) {
     
         while( true ) {
             if ( socketBroker->receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
-                Logger::logMessage(Logger::ERROR, "Error al "
-                        "recibir mensajes del broker");
+                Logger::logMessage(Logger::ERROR, "Error al recibir mensajes del broker");
                 socketBroker->destroy();
                 abort();
             }

@@ -18,6 +18,7 @@
 #include <Comunicaciones/Objects/CommPacketWrapper.h>
 #include <Socket/SocketStream.h>
 
+
 #include "middlewareCommon.h"
 
 static const char* C_DIRECTORY_BROKER = NULL;
@@ -26,7 +27,7 @@ static const char* C_DIRECTORY_ADM = NULL;
 
 void elegirDirectorios(int brokerNumber);
 void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber);
-//void registrarDisponibilidadDeAgente(int tipoAgente);
+
 void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker);
 void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int nroGrupo, int nroBroker);
 void enviarMensajeIniciacionLider(int nroGrupo);
@@ -305,7 +306,17 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     sprintf(buffer, "Envio mensaje inicializacion para el grupo %d",nroGrupo);
     Logger::logMessage(Logger::DEBUG, buffer);
 
-    IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
+    // Semaforo de bloqueo de los algoritmo de lider
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
+    cfg->parse();
+    std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
+    int listSize = sharedMemoryListIds.size();
+    IPC::Semaphore semaforoLider = IPC::Semaphore("Semaforo Bloqueo Lider");
+    semaforoLider.getSemaphore(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER, listSize);
+
+    semaforoLider.signal(nroGrupo);
+
+    /*IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
@@ -313,6 +324,6 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     msgAlgoritmo.mtype = nroGrupo + 400;
     msgAlgoritmo.uid = 0;
     msgAlgoritmo.status = INICIAR;
-    colaLider.send(msgAlgoritmo);
+    colaLider.send(msgAlgoritmo);*/
 }
 
