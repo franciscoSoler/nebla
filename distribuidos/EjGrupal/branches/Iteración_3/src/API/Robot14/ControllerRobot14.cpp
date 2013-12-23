@@ -14,6 +14,7 @@ ControllerRobot14::ControllerRobot14() {
         // Util::getInstance();
         Logger::setProcessInformation("Robot14:");
         estaMutex_R11_R14_tomado_ = false;
+        hiceWaitSobreEstadoRobot14_ = false;
         
         shMem_R11_R14_Data_ = new DataSM_R11_R14();
         shMem_R14_R16_Data_ = new DataSM_R14_R16();
@@ -80,12 +81,17 @@ void ControllerRobot14::comenzarATrabajar() {
             obtener_shMem_R11_R14();
             // shMem_R11_R14_Data_->setEstadoBloqueoRobot14(false);
             Logger::logMessage(Logger::TRACE, "Es desbloqueado. Procede a trabajar");
-            liberar_shMem_R11_R14();
+            liberar_shMem_R11_R14();           
         }
         else {
+            if ( hiceWaitSobreEstadoRobot14_ ) {
+                semR14_Cinta13.wait();
+            }
             Logger::logMessage(Logger::TRACE, "Hay cajas en las cintas. Procede a trabajar");
             liberar_shMem_R11_R14();
         }
+
+        hiceWaitSobreEstadoRobot14_ = false;
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
@@ -209,6 +215,7 @@ void ControllerRobot14::depositarCajaEnEstadoConCarga(Caja & caja) {
 
         setEstado( getEstadoDurmiendo() );
         shMem_R11_R14_Data_->setEstadoBloqueoRobot14(true);
+        hiceWaitSobreEstadoRobot14_ = true;
         Logger::logMessage(Logger::TRACE, "No hay cajas en ambas cintas. Setea su estado a bloqueado");
     }
     else {
@@ -263,10 +270,10 @@ bool ControllerRobot14::obtener_shMem_R11_R14() {
             Logger::logMessage(Logger::IMPORTANT, "robot 14 bloqueado");
 
 
-        sprintf(this->buffer_, "cantElementos cinta 0: %d", shMem_R11_R14_Data_->getCantidadElementosEnCinta(1));
+        sprintf(this->buffer_, "cantElementos cinta 1: %d", shMem_R11_R14_Data_->getCantidadElementosEnCinta(1));
         Logger::logMessage(Logger::IMPORTANT, this->buffer_);
 
-        sprintf(this->buffer_, "cantElementos cinta 1: %d", shMem_R11_R14_Data_->getCantidadElementosEnCinta(2));
+        sprintf(this->buffer_, "cantElementos cinta 2: %d", shMem_R11_R14_Data_->getCantidadElementosEnCinta(2));
         Logger::logMessage(Logger::IMPORTANT, this->buffer_);
 
         estaMutex_R11_R14_tomado_ = true;

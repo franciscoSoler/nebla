@@ -31,7 +31,7 @@ public:
     SerializedData serializeData();
     void deserializeData(SerializedData data);
     
-    virtual ~DataSM_R11_R14();
+    virtual ~DataSM_R11_R14();    
     
 private:
     Cinta<Caja, CINTA_13_CAPACITY> cinta_[AMOUNT_CINTA_13];
