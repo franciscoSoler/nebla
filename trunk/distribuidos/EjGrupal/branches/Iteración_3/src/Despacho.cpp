@@ -120,6 +120,8 @@ void pedidoOrdenDeCompra(autoPtrControllerDespacho & controller,
 
     OrdenDeCompra odc = pedido.odc_;
 
+    Logger::logMessage(Logger::DEBUG, "Recibe ODC");
+
     // Al recibir la ODC, se verifica si algun pedido se encuentra en stock, y se
     // envia mensaje al cliente para que venga a retirar el mismo
     for (int i = 0; i < CANTIDAD_PRODUCTOS; ++i) {

@@ -111,6 +111,11 @@ int main(int argc, char** argv) {
                 if (!agregarPantalla(controladorRobot11, nroRobot, piezas.tipoPantalla, posicionPieza))
                     controladorRobot11->pedirPiezaAlAGV(piezas.tipoPantalla.tipoPieza, posicionPieza);
                     //controladorRobot11->pedirPiezaAlAGV(piezas.tipoPantalla.tipoPieza);
+
+                char buffer[TAM_BUFFER];
+                sprintf(buffer, "Cantidad de piezas restantes a agregar: %d", piezas.tipoPantalla.cantidad);
+                Logger::logMessage(Logger::TRACE, buffer);
+
                 piezas.tipoPantalla.cantidad--;
                 if (piezas.tipoPantalla.cantidad == 0)
                     break;

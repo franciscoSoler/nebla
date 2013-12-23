@@ -17,6 +17,7 @@
 #include <Comunicaciones/Objects/MiddlewareAPI.h>
 #include <ConfigFileParser/ConfigFileParser.h>
 #include <memory>
+#include <assert.h>
 
 ControladorVendedor::ControladorVendedor()
 {
@@ -399,18 +400,24 @@ int ControladorVendedor::obtenerCantidadMinimaDeProduccion(int numeroProducto)
     stream.open(NOMBRE_ARCHIVO_PRODUCTOS);
     Parser parser;
     this->buscarUbicacionDeProductoEnArchivo(parser, stream, numeroProducto);
+    parser.obtenerProximoValor();
     string cantMinimaProduccionString = parser.obtenerProximoValor();
-    cantMinimaProduccionString = parser.obtenerProximoValor();
+    Logger::logMessage(Logger::DEBUG, "Cantidad Mínima: " + cantMinimaProduccionString);
     int cantMinimaProduccion = atoi(cantMinimaProduccionString.c_str());
     
     char mensajePantalla[256];
     sprintf(mensajePantalla, "La cantidad minima de produccion de producto %d es %d.", numeroProducto, cantMinimaProduccion);
+
+    if ( cantMinimaProduccion == 0 ) {
+        Logger::logMessage(Logger::ERROR, "Error al parsear la cantidad mínima");
+        abort();
+    }
     Logger::logMessage(Logger::TRACE, mensajePantalla);
     
     return cantMinimaProduccion;
 }
 
-void ControladorVendedor::buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto)
+void ControladorVendedor::buscarUbicacionDeProductoEnArchivo(Parser & parser, ifstream& stream, int numeroProducto)
 {
     bool continuaArchivo = true;
     int ultimoNumeroProductoLeido = 0;

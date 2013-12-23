@@ -18,7 +18,7 @@ bool Parser::obtenerLineaSiguiente(ifstream& stream)
 
 string Parser::obtenerProximoValor()
 {    
-    char* valor;
+    char* valor = NULL;
     if(nroTokenLinea == 0)
         valor = strtok(bufferLinea, DELIMITADOR);
     else
@@ -26,7 +26,7 @@ string Parser::obtenerProximoValor()
     
     this->nroTokenLinea++;
     
-    if(!valor)
+    if( valor == NULL )
         return "";
     return string(valor);
 }
