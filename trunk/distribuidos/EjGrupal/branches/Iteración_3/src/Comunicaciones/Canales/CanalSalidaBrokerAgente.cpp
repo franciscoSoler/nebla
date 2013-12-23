@@ -243,22 +243,23 @@ void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers,
 
     for(int nroAgente = 0; nroAgente < AMOUNT_AGENTS; nroAgente++)
     {
-        int cantRestantes = infoGrupoShMemBrokers->tiposDeAgenteRestantesPorGrupo[nroGrupo][nroAgente];
-        if (cantRestantes != 0)
-            return;
+        int necesarios = infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroAgente];
+        if (necesarios > 0) {
+            int restantes = infoGrupoShMemBrokers->tiposDeAgenteRestantesPorGrupo[nroGrupo][nroAgente];
+            if (restantes > 0) {
+                return;
+            }
+        }
     }
 
-    infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
+    //infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
 
-    if(brokerPerteneceAGrupo(infoGrupoShMemBrokers, nroGrupo, nroBroker))
-    {
+    if(brokerPerteneceAGrupo(infoGrupoShMemBrokers, nroGrupo, nroBroker)) {
         sprintf(buffer, "Broker %d pertenece a grupo %d que está completo, manda mensaje a algoritmo de líder.", nroBroker, nroGrupo);
         Logger::logMessage(Logger::IMPORTANT, buffer);
         enviarMensajeIniciacionLider(nroGrupo);
     }
-
-    else
-    {
+    else {
         sprintf(buffer, "Broker %d no inicia su algoritmo de líder en grupo %d completo por no pertenecer a él.", nroBroker, nroGrupo);
         Logger::logMessage(Logger::IMPORTANT, buffer);
     }
@@ -275,8 +276,9 @@ bool brokerPerteneceAGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, 
     for(int nroTipoAgente = 0; nroTipoAgente < AMOUNT_AGENTS; nroTipoAgente++)
     {
         /* ...que ese tipo pertenezca al grupo... */
-        if(infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo] <= 0)
+        if(infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroTipoAgente] <= 0) {
             continue;
+        }
 
         IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
         shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, nroTipoAgente + 1);
@@ -299,11 +301,16 @@ bool brokerPerteneceAGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, 
 
 void enviarMensajeIniciacionLider(int nroGrupo)
 {
+    char buffer[TAM_BUFFER];
+    sprintf(buffer, "Envio mensaje inicializacion para el grupo %d",nroGrupo);
+    Logger::logMessage(Logger::DEBUG, buffer);
+
     IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
     msgAlgoritmo.mtype = nroGrupo;
+    msgAlgoritmo.uid = 0;
     msgAlgoritmo.status = INICIAR;
     colaLider.send(msgAlgoritmo);
 }

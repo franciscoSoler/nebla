@@ -354,7 +354,7 @@ void obtenerTiposDeAgenteParaGrupo()
             infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroTipoAgente] = 0;
             infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][nroTipoAgente] = 0;
         }
-        infoGrupoShMemBrokers.grupoCompleto[nroGrupo] = false;
+        //infoGrupoShMemBrokers.grupoCompleto[nroGrupo] = false;
     }
 
     char buffer[1024];
@@ -393,15 +393,15 @@ void obtenerTiposDeAgenteParaGrupo()
     shMemInfoGruposShMemBrokers.write(&infoGrupoShMemBrokers);
     semInfoGruposShMemBrokers.signal();
 
-    /*for (int i = 0; i < CANT_GRUPOS_SHMEM; ++i) {
-        sprintf(buffer, "Grupo %d",i);
+    for (int i = 0; i < CANT_GRUPOS_SHMEM; ++i) {
+        sprintf(buffer, "Grupo %d -\t",i);
         for (int j = 0; j < AMOUNT_AGENTS; ++j) {
             char otroBuffer[250];
             sprintf(otroBuffer, "%d|", infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[i][j]);
             strcat(buffer, otroBuffer);
         }
         Logger::logMessage(Logger::IMPORTANT,buffer);
-    }*/
+    }
 }
 
 void elegirDirectorios(int brokerNumber) {
