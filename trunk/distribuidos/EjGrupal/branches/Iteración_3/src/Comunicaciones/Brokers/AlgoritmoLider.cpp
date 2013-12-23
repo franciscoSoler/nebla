@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
                 Logger::logMessage(Logger::ERROR, "Se esta intentando iniciar el algoritmo del lider con un mensaqe invalido.");
                 abort();
             }*/
-            semaforoLider.wait(idGrupo-400);
+            semaforoLider.wait(idGrupo-ID_PRIMER_GRUPO_SHMEM);
             sprintf(buffer, "Se inicia el algoritmo");
             Logger::logMessage(Logger::DEBUG, buffer);
 
@@ -202,8 +202,7 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
 
     std::list<int> brokersEnElGrupo;
     for (int i = 0; i < AMOUNT_AGENTS; ++i) {
-        // Ojo el 400
-        if (infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo-400][i] > 0) {
+        if (infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo-ID_PRIMER_GRUPO_SHMEM][i] > 0) {
             // El agente pertence al grupo, debo verificar a que broker esta conectado
             IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
             shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, i + 1);

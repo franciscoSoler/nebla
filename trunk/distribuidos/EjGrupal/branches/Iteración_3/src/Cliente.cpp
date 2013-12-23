@@ -52,7 +52,7 @@ int main(int argc, char** argv)
     numCliente = controlador.obtenerNumeroCliente();
 
     if (numCliente == 0) {
-        sprintf(mensajePantalla, "No se puo obtener un numero de cliente (vendedores ocupados).");
+        sprintf(mensajePantalla, "No se pudo obtener un numero de cliente (vendedores ocupados).");
         Logger::logMessage(Logger::DEBUG, mensajePantalla);
         return 0;
     }            

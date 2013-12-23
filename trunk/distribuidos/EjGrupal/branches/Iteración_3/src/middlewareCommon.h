@@ -188,7 +188,6 @@ typedef struct {
 } TriadaInfoAgente;
 
 #define CANT_GRUPOS_SHMEM       14
-#define CANT_BROKERS            4
 #define NOMBRE_ARCHIVO_GRUPOS   "infoShMemTipoAgente.csv"
 #define ID_PRIMER_GRUPO_SHMEM   400
 
