@@ -98,6 +98,7 @@ int main(int argc, char* argv[]) {
             if (idBrokerSiguiente == idBroker) {
                 // No hay otros brokers en el anillo, soy el lider
                 hayLider = true;
+                lider = idBroker;
                 //iniciarMemoria(idGrupo);
             }
             else {
@@ -204,20 +205,11 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
             shMemDataInfoAgentes.read(&dataInfoAgentes);
             semMutexDataInfoAgentes.signal(i);
 
-            for(int nroAgenteEnBroker = 0; nroAgenteEnBroker < MAX_AMOUNT_AGENTS; nroAgenteEnBroker++)
-            {
-                char buffer[233];
-                sprintf(buffer,"Analizando broker Nº %d",dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker]);
-                Logger::logMessage(Logger::IMPORTANT, buffer);
-
+            for(int nroAgenteEnBroker = 0; nroAgenteEnBroker < MAX_AMOUNT_AGENTS; nroAgenteEnBroker++) {
                 if (dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker] != 0) {
-                    sprintf(buffer,"Agregando broker Nº %d",dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker]);
-                    Logger::logMessage(Logger::IMPORTANT, buffer);
-
                     brokersEnElGrupo.push_front(dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker]);
                 }
             }
-
         }
     }
 
