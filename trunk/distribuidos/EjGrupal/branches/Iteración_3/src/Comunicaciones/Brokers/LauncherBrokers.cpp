@@ -243,6 +243,17 @@ void createIPCs() {
         semInfoGruposShMemBrokers.initializeSemaphore(0, 1);
         Logger::logMessage(Logger::COMM, "sem InforGruposBrokers creado.");
 
+        // Semaforo de bloqueo de los algoritmo de lider
+        std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
+        cfg->parse();
+        std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
+        int listSize = sharedMemoryListIds.size();
+        IPC::Semaphore semaforoLider = IPC::Semaphore("Semaforo Bloqueo Lider");
+        semaforoLider.createSemaphore(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER, listSize);
+        for (int i = 0; i < listSize; ++i) {
+            semaforoLider.initializeSemaphore(i,0);
+        }
+
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR, e.get_error_description().c_str());
