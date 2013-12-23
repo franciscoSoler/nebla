@@ -62,7 +62,7 @@ private:
     pedido_fabricacion_t reservarPedido(pedido_t pedido, bool* pedidoEnStock);
     void efectuarReserva(pedido_t pedido, pedido_fabricacion_t pedidoProduccion);
     int obtenerCantidadMinimaDeProduccion(int numProducto);
-    void buscarUbicacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numeroProducto);
+    void buscarUbicacionDeProductoEnArchivo(Parser & parser, ifstream& stream, int numeroProducto);
 
     void confirmarPedidos(pedido_fabricacion_t pedidos[], OrdenDeCompra ordenDeCompra, int cantPedidos);
 

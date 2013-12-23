@@ -50,7 +50,6 @@ private:
     IPC::BufferCanastosSharedMemory shMemBufferCanastos[CANTIDAD_AGVS];
     COMM::CommSemaphoreMutex<BufferCanastos> semMemCanastos;
 
-    void buscarUbiacionDeProductoEnArchivo(Parser parser, ifstream& stream, int numProducto);
     void imprimirEspecificacionProducto(EspecifProd especifProd);
 
 };
