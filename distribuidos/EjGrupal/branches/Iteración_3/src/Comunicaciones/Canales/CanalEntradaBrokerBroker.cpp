@@ -198,7 +198,7 @@ int main(int argc, char* argv[]) {
                 shMemDataInfoAgentes.write( &dataInfoAgentes );
                 semMutexDataInfoAgentes.signal( triada.idTipoAgente -1 );
 
-                registrarDisponibilidadDeAgente(triada.idTipoAgente, triada.idBroker);
+                registrarDisponibilidadDeAgente(triada.idTipoAgente, brokerNumber);
             }
         }
     }
@@ -306,12 +306,16 @@ void verificarGrupoCompleto(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers,
 
     for(int nroAgente = 0; nroAgente < AMOUNT_AGENTS; nroAgente++)
     {
-        int cantRestantes = infoGrupoShMemBrokers->tiposDeAgenteRestantesPorGrupo[nroGrupo][nroAgente];
-        if (cantRestantes != 0)
-            return;
+        int necesarios = infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroAgente];
+        if (necesarios > 0) {
+            int restantes = infoGrupoShMemBrokers->tiposDeAgenteRestantesPorGrupo[nroGrupo][nroAgente];
+            if (restantes > 0) {
+                return;
+            }
+        }
     }
 
-    infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
+    //infoGrupoShMemBrokers->grupoCompleto[nroGrupo] = true;
 
     if(brokerPerteneceAGrupo(infoGrupoShMemBrokers, nroGrupo, nroBroker))
     {
@@ -338,7 +342,7 @@ bool brokerPerteneceAGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, 
     for(int nroTipoAgente = 0; nroTipoAgente < AMOUNT_AGENTS; nroTipoAgente++)
     {
         /* ...que ese tipo pertenezca al grupo... */
-        if(infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo] <= 0)
+        if(infoGrupoShMemBrokers->tiposDeAgenteNecesariosPorGrupo[nroGrupo][nroTipoAgente] <= 0)
             continue;
 
         IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;

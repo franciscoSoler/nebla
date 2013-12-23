@@ -48,18 +48,18 @@ typedef enum {
 
 typedef enum {
     ID_TIPO_VACIO = 0,
-    ID_TIPO_CLIENTE,
-    ID_TIPO_VENDEDOR,
-    ID_TIPO_ROBOT5_CINTA,
-    ID_TIPO_ROBOT5_AGV,
-    ID_TIPO_AP,
-    ID_TIPO_ROBOT11,
-    ID_TIPO_ROBOT12,
-    ID_TIPO_AGV,
-    ID_TIPO_ROBOT14,
-    ID_TIPO_ROBOT16_CINTA,
-    ID_TIPO_ROBOT16_DESPACHO,
-    ID_TIPO_DESPACHO
+    ID_TIPO_CLIENTE = 1,
+    ID_TIPO_VENDEDOR = 2,
+    ID_TIPO_ROBOT5_CINTA = 3,
+    ID_TIPO_ROBOT5_AGV = 4,
+    ID_TIPO_AP = 5,
+    ID_TIPO_ROBOT11 = 6,
+    ID_TIPO_ROBOT12 = 7,
+    ID_TIPO_AGV = 8,
+    ID_TIPO_ROBOT14 = 9,
+    ID_TIPO_ROBOT16_CINTA = 10,
+    ID_TIPO_ROBOT16_DESPACHO = 11,
+    ID_TIPO_DESPACHO = 12
 } TipoAgente;
 
 #define DIR_FIXED_SIZE          30
@@ -197,7 +197,7 @@ typedef struct _InformacionGrupoMemBrokers
 {
     unsigned int tiposDeAgenteNecesariosPorGrupo[CANT_GRUPOS_SHMEM][AMOUNT_AGENTS];
     unsigned int tiposDeAgenteRestantesPorGrupo[CANT_GRUPOS_SHMEM][AMOUNT_AGENTS];
-    bool grupoCompleto[CANT_GRUPOS_SHMEM];
+    //bool grupoCompleto[CANT_GRUPOS_SHMEM];
 } InformacionGrupoShMemBrokers;
 
 

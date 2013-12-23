@@ -187,18 +187,53 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
     shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
     semInfoGruposShMemBrokers.signal();
 
+    IPC::Semaphore semMutexDataInfoAgentes;
+    semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
+
+
+    std::list<int> brokersEnElGrupo;
+    for (int i = 0; i < AMOUNT_AGENTS; ++i) {
+        if (infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][i] > 0) {
+            // El agente pertence al grupo, debo verificar a que broker esta conectado
+            IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
+            shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, i + 1);
+
+            DataInfoAgentes dataInfoAgentes;
+            semMutexDataInfoAgentes.wait(i);
+            shMemDataInfoAgentes.read(&dataInfoAgentes);
+            semMutexDataInfoAgentes.signal(i);
+
+            for(int nroAgenteEnBroker = 0; nroAgenteEnBroker < MAX_AMOUNT_AGENTS; nroAgenteEnBroker++)
+            {
+                if (dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker] != 0) {
+                    brokersEnElGrupo.push_front(dataInfoAgentes.agenteEnBroker[nroAgenteEnBroker]);
+                }
+            }
+
+        }
+    }
+
+    char buffer[TAM_BUFFER];
+    sprintf (buffer, "Brokers que pertences al grupo %d:",nroGrupo);
+    for (std::list<int>::iterator it = brokersEnElGrupo.begin(); it != brokersEnElGrupo.end(); ++it) {
+        char otroBuffer[TAM_BUFFER];
+        sprintf(otroBuffer, "%d|", (*it));
+        strcat(buffer,otroBuffer);
+    }
+    Logger::logMessage(Logger::DEBUG, buffer);
 
     int siguiente = (nroBroker % 4)+1;
     bool encontrado = false;
 
     while ((!encontrado) && (siguiente != nroBroker)) {
-        for (int i = 0; i < AMOUNT_AGENTS; ++i) {
-            if (infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][i] == siguiente) {
+
+        for (std::list<int>::iterator it = brokersEnElGrupo.begin(); it != brokersEnElGrupo.end(); ++it) {
+            if ((*it) == siguiente) {
                 encontrado = true;
             }
-        }
-        if (!encontrado) {
-            siguiente = (siguiente % 4)+1;
+            if (!encontrado) {
+                siguiente = (siguiente % 4)+1;
+            }
         }
     }
     return siguiente;
