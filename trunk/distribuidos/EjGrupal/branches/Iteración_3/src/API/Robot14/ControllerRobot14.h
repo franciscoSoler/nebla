@@ -60,6 +60,7 @@ private:
     char buffer_[255];
     // True si se tomó el mutex de la smMem_R11_R14 y no se liberó el mismo
     bool estaMutex_R11_R14_tomado_;
+    bool hiceWaitSobreEstadoRobot14_;
     
     DataSM_R11_R14* shMem_R11_R14_Data_;
     DataSM_R14_R16* shMem_R14_R16_Data_;

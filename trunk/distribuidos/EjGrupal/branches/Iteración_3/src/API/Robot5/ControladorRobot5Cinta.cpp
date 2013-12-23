@@ -47,7 +47,7 @@ void ControladorRobot5Cinta::iniciarControlador()
 	/* Obtengo la memoria compartida del estado del robot 5 y su semaforo de acceso */
 	estadoRobot5.getSharedMemory(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 	semaforoAccesoEstadoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5, 1);
-    semaforoAccesoEstadoRobot5.setShMem(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
+        semaforoAccesoEstadoRobot5.setShMem(DIRECTORY_ROBOT_5, ID_ESTADO_ROBOT_5);
 
 	semaforoBloqueoRobot5.getSemaphore(DIRECTORY_ROBOT_5, ID_SEM_BLOQUEO_ROBOT_5, 1);
 
