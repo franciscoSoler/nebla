@@ -201,6 +201,14 @@ int main(int argc, char* argv[]) {
         semInfoGruposShMemBrokers.destroy();
         Logger::logMessage(Logger::COMM, "sem InforGruposBrokers creado.");
         
+        // Semaforo de bloqueo de los algoritmo de lider
+        std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
+        int listSize = sharedMemoryListIds.size();
+        IPC::Semaphore semaforoLider = IPC::Semaphore("Semaforo Bloqueo Lider");
+        semaforoLider.getSemaphore(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER, listSize);
+        semaforoLider.destroy();
+
+
         ServersManager serversManager;
         serversManager.killServers( brokerNumber );
 

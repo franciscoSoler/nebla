@@ -36,12 +36,12 @@ int main(int argc, char* argv[]) {
     int idMemoria;
 
     if ( argParser.parseArgument(1, idMemoria) == -1 ) {
-        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 1");
+        Logger::logMessage(Logger::ERROR, "ERROR: parseArgument 1");
         exit(-1);
     }
 
     if ( argParser.parseArgument(2, brokerNumber) == -1 ) {
-        Logger::logMessage(Logger::COMM, "ERROR: parseArgument 2");
+        Logger::logMessage(Logger::ERROR, "ERROR: parseArgument 2");
         exit(-1);
     }
 
@@ -90,14 +90,14 @@ int main(int argc, char* argv[]) {
             semaforoContadora.signal();
 
             sprintf(buffer, "Tengo %d pedidos de memoria", cantidad);
-            Logger::logMessage(Logger::IMPORTANT, buffer);
+            //Logger::logMessage(Logger::DEBUG, buffer);
 
             for (int i = 0; i < cantidad; ++i) {
                 // Obtengo un pedido por la memoria
                 MsgPedidoMemoriaAdministrador mensajePedido;
                 colaPedidosMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
                 memcpy(&mensajePedido, bufferMsgQueue, sizeof(MsgPedidoMemoriaAdministrador));
-                Logger::logMessage(Logger::DEBUG, "Recibe mensaje de ColaPedidoMemoria");
+                //Logger::logMessage(Logger::DEBUG, "Recibe mensaje de ColaPedidoMemoria");
 
                 // Envio a la cola del agente que realizo el pedido, la memoria compartida
                 CommPacketWrapper wrapper;
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
             int siguiente = obtenerSiguiente(brokerNumber,idMemoria);
 
             sprintf(buffer, "No realizo mas pedidos, envio shMem al siguiente broker: %d", siguiente);
-            Logger::logMessage(Logger::IMPORTANT, buffer);
+            //Logger::logMessage(Logger::DEBUG, buffer);
             
             // Se pone este sleep para que el token no avance muy rapido cuando no hay pedidos
             // del mismo
@@ -133,9 +133,8 @@ int main(int argc, char* argv[]) {
             }
 
             if (siguiente == brokerNumber) {
-                // WARNING: Agrego un sleep para que si no hay mensajes, no se quede en un busy wait!!
                 // El siguiente broker soy yo mismo, por lo tanto, "me reenvio" la memoria.
-                Logger::logMessage(Logger::IMPORTANT, "estoy autoenviando la shMem");
+                //Logger::logMessage(Logger::DEBUG, "estoy autoenviando la shMem");
                 memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
                 colaMemoria.send(bufferMsgQueue, MSG_BROKER_SIZE);
             }
@@ -147,9 +146,6 @@ int main(int argc, char* argv[]) {
                 MsgCanalSalidaBrokerBroker msgSalida;
                 msgSalida.mtype = siguiente;
                 memcpy(&msgSalida.msg, &msgEntrada, sizeof(MsgCanalEntradaBrokerBroker));
-                // Le envio la memoria al siguietne broker, por ahora se vuelve a enviar a la cola de entrada del administrador
-                //memcpy(bufferMsgQueue, &msgSalida, sizeof(MsgCanalSalidaBrokerBroker));
-                //colaBrokers.send(bufferMsgQueue, MSG_BROKER_SIZE);
                 colaBrokers.send(msgSalida);
             }
         }
@@ -177,7 +173,6 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
 
     IPC::Semaphore semMutexDataInfoAgentes;
     semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
-
 
     std::list<int> brokersEnElGrupo;
     for (int i = 0; i < AMOUNT_AGENTS; ++i) {

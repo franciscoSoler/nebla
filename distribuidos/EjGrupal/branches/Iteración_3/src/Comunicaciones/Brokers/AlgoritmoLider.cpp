@@ -65,6 +65,14 @@ int main(int argc, char* argv[]) {
    
     elegirDirectorios( idBroker );
 
+    // Semaforo de bloqueo de los algoritmo de lider
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
+    cfg->parse();
+    std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
+    int listSize = sharedMemoryListIds.size();
+    IPC::Semaphore semaforoLider = IPC::Semaphore("Semaforo Bloqueo Lider");
+    semaforoLider.getSemaphore(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER, listSize);
+
     // Obtengo la cola por la cual recibo los mensajes del algoritmo
     IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
@@ -74,7 +82,7 @@ int main(int argc, char* argv[]) {
             // Me bloqueo esperando que deba iniciar el algoritmo
             MsgAlgoritmoLider msgAlgoritmo;
 
-            char bufferMsgQueue[MSG_BROKER_SIZE];
+            /*char bufferMsgQueue[MSG_BROKER_SIZE];
             colaLider.recv(idGrupo, bufferMsgQueue, MSG_BROKER_SIZE);
             memcpy(&msgAlgoritmo, bufferMsgQueue, sizeof (MsgAlgoritmoLider));
 
@@ -82,8 +90,9 @@ int main(int argc, char* argv[]) {
                 // Para desbloquear el algoritmo del lider el primer mensage debe ser de INICIAR
                 Logger::logMessage(Logger::ERROR, "Se esta intentando iniciar el algoritmo del lider con un mensaqe invalido.");
                 abort();
-            }
-            sprintf(buffer, "Recibió mensaje de inicio, se inicia el algoritmo");
+            }*/
+            semaforoLider.wait(idGrupo-400);
+            sprintf(buffer, "Se inicia el algoritmo");
             Logger::logMessage(Logger::DEBUG, buffer);
 
             int lider = 0;
