@@ -176,8 +176,7 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
 
     std::list<int> brokersEnElGrupo;
     for (int i = 0; i < AMOUNT_AGENTS; ++i) {
-        // Ojo el 400
-        if (infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo-400][i] > 0) {
+        if (infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo-ID_PRIMER_GRUPO_SHMEM][i] > 0) {
             // El agente pertence al grupo, debo verificar a que broker esta conectado
             IPC::SharedMemory<DataInfoAgentes> shMemDataInfoAgentes;
             shMemDataInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, i + 1);
@@ -218,9 +217,9 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
         }
     }
 
-    /*char buffer[TAM_BUFFER];
+    char buffer[TAM_BUFFER];
     sprintf(buffer, "Siguiente: %d", siguiente);
-    Logger::logMessage(Logger::DEBUG, buffer);*/
+    Logger::logMessage(Logger::DEBUG, buffer);
 
     return siguiente;
 }

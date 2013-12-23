@@ -364,7 +364,7 @@ void obtenerTiposDeAgenteParaGrupo()
         if(numeroGrupo < 0)
             continue;
 
-        sprintf(buffer, "Memoria compartida %d compartida por los agentes:", numeroGrupo + 400);
+        sprintf(buffer, "Memoria compartida %d compartida por los agentes: ", numeroGrupo + ID_PRIMER_GRUPO_SHMEM);
 
         bool finDeLinea = false;
         while(!finDeLinea)
@@ -392,7 +392,7 @@ void obtenerTiposDeAgenteParaGrupo()
     semInfoGruposShMemBrokers.signal();
 
     for (int i = 0; i < CANT_GRUPOS_SHMEM; ++i) {
-        sprintf(buffer, "Grupo %d -\t",i);
+        sprintf(buffer, "Grupo %d -\t",i + ID_PRIMER_GRUPO_SHMEM);
         for (int j = 0; j < AMOUNT_AGENTS; ++j) {
             char otroBuffer[250];
             sprintf(otroBuffer, "%d|", infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[i][j]);

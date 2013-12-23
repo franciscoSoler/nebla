@@ -1,5 +1,5 @@
 # Variables Generales
-CantidadBrokers = 4
+CantidadBrokers = 3
 CantidadVendedores = 5
 ServidorCanalEntradaBrokerAgente-Dispatcher = CanalEntradaBrokerAgente
 ServidorCanalSalidaBrokerAgente-Dispatcher = CanalSalidaBrokerAgente
@@ -9,24 +9,16 @@ ServidorCanalSalidaBrokerBroker-Dispatcher = CanalSalidaBrokerBroker
 # Variables que indican a que Broker se conecta cada agente. Si el 
 # nùmero de broker es igual a 0, implica que el Agente se conectarà
 # a un Broker aleatorio entre los disponibles
-ClientesEnBroker = 3
-VendedoresEnBroker = 1
-Robot5EnBroker = 2
-AlmacenDePiezasEnBroker = 3
-Robots11EnBroker = 4
-Robots12EnBroker = 1
-AGVsEnBroker = 2
-Robot14EnBroker = 3
-Robot16EnBroker = 4
-DespachoEnBroker = 1
-
-# Data de ServidorCanalEntradaBrokerAgente
-ServidorCanalEntradaBrokerAgente-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerAgente-Port = 5000
-
-# Data de ServidorCanalSalidaBrokerAgente
-ServidorCanalSalidaBrokerAgente-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerAgente-Port = 5001
+ClientesEnBroker = 0
+VendedoresEnBroker = 0
+Robot5EnBroker = 0
+AlmacenDePiezasEnBroker = 0
+Robots11EnBroker = 0
+Robots12EnBroker = 0
+AGVsEnBroker = 0
+Robot14EnBroker = 0
+Robot16EnBroker = 0
+DespachoEnBroker = 0
 
 # IP del Servidor RPC
 RPCServer-Direccion = 127.0.0.1

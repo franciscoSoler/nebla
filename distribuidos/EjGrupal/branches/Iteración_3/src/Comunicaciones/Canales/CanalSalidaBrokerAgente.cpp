@@ -222,7 +222,8 @@ void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
         if(infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][tipoAgente - 1] != 0)
         {
             // El agente pertence al grupo
-            sprintf(buffer, "Registro de agente de tipo %d en grupo %d desde el broker %d (PRESELECCIÓN LÍDER FORÁNEO).", tipoAgente, nroGrupo + 400, idBroker);
+            sprintf(buffer, "Registro de agente de tipo %d en grupo %d desde el broker %d (PRESELECCIÓN LÍDER FORÁNEO).",
+                    tipoAgente, nroGrupo + ID_PRIMER_GRUPO_SHMEM, idBroker);
             Logger::logMessage(Logger::IMPORTANT, buffer);
 
             /* Se puede dar que haya más tipos de agentes inscriptos que necesarios (caso vendedores) */
@@ -320,8 +321,7 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
-    // OJO con el 400
-    msgAlgoritmo.mtype = nroGrupo + 400;
+    msgAlgoritmo.mtype = nroGrupo + ID_PRIMER_GRUPO_SHMEM;
     msgAlgoritmo.uid = 0;
     msgAlgoritmo.status = INICIAR;
     colaLider.send(msgAlgoritmo);*/
