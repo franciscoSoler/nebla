@@ -318,6 +318,8 @@ void iniciarMemoria(int idGrupo) {
         cinta6.cantLibres = BUFF_SIZE_CINTA_6;
         cinta6.puntoLectura = 0;
         cinta6.robot11Durmiendo = false;
+        for (int i = 0; i < BUFF_SIZE_CINTA_6; i++) cinta6.lugarVacio[i] = true;
+        mensajeMemoria.mtype = idGrupo;
         sprintf(buffer, "Se manda mensaje de inicio "
                 "a administrador de SharedMemory %ld", mensajeMemoria.mtype);
         Logger::logMessage(Logger::IMPORTANT, buffer);
