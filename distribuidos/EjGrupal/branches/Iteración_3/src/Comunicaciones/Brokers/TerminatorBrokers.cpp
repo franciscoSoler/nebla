@@ -119,17 +119,6 @@ int main(int argc, char* argv[]) {
             shMemListId.pop_front();
         }
 
-        // Obtengo la memoria compartida con el siguiente broker
-        IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-        siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
-        siguienteSharedMemory.destroy();
-        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker destruida");
-
-        IPC::Semaphore semaforoSiguiente = IPC::Semaphore("Semaforo Siguiente Broker");
-        semaforoSiguiente.getSemaphore(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE, 1);
-        semaforoSiguiente.destroy();
-        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker destruida");
-
         // Cola para que los procesos del Broker se comuniquen con el canal de salida
         // hacia otro Broker
 

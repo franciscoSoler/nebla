@@ -77,8 +77,7 @@ typedef enum {
 // struct TipoAgente - 1 (por el tipo ID_TIPO_VACIO)
 #define AMOUNT_AGENTS           12
 
-#define ID_SHMEM_SIGUIENTE      1
-#define ID_COMM_SEM_ENTRADA     2
+#define ID_COMM_SEM_ENTRADA     1
 
 #define ID_IPC_INFO_GRUPOS_BROKERS  6
 
