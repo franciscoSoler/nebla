@@ -163,7 +163,6 @@ void createIPCs() {
         colaBroker.create(C_DIRECTORY_BROKER, ID_TIPO_PEDIDO_MEMORIA);
         Logger::logMessage(Logger::COMM, "Cola Pedidos Memorias creada");
 
-        // Obtengo la cola por la cual recibo los mensajes del algoritmo Líder
         colaBroker.create(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
         Logger::logMessage(Logger::COMM, "Cola Algoritmo Lider creada");
 

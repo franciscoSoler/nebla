@@ -309,7 +309,8 @@ void enviarMensajeIniciacionLider(int nroGrupo)
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
-    msgAlgoritmo.mtype = nroGrupo;
+    // OJO con el 400
+    msgAlgoritmo.mtype = nroGrupo + 400;
     msgAlgoritmo.uid = 0;
     msgAlgoritmo.status = INICIAR;
     colaLider.send(msgAlgoritmo);
