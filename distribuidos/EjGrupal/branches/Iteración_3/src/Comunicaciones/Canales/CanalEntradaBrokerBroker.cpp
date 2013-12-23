@@ -366,11 +366,17 @@ bool brokerPerteneceAGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, 
 
 void enviarMensajeIniciacionLider(int nroGrupo)
 {
+    char buffer[TAM_BUFFER];
+    sprintf(buffer, "Envio mensaje inicializacion para el grupo %d",nroGrupo);
+    Logger::logMessage(Logger::DEBUG, buffer);
+
     IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
     colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
     MsgAlgoritmoLider msgAlgoritmo;
-    msgAlgoritmo.mtype = nroGrupo;
+    // OJO con el 400
+    msgAlgoritmo.mtype = nroGrupo+400;
+    msgAlgoritmo.uid = 0;
     msgAlgoritmo.status = INICIAR;
     colaLider.send(msgAlgoritmo);
 }
