@@ -229,7 +229,15 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
     }
     Logger::logMessage(Logger::DEBUG, buffer);*/
 
-    int siguiente = (nroBroker % 4)+1;
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+
+    int cantidadBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
+    if ( cantidadBrokers == -1 ) {
+        Logger::logMessage(Logger::ERROR, "Error al obtener cantidad de Brokers");
+    }
+
+    int siguiente = (nroBroker % cantidadBrokers)+1;
     bool encontrado = false;
 
     while (!encontrado) {
@@ -239,7 +247,7 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
             }
         }
         if (! encontrado) {
-            siguiente = (siguiente % 4)+1;
+            siguiente = (siguiente % cantidadBrokers)+1;
         }
     }
 
