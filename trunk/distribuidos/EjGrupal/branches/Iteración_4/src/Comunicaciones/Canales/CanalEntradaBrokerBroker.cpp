@@ -59,16 +59,6 @@ int main(int argc, char* argv[]) {
     }
 
     elegirDirectorios( brokerNumber );
-
-    IPC::Semaphore semUltimoACKRecibido;
-    semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 1);
-
-    IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
-    shMemUltimoACKRecibido.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + remoteBrokerId - 1);
-
-    IPC::MsgQueue msgQueueACK;
-    msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
-
     sprintf(buffer, "CanalEntradaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
 
@@ -115,6 +105,15 @@ int main(int argc, char* argv[]) {
     // Luego de la etapa de Conexión, el proceso comienza a recibir mensajes de otros
     // Brokers y a procesarlos
     try {
+        IPC::Semaphore semUltimoACKRecibido;
+        semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 1);
+
+        IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
+        shMemUltimoACKRecibido.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + remoteBrokerId - 1);
+
+        IPC::MsgQueue msgQueueACK;
+        msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
+
         while( true ) {
             if ( socketBroker->receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir mensaje de un Broker");
