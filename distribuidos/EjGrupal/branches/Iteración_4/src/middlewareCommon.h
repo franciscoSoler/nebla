@@ -1,6 +1,8 @@
 #ifndef MIDDLEWARECOMMON_H
 #define	MIDDLEWARECOMMON_H
 
+#include <definedTypes.h>
+
 #define DIRECTORY_COMM             "./DComm"
 #define DIRECTORY_BROKER           "./DBroker"
 #define DIRECTORY_ADM              "./DAdm"
@@ -37,11 +39,11 @@ typedef enum {
 } CommTipoMensajeAgentes;
 
 typedef enum {
-    AGENTE_AGENTE = 15,
+    AGENTE_AGENTE = 15,     /* Arrésteme pronto. */
     MEMORIA_AGENTE,
     MENSAJE_LIDER,
     MEMORIA_BROKERS,
-    AGENTE_CONECTADO,
+    MENSAJE_ACK,
     MENSAJE_BROADCAST
 } CommTipoMensajeBrokers;
 
@@ -87,8 +89,9 @@ typedef enum {
 
 #define ID_ALGORITMO_LIDER      21
 
-#define ID_SHMEM_TIMEOUT        3
-#define ID_SEM_TIMEOUT          3
+#define ID_SHMEM_TIMEOUT        30
+#define ID_SEM_TIMEOUT          30
+#define ID_MSGQUEUE_TIMEOUT     30
 
 /* Define la cantidad de tiempo en segundos que se va a esperar
  * antes de que se haga timeout. */
@@ -172,6 +175,7 @@ typedef struct {
 
 typedef struct {
     CommTipoMensajeBrokers tipoMensaje;
+    ulong msg_id;
     char msg[MSG_BROKER_FIXED_SIZE];
 } MsgCanalEntradaBrokerBroker;
 
@@ -179,6 +183,12 @@ typedef struct {
     long mtype;
     MsgCanalEntradaBrokerBroker msg;
 } MsgCanalSalidaBrokerBroker;
+
+typedef struct {
+    long mtype;
+    ulong msg_id;
+    bool recepcionOK;
+} MsgACK;
 
 typedef struct {
     // Debería ser un TipoAgente en vez de un int

@@ -22,6 +22,12 @@ public:
                               std::string arg1,
                               std::string arg2,
                               std::string arg3);
+
+    static void safeCreateProcess(std::string processName,
+                              std::string arg1,
+                              std::string arg2,
+                              std::string arg3);
+
     virtual ~Util();
     
 private:

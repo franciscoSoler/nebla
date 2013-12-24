@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
             Logger::logMessage(Logger::IMPORTANT, buffer);*/
             
             sprintf(buffer, "directorioIPC: %s, idIPC: %d, mtype del mensaje a enviar %ld",
-            mensaje.directorioIPC, mensaje.idIPC, mensaje.msg.mtype);
+                    mensaje.directorioIPC, mensaje.idIPC, mensaje.msg.mtype);
             Logger::logMessage(Logger::COMM, buffer);
             
             colaAgente = obtenerColaAgente(mensaje.directorioIPC, mensaje.idIPC);

@@ -79,7 +79,6 @@ int main(int argc, char* argv[]) {
                     colaAgente.send(mensaje.msg);
                 }
                 else {
-                    
                     sprintf(buffer, "por enviar al broker %d: idTipoReceptor: %d, idReceptor: %ld", idBrokerAgente, dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
                     Logger::logMessage(Logger::COMM, buffer);
                     

@@ -4,9 +4,11 @@
 #include <Logger/Logger.h>
 #include <string.h>
 #include <errno.h>
-// #include <stdlib.h>
 #include <list>
 #include <stdio.h>
+
+#include <sys/wait.h>
+#include <sys/types.h>
 
 #define MAX_PARAMS_SIZE     200
 
@@ -106,6 +108,61 @@ void Util::createProcess(std::string processName,
         Logger::getInstance().logMessage(Logger::ERROR, buffer);
 
         return;
+    }
+}
+
+/* Crea un proceso que no deja zombies cuando termina.
+ * Es muy wachiturro pero anda bien.
+ *
+ * WACHITURRÓMETRO:
+ *      no wachiturro  -------------0- wachiturro */
+void Util::safeCreateProcess(std::string processName, std::string arg1,
+                             std::string arg2, std::string arg3)
+{
+    pid_t pid;
+    static char name[30];
+    static char param1[30];
+    static char param2[30];
+    static char param3[30];
+
+    sprintf(name, "./%s", processName.c_str());
+    strcpy(param1, arg1.c_str());
+    strcpy(param2, arg2.c_str());
+    strcpy(param3, arg3.c_str());
+
+    if ((pid = fork()) < 0)
+    {
+        sprintf(name, "%s Error: %s", processName.c_str(), strerror(errno));
+        Logger::getInstance().logMessage(Logger::ERROR, buffer);
+    }
+
+    /* Proceso hijo -- no hace exec! */
+    else if (pid == 0)
+    {
+
+        /* Proceso hijo del hijo, sí hace el exec y el SSOO se hace cargo
+         * de que no sea zombie cuando termina. */
+        if(fork() == 0)
+        {
+            execlp(name, processName.c_str(), param1, param2, param3, (char *) 0);
+
+            sprintf(name, "%s Error: %s", processName.c_str(), strerror(errno));
+            Logger::getInstance().logMessage(Logger::ERROR, buffer);
+
+            return;
+        }
+
+        /* Proceso padre, termina al toque. */
+        else
+        {
+            exit(0);
+        }
+    }
+
+    /* Proceso padre, limpia el pid del hijo. */
+    else
+    {
+        waitpid(pid, 0, 0);
     }
 }
 

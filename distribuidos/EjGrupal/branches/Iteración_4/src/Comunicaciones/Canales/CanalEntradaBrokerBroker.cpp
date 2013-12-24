@@ -19,6 +19,8 @@
 
 #include <ConfigFileParser/ConfigFileParser.h>
 
+#include <Util.h>
+
 static const char* C_DIRECTORY_BROKER = NULL;
 static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
@@ -57,6 +59,15 @@ int main(int argc, char* argv[]) {
     }
 
     elegirDirectorios( brokerNumber );
+
+    IPC::Semaphore semUltimoACKRecibido;
+    semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 1);
+
+    IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
+    shMemUltimoACKRecibido.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + remoteBrokerId - 1);
+
+    IPC::MsgQueue msgQueueACK;
+    msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
 
     sprintf(buffer, "CanalEntradaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
@@ -100,7 +111,6 @@ int main(int argc, char* argv[]) {
     sprintf(buffer, "CanalEntradaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conexión realizada correctamente");
-
 
     // Luego de la etapa de Conexión, el proceso comienza a recibir mensajes de otros
     // Brokers y a procesarlos
@@ -159,6 +169,34 @@ int main(int argc, char* argv[]) {
                 IPC::MsgQueue colaAdministrador("colaAdministrador");
                 colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
                 colaAdministrador.send(msg);
+
+                sprintf(buffer, "Acaba de llegar un mensaje con id %lu (TIMEOUT).", mensaje.msg_id);
+                Logger::logMessage(Logger::DEBUG, buffer);
+
+                /* Prueba ACK. */
+                int numeroAleatorio = Util::generateRandomNumber(0, 100);
+                if(numeroAleatorio == 4)
+                {
+                    sprintf(buffer, "No se envía un ACK al B%d (TIMEOUT B%d)!", remoteBrokerId, brokerNumber);
+                    Logger::logMessage(Logger::IMPORTANT, buffer);
+                    continue;
+                }
+
+                /* Envía el ACK. */
+                MsgCanalEntradaBrokerBroker msgACKEntrada;
+                MsgCanalSalidaBrokerBroker msgACKSalida;
+
+                msgACKEntrada.tipoMensaje = MENSAJE_ACK;
+                msgACKEntrada.msg_id = mensaje.msg_id;
+                msgACKSalida.mtype = remoteBrokerId;
+                memcpy(&msgACKSalida.msg, &msgACKEntrada, sizeof(MsgCanalEntradaBrokerBroker));
+
+                IPC::MsgQueue colaCanalSalidaBrokerBroker;
+                colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
+                colaCanalSalidaBrokerBroker.send(msgACKSalida);
+
+                sprintf(buffer, "Envío ACK nro %lu al broker B%d! (TIMEOUT B%d)", mensaje.msg_id, remoteBrokerId, brokerNumber);
+                Logger::logMessage(Logger::DEBUG, buffer);
             }
             else if ( mensaje.tipoMensaje == MENSAJE_LIDER ) {
                 Logger::logMessage(Logger::COMM, "el mensaje de lider llego del otro broker, se la doy al algoritmo del lider");
@@ -169,10 +207,27 @@ int main(int argc, char* argv[]) {
                 colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
                 colaLider.send(msg);
             }
-            else if ( mensaje.tipoMensaje == AGENTE_CONECTADO ) {
-                // TODO:
+
+            else if(mensaje.tipoMensaje == MENSAJE_ACK)
+            {
+                /* Registra el número de ACK recibido. */
+                semUltimoACKRecibido.wait(remoteBrokerId - 1);
+                shMemUltimoACKRecibido.write(&mensaje.msg_id);
+                semUltimoACKRecibido.signal(remoteBrokerId - 1);
+
+                sprintf(buffer, "Escribe en memoria compartida %d que se recibe el ACK del mensaje con id %lu. (TIMEOUT)", remoteBrokerId - 1, mensaje.msg_id);
+                Logger::logMessage(Logger::DEBUG, buffer);
+
+                MsgACK ack;
+                ack.mtype = remoteBrokerId;
+                ack.msg_id = mensaje.msg_id;
+                ack.recepcionOK = true;
+                sprintf(buffer, "Canal va a reenviar ACK al CS mediante la cola %d (TIMEOUT)", remoteBrokerId);
+                Logger::logMessage(Logger::DEBUG, buffer);
+                msgQueueACK.send(ack);
             }
-            else if ( mensaje.tipoMensaje == MENSAJE_BROADCAST ) {
+
+            else if( mensaje.tipoMensaje == MENSAJE_BROADCAST ) {
                 // Recibo la información del agente conectado y actualizo
                 // la información de Agentes del Broker
                 DataInfoAgentes dataInfoAgentes;

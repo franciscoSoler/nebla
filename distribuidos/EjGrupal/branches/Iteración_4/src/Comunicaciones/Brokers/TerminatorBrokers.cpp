@@ -21,6 +21,7 @@ static const char* C_DIRECTORY_ADM = NULL;
 static const char* C_DIRECTORY_INFO_AGENTES = NULL;
 
 void elegirDirectorios(int brokerNumber);
+void destruirIPCsDeTimeout(int nroBroker);
 
 int main(int argc, char* argv[]) {
     try {
@@ -200,7 +201,9 @@ int main(int argc, char* argv[]) {
         semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
         semInfoGruposShMemBrokers.destroy();
         Logger::logMessage(Logger::COMM, "sem InforGruposBrokers creado.");
-        
+
+        destruirIPCsDeTimeout(brokerNumber);
+
         // Semaforo de bloqueo de los algoritmo de lider
         std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
         int listSize = sharedMemoryListIds.size();
@@ -217,6 +220,34 @@ int main(int argc, char* argv[]) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
     } 
     return 0;
+}
+
+void destruirIPCsDeTimeout(int nroBroker)
+{
+    char buffer[2048];
+
+    IPC::Semaphore semTimeout;
+    semTimeout.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
+    semTimeout.destroy();
+    Logger::logMessage(Logger::COMM, "Sem Timeout destruído.");
+
+    IPC::MsgQueue msgQueueACK;
+    msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
+    msgQueueACK.destroy();
+    Logger::logMessage(Logger::COMM, "MsgQueue ACK destruída.");
+
+    for(int nroBrokerExterno = 0; nroBrokerExterno < 4; nroBrokerExterno++)
+    {
+        if(nroBrokerExterno == nroBroker - 1)
+            continue;
+
+        IPC::SharedMemory<ulong> shMemTimeout;
+        shMemTimeout.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
+        shMemTimeout.destroy();
+
+        sprintf(buffer, "shMem Timeout para broker %d destruída.", nroBrokerExterno + 1);
+        Logger::logMessage(Logger::COMM, buffer);
+    }
 }
 
 void elegirDirectorios(int brokerNumber) {
