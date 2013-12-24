@@ -267,21 +267,27 @@ void createIPCs() {
 void crearIPCsDeTimeout(int nroBroker)
 {
     char buffer[2048];
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+
+    int cantidadBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
+    if ( cantidadBrokers == -1 ) {
+        Logger::logMessage(Logger::ERROR, "Error al obtener cantidad de Brokers");
+    }
 
     /* IPCs usados por el timeout de los brokers. */
     IPC::Semaphore semTimeout;
-    semTimeout.createSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
+    semTimeout.createSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
     Logger::logMessage(Logger::COMM, "Sem Timeout creado.");
 
     /* Crea una memoria compartida para cada CEBB. */
-    for(int nroBrokerExterno = 0; nroBrokerExterno < 4; nroBrokerExterno++)
+    for(int nroBrokerExterno = 0; nroBrokerExterno < cantidadBrokers; nroBrokerExterno++)
     {
         if(nroBrokerExterno == nroBroker - 1)
             continue;
 
         IPC::SharedMemory<ulong> shMemTimeout;
         shMemTimeout.createSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
-
         semTimeout.initializeSemaphore(nroBrokerExterno, 1);
 
         sprintf(buffer, "shMem Timeout para broker %d creada.", nroBrokerExterno + 1);
