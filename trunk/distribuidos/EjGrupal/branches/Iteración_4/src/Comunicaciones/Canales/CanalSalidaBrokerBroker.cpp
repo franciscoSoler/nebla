@@ -8,9 +8,16 @@
 #include <middlewareCommon.h>
 
 #include <IPCs/IPCTemplate/MsgQueue.h>
+#include <IPCs/Semaphore/Semaphore.h>
+#include <IPCs/IPCTemplate/SharedMemory.h>
 
 #include <Comunicaciones/Objects/ArgumentParser.h>
 #include <Comunicaciones/Objects/ServersManager.h>
+
+#include <Util.h>
+
+#include <sys/types.h>
+#include <sys/wait.h>
 
 static const char* C_DIRECTORY_BROKER = NULL;
 
@@ -46,6 +53,9 @@ int main(int argc, char* argv[]) {
 
     sprintf(buffer, "CanalSalidaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
+
+    IPC::MsgQueue msgQueueACK;
+    msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
 
     SocketStream* socketBroker = NULL;
     if ( socketDescriptor == 0 ) {
@@ -92,12 +102,35 @@ int main(int argc, char* argv[]) {
         IPC::MsgQueue colaCanalSalida("ColaCanalSalida");
         colaCanalSalida.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
 
-        while ( true ) {
+        ulong idMensajeBrokerBrokerEnviado = 1;
 
+        while ( true ) {
             MsgCanalSalidaBrokerBroker mensaje;
             colaCanalSalida.recv(remoteBrokerId, mensaje);
 
-            Logger::logMessage(Logger::COMM, "Recibe mensaje, procede a enviarlo");
+            if(mensaje.msg.tipoMensaje == MENSAJE_ACK)
+            {
+                sprintf(buffer, "Quiere enviar un mensaje ACK %lu (TIMEOUT).", mensaje.msg.msg_id);
+                Logger::logMessage(Logger::DEBUG, buffer);
+            }
+
+            else if(mensaje.msg.tipoMensaje == MEMORIA_AGENTE)
+            {
+                sprintf(buffer, "Recibe mensaje, procede a enviarlo como mensaje %lu. (TIMEOUT B%d)", idMensajeBrokerBrokerEnviado, brokerNumber);
+                Logger::logMessage(Logger::DEBUG, buffer);
+
+                char idMensajeBrokerBrokerEnviado_str[128];
+                char idBroker_str[32];
+                char idBrokerRemoto_str[32];
+
+                sprintf(idMensajeBrokerBrokerEnviado_str, "%lu", idMensajeBrokerBrokerEnviado);
+                sprintf(idBroker_str, "%d", brokerNumber);
+                sprintf(idBrokerRemoto_str, "%d", remoteBrokerId);
+
+                Util::safeCreateProcess("Timeout", std::string(idBroker_str), std::string(idBrokerRemoto_str), std::string(idMensajeBrokerBrokerEnviado_str));
+
+                mensaje.msg.msg_id = idMensajeBrokerBrokerEnviado;
+            }
 
             memcpy(bufferSocket, &mensaje.msg, sizeof(MsgCanalEntradaBrokerBroker));
             if ( socketBroker->send(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
@@ -105,6 +138,31 @@ int main(int argc, char* argv[]) {
                 socketBroker->destroy();
                 abort();
             }
+
+            if(mensaje.msg.tipoMensaje == MEMORIA_AGENTE)
+            {
+                MsgACK ack;
+                sprintf(buffer, "Canal va a esperar en la cola %d (TIMEOUT)", remoteBrokerId);
+                Logger::logMessage(Logger::DEBUG, buffer);
+                msgQueueACK.recv(remoteBrokerId, ack);
+
+                if(ack.msg_id != idMensajeBrokerBrokerEnviado)
+                {
+                    sprintf(buffer, "ERROR: recibí ACK con id %lu en vez de %lu. (TIMEOUT)", ack.msg_id, idMensajeBrokerBrokerEnviado);
+                    Logger::logMessage(Logger::ERROR, buffer);
+                }
+
+                else if(ack.recepcionOK == true)
+                    Logger::logMessage(Logger::DEBUG, "Recibido ACK correcto. (TIMEOUT)");
+
+                else
+                    Logger::logMessage(Logger::ERROR, "Se cayó el broker siguiente!! (TIMEOUT)");
+
+
+                idMensajeBrokerBrokerEnviado++;
+
+            }
+
         }
     }
     catch( Exception & e) {

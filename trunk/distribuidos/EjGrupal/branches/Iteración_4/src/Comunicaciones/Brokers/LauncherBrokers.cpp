@@ -39,6 +39,7 @@ void initializeBroker(int brokerNumber);
 void createLeaders(int brokerNumber);
 void obtenerTiposDeAgenteParaGrupo();
 void elegirDirectorios(int brokerNumber);
+void crearIPCsDeTimeout(int nroBroker);
 
 int main(int argc, char* argv[]) {
     try {
@@ -66,6 +67,9 @@ int main(int argc, char* argv[]) {
         createDirectory(C_DIRECTORY_BROKER);
         createDirectory(C_DIRECTORY_INFO_AGENTES);
         createIPCs();
+
+        /* Se crean los IPCs usados por el mecanismo ACK - Timeout. */
+        crearIPCsDeTimeout(brokerNumber);
 
         // Se crean los servidores para recibir conexiones de otros Brokers, y
         // se intenta conectar con los mismos.
@@ -194,7 +198,6 @@ void createIPCs() {
         }
         Logger::logMessage(Logger::COMM, "sem InfoAgentes creado");
 
-
         IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
 
         shMemInfoAgentes.createSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_CLIENTE);
@@ -261,6 +264,34 @@ void createIPCs() {
     }
 }
 
+void crearIPCsDeTimeout(int nroBroker)
+{
+    char buffer[2048];
+
+    /* IPCs usados por el timeout de los brokers. */
+    IPC::Semaphore semTimeout;
+    semTimeout.createSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
+    semTimeout.initializeSemaphore(0, 1);
+    Logger::logMessage(Logger::COMM, "Sem Timeout creado.");
+
+    /* Crea una memoria compartida para cada CEBB. */
+    for(int nroBrokerExterno = 0; nroBrokerExterno < 4; nroBrokerExterno++)
+    {
+        if(nroBrokerExterno == nroBroker - 1)
+            continue;
+
+        IPC::SharedMemory<ulong> shMemTimeout;
+        shMemTimeout.createSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
+
+        sprintf(buffer, "shMem Timeout para broker %d creada.", nroBrokerExterno + 1);
+        Logger::logMessage(Logger::COMM, buffer);
+    }
+
+    IPC::MsgQueue msgQueueACK;
+    msgQueueACK.create(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
+    Logger::logMessage(Logger::COMM, "MsgQueue ACK creada.");
+}
+
 void createSharedMemoryAdministrators(int brokerNumber) {
     std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(COMM_OBJECTS_CONFIG_FILE) );
     cfg->parse();
@@ -318,10 +349,8 @@ void initializeBroker(int brokerNumber) {
         // Then, connect to other Brokers
         for (int j = 1; j <= amountBrokers; ++j) {
             if (brokerNumber != j) {
-                serversManager.createChannelToBroker("CanalEntradaBrokerBroker",
-                                                     brokerNumber, j);
-                serversManager.createChannelToBroker("CanalSalidaBrokerBroker",
-                                                     brokerNumber, j);
+                serversManager.createChannelToBroker("CanalEntradaBrokerBroker", brokerNumber, j);
+                serversManager.createChannelToBroker("CanalSalidaBrokerBroker", brokerNumber, j);
             }
         }
     }
