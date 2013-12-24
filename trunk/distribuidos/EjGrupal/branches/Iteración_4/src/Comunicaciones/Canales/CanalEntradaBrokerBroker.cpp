@@ -210,6 +210,8 @@ int main(int argc, char* argv[]) {
 
             else if(mensaje.tipoMensaje == MENSAJE_ACK)
             {
+                sprintf(buffer, "quiere escribir en memoria compartida %d que se recibe el ACK del mensaje con id %lu. (TIMEOUT)", remoteBrokerId - 1, mensaje.msg_id);
+
                 /* Registra el número de ACK recibido. */
                 semUltimoACKRecibido.wait(remoteBrokerId - 1);
                 shMemUltimoACKRecibido.write(&mensaje.msg_id);

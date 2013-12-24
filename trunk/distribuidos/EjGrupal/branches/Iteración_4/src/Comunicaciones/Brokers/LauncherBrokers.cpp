@@ -271,7 +271,6 @@ void crearIPCsDeTimeout(int nroBroker)
     /* IPCs usados por el timeout de los brokers. */
     IPC::Semaphore semTimeout;
     semTimeout.createSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
-    semTimeout.initializeSemaphore(0, 1);
     Logger::logMessage(Logger::COMM, "Sem Timeout creado.");
 
     /* Crea una memoria compartida para cada CEBB. */
@@ -282,6 +281,8 @@ void crearIPCsDeTimeout(int nroBroker)
 
         IPC::SharedMemory<ulong> shMemTimeout;
         shMemTimeout.createSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
+
+        semTimeout.initializeSemaphore(nroBrokerExterno, 1);
 
         sprintf(buffer, "shMem Timeout para broker %d creada.", nroBrokerExterno + 1);
         Logger::logMessage(Logger::COMM, buffer);
