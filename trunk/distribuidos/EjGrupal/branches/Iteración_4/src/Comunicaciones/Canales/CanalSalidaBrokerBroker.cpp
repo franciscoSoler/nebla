@@ -54,9 +54,6 @@ int main(int argc, char* argv[]) {
     sprintf(buffer, "CanalSalidaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
 
-    IPC::MsgQueue msgQueueACK;
-    msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
-
     SocketStream* socketBroker = NULL;
     if ( socketDescriptor == 0 ) {
         sprintf(buffer, "Creando conexión con Broker N°%d", remoteBrokerId);
@@ -97,7 +94,6 @@ int main(int argc, char* argv[]) {
     Logger::setProcessInformation(buffer);
     Logger::logMessage(Logger::COMM, "Conexión realizada correctamente");
 
-
     try {
         IPC::MsgQueue colaCanalSalida("ColaCanalSalida");
         colaCanalSalida.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
@@ -130,6 +126,14 @@ int main(int argc, char* argv[]) {
                 Util::safeCreateProcess("Timeout", std::string(idBroker_str), std::string(idBrokerRemoto_str), std::string(idMensajeBrokerBrokerEnviado_str));
 
                 mensaje.msg.msg_id = idMensajeBrokerBrokerEnviado;
+
+                idMensajeBrokerBrokerEnviado++;
+            }
+
+            else if(mensaje.msg.tipoMensaje == MENSAJE_TIMEOUT)
+            {
+                sprintf(buffer, "Se cayó el broker siguiente, nunca se recibió el ACK #%lu!! (TIMEOUT)", mensaje.msg.msg_id);
+                Logger::logMessage(Logger::ERROR, buffer);
             }
 
             memcpy(bufferSocket, &mensaje.msg, sizeof(MsgCanalEntradaBrokerBroker));
@@ -137,30 +141,6 @@ int main(int argc, char* argv[]) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar mensaje a Broker");
                 socketBroker->destroy();
                 abort();
-            }
-
-            if(mensaje.msg.tipoMensaje == MEMORIA_AGENTE)
-            {
-                MsgACK ack;
-                sprintf(buffer, "Canal va a esperar en la cola %d (TIMEOUT)", remoteBrokerId);
-                Logger::logMessage(Logger::DEBUG, buffer);
-                msgQueueACK.recv(remoteBrokerId, ack);
-
-                if(ack.msg_id != idMensajeBrokerBrokerEnviado)
-                {
-                    sprintf(buffer, "ERROR: recibí ACK con id %lu en vez de %lu. (TIMEOUT)", ack.msg_id, idMensajeBrokerBrokerEnviado);
-                    Logger::logMessage(Logger::ERROR, buffer);
-                }
-
-                else if(ack.recepcionOK == true)
-                    Logger::logMessage(Logger::DEBUG, "Recibido ACK correcto. (TIMEOUT)");
-
-                else
-                    Logger::logMessage(Logger::ERROR, "Se cayó el broker siguiente!! (TIMEOUT)");
-
-
-                idMensajeBrokerBrokerEnviado++;
-
             }
 
         }

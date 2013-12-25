@@ -112,6 +112,9 @@ int main(int argc, char* argv[]) {
     // Luego de la etapa de Conexión, el proceso comienza a recibir mensajes de otros
     // Brokers y a procesarlos
     try {
+        sprintf(buffer, "Mi remoteBrokerId es %d. (IPC TIMEOUT)", remoteBrokerId);
+        Logger::logMessage(Logger::IMPORTANT, buffer);
+
         IPC::Semaphore semUltimoACKRecibido;
         semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
 
@@ -123,9 +126,6 @@ int main(int argc, char* argv[]) {
 
         sprintf(buffer, "Obtengo shMem con directorio %s e id %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + remoteBrokerId - 1);
         Logger::logMessage(Logger::DEBUG, buffer);
-
-        IPC::MsgQueue msgQueueACK;
-        msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
 
         while( true ) {
             if ( socketBroker->receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
@@ -185,15 +185,6 @@ int main(int argc, char* argv[]) {
                 sprintf(buffer, "Acaba de llegar un mensaje con id %lu (TIMEOUT).", mensaje.msg_id);
                 Logger::logMessage(Logger::DEBUG, buffer);
 
-                /* Prueba ACK. */
-                int numeroAleatorio = Util::generateRandomNumber(0, 100);
-                if(numeroAleatorio == 4)
-                {
-                    sprintf(buffer, "No se envía un ACK al B%d (TIMEOUT B%d)!", remoteBrokerId, brokerNumber);
-                    Logger::logMessage(Logger::IMPORTANT, buffer);
-                    continue;
-                }
-
                 /* Envía el ACK. */
                 MsgCanalEntradaBrokerBroker msgACKEntrada;
                 MsgCanalSalidaBrokerBroker msgACKSalida;
@@ -232,17 +223,6 @@ int main(int argc, char* argv[]) {
                 semUltimoACKRecibido.wait(remoteBrokerId - 1);
                 shMemUltimoACKRecibido.write(&mensaje.msg_id);
                 semUltimoACKRecibido.signal(remoteBrokerId - 1);
-
-                sprintf(buffer, "Escribe en memoria compartida %d que se recibe el ACK del mensaje con id %lu. (TIMEOUT)", remoteBrokerId - 1, mensaje.msg_id);
-                Logger::logMessage(Logger::DEBUG, buffer);
-
-                MsgACK ack;
-                ack.mtype = remoteBrokerId;
-                ack.msg_id = mensaje.msg_id;
-                ack.recepcionOK = true;
-                sprintf(buffer, "Canal va a reenviar ACK al CS mediante la cola %d (TIMEOUT)", remoteBrokerId);
-                Logger::logMessage(Logger::DEBUG, buffer);
-                msgQueueACK.send(ack);
             }
 
             else if( mensaje.tipoMensaje == MENSAJE_BROADCAST ) {
