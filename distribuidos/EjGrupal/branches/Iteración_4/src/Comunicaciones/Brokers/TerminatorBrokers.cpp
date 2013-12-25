@@ -227,16 +227,17 @@ void destruirIPCsDeTimeout(int nroBroker)
     char buffer[2048];
 
     IPC::Semaphore semTimeout;
-    semTimeout.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
+    semTimeout.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, CANT_MAXIMA_BROKERS);
     semTimeout.destroy();
-    Logger::logMessage(Logger::COMM, "Sem Timeout destruído.");
+    sprintf(buffer, "Destruídos %d semáforos de timeout.", CANT_MAXIMA_BROKERS);
+    Logger::logMessage(Logger::COMM, buffer);
 
     IPC::MsgQueue msgQueueACK;
     msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
     msgQueueACK.destroy();
     Logger::logMessage(Logger::COMM, "MsgQueue ACK destruída.");
 
-    for(int nroBrokerExterno = 0; nroBrokerExterno < 4; nroBrokerExterno++)
+    for(int nroBrokerExterno = 0; nroBrokerExterno < CANT_MAXIMA_BROKERS; nroBrokerExterno++)
     {
         if(nroBrokerExterno == nroBroker - 1)
             continue;
