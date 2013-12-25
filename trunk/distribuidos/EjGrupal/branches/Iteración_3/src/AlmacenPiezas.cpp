@@ -289,6 +289,8 @@ int main(int argc, char** argv)
         }
         controladorAlmacenPiezas->recibirConfirmacionProduccion();
         
+        Logger::logMessage(Logger::DEBUG, "Recibi confirmacion Produccion");
+
         numPedido = (numPedido + 1) % CANTIDAD_TIPO_PIEZAS_RESERVADAS;
     } 
 }
