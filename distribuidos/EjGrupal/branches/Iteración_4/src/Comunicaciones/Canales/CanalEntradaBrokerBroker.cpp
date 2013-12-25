@@ -106,10 +106,16 @@ int main(int argc, char* argv[]) {
     // Brokers y a procesarlos
     try {
         IPC::Semaphore semUltimoACKRecibido;
-        semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 1);
+        semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
+
+        sprintf(buffer, "Obtengo el Sem Timeout con directorio %s, id %d y cantSemáforos 4 (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SEM_TIMEOUT);
+        Logger::logMessage(Logger::DEBUG, buffer);
 
         IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
         shMemUltimoACKRecibido.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + remoteBrokerId - 1);
+
+        sprintf(buffer, "Obtengo shMem con directorio %s e id %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + remoteBrokerId - 1);
+        Logger::logMessage(Logger::DEBUG, buffer);
 
         IPC::MsgQueue msgQueueACK;
         msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
@@ -209,7 +215,11 @@ int main(int argc, char* argv[]) {
 
             else if(mensaje.tipoMensaje == MENSAJE_ACK)
             {
-                sprintf(buffer, "quiere escribir en memoria compartida %d que se recibe el ACK del mensaje con id %lu. (TIMEOUT)", remoteBrokerId - 1, mensaje.msg_id);
+                sprintf(buffer, "quiere escribir en memoria compartida %d que se recibe el ACK del mensaje con id %lu. (IPC TIMEOUT)", remoteBrokerId - 1, mensaje.msg_id);
+                Logger::logMessage(Logger::DEBUG, buffer);
+
+                sprintf(buffer, "accedo a la shMem haciendo p() en el semáforo %d (IPC TIMEOUT)", remoteBrokerId - 1);
+                Logger::logMessage(Logger::DEBUG, buffer);
 
                 /* Registra el número de ACK recibido. */
                 semUltimoACKRecibido.wait(remoteBrokerId - 1);
