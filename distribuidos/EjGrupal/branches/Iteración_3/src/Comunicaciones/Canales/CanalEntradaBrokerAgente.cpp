@@ -75,7 +75,8 @@ int main(int argc, char* argv[]) {
 
                 // Safety-check
                 if ( idBrokerAgente == 0 ) {
-                    sprintf(buffer, "Agente Tipo N°%d - Id N°%d: No se encuentra conectado. Abortando.");
+                    sprintf(buffer, "Agente Tipo N°%d - Id N°%ld: No se encuentra conectado. Abortando.",
+                            dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
                     Logger::logMessage(Logger::ERROR, buffer);
                     abort();
                 }
