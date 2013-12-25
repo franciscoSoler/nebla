@@ -78,17 +78,6 @@ bool Cinta<PACKAGE, SIZE>::moverCinta() {
         }
         
         memcpy(array_, auxArray, sizeof(array_));
-
-        char buffer[TAM_BUFFER];
-        for (unsigned int i = 0; i < SIZE; ++i) {
-            if (!array_[i].estaVacio()) {
-                sprintf(buffer, "posCinta: %d, idProd: %d, ODC: %ld",
-                        array_[i].idProducto_, array_[i].idOrdenDeCompra_);
-                Logger::logMessage(Logger::ERROR,buffer);
-            }
-        }
-
-
         return true;
     }
     
@@ -132,6 +121,16 @@ std::string Cinta<PACKAGE, SIZE>::toString() {
     }
     
     cinta += "|";
+
+    char buffer[TAM_BUFFER];
+    for (unsigned int i = 0; i < SIZE; ++i) {
+        if (!array_[i].estaVacio()) {
+            sprintf(buffer, "posCinta: %d, idProd: %d, ODC: %ld",
+                    i, array_[i].idProducto_, array_[i].idOrdenDeCompra_);
+            Logger::logMessage(Logger::ERROR,buffer);
+        }
+    }
+
     return cinta;
 }
 
