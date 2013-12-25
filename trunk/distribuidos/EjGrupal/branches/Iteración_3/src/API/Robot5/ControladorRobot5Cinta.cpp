@@ -20,7 +20,7 @@ ControladorRobot5Cinta::ControladorRobot5Cinta() :
 {
 
         MiddlewareAPI middleware;
-        if ( middleware.crearCanales("Robot5EnBroker", 1, ID_TIPO_ROBOT5_CINTA) == -1 ) {
+        if ( middleware.crearCanales("Robot5EnBroker", 2, ID_TIPO_ROBOT5_CINTA) == -1 ) {
             Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
             abort();
         }
