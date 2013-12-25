@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "../../Common.h"
 #include "../../middlewareCommon.h"
 
@@ -8,6 +10,8 @@
 #include "../../IPCs/IPCTemplate/SharedMemory.h"
 
 #include "../Objects/CommPacketWrapper.h"
+
+#include <ConfigFileParser/ConfigFileParser.h>
 
 static const char* C_DIRECTORY_BROKER = NULL;
 
@@ -41,15 +45,25 @@ int main(int argc, char* argv[])
         exit(-1);
     }
 
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+
+    int cantidadBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
+    if (cantidadBrokers == -1)
+        Logger::logMessage(Logger::ERROR, "Error al obtener cantidad de Brokers");
+
     sprintf(buffer, "Timeout B%d:", idBroker);
     Logger::setProcessInformation(buffer);
 
     seleccionarDirectorio(idBroker);
 
     IPC::Semaphore semUltimoACKRecibido;
-    semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
+    semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
 
-    sprintf(buffer, "TIMEOUT %d va a tratar de obtener la memoria compartida %d.", idBroker, idBrokerRemoto - 1);
+    sprintf(buffer, "Obtengo sem Timeout con directorio %s, id %d y cantSemáforos %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
+    Logger::logMessage(Logger::DEBUG, buffer);
+
+    sprintf(buffer, "Va a tratar de obtener la memoria compartida con directorio %s y ID %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + idBrokerRemoto - 1);
     Logger::logMessage(Logger::DEBUG, buffer);
 
     IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
@@ -63,6 +77,10 @@ int main(int argc, char* argv[])
     try
     {
         ulong idUltimoMensajeRecibido;
+
+        sprintf(buffer, "Quiero entrar a la shMem haciendo p() en el sem %d (IPC TIMEOUT).", idBrokerRemoto - 1);
+        Logger::logMessage(Logger::DEBUG, buffer);
+
         semUltimoACKRecibido.wait(idBrokerRemoto - 1);
         shMemUltimoACKRecibido.read(&idUltimoMensajeRecibido);
         semUltimoACKRecibido.signal(idBrokerRemoto - 1);
@@ -103,6 +121,10 @@ int main(int argc, char* argv[])
 }
 
 void seleccionarDirectorio(int idBroker) {
+    char buffer[1024];
+    sprintf(buffer, "Voy a seleccionar directorio con mi id: %d (TIMEOUT)", idBroker);
+    Logger::logMessage(Logger::DEBUG, buffer);
+
     switch (idBroker) {
         case 1:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;

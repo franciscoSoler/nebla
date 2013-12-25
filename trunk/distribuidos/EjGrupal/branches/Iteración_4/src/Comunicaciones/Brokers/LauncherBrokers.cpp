@@ -66,10 +66,11 @@ int main(int argc, char* argv[]) {
         createDirectory(C_DIRECTORY_ADM);
         createDirectory(C_DIRECTORY_BROKER);
         createDirectory(C_DIRECTORY_INFO_AGENTES);
-        createIPCs();
 
         /* Se crean los IPCs usados por el mecanismo ACK - Timeout. */
         crearIPCsDeTimeout(brokerNumber);
+
+        createIPCs();
 
         // Se crean los servidores para recibir conexiones de otros Brokers, y
         // se intenta conectar con los mismos.
@@ -266,22 +267,16 @@ void createIPCs() {
 
 void crearIPCsDeTimeout(int nroBroker)
 {
-    char buffer[2048];
-    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
-    cfg->parse();
-
-    int cantidadBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
-    if ( cantidadBrokers == -1 ) {
-        Logger::logMessage(Logger::ERROR, "Error al obtener cantidad de Brokers");
-    }
+    char buffer[1024];
 
     /* IPCs usados por el timeout de los brokers. */
     IPC::Semaphore semTimeout;
-    semTimeout.createSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
-    Logger::logMessage(Logger::COMM, "Sem Timeout creado.");
+    semTimeout.createSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, CANT_MAXIMA_BROKERS);
+    sprintf(buffer, "Sem Timeout creado con directorio %s, id %d y cantSemáforos %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, CANT_MAXIMA_BROKERS);
+    Logger::logMessage(Logger::DEBUG, buffer);
 
     /* Crea una memoria compartida para cada CEBB. */
-    for(int nroBrokerExterno = 0; nroBrokerExterno < cantidadBrokers; nroBrokerExterno++)
+    for(int nroBrokerExterno = 0; nroBrokerExterno < CANT_MAXIMA_BROKERS; nroBrokerExterno++)
     {
         if(nroBrokerExterno == nroBroker - 1)
             continue;
@@ -290,8 +285,11 @@ void crearIPCsDeTimeout(int nroBroker)
         shMemTimeout.createSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
         semTimeout.initializeSemaphore(nroBrokerExterno, 1);
 
-        sprintf(buffer, "shMem Timeout para broker %d creada.", nroBrokerExterno + 1);
-        Logger::logMessage(Logger::COMM, buffer);
+        sprintf(buffer, "Sem Timeout inicializado en posición %d (IPC TIMEOUT).", nroBrokerExterno);
+        Logger::logMessage(Logger::DEBUG, buffer);
+
+        sprintf(buffer, "shMem Timeout creado con directorio %s e id %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
+        Logger::logMessage(Logger::DEBUG, buffer);
     }
 
     IPC::MsgQueue msgQueueACK;

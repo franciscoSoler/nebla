@@ -58,6 +58,13 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
+    cfg->parse();
+
+    int cantidadBrokers = cfg->getConfigFileParam("CantidadBrokers", -1);
+    if (cantidadBrokers == -1)
+        Logger::logMessage(Logger::ERROR, "Error al obtener cantidad de Brokers");
+
     elegirDirectorios( brokerNumber );
     sprintf(buffer, "CanalEntradaBrokerBroker N°%d - N°%d:", brokerNumber, remoteBrokerId);
     Logger::setProcessInformation(buffer);
@@ -106,9 +113,9 @@ int main(int argc, char* argv[]) {
     // Brokers y a procesarlos
     try {
         IPC::Semaphore semUltimoACKRecibido;
-        semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, 4);
+        semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
 
-        sprintf(buffer, "Obtengo el Sem Timeout con directorio %s, id %d y cantSemáforos 4 (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SEM_TIMEOUT);
+        sprintf(buffer, "Obtengo el Sem Timeout con directorio %s, id %d y cantSemáforos %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
         Logger::logMessage(Logger::DEBUG, buffer);
 
         IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
