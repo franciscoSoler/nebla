@@ -104,8 +104,8 @@
 //mtype colas
 
 #define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
-#define TIPO_PEDIDO_PRODUCCION 			1 // Tipo utilizado entre el almacen de piezas y Robot 5
-#define ID_ALMACEN_PIEZAS               1 // Tipo utilizado entre robot 5 almacen de productos
+#define TIPO_PEDIDO_PRODUCCION 			2 // Tipo utilizado entre el almacen de piezas y Robot 5
+#define ID_ALMACEN_PIEZAS               	1 // Tipo utilizado entre robot 5 almacen de productos
 
 #define TIPO_PEDIDO_DESPACHO            1
 #define TIPO_PEDIDO_ODC_DESPACHO        2
