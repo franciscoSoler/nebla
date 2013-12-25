@@ -44,7 +44,8 @@ typedef enum {
     MENSAJE_LIDER,
     MEMORIA_BROKERS,
     MENSAJE_ACK,
-    MENSAJE_BROADCAST
+    MENSAJE_BROADCAST,
+    MENSAJE_TIMEOUT
 } CommTipoMensajeBrokers;
 
 
@@ -92,7 +93,6 @@ typedef enum {
 
 #define ID_SHMEM_TIMEOUT        30
 #define ID_SEM_TIMEOUT          30
-#define ID_MSGQUEUE_TIMEOUT     30
 
 /* Define la cantidad de tiempo en segundos que se va a esperar
  * antes de que se haga timeout. */
@@ -184,12 +184,6 @@ typedef struct {
     long mtype;
     MsgCanalEntradaBrokerBroker msg;
 } MsgCanalSalidaBrokerBroker;
-
-typedef struct {
-    long mtype;
-    ulong msg_id;
-    bool recepcionOK;
-} MsgACK;
 
 typedef struct {
     // Debería ser un TipoAgente en vez de un int

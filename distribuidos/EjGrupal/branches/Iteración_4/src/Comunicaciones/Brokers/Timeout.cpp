@@ -69,9 +69,6 @@ int main(int argc, char* argv[])
     IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
     shMemUltimoACKRecibido.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + idBrokerRemoto - 1);
 
-    IPC::MsgQueue msgQueueACK;
-    msgQueueACK.getMsgQueue(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
-
     sleep(TIEMPO_TIMEOUT);
 
     try
@@ -90,15 +87,21 @@ int main(int argc, char* argv[])
             sprintf(buffer, "TIMEOUT ERROR: esperaba algo mayor o igual a %lu; el último mensaje recibido fue %lu.", idMensajeTimeout, idUltimoMensajeRecibido);
             Logger::logMessage(Logger::ERROR, buffer);
 
-            /* Envía mensaje de error al pobre canal salida broker-broker que se
-             * quedó esperando. */
-            MsgACK ack;
-            ack.mtype = idBrokerRemoto;
-            ack.msg_id = idMensajeTimeout;
-            ack.recepcionOK = false;
-            sprintf(buffer, "va a enviar mensaje de error a la cola %d (TIMEOUT)", idBrokerRemoto);
+            /* Envía mensaje de error al pobre canal salida broker-broker. */
+            MsgCanalEntradaBrokerBroker msgACKEntrada;
+            MsgCanalSalidaBrokerBroker msgACKSalida;
+
+            msgACKEntrada.tipoMensaje = MENSAJE_TIMEOUT;
+            msgACKEntrada.msg_id = idMensajeTimeout;
+            msgACKSalida.mtype = idBrokerRemoto;
+            memcpy(&msgACKSalida.msg, &msgACKEntrada, sizeof(MsgCanalEntradaBrokerBroker));
+
+            IPC::MsgQueue colaCanalSalidaBrokerBroker;
+            colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
+            colaCanalSalidaBrokerBroker.send(msgACKSalida);
+
+            sprintf(buffer, "Envío mensaje de Broker caído (ACK %lu) al broker B%d!", idMensajeTimeout, idBroker);
             Logger::logMessage(Logger::DEBUG, buffer);
-            msgQueueACK.send(ack);
 
             return -1;
         }

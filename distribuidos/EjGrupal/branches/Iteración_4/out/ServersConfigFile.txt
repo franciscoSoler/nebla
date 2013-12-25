@@ -1,5 +1,5 @@
 # Variables Generales
-CantidadBrokers = 3
+CantidadBrokers = 4
 CantidadVendedores = 5
 ServidorCanalEntradaBrokerAgente-Dispatcher = CanalEntradaBrokerAgente
 ServidorCanalSalidaBrokerAgente-Dispatcher = CanalSalidaBrokerAgente

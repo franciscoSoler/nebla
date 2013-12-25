@@ -291,10 +291,6 @@ void crearIPCsDeTimeout(int nroBroker)
         sprintf(buffer, "shMem Timeout creado con directorio %s e id %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
         Logger::logMessage(Logger::DEBUG, buffer);
     }
-
-    IPC::MsgQueue msgQueueACK;
-    msgQueueACK.create(C_DIRECTORY_BROKER, ID_MSGQUEUE_TIMEOUT);
-    Logger::logMessage(Logger::COMM, "MsgQueue ACK creada.");
 }
 
 void createSharedMemoryAdministrators(int brokerNumber) {
