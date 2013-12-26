@@ -317,7 +317,6 @@ void ControladorRobot11::depositarCaja(Caja unaCaja) {
         Logger::logMessage(Logger::TRACE, "deposite una caja, estaba sanaaaa!!!!!!!!!!!!!!!!");
     }*/
 
-
     try {
         bool cajaDepositada = false;
         while (! cajaDepositada) {
@@ -435,10 +434,15 @@ void ControladorRobot11::obtener_shMem_R11_R14() {
 }
 
 void ControladorRobot11::liberar_shMem_R11_R14() {
-    SerializedData buffer;
-    buffer = this->shMem_R11_R14_Data_->serializeData();
+    char buffer[TAM_BUFFER];
+    sprintf(buffer, "Libero la Cinta13: 1: %s, 2: %s", shMem_R11_R14_Data_->cintaToString(1).c_str(),
+            shMem_R11_R14_Data_->cintaToString(2).c_str());
+    Logger::logMessage(Logger::DEBUG, buffer);
 
-    shMem_R11_R14_.write( &buffer );
+    SerializedData serializedData;
+    serializedData = this->shMem_R11_R14_Data_->serializeData();
+
+    shMem_R11_R14_.write( &serializedData );
     // Logger::logMessage(Logger::TRACE, "Libera memoria compartida R14-R16");
     semMutex_shMem_R11_R14_.signal();
 }

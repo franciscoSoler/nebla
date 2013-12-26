@@ -317,9 +317,9 @@ typedef struct
  * Estructuras utilizadas entre robot 11, 14 y 16
  */
 
-#define FIXED_SIZE_DATA      500
-#define FIXED_SIZE_CAJA      30
-#define FIXED_SIZE_CINTA     300
+#define FIXED_SIZE_DATA      850
+#define FIXED_SIZE_CAJA      50
+#define FIXED_SIZE_CINTA     400
 
 typedef struct {
   char data[FIXED_SIZE_DATA];

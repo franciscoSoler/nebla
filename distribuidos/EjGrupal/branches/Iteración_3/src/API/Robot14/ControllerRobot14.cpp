@@ -185,8 +185,9 @@ bool ControllerRobot14::tomarCajaEnEstadoTrabajando(Caja & unaCaja, uint nroCint
     bool retVal = shMem_R11_R14_Data_->retirarCajaDeCinta(nroCinta, unaCaja);
     
     if (retVal) {
-        sprintf(buffer_, "Retira caja de la cinta N°%u", nroCinta);
-        Logger::logMessage(Logger::TRACE, buffer_);
+        sprintf(buffer_, "Retira caja de la cinta N°%u, idProd: %d ODC %ld",
+                nroCinta, unaCaja.idProducto_, unaCaja.idOrdenDeCompra_);
+        Logger::logMessage(Logger::ERROR, buffer_);
         
         setEstado(getEstadoConCarga());
         // El robot14 ahora no está trabajando sobre ninguna cinta, dado que 
@@ -248,16 +249,18 @@ ControllerRobot14::~ControllerRobot14() {
 }
 
 bool ControllerRobot14::obtener_shMem_R11_R14() {
-    SerializedData buffer;
+    SerializedData serializeData;
     
     if (! estaMutex_R11_R14_tomado_) {
         semMutex_shMem_R11_R14_.wait();
-        shMem_R11_R14_.read(&buffer);
-        shMem_R11_R14_Data_->deserializeData(buffer);
+        shMem_R11_R14_.read(&serializeData);
+        shMem_R11_R14_Data_->deserializeData(serializeData);
 
-        Logger::logMessage(Logger::IMPORTANT, "Accede a memoria compartida R11-R14");
-        Logger::logMessage(Logger::IMPORTANT, "leyo la shMem....");
-
+        /*
+        sprintf(this->buffer_, "Leo la Cinta13: 1: %s, 2: %s", shMem_R11_R14_Data_->cintaToString(1).c_str(),
+                shMem_R11_R14_Data_->cintaToString(2).c_str());
+        Logger::logMessage(Logger::DEBUG, this->buffer_);
+*/
         if (shMem_R11_R14_Data_->estaRobot11Bloqueado(1))
             Logger::logMessage(Logger::IMPORTANT, "robot 11-0 bloqueado");
         if (shMem_R11_R14_Data_->estaRobot11Bloqueado(2))
@@ -282,11 +285,17 @@ bool ControllerRobot14::obtener_shMem_R11_R14() {
 }
 
 bool ControllerRobot14::liberar_shMem_R11_R14() {
-    SerializedData buffer;
+    SerializedData serializeData;
 
     if ( estaMutex_R11_R14_tomado_ ) {
-        buffer = shMem_R11_R14_Data_->serializeData();
-        shMem_R11_R14_.write( &buffer );
+/*
+        char buffer[TAM_BUFFER];
+        sprintf(buffer, "Libero la Cinta13: 1: %s, 2: %s", shMem_R11_R14_Data_->cintaToString(1).c_str(),
+                shMem_R11_R14_Data_->cintaToString(2).c_str());
+        Logger::logMessage(Logger::DEBUG, buffer);
+*/
+        serializeData = shMem_R11_R14_Data_->serializeData();
+        shMem_R11_R14_.write( &serializeData );
 
         semMutex_shMem_R11_R14_.signal();
 
@@ -294,6 +303,7 @@ bool ControllerRobot14::liberar_shMem_R11_R14() {
         return true;
     }
     else {
+        Logger::logMessage(Logger::ERROR, "NO ESTABA EL MUTEX TOMADO");
         return false;
     }
 }

@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
             semaforoContadora.signal();
 
             sprintf(buffer, "Tengo %d pedidos de memoria", cantidad);
-            //Logger::logMessage(Logger::DEBUG, buffer);
+            Logger::logMessage(Logger::DEBUG, buffer);
 
             for (int i = 0; i < cantidad; ++i) {
                 // Obtengo un pedido por la memoria
@@ -115,6 +115,9 @@ int main(int argc, char* argv[]) {
                 colaAgente.getMsgQueue(C_DIRECTORY_BROKER, mensajePedido.idTipoEmisor);
                 colaAgente.send(msgSalida);
 
+                sprintf(buffer, "Envio la shMem id: %d", idMemoria);
+                Logger::logMessage(Logger::DEBUG, buffer);
+
                 // Espero que el agente devuelva la memoria compartida
                 colaMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
                 memcpy(&mensajeMemoria, bufferMsgQueue, sizeof(MsgEntregaMemoriaAdministrador));
@@ -124,7 +127,7 @@ int main(int argc, char* argv[]) {
             int siguiente = obtenerSiguiente(brokerNumber,idMemoria);
 
             sprintf(buffer, "No realizo mas pedidos, envio shMem al siguiente broker: %d", siguiente);
-            //Logger::logMessage(Logger::DEBUG, buffer);
+            Logger::logMessage(Logger::DEBUG, buffer);
             
             // Se pone este sleep para que el token no avance muy rapido cuando no hay pedidos
             // del mismo
@@ -134,7 +137,7 @@ int main(int argc, char* argv[]) {
 
             if (siguiente == brokerNumber) {
                 // El siguiente broker soy yo mismo, por lo tanto, "me reenvio" la memoria.
-                //Logger::logMessage(Logger::DEBUG, "estoy autoenviando la shMem");
+                Logger::logMessage(Logger::DEBUG, "estoy autoenviando la shMem");
                 memcpy(bufferMsgQueue, &mensajeMemoria, sizeof(MsgEntregaMemoriaAdministrador));
                 colaMemoria.send(bufferMsgQueue, MSG_BROKER_SIZE);
             }
