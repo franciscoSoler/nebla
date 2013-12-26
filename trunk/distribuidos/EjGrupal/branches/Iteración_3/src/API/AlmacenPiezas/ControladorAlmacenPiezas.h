@@ -44,6 +44,7 @@ public:
 private:
     char buffer[TAM_BUFFER];
     COMM::CommMsgHandler colaReciboOrdenProduccion;
+    COMM::CommMsgHandler colaCambioProducto;
     IPC::PedidosProduccionMessageQueue colaEnvioMensajePedidoProduccion;
     IPC::PedidosCanastosMessageQueue colaPedidosCanastos;
 

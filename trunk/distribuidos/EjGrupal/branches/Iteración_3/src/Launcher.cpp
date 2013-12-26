@@ -102,6 +102,11 @@ void createIPCs() {
     semaforoApiRobot5.initializeSemaphore(0,1);
 
     // Robot 5 - Cinta
+
+    IPC::MsgQueue colaCambioProducto("colaCambioProducto");
+    colaCambioProducto.create(DIRECTORY_ROBOT_5, ID_COLA_CAMBIO_PEDIDO);
+    Logger::logMessage(Logger::IMPORTANT, "IPC colaCambioProducto creado");
+    
     IPC::PedidosProduccionMessageQueue colaPedidos("PedidosProduccionMessageQueue");
     colaPedidos.createMessageQueue(DIRECTORY_ROBOT_5,ID_COLA_PEDIDOS_PRODUCCION);
             

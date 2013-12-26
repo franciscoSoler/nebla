@@ -37,7 +37,11 @@ void ControladorRobot5Cinta::iniciarControlador()
 {
     try
     {
-	/* Obtengo la cola de pedidos */
+        colaCambioProducto = COMM::CommMsgHandler(2, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP);
+        colaCambioProducto.setReceptorInfo("colaCambioProducto",
+                                               DIRECTORY_ROBOT_5, ID_COLA_CAMBIO_PEDIDO);
+
+        /* Obtengo la cola de pedidos */
 	colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
 	/* Obtengo las cintas transportadoras */
@@ -184,7 +188,8 @@ void ControladorRobot5Cinta::avisarProximoPedido()
     {
 	Logger::getInstance().logMessage(Logger::TRACE, "Envio mensaje al almacen de piezas para que envie la proxima orden de produccion.");
 	MensajeProximoPedidoProduccion mensajeProximoPedido;
-	colaPedidosProduccion.enviarProximoPedidoProduccion(ID_ALMACEN_PIEZAS, mensajeProximoPedido);
+        colaCambioProducto.send(ID_ALMACEN_PIEZAS, mensajeProximoPedido);
+//	colaPedidosProduccion.enviarProximoPedidoProduccion(ID_ALMACEN_PIEZAS, mensajeProximoPedido);
     }
     catch(Exception &e)
     {
