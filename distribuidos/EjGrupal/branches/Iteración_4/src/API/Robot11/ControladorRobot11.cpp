@@ -174,7 +174,7 @@ void ControladorRobot11::avanzarCinta() {
             Logger::logMessage(Logger::TRACE, "robot 5 durmiendo, lo despierto");
             estadoRobot5.robot5Bloqueado = false;
             this->shMemEstadoRobot5.writeInfo(&estadoRobot5);
-            this->semBloqueoRobot5.signal();
+            this->semBloqueoRobot5.signal(1);
         }
         this->semMemEstadoRobot5.signal();
     }

@@ -74,9 +74,11 @@ int main(int argc, char* argv[]) {
     Logger::logMessage(Logger::COMM, buffer);
 
     try {
-        // Registro al agente que se registró en los Brokers
         elegirDirectorios( brokerNumber );
+        // Registro al agente que se registró en los Brokers
         registrarAgenteEnBrokers(idTipoAgente, idAgente, brokerNumber);
+        /* Se escribe en la matriz como tipo agente disponible. */
+        registrarDisponibilidadDeAgente(idTipoAgente, brokerNumber);
     
         IPC::MsgQueue colaBroker("cola Broker");
         colaBroker.getMsgQueue(C_DIRECTORY_BROKER, idTipoAgente);
@@ -198,11 +200,9 @@ void registrarAgenteEnBrokers(int tipoAgente, long idAgente, int brokerNumber) {
         colaSalidaBrokerBroker.send( msgSalida );
     }
 
-    /* Luego, se escribe en la matriz como tipo agente disponible. */
-    registrarDisponibilidadDeAgente(tipoAgente, brokerNumber);
 }
 
-void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
+void registrarDisponibilidadDeAgente(int idTipoAgente, int idBroker)
 {
     char buffer[1024];
 
@@ -219,17 +219,17 @@ void registrarDisponibilidadDeAgente(int tipoAgente, int idBroker)
     // Recorro todos los grupos y verifico si el agente es necesario para cada uno.
     for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
     {
-        if(infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][tipoAgente - 1] != 0)
+        if(infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo][idTipoAgente - 1] != 0)
         {
             // El agente pertence al grupo
             sprintf(buffer, "Registro de agente de tipo %d en grupo %d desde el broker %d (PRESELECCIÓN LÍDER FORÁNEO).",
-                    tipoAgente, nroGrupo + ID_PRIMER_GRUPO_SHMEM, idBroker);
+                    idTipoAgente, nroGrupo + ID_PRIMER_GRUPO_SHMEM, idBroker);
             Logger::logMessage(Logger::IMPORTANT, buffer);
 
             /* Se puede dar que haya más tipos de agentes inscriptos que necesarios (caso vendedores) */
-            if(infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][tipoAgente - 1] != 0)
+            if(infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][idTipoAgente - 1] != 0)
             {
-                infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][tipoAgente - 1]--;
+                infoGrupoShMemBrokers.tiposDeAgenteRestantesPorGrupo[nroGrupo][idTipoAgente - 1]--;
                 verificarGrupoCompleto(&infoGrupoShMemBrokers, nroGrupo, idBroker);
             }
         }

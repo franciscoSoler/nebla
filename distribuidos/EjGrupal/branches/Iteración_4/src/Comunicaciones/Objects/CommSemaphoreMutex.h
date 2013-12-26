@@ -57,6 +57,11 @@ public:
         MsgCanalSalidaAgente msg;
         wrapper.createPacketRequestShMem(msg);
 
+        char buffer_[255];
+        sprintf(buffer_, "CommSemaphoreMutex - wait: idReceptor: %d - idSemaforo: %d", 
+        this->idShMem[numSem], numSem);
+        Logger::logMessage(Logger::DEBUG, buffer_);
+
         try {
             char bufferr[TAM_BUFFER];
             sprintf(bufferr, "%s wait: envio el pedido de la shMem, idEmisor %ld, tipoEmisor: %d", 
@@ -93,8 +98,9 @@ public:
         wrapper.setIdShMem( this->idShMem[numSem] );
 
         char buffer_[255];
-        sprintf(buffer_, "idReceptor: %d - idSemaforo: %d", this->idShMem[numSem], numSem);
-        Logger::logMessage(Logger::IMPORTANT, buffer_);
+        sprintf(buffer_, "CommSemaphoreMutex - signal: idReceptor: %d - idSemaforo: %d", 
+        this->idShMem[numSem], numSem);
+        Logger::logMessage(Logger::DEBUG, buffer_);
 
         if ( this->idShMem[numSem] == 0 ) {
             Logger::logMessage(Logger::ERROR, "id de receptor inválido");

@@ -14,7 +14,7 @@
 
 CintaTransportadora6::CintaTransportadora6(int idCinta) 
         : idCinta(idCinta),
-          semaforoAcceso("Cinta Transportadora", 1, ID_TIPO_ROBOT5_CINTA),
+          semaforoAcceso("Cinta Transportadora", 2, ID_TIPO_ROBOT5_CINTA),
           cinta("CintaTransportadoraSharedMemory")
 {
 }

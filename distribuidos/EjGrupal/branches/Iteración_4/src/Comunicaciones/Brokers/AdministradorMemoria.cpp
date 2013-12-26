@@ -194,15 +194,6 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
         }
     }
 
-    /*char buffer[TAM_BUFFER];
-    sprintf (buffer, "Brokers que pertencen al grupo %d:",nroGrupo);
-    for (std::list<int>::iterator it = brokersEnElGrupo.begin(); it != brokersEnElGrupo.end(); ++it) {
-        char otroBuffer[TAM_BUFFER];
-        sprintf(otroBuffer, "%d|", (*it));
-        strcat(buffer,otroBuffer);
-    }
-    Logger::logMessage(Logger::DEBUG, buffer);*/
-
     int siguiente = (nroBroker % 4)+1;
     bool encontrado = false;
 
