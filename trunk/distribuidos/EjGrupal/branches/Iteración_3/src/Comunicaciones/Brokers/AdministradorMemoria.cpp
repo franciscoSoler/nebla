@@ -111,12 +111,12 @@ int main(int argc, char* argv[]) {
                 MsgCanalSalidaBroker msgSalida;
                 wrapper.createPacketReplyShMem(msgSalida, mensajeMemoria.memoria);
 
+                sprintf(buffer, "Envio la shMem id: %d", idMemoria);
+                Logger::logMessage(Logger::DEBUG, buffer);
+
                 IPC::MsgQueue colaAgente = IPC::MsgQueue("Cola Agente");
                 colaAgente.getMsgQueue(C_DIRECTORY_BROKER, mensajePedido.idTipoEmisor);
                 colaAgente.send(msgSalida);
-
-                sprintf(buffer, "Envio la shMem id: %d", idMemoria);
-                Logger::logMessage(Logger::DEBUG, buffer);
 
                 // Espero que el agente devuelva la memoria compartida
                 colaMemoria.recv(idMemoria, bufferMsgQueue, MSG_BROKER_SIZE);
