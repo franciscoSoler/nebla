@@ -130,8 +130,7 @@ int main(int argc, char* argv[]) {
         while( true ) {
             if ( socketBroker->receive(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
                 Logger::logMessage(Logger::ERROR, "Error al recibir mensaje de un Broker");
-                socketBroker->destroy();
-                abort();
+                break;
             }
             
             Logger::logMessage(Logger::COMM, "Recibio mensaje");
@@ -143,8 +142,7 @@ int main(int argc, char* argv[]) {
             if ( mensaje.tipoMensaje == AGENTE_AGENTE ) {
                 MsgCanalEntradaBroker msg;
                 memcpy(&msg, mensaje.msg, sizeof(MsgCanalEntradaBroker));
-                
-                
+                                
                 if (msg.receiverType == AGENTE) {
                     DireccionamientoMsgAgente dirMsgAgente;
                     memcpy(&dirMsgAgente, msg.direccionamiento, sizeof(DireccionamientoMsgAgente));
@@ -166,9 +164,7 @@ int main(int argc, char* argv[]) {
                         Logger::logMessage(Logger::ERROR, "Flujo invalido - El mensaje no tenia que llegar a este broker");
                     }
                 }
-                
-                
-                // TODO:
+
             }
             else if ( mensaje.tipoMensaje == MEMORIA_AGENTE ) {
                 // TODO: hacer este mensaje francisco, no seas choto.... jaja
@@ -178,14 +174,15 @@ int main(int argc, char* argv[]) {
                 MsgEntregaMemoriaAdministrador msg;
                 memcpy(&msg, mensaje.msg, sizeof(MsgEntregaMemoriaAdministrador));
 
+                /* Se despacha el mensaje al administrador. */
                 IPC::MsgQueue colaAdministrador("colaAdministrador");
                 colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, ID_TIPO_MEMORIA);
                 colaAdministrador.send(msg);
 
-                sprintf(buffer, "Acaba de llegar un mensaje con id %lu (TIMEOUT).", mensaje.msg_id);
+                sprintf(buffer, "Se recibe de la red un mensaje con id %lu (TIMEOUT 2).", mensaje.msg_id);
                 Logger::logMessage(Logger::DEBUG, buffer);
 
-                /* Envía el ACK. */
+                /* Y se envía el ACK al CSBB para que lo retransmita a la red. */
                 MsgCanalEntradaBrokerBroker msgACKEntrada;
                 MsgCanalSalidaBrokerBroker msgACKSalida;
 
@@ -197,9 +194,6 @@ int main(int argc, char* argv[]) {
                 IPC::MsgQueue colaCanalSalidaBrokerBroker;
                 colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
                 colaCanalSalidaBrokerBroker.send(msgACKSalida);
-
-                sprintf(buffer, "Envío ACK nro %lu al broker B%d! (TIMEOUT B%d)", mensaje.msg_id, remoteBrokerId, brokerNumber);
-                Logger::logMessage(Logger::DEBUG, buffer);
             }
             else if ( mensaje.tipoMensaje == MENSAJE_LIDER ) {
                 Logger::logMessage(Logger::COMM, "el mensaje de lider llego del otro broker, se la doy al algoritmo del lider");
@@ -211,12 +205,11 @@ int main(int argc, char* argv[]) {
                 colaLider.send(msg);
             }
 
+            /* Si el mensaje es de tipo ACK, lo registra en la memoria que comparte
+               con los procesos de timeout. */
             else if(mensaje.tipoMensaje == MENSAJE_ACK)
             {
-                sprintf(buffer, "quiere escribir en memoria compartida %d que se recibe el ACK del mensaje con id %lu. (IPC TIMEOUT)", remoteBrokerId - 1, mensaje.msg_id);
-                Logger::logMessage(Logger::DEBUG, buffer);
-
-                sprintf(buffer, "accedo a la shMem haciendo p() en el semáforo %d (IPC TIMEOUT)", remoteBrokerId - 1);
+                sprintf(buffer, "Recibe el ACK con identificador %lu y lo registra en la shmem (TIMEOUT 4).", mensaje.msg_id);
                 Logger::logMessage(Logger::DEBUG, buffer);
 
                 /* Registra el número de ACK recibido. */
