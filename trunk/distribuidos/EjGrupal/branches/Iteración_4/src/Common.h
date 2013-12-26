@@ -23,8 +23,8 @@
 
 //ipcs entre AGV y Robot5 (usar DIRECTORY_AGV)
 #define ID_SEM_BLOQUEO_AGV              1   // ID para el semaforo de bloqueo de los AGV
-#define ID_SEM_BUFFER_AGV_5            	2	// es el id para el semaforo de acceso al buffer
-#define ID_BUFFER_AGV_5_0           	3	// es el id tanto para shMemory como semaforo de acceso
+#define ID_SEM_BUFFER_AGV_5            	2   // es el id para el semaforo de acceso al buffer
+#define ID_BUFFER_AGV_5_0           	3   // es el id tanto para shMemory como semaforo de acceso
 #define ID_BUFFER_AGV_5_1               4
 #define ID_BUFFER_AGV_5_2               5
 #define ID_COLA_PEDIDOS_AGV_5           6
@@ -105,7 +105,7 @@
 
 #define TIPO_PEDIDO_CANASTO 			1 // Tipo utilizado entre los AGV y el Robot 5
 #define TIPO_PEDIDO_PRODUCCION 			2 // Tipo utilizado entre el almacen de piezas y Robot 5
-#define ID_ALMACEN_PIEZAS               	1 // Tipo utilizado entre robot 5 almacen de productos
+#define ID_ALMACEN_PIEZAS                       1 // Tipo utilizado entre robot 5 almacen de productos
 
 #define TIPO_PEDIDO_DESPACHO            1
 #define TIPO_PEDIDO_ODC_DESPACHO        2

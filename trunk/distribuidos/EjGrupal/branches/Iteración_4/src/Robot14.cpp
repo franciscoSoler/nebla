@@ -72,6 +72,12 @@ uint elegirCintaPorCantidadDeCajas(autoPtrControllerRobot14 & controller) {
         cajasPorCinta[i-1] = controller->obtenerCantidadDeCajasEnCinta(i);
     }
 
+    // Sanity-Check
+    if (cajasPorCinta[0] == 0 && cajasPorCinta[1] == 0) {
+        Logger::logMessage(Logger::ERROR, "Cintas vacías. Robot14 fue despertado erroneamente");
+        abort();
+    }
+
     if (cajasPorCinta[0] > cajasPorCinta[1]) {
         return 1;
     }

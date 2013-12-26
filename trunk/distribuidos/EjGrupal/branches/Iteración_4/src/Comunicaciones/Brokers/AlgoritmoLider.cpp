@@ -37,7 +37,6 @@ void enviarMensajeAlSiguiente(MsgAlgoritmoLider msg, int idBroker, int idGrupo);
 void elegirDirectorios(int brokerNumber);
 void iniciarMemoria(int idGrupo);
 int obtenerSiguiente(int idBroker, int idGrupo);
-//int establecerSiguiente(int idGrupo, int idBroker);
 
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("Algoritmo Lider:");
@@ -91,7 +90,7 @@ int main(int argc, char* argv[]) {
                 Logger::logMessage(Logger::ERROR, "Se esta intentando iniciar el algoritmo del lider con un mensaqe invalido.");
                 abort();
             }*/
-            semaforoLider.wait(idGrupo-ID_PRIMER_GRUPO_SHMEM);
+            semaforoLider.wait(idGrupo - ID_PRIMER_GRUPO_SHMEM);
             sprintf(buffer, "Se inicia el algoritmo");
             Logger::logMessage(Logger::DEBUG, buffer);
 
@@ -140,6 +139,7 @@ int main(int argc, char* argv[]) {
                     } else {
                         // Me llego un mensajes con un uid menor, por lo tanto se ignora el mensaje
                     }
+
                 } else if (msgAlgoritmo.status == LIDER) {
 
                     // Marcar en una memoria compartida quien es el nuevo lider.
@@ -199,7 +199,6 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
     IPC::Semaphore semMutexDataInfoAgentes;
     semMutexDataInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
 
-
     std::list<int> brokersEnElGrupo;
     for (int i = 0; i < AMOUNT_AGENTS; ++i) {
         if (infoGrupoShMemBrokers.tiposDeAgenteNecesariosPorGrupo[nroGrupo-ID_PRIMER_GRUPO_SHMEM][i] > 0) {
@@ -223,7 +222,6 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
     /*char buffer[TAM_BUFFER];
     sprintf (buffer, "Brokers que pertencen al grupo %d:",nroGrupo);
     for (std::list<int>::iterator it = brokersEnElGrupo.begin(); it != brokersEnElGrupo.end(); ++it) {
-        char otroBuffer[TAM_BUFFER];
         sprintf(otroBuffer, "%d|", (*it));
         strcat(buffer,otroBuffer);
     }
@@ -237,7 +235,7 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
         Logger::logMessage(Logger::ERROR, "Error al obtener cantidad de Brokers");
     }
 
-    int siguiente = (nroBroker % cantidadBrokers)+1;
+    int siguiente = (nroBroker % cantidadBrokers) + 1;
     bool encontrado = false;
 
     while (!encontrado) {
@@ -247,7 +245,7 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
             }
         }
         if (! encontrado) {
-            siguiente = (siguiente % cantidadBrokers)+1;
+            siguiente = (siguiente % cantidadBrokers) + 1;
         }
     }
 

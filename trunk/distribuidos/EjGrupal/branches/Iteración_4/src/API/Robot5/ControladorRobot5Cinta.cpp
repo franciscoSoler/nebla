@@ -11,16 +11,16 @@
 #include "../../Parser/Parser.h"
 
 ControladorRobot5Cinta::ControladorRobot5Cinta() :
-        colaPedidosProduccion("PedidosProduccionMessageQueue", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP),
+        colaPedidosProduccion("PedidosProduccionMessageQueue", 2, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP),
         estadoRobot5("EstadoRobot5SharedMemory"),        
-        semaforoAccesoEstadoRobot5("AccesoEstadoRobot5", 1, ID_TIPO_ROBOT5_CINTA),
-        semaforoBloqueoRobot5("BloqueoRobot5", 1, ID_TIPO_ROBOT5_CINTA),
-        semaforoBloqueoRobot11("BloqueoRobot11", 1, ID_TIPO_ROBOT5_CINTA, ID_TIPO_ROBOT11),
+        semaforoAccesoEstadoRobot5("AccesoEstadoRobot5", 2, ID_TIPO_ROBOT5_CINTA),
+        semaforoBloqueoRobot5("BloqueoRobot5", 2, ID_TIPO_ROBOT5_CINTA),
+        semaforoBloqueoRobot11("BloqueoRobot11", 2, ID_TIPO_ROBOT5_CINTA, ID_TIPO_ROBOT11),
         semaforoApiRobot5("ApiRobot5")
 {
 
         MiddlewareAPI middleware;
-        if ( middleware.crearCanales("Robot5EnBroker", 1, ID_TIPO_ROBOT5_CINTA) == -1 ) {
+        if ( middleware.crearCanales("Robot5EnBroker", 2, ID_TIPO_ROBOT5_CINTA) == -1 ) {
             Logger::logMessage(Logger::ERROR, "No se pudieron crear los canales con el Middleware");
             abort();
         }

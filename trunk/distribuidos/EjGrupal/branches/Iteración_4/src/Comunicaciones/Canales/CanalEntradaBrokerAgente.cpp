@@ -66,20 +66,30 @@ int main(int argc, char* argv[]) {
                 memcpy(&dirMsgAgente, mensaje.direccionamiento, sizeof(DireccionamientoMsgAgente));
 
                 char buffer[TAM_BUFFER];
-                sprintf(buffer, "Recibe mensaje de Agente: idTipoReceptor: %d, idReceptor: %ld", dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
+                sprintf(buffer, "Recibe mensaje de Agente: idTipoReceptor: %d, idReceptor: %ld",
+                        dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
                 Logger::logMessage(Logger::COMM, buffer);
 
                 int idBrokerAgente = obtenerNroBrokerDeAgente(dirMsgAgente.idReceiverAgentType, 
                                                               dirMsgAgente.idReceptor);
 
+                // Safety-check
+                if ( idBrokerAgente == 0 ) {
+                    sprintf(buffer, "Agente Tipo N°%d - Id N°%ld: No se encuentra conectado. Abortando.",
+                            dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
+                    Logger::logMessage(Logger::ERROR, buffer);
+                    abort();
+                }
+
+
                 if ( idBrokerAgente == brokerNumber ) {
-                    // TODO: Se reenvia al CanalSalidaBrokerAgente
                     IPC::MsgQueue colaAgente("colaAgente");
                     colaAgente.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAgente.idReceiverAgentType);
                     colaAgente.send(mensaje.msg);
                 }
                 else {
-                    sprintf(buffer, "por enviar al broker %d: idTipoReceptor: %d, idReceptor: %ld", idBrokerAgente, dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
+                    sprintf(buffer, "por enviar al broker %d: idTipoReceptor: %d, idReceptor: %ld",
+                            idBrokerAgente, dirMsgAgente.idReceiverAgentType, dirMsgAgente.idReceptor);
                     Logger::logMessage(Logger::COMM, buffer);
                     
                     
