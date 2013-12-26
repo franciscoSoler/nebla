@@ -14,7 +14,7 @@ ControllerRobot14::ControllerRobot14() {
         // Util::getInstance();
         Logger::setProcessInformation("Robot14:");
         estaMutex_R11_R14_tomado_ = false;
-        hiceWaitSobreEstadoRobot14_ = false;
+        hiceWaitSobreEstadoRobot14_ = true;
         
         shMem_R11_R14_Data_ = new DataSM_R11_R14();
         shMem_R14_R16_Data_ = new DataSM_R14_R16();
@@ -71,22 +71,15 @@ void ControllerRobot14::comenzarATrabajar() {
     try {
         Logger::setProcessInformation("Robot14 - comenzarATrabajar:");
         // Se bloquea esperando que lleguen cajas
-        obtener_shMem_R11_R14();
 
-        if ( shMem_R11_R14_Data_->estaRobot14Bloqueado() ) {
+        if ( hiceWaitSobreEstadoRobot14_ ) {
             Logger::logMessage(Logger::TRACE, "Se bloquea esperando que un Robot11 coloque cajas");
-            liberar_shMem_R11_R14();
             semR14_Cinta13.wait();
             Logger::logMessage(Logger::TRACE, "Es desbloqueado. Procede a trabajar");
         }
         else {
-            if ( hiceWaitSobreEstadoRobot14_ ) {
-                semR14_Cinta13.wait();
-            }
             Logger::logMessage(Logger::TRACE, "Hay cajas en las cintas. Procede a trabajar");
-            liberar_shMem_R11_R14();
         }
-
         hiceWaitSobreEstadoRobot14_ = false;
     }
     catch (Exception & e) {
