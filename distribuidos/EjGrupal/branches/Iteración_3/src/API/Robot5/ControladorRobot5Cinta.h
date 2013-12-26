@@ -19,7 +19,7 @@
 #include "../../IPCs/IPCAbstractos/MessageQueue/PedidosProduccionMessageQueue.h"
 #include "../../IPCs/IPCAbstractos/SharedMemory/EstadoRobot5SharedMemory.h"
 #include <Comunicaciones/Objects/CommSemaphoreMutex.h>
-
+#include <Comunicaciones/Objects/CommMsgHandler.h>
 #include "../AlmacenPiezas/EspacioAlmacenPiezas/EspacioAlmacenPiezas.h"
 
 class ControladorRobot5Cinta {
@@ -50,6 +50,7 @@ private:
 
     CintaTransportadora6 cintaTransportadora[2];
     
+    COMM::CommMsgHandler colaCambioProducto;
     IPC::PedidosProduccionMessageQueue colaPedidosProduccion;
     IPC::EstadoRobot5SharedMemory estadoRobot5;
     COMM::CommSemaphoreMutex<EstadoRobot5> semaforoAccesoEstadoRobot5;

@@ -52,6 +52,12 @@ int main(int argc, char* argv[]) {
         semaforoApiRobot5.destroy();
     
         // Robot 5 - Cinta
+
+        IPC::MsgQueue colaCambioProducto("colaCambioProducto");
+        colaCambioProducto.getMsgQueue(DIRECTORY_ROBOT_5, ID_COLA_CAMBIO_PEDIDO);
+        colaCambioProducto.destroy();
+        Logger::logMessage(Logger::IMPORTANT, "IPC colaCambioProducto creado");
+
         IPC::PedidosProduccionMessageQueue colaPedidos("PedidosProduccionMessageQueue");
         colaPedidos.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
         colaPedidos.destroy();

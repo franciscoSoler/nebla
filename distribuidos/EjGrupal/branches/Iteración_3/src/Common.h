@@ -42,6 +42,7 @@
 
 //ipcs entre Robot5 y almacen de piezas (usar DIRECTORY_ROBOT_5)
 #define ID_COLA_PEDIDOS_PRODUCCION      2
+#define ID_COLA_CAMBIO_PEDIDO           3
 
 //ipcs entre robot 11 y robot 5 (usar DIRECTORY_ROBOT_5)
 #define ID_SEM_BLOQUEO_ROBOT_5          3

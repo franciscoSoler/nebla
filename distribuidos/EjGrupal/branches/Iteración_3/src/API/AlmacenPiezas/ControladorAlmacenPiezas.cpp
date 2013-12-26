@@ -36,6 +36,11 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", idEmisor, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
         colaEnvioMensajePedidoProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
+        colaCambioProducto = COMM::CommMsgHandler(2, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
+        colaCambioProducto.setReceptorInfo("colaCambioProducto",
+                                               DIRECTORY_ROBOT_5, ID_COLA_CAMBIO_PEDIDO);
+
+
         this->colaPedidosCanastos = IPC::PedidosCanastosMessageQueue("colaPedidosCanastos", idEmisor, ID_TIPO_AP, ID_TIPO_AGV);
         this->colaPedidosCanastos.getMessageQueue(DIRECTORY_AGV, ID_COLA_PEDIDOS_ROBOTS_AGV);
 
@@ -124,8 +129,7 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(int numAGV,
 void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {
     try {
         MensajeProximoPedidoProduccion mensajeProximoPedido;
-        this->colaEnvioMensajePedidoProduccion.recibirProximoPedidoProduccion(
-                    ID_ALMACEN_PIEZAS, &mensajeProximoPedido);
+        colaCambioProducto.recv(ID_ALMACEN_PIEZAS, &mensajeProximoPedido);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
