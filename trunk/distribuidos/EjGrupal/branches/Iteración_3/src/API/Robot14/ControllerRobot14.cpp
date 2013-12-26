@@ -77,11 +77,7 @@ void ControllerRobot14::comenzarATrabajar() {
             Logger::logMessage(Logger::TRACE, "Se bloquea esperando que un Robot11 coloque cajas");
             liberar_shMem_R11_R14();
             semR14_Cinta13.wait();
-
-            obtener_shMem_R11_R14();
-            // shMem_R11_R14_Data_->setEstadoBloqueoRobot14(false);
             Logger::logMessage(Logger::TRACE, "Es desbloqueado. Procede a trabajar");
-            liberar_shMem_R11_R14();           
         }
         else {
             if ( hiceWaitSobreEstadoRobot14_ ) {
