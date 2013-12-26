@@ -125,8 +125,8 @@ std::string Cinta<PACKAGE, SIZE>::toString() {
     char buffer[TAM_BUFFER];
     for (unsigned int i = 0; i < SIZE; ++i) {
         if (!array_[i].estaVacio()) {
-            sprintf(buffer, "posCinta: %d, idProd: %d, ODC: %ld",
-                    i, array_[i].idProducto_, array_[i].idOrdenDeCompra_);
+            sprintf(buffer, "posCinta: %d, cantCajas: %d, idProd: %d, ODC: %ld",
+                    i, cantidadDePaquetes_, array_[i].idProducto_, array_[i].idOrdenDeCompra_);
             Logger::logMessage(Logger::ERROR,buffer);
         }
     }

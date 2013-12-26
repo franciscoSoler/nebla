@@ -114,7 +114,8 @@ int main(int argc, char* argv[]) {
                 colaAdministrador.getMsgQueue(C_DIRECTORY_BROKER, dirMsgAdm.idMsgAdmType);
 
                 if (dirMsgAdm.idMsgAdmType == ID_TIPO_PEDIDO_MEMORIA) {
-                    Logger::logMessage(Logger::COMM, "Pedido memoria");
+                    sprintf(buffer, "Pedido memoria: id: %ld", dirMsgAdm.idMemory);
+                    Logger::logMessage(Logger::COMM, buffer);
 
                     IPC::SharedMemory<int> contadoraSharedMemory = IPC::SharedMemory<int>("Contadora Pedidos Sh Mem");
                     contadoraSharedMemory.getSharedMemory(C_DIRECTORY_ADM, dirMsgAdm.idMemory);
@@ -127,9 +128,13 @@ int main(int argc, char* argv[]) {
                     contadoraSharedMemory.write(&cantidad);
                     semaforoContadora.signal();
                 }
-                else {
-                    Logger::logMessage(Logger::COMM, "Devuelvo memoria");
+                else if (dirMsgAdm.idMsgAdmType == ID_TIPO_MEMORIA){
+                    sprintf(buffer, "Devuelvo memoria: id: %ld", dirMsgAdm.idMemory);
+                    Logger::logMessage(Logger::COMM, buffer);
+                } else {
+                    Logger::logMessage(Logger::ERROR, "Mensaje a administradorMemoria malformado");
                 }
+
                 colaAdministrador.send(mensaje.msg);
             } 
             else if (mensaje.receiverType == BROKER) {

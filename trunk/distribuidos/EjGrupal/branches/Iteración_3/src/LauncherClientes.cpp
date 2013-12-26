@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 
         createIPCs();
 
-        Util::createProcess("Cliente", 3, 1);
+        Util::createProcess("Cliente", 1, 1);
     }
     catch (Exception & e) {
         Logger::getInstance().logMessage(Logger::ERROR,
