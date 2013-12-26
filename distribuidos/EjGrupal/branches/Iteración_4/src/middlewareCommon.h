@@ -44,8 +44,7 @@ typedef enum {
     MENSAJE_LIDER,
     MEMORIA_BROKERS,
     MENSAJE_ACK,
-    MENSAJE_BROADCAST,
-    MENSAJE_TIMEOUT
+    MENSAJE_BROADCAST
 } CommTipoMensajeBrokers;
 
 
@@ -170,6 +169,22 @@ typedef struct {
     int uid;
     StatusLider status;
 } MsgAlgoritmoLider;
+
+typedef enum
+{
+    CAIDO,
+    REINICIAR_ALGORITMO
+    /* Diseño extensible. */
+} TipoMensajeEstadoBroker;
+
+typedef struct
+{
+    long mtype;     /* Id del grupo. */
+    int nroBroker;
+    int nroAgente;
+    int tipoAgente;
+    TipoMensajeEstadoBroker estado;
+} MsgEstadoBrokers;
 
 /* Estructuras utilizadas comunicación entre Brokers
  */

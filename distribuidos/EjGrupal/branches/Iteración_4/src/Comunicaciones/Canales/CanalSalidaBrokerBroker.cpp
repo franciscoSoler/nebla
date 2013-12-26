@@ -132,13 +132,6 @@ int main(int argc, char* argv[]) {
                 idMensajeBrokerBrokerEnviado++;
             }
 
-            /* TODO: manejar el caso de broker siguiente caído. */
-            else if(mensaje.msg.tipoMensaje == MENSAJE_TIMEOUT)
-            {
-                sprintf(buffer, "El broker %d se considera caído dado que nunca se recibió el ACK #%lu (TIMEOUT 5).", remoteBrokerId, mensaje.msg.msg_id);
-                Logger::logMessage(Logger::ERROR, buffer);
-            }
-
             memcpy(bufferSocket, &mensaje.msg, sizeof(MsgCanalEntradaBrokerBroker));
             if ( socketBroker->send(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar mensaje a Broker");

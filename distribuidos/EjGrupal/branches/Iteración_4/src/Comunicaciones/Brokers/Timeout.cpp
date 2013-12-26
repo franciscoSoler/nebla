@@ -80,18 +80,17 @@ int main(int argc, char* argv[])
             sprintf(buffer, "ERROR: creado con id %lu; el último ACK recibido fue %lu (TIMEOUT 5).", idMensajeTimeout, idUltimoMensajeRecibido);
             Logger::logMessage(Logger::ERROR, buffer);
 
-            /* Envía mensaje de error al pobre canal salida broker-broker. */
-            MsgCanalEntradaBrokerBroker msgACKEntrada;
-            MsgCanalSalidaBrokerBroker msgACKSalida;
+            /* Envía un mensaje de error a algún algoritmo de líder para dar de
+             * baja al broker caído. */
+            IPC::MsgQueue colaLider = IPC::MsgQueue("Cola Lider");
+            colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
-            msgACKEntrada.tipoMensaje = MENSAJE_TIMEOUT;
-            msgACKEntrada.msg_id = idMensajeTimeout;
-            msgACKSalida.mtype = idBrokerRemoto;
-            memcpy(&msgACKSalida.msg, &msgACKEntrada, sizeof(MsgCanalEntradaBrokerBroker));
+            MsgEstadoBrokers mensajeEstadoBrokers;
+            mensajeEstadoBrokers.mtype = 1;
+            mensajeEstadoBrokers.estado = CAIDO;
+            mensajeEstadoBrokers.nroBroker = idBrokerRemoto;
 
-            IPC::MsgQueue colaCanalSalidaBrokerBroker;
-            colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
-            colaCanalSalidaBrokerBroker.send(msgACKSalida);
+            colaLider.send(mensajeEstadoBrokers);
 
             return -1;
         }
