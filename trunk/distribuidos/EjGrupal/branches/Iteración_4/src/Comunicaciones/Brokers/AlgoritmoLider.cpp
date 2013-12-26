@@ -38,6 +38,11 @@ void elegirDirectorios(int brokerNumber);
 void iniciarMemoria(int idGrupo);
 int obtenerSiguiente(int idBroker, int idGrupo);
 
+/* Rearmado de anillo. */
+void darBrokerDeBaja(int nroBroker);
+void eliminarAgenteDeGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int idTipoAgente);
+
+
 int main(int argc, char* argv[]) {
     Logger::setProcessInformation("Algoritmo Lider:");
 
@@ -155,6 +160,26 @@ int main(int argc, char* argv[]) {
             }
             sprintf(buffer, "Se encontro lider para el grupo %d: %d", idGrupo, lider);
             Logger::logMessage(Logger::DEBUG, buffer);
+
+
+            MsgEstadoBrokers mensajeEstadoBrokers;
+            do
+            {
+                colaLider.recv(idGrupo, mensajeEstadoBrokers);
+
+                TipoMensajeEstadoBroker estado = mensajeEstadoBrokers.estado;
+
+                if(estado == REINICIAR_ALGORITMO)
+                    continue;
+
+                else if(estado == CAIDO)
+                {
+                    Logger::logMessage(Logger::DEBUG, "Recibe un mensaje de baja de broker.");
+                    darBrokerDeBaja(mensajeEstadoBrokers.nroBroker);
+                }
+
+            } while(mensajeEstadoBrokers.estado != REINICIAR_ALGORITMO);
+
         }
     }
     catch (Exception & e) {
@@ -162,6 +187,72 @@ int main(int argc, char* argv[]) {
     }
 
     return 0;
+}
+
+
+void darBrokerDeBaja(int nroBroker)
+{
+    /* Se deben recorrer todos los arreglos en los que se almacena
+     * la relación entre tipos de agentes y broker en el que están;
+     * de manera de dar de baja a todos los agentes conectados al
+     * broker caído. */
+
+    char buffer[1024];
+    sprintf(buffer, "Se dará de baja al broker %d.", nroBroker);
+    Logger::logMessage(Logger::DEBUG, buffer);
+
+    IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
+    shMemInfoGruposShMemBrokers.getSharedMemory(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS);
+
+    IPC::Semaphore semInfoGruposShMemBrokers;
+    semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
+
+    InformacionGrupoShMemBrokers infoGrupoShMemBrokers;
+    semInfoGruposShMemBrokers.wait();
+    shMemInfoGruposShMemBrokers.read(&infoGrupoShMemBrokers);
+
+    for(int idTipoAgente = 0; idTipoAgente < AMOUNT_AGENTS; idTipoAgente++)
+    {
+        IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
+        shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, idTipoAgente + 1);
+
+        IPC::Semaphore semMutexShMemInfoAgentes;
+        semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
+
+        semMutexShMemInfoAgentes.wait(idTipoAgente);
+        DataInfoAgentes dataInfoAgentes;
+        shMemInfoAgentes.read(&dataInfoAgentes);
+
+        for(int idAgente = 0; idAgente < MAX_AMOUNT_AGENTS; idAgente++)
+        {
+            if(dataInfoAgentes.agenteEnBroker[idAgente] == nroBroker)
+            {
+                /* Se encuentra un agente conectado al broker, se lo elimina. */
+                sprintf(buffer, "Se detecta que un agente de tipo %d estaba conectado al broker %d.", idTipoAgente, nroBroker);
+                Logger::logMessage(Logger::DEBUG, buffer);
+
+                dataInfoAgentes.agenteEnBroker[idAgente] = 0;
+                eliminarAgenteDeGrupo(&infoGrupoShMemBrokers, idTipoAgente);
+            }
+        }
+
+        shMemInfoAgentes.write(&dataInfoAgentes);
+        semMutexShMemInfoAgentes.signal(idTipoAgente);
+    }
+
+    shMemInfoGruposShMemBrokers.write(&infoGrupoShMemBrokers);
+    semInfoGruposShMemBrokers.signal();
+}
+
+void eliminarAgenteDeGrupo(InformacionGrupoShMemBrokers* infoGrupoShMemBrokers, int idTipoAgente)
+{
+    /* Recorre todos los grupos de memoria compartida y si hay tipos de agentes registrados,
+     * se elimina uno. */
+    for(int nroGrupo = 0; nroGrupo < CANT_GRUPOS_SHMEM; nroGrupo++)
+    {
+        if(infoGrupoShMemBrokers->tiposDeAgenteRestantesPorGrupo[nroGrupo][idTipoAgente] > 0)
+            infoGrupoShMemBrokers->tiposDeAgenteRestantesPorGrupo[nroGrupo][idTipoAgente]--;
+    }
 }
 
 void enviarMensajeAlSiguiente(MsgAlgoritmoLider msg, int idBroker, int idGrupo) {
