@@ -52,19 +52,13 @@ int main(int argc, char* argv[])
     if (cantidadBrokers == -1)
         Logger::logMessage(Logger::ERROR, "Error al obtener cantidad de Brokers");
 
-    sprintf(buffer, "Timeout B%d:", idBroker);
+    sprintf(buffer, "Timeout N°%d - N°%d :", idBroker, idBrokerRemoto);
     Logger::setProcessInformation(buffer);
 
     seleccionarDirectorio(idBroker);
 
     IPC::Semaphore semUltimoACKRecibido;
     semUltimoACKRecibido.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
-
-    sprintf(buffer, "Obtengo sem Timeout con directorio %s, id %d y cantSemáforos %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, cantidadBrokers);
-    Logger::logMessage(Logger::DEBUG, buffer);
-
-    sprintf(buffer, "Va a tratar de obtener la memoria compartida con directorio %s y ID %d (IPC TIMEOUT).", C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + idBrokerRemoto - 1);
-    Logger::logMessage(Logger::DEBUG, buffer);
 
     IPC::SharedMemory<ulong> shMemUltimoACKRecibido;
     shMemUltimoACKRecibido.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + idBrokerRemoto - 1);
@@ -75,16 +69,15 @@ int main(int argc, char* argv[])
     {
         ulong idUltimoMensajeRecibido;
 
-        sprintf(buffer, "Quiero entrar a la shMem haciendo p() en el sem %d (IPC TIMEOUT).", idBrokerRemoto - 1);
-        Logger::logMessage(Logger::DEBUG, buffer);
-
+        /* Lee el ID del último ACK recibido... */
         semUltimoACKRecibido.wait(idBrokerRemoto - 1);
         shMemUltimoACKRecibido.read(&idUltimoMensajeRecibido);
         semUltimoACKRecibido.signal(idBrokerRemoto - 1);
 
+        /* ...y lo compara con el ID del ACK vigente cuando fue creado. */
         if(idMensajeTimeout > idUltimoMensajeRecibido)
         {
-            sprintf(buffer, "TIMEOUT ERROR: esperaba algo mayor o igual a %lu; el último mensaje recibido fue %lu.", idMensajeTimeout, idUltimoMensajeRecibido);
+            sprintf(buffer, "ERROR: creado con id %lu; el último ACK recibido fue %lu (TIMEOUT 5).", idMensajeTimeout, idUltimoMensajeRecibido);
             Logger::logMessage(Logger::ERROR, buffer);
 
             /* Envía mensaje de error al pobre canal salida broker-broker. */
@@ -100,15 +93,12 @@ int main(int argc, char* argv[])
             colaCanalSalidaBrokerBroker.getMsgQueue(C_DIRECTORY_BROKER, ID_MSG_QUEUE_CSBB);
             colaCanalSalidaBrokerBroker.send(msgACKSalida);
 
-            sprintf(buffer, "Envío mensaje de Broker caído (ACK %lu) al broker B%d!", idMensajeTimeout, idBroker);
-            Logger::logMessage(Logger::DEBUG, buffer);
-
             return -1;
         }
 
         else
         {
-            sprintf(buffer, "TIMEOUT con id %lu lee que el último ACK recibido es %lu y se muere feliz.", idMensajeTimeout, idUltimoMensajeRecibido);
+            sprintf(buffer, "Timeout con id %lu lee que el último ACK recibido es %lu y se muere feliz (TIMEOUT 5).", idMensajeTimeout, idUltimoMensajeRecibido);
             Logger::logMessage(Logger::COMM, buffer);
         }
 
@@ -124,10 +114,6 @@ int main(int argc, char* argv[])
 }
 
 void seleccionarDirectorio(int idBroker) {
-    char buffer[1024];
-    sprintf(buffer, "Voy a seleccionar directorio con mi id: %d (TIMEOUT)", idBroker);
-    Logger::logMessage(Logger::DEBUG, buffer);
-
     switch (idBroker) {
         case 1:
             C_DIRECTORY_BROKER = DIRECTORY_BROKER_1;

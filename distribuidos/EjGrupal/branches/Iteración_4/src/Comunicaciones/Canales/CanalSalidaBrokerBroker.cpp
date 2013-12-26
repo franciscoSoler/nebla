@@ -104,43 +104,45 @@ int main(int argc, char* argv[]) {
             MsgCanalSalidaBrokerBroker mensaje;
             colaCanalSalida.recv(remoteBrokerId, mensaje);
 
+            /* Sólo para debug. */
             if(mensaje.msg.tipoMensaje == MENSAJE_ACK)
             {
-                sprintf(buffer, "Quiere enviar un mensaje ACK %lu (TIMEOUT).", mensaje.msg.msg_id);
+                sprintf(buffer, "Desencola ACK con identificador %lu y lo envía por la red (TIMEOUT 3).", mensaje.msg.msg_id);
                 Logger::logMessage(Logger::DEBUG, buffer);
             }
 
+            /* Tienen un trato diferente los mensajes que son de tipo MEMORIA AGENTE. */
             else if(mensaje.msg.tipoMensaje == MEMORIA_AGENTE)
             {
-                sprintf(buffer, "Recibe mensaje, procede a enviarlo como mensaje %lu. (TIMEOUT B%d)", idMensajeBrokerBrokerEnviado, brokerNumber);
+                sprintf(buffer, "Desencola mensaje y lo envía por la red con el identificador %lu. (TIMEOUT 1).", idMensajeBrokerBrokerEnviado);
                 Logger::logMessage(Logger::DEBUG, buffer);
 
+                /* Crea un proceso de Timeout. */
                 char idMensajeBrokerBrokerEnviado_str[128];
                 char idBroker_str[32];
                 char idBrokerRemoto_str[32];
-
                 sprintf(idMensajeBrokerBrokerEnviado_str, "%lu", idMensajeBrokerBrokerEnviado);
                 sprintf(idBroker_str, "%d", brokerNumber);
                 sprintf(idBrokerRemoto_str, "%d", remoteBrokerId);
-
                 Util::safeCreateProcess("Timeout", std::string(idBroker_str), std::string(idBrokerRemoto_str), std::string(idMensajeBrokerBrokerEnviado_str));
 
+                /* Se le asigna al mensaje un identificador... */
                 mensaje.msg.msg_id = idMensajeBrokerBrokerEnviado;
-
+                /* ...y se incrementa para el mensaje posterior. */
                 idMensajeBrokerBrokerEnviado++;
             }
 
+            /* TODO: manejar el caso de broker siguiente caído. */
             else if(mensaje.msg.tipoMensaje == MENSAJE_TIMEOUT)
             {
-                sprintf(buffer, "Se cayó el broker siguiente, nunca se recibió el ACK #%lu!! (TIMEOUT)", mensaje.msg.msg_id);
+                sprintf(buffer, "El broker %d se considera caído dado que nunca se recibió el ACK #%lu (TIMEOUT 5).", remoteBrokerId, mensaje.msg.msg_id);
                 Logger::logMessage(Logger::ERROR, buffer);
             }
 
             memcpy(bufferSocket, &mensaje.msg, sizeof(MsgCanalEntradaBrokerBroker));
             if ( socketBroker->send(bufferSocket, TAM_BUFFER) != TAM_BUFFER ) {
                 Logger::logMessage(Logger::ERROR, "Error al enviar mensaje a Broker");
-                socketBroker->destroy();
-                abort();
+                break;
             }
 
         }
