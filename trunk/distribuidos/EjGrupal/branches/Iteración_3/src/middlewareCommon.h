@@ -72,7 +72,7 @@ typedef enum {
 
 // Cantidad de agentes por tipo. Se utiliza en la shMem que posee
 // la información de que agente está conectado en cada Broker
-#define MAX_AMOUNT_AGENTS       10
+#define MAX_AMOUNT_AGENTS       50
 // Cantidad de Agentes en el sistema. Equivale al tamaño del
 // struct TipoAgente - 1 (por el tipo ID_TIPO_VACIO)
 #define AMOUNT_AGENTS           12
