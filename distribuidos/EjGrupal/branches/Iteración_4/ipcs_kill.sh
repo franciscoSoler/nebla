@@ -1,5 +1,7 @@
 #!/bin/bash
 
+USER_IPCS=$(echo $USER | cut -c1-10)
+
 #MEMORIAS COMPARTIDAS
 echo "Memorias eliminadas:"
 IPCSMEM=$(ipcs -m |tr -s " ") 
@@ -13,7 +15,7 @@ for i in $IPCSMEM; do
 	IPCSMEM_PRIV=$(echo "$i" | cut -d "${SEP}" -f 4) #privilegios
 	IPCSMEM_PRO=$(echo "$i" | cut -d "${SEP}" -f 6) #procesos atachados
 
-	if [ $IPCSMEM_USER = $USER ];then
+	if [ $IPCSMEM_USER = $USER -o $IPCSMEM_USER = $USER_IPCS ];then
 	if [ $IPCSMEM_PRIV = "666" ];then
 	if [ $IPCSMEM_PRO = "0" ]; then
 		echo $IPCSMEM_KEY $IPCSMEM_USER $IPCSMEM_PRIV $IPCSMEM_PRO     		
@@ -37,7 +39,7 @@ for i in $IPCSSEM; do
 	IPCSSEM_USER=$(echo "$i" | cut -d "${SEP}" -f 3) #usuario
 	IPCSSEM_PRIV=$(echo "$i" | cut -d "${SEP}" -f 4) #privilegios
 	
-	if [ $IPCSSEM_USER = $USER ];then
+	if [ $IPCSSEM_USER = $USER -o $IPCSSEM_USER = $USER_IPCS ];then
 	if [ $IPCSSEM_PRIV = "666" ];then
 		echo $IPCSSEM_KEY $IPCSSEM_USER $IPCSSEM_PRIV $IPCSSEM_PRO     		
 		ipcrm -s $IPCSSEM_KEY
@@ -59,7 +61,7 @@ for i in $IPCSQUE; do
 	IPCSQUE_USER=$(echo "$i" | cut -d "${SEP}" -f 3) #usuario
 	IPCSQUE_PRIV=$(echo "$i" | cut -d "${SEP}" -f 4) #privilegios
 	
-	if [ $IPCSQUE_USER = $USER ];then
+	if [ $IPCSQUE_USER = $USER -o $IPCSQUE_USER = $USER_IPCS ];then
 	if [ $IPCSQUE_PRIV = "666" ];then
 		echo $IPCSQUE_KEY $IPCSQUE_USER $IPCSQUE_PRIV $IPCSQUE_PRO     		
 		ipcrm -q $IPCSQUE_KEY
