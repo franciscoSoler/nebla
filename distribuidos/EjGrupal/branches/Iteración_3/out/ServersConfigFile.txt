@@ -9,68 +9,68 @@ ServidorCanalSalidaBrokerBroker-Dispatcher = CanalSalidaBrokerBroker
 # Variables que indican a que Broker se conecta cada agente. Si el 
 # nùmero de broker es igual a 0, implica que el Agente se conectarà
 # a un Broker aleatorio entre los disponibles
-ClientesEnBroker = 0
-VendedoresEnBroker = 0
-Robot5EnBroker = 0
-AlmacenDePiezasEnBroker = 0
-Robots11EnBroker = 0
-Robots12EnBroker = 0
-AGVsEnBroker = 0
-Robot14EnBroker = 0
-Robot16EnBroker = 0
-DespachoEnBroker = 0
+ClientesEnBroker = 2
+VendedoresEnBroker = 2
+Robot5EnBroker = 2
+AlmacenDePiezasEnBroker = 2
+Robots11EnBroker = 2
+Robots12EnBroker = 2
+AGVsEnBroker = 2
+Robot14EnBroker = 2
+Robot16EnBroker = 2
+DespachoEnBroker = 2
 
 # IP del Servidor RPC
 RPCServer-Direccion = 127.0.0.1
 
 # Data de ServidorCanalEntradaBrokerAgente
 ServidorCanalEntradaBrokerAgente-1-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerAgente-1-Port = 5001
+ServidorCanalEntradaBrokerAgente-1-Port = 55001
 
 ServidorCanalEntradaBrokerAgente-2-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerAgente-2-Port = 5002
+ServidorCanalEntradaBrokerAgente-2-Port = 55002
 
 ServidorCanalEntradaBrokerAgente-3-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerAgente-3-Port = 5003
+ServidorCanalEntradaBrokerAgente-3-Port = 55003
 
 ServidorCanalEntradaBrokerAgente-4-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerAgente-4-Port = 5004
+ServidorCanalEntradaBrokerAgente-4-Port = 55004
 
 # Data de ServidorCanalSalidaBrokerAgente
 ServidorCanalSalidaBrokerAgente-1-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerAgente-1-Port = 6001
+ServidorCanalSalidaBrokerAgente-1-Port = 56001
 
 ServidorCanalSalidaBrokerAgente-2-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerAgente-2-Port = 6002
+ServidorCanalSalidaBrokerAgente-2-Port = 56002
 
 ServidorCanalSalidaBrokerAgente-3-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerAgente-3-Port = 6003
+ServidorCanalSalidaBrokerAgente-3-Port = 56003
 
 ServidorCanalSalidaBrokerAgente-4-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerAgente-4-Port = 6004
+ServidorCanalSalidaBrokerAgente-4-Port = 56004
 
 # Data de ServidorCanalEntradaBrokerBroker
 ServidorCanalEntradaBrokerBroker-1-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerBroker-1-Port = 7001
+ServidorCanalEntradaBrokerBroker-1-Port = 57001
 
 ServidorCanalEntradaBrokerBroker-2-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerBroker-2-Port = 7002
+ServidorCanalEntradaBrokerBroker-2-Port = 57002
 
 ServidorCanalEntradaBrokerBroker-3-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerBroker-3-Port = 7003
+ServidorCanalEntradaBrokerBroker-3-Port = 57003
 
 ServidorCanalEntradaBrokerBroker-4-Direccion = 127.0.0.1
-ServidorCanalEntradaBrokerBroker-4-Port = 7004
+ServidorCanalEntradaBrokerBroker-4-Port = 57004
 
 # Data de ServidorCanalSalidaBrokerBroker
 ServidorCanalSalidaBrokerBroker-1-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerBroker-1-Port = 8001
+ServidorCanalSalidaBrokerBroker-1-Port = 58001
 
 ServidorCanalSalidaBrokerBroker-2-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerBroker-2-Port = 8002
+ServidorCanalSalidaBrokerBroker-2-Port = 58002
 
 ServidorCanalSalidaBrokerBroker-3-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerBroker-3-Port = 8003
+ServidorCanalSalidaBrokerBroker-3-Port = 58003
 
 ServidorCanalSalidaBrokerBroker-4-Direccion = 127.0.0.1
-ServidorCanalSalidaBrokerBroker-4-Port = 8004
+ServidorCanalSalidaBrokerBroker-4-Port = 58004
