@@ -30,22 +30,21 @@ int main(int argc, char* argv[]) {
     Logger::setProcessInformation("Administrador Memoria:");
     
     char buffer[TAM_BUFFER];
-    int brokerNumber = 0;
     ArgumentParser argParser(argc, argv);
     
     int idMemoria;
-
     if ( argParser.parseArgument(1, idMemoria) == -1 ) {
         Logger::logMessage(Logger::ERROR, "ERROR: parseArgument 1");
         exit(-1);
     }
 
+    int brokerNumber = 0;
     if ( argParser.parseArgument(2, brokerNumber) == -1 ) {
         Logger::logMessage(Logger::ERROR, "ERROR: parseArgument 2");
         exit(-1);
     }
 
-    sprintf(buffer, "Administrador Memoria Nº%d - Broker N°%d:",idMemoria, brokerNumber);
+    sprintf(buffer, "Administrador Memoria Nº%d - Broker N°%d:", idMemoria, brokerNumber);
     Logger::setProcessInformation(buffer);
     Logger::logMessage(Logger::DEBUG, "Administrador creado satisfactoriamente");
 
