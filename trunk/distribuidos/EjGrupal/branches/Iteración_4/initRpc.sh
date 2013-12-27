@@ -1,4 +1,4 @@
-sudo -i service rpcbind stop
-sudo -i rpcbind -i -w
-sudo -i service rpcbind start
+sudo -i service portmap stop
+sudo -i portmap -i -w
+sudo -i service portmap start
 
