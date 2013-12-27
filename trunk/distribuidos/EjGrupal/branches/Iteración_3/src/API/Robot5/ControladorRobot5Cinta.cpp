@@ -39,7 +39,7 @@ void ControladorRobot5Cinta::iniciarControlador()
     {
         colaCambioProducto = COMM::CommMsgHandler(2, ID_TIPO_ROBOT5_CINTA, ID_TIPO_AP);
         colaCambioProducto.setReceptorInfo("colaCambioProducto",
-                                               DIRECTORY_ROBOT_5, ID_COLA_CAMBIO_PEDIDO);
+                                               DIRECTORY_ROBOT_5, ID_COLA_CAMBIO_PEDIDO, ID_TIPO_AP);
 
         /* Obtengo la cola de pedidos */
 	colaPedidosProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
@@ -188,6 +188,7 @@ void ControladorRobot5Cinta::avisarProximoPedido()
     {
 	Logger::getInstance().logMessage(Logger::TRACE, "Envio mensaje al almacen de piezas para que envie la proxima orden de produccion.");
 	MensajeProximoPedidoProduccion mensajeProximoPedido;
+        mensajeProximoPedido.mtype = 1; // un numero cualquiera, total no se usa
         colaCambioProducto.send(ID_ALMACEN_PIEZAS, mensajeProximoPedido);
 //	colaPedidosProduccion.enviarProximoPedidoProduccion(ID_ALMACEN_PIEZAS, mensajeProximoPedido);
     }
