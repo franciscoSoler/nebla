@@ -92,6 +92,7 @@ typedef enum {
 
 #define ID_SHMEM_TIMEOUT        30
 #define ID_SEM_TIMEOUT          30
+#define ID_SIGUIENTE_BROKER     40
 
 /* Define la cantidad de tiempo en segundos que se va a esperar
  * antes de que se haga timeout. */

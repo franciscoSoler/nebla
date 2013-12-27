@@ -79,27 +79,24 @@ int main(int argc, char* argv[]) {
         /* Se completa la matriz de grupo / tipoAgente. */
         obtenerTiposDeAgenteParaGrupo();
         
-        /*
-        // Obtengo la memoria compartida con el siguiente broker
-        IPC::SharedMemory<int> siguienteSharedMemory("Siguiente Broker ShMem");
-        siguienteSharedMemory.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_SIGUIENTE);
-        Logger::logMessage(Logger::COMM, "shMem SiguienteBroker creado");
+        /* Almacena los brokers siguientes en cada anillo. */
+        IPC::Semaphore semSiguienteBrokerAnillo("Siguiente Broker Sem");
+        semSiguienteBrokerAnillo.createSemaphore(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER, CANT_GRUPOS_SHMEM);
+        Logger::logMessage(Logger::COMM, "Sem siguienteBroker creado.");
 
-        // Se establece el siguiente según el grupo de shmem que corresponda.
-        int siguiente = (brokerNumber % 4)+1;
-        siguienteSharedMemory.write(&siguiente);
-        */
+        for(int idGrupoShMem = 0; idGrupoShMem < CANT_GRUPOS_SHMEM; idGrupoShMem++)
+            semSiguienteBrokerAnillo.initializeSemaphore(idGrupoShMem, 1);
+
+        IPC::SharedMemory<int> shMemSiguienteBrokerAnillo("Siguiente Broker ShMem");
+        for(int idGrupoShMem = ID_PRIMER_GRUPO_SHMEM; idGrupoShMem < ID_PRIMER_GRUPO_SHMEM + CANT_GRUPOS_SHMEM; idGrupoShMem++)
+        {
+            shMemSiguienteBrokerAnillo.createSharedMemory(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER + idGrupoShMem);
+            sprintf(buffer, "ShMem siguienteBroker para grupo %d creado.", idGrupoShMem);
+            Logger::logMessage(Logger::COMM, buffer);
+        }
 
         createSharedMemoryAdministrators(brokerNumber);
-        createLeaders(brokerNumber);
-        
-        
-        /*if ( brokerNumber == 1 ) {
-            // Se hardcodea momentaneamente la inicializacion de las shMem
-            // por falta del algoritmo del lider. Ahora que tenemos muchos Brokers
-            // obligo a que el broker N°1 sea el "LIDER".
-            initializeSharedMemories();
-        }*/
+        createLeaders(brokerNumber);               
 
         ServersManager serversManager;
         serversManager.createBrokerServer("ServidorCanalEntradaBrokerAgente", brokerNumber);

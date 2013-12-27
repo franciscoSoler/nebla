@@ -139,57 +139,57 @@ int main(int argc, char* argv[]) {
         IPC::Semaphore semMutexShMemInfoAgentes;
         semMutexShMemInfoAgentes.getSemaphore(C_DIRECTORY_INFO_AGENTES, ID_INFO_AGENTES, AMOUNT_AGENTS);
         semMutexShMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "sem InfoAgentes destruído");
+        Logger::logMessage(Logger::COMM, "sem InfoAgentes destruido");
 
         IPC::SharedMemory<DataInfoAgentes> shMemInfoAgentes;
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_CLIENTE);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Cliente destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Cliente destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_VENDEDOR);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Vendedor destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Vendedor destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AP);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AP destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AP destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_AGV);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AGV destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-AGV destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_CINTA);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_Cinta destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_Cinta destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT5_AGV);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_AGV destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot5_AGV destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT11);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot11 destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot11 destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT12);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot12 destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot12 destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT14);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot14 destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot14 destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_CINTA);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Cinta destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Cinta destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_ROBOT16_DESPACHO);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Despacho destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Robot16_Despacho destruida");
 
         shMemInfoAgentes.getSharedMemory(C_DIRECTORY_INFO_AGENTES, ID_TIPO_DESPACHO);
         shMemInfoAgentes.destroy();
-        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho destruída");
+        Logger::logMessage(Logger::COMM, "shMem InfoAgentes-Despacho destruida");
 
         /* Matriz para identificar qué brokers pertenecen a cada grupo de ShMem. */
         IPC::SharedMemory<InformacionGrupoShMemBrokers> shMemInfoGruposShMemBrokers;
@@ -201,6 +201,22 @@ int main(int argc, char* argv[]) {
         semInfoGruposShMemBrokers.getSemaphore(C_DIRECTORY_ADM, ID_IPC_INFO_GRUPOS_BROKERS, 1);
         semInfoGruposShMemBrokers.destroy();
         Logger::logMessage(Logger::COMM, "sem InforGruposBrokers creado.");
+
+        /* IPCs para almacenar los brokers siguientes en cada anillo. */
+        IPC::Semaphore semSiguienteBrokerAnillo;
+        semSiguienteBrokerAnillo.getSemaphore(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER, CANT_GRUPOS_SHMEM);
+        semSiguienteBrokerAnillo.destroy();
+        Logger::logMessage(Logger::COMM, "Sem siguienteBroker destruido.");
+
+        IPC::SharedMemory<int> shMemSiguienteBrokerAnillo;
+        for(int idGrupoShMem = ID_PRIMER_GRUPO_SHMEM; idGrupoShMem < ID_PRIMER_GRUPO_SHMEM + CANT_GRUPOS_SHMEM; idGrupoShMem++)
+        {
+            char buffer[1024];
+            shMemSiguienteBrokerAnillo.getSharedMemory(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER + idGrupoShMem);
+            shMemSiguienteBrokerAnillo.destroy();
+            sprintf(buffer, "ShMem siguienteBroker para grupo %d destruido.", idGrupoShMem);
+            Logger::logMessage(Logger::COMM, buffer);
+        }
 
         destruirIPCsDeTimeout(brokerNumber);
 
@@ -229,7 +245,7 @@ void destruirIPCsDeTimeout(int nroBroker)
     IPC::Semaphore semTimeout;
     semTimeout.getSemaphore(C_DIRECTORY_BROKER, ID_SEM_TIMEOUT, CANT_MAXIMA_BROKERS);
     semTimeout.destroy();
-    sprintf(buffer, "Destruídos %d semáforos de timeout.", CANT_MAXIMA_BROKERS);
+    sprintf(buffer, "destruidos %d semáforos de timeout.", CANT_MAXIMA_BROKERS);
     Logger::logMessage(Logger::COMM, buffer);
 
     for(int nroBrokerExterno = 0; nroBrokerExterno < CANT_MAXIMA_BROKERS; nroBrokerExterno++)
@@ -241,7 +257,7 @@ void destruirIPCsDeTimeout(int nroBroker)
         shMemTimeout.getSharedMemory(C_DIRECTORY_BROKER, ID_SHMEM_TIMEOUT + nroBrokerExterno);
         shMemTimeout.destroy();
 
-        sprintf(buffer, "shMem Timeout para broker %d destruída.", nroBrokerExterno + 1);
+        sprintf(buffer, "shMem Timeout para broker %d destruida.", nroBrokerExterno + 1);
         Logger::logMessage(Logger::COMM, buffer);
     }
 }
