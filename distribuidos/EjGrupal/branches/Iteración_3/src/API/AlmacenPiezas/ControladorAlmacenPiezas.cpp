@@ -36,7 +36,7 @@ ControladorAlmacenPiezas::ControladorAlmacenPiezas() //:
         IPC::PedidosProduccionMessageQueue("ColaEnvioMensajePedido", idEmisor, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
         colaEnvioMensajePedidoProduccion.getMessageQueue(DIRECTORY_ROBOT_5, ID_COLA_PEDIDOS_PRODUCCION);
 
-        colaCambioProducto = COMM::CommMsgHandler(2, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
+        colaCambioProducto = COMM::CommMsgHandler(idEmisor, ID_TIPO_AP, ID_TIPO_ROBOT5_CINTA);
         colaCambioProducto.setReceptorInfo("colaCambioProducto",
                                                DIRECTORY_ROBOT_5, ID_COLA_CAMBIO_PEDIDO);
 
