@@ -207,9 +207,34 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
         }
     }
 
+    /* Se imprime el mensaje cuando hay un cambio. */
+    IPC::Semaphore semSiguienteBrokerAnillo("Siguiente Broker Sem");
+    semSiguienteBrokerAnillo.getSemaphore(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER, CANT_GRUPOS_SHMEM);
+
+    IPC::SharedMemory<int> shMemSiguienteBrokerAnillo("Siguiente Broker ShMem");
+    shMemSiguienteBrokerAnillo.getSharedMemory(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER + nroGrupo);
+
+    int siguienteAnterior;
+    semSiguienteBrokerAnillo.wait(nroGrupo - ID_PRIMER_GRUPO_SHMEM);
+
+    shMemSiguienteBrokerAnillo.read(&siguienteAnterior);
+
     char buffer[TAM_BUFFER];
-    sprintf(buffer, "Siguiente: %d", siguiente);
-    Logger::logMessage(Logger::DEBUG, buffer);
+    if(siguiente != siguienteAnterior)
+    {
+        sprintf(buffer, "Nuevo siguiente es: %d", siguiente);
+        Logger::logMessage(Logger::DEBUG, buffer);
+
+        shMemSiguienteBrokerAnillo.write(&siguiente);
+    }
+
+    else
+    {
+        sprintf(buffer, "No cambia el siguiente, sigue siendo %d", siguiente);
+        Logger::logMessage(Logger::DEBUG, buffer);
+    }
+
+    semSiguienteBrokerAnillo.signal(nroGrupo - ID_PRIMER_GRUPO_SHMEM);
 
     return siguiente;
 }

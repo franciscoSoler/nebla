@@ -74,6 +74,7 @@ int main(int argc, char* argv[]) {
     cfg->parse();
     std::list<int> sharedMemoryListIds = cfg->getParamIntList("shMem");
     int listSize = sharedMemoryListIds.size();
+
     IPC::Semaphore semaforoLider = IPC::Semaphore("Semaforo Bloqueo Lider");
     semaforoLider.getSemaphore(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER, listSize);
 
@@ -310,14 +311,6 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
         }
     }
 
-    /*char buffer[TAM_BUFFER];
-    sprintf (buffer, "Brokers que pertencen al grupo %d:",nroGrupo);
-    for (std::list<int>::iterator it = brokersEnElGrupo.begin(); it != brokersEnElGrupo.end(); ++it) {
-        sprintf(otroBuffer, "%d|", (*it));
-        strcat(buffer,otroBuffer);
-    }
-    Logger::logMessage(Logger::DEBUG, buffer);*/
-
     std::auto_ptr<IConfigFileParser> cfg( new ConfigFileParser(SERVERS_CONFIG_FILE) );
     cfg->parse();
 
@@ -340,9 +333,16 @@ int obtenerSiguiente(int nroBroker, int nroGrupo)
         }
     }
 
-    /*char buffer[TAM_BUFFER];
-    sprintf(buffer, "Siguiente: %d", siguiente);
-    Logger::logMessage(Logger::DEBUG, buffer);*/
+    /* Se imprime el mensaje cuando hay un cambio. */
+    IPC::Semaphore semSiguienteBrokerAnillo("Siguiente Broker Sem");
+    semSiguienteBrokerAnillo.getSemaphore(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER, CANT_GRUPOS_SHMEM);
+
+    IPC::SharedMemory<int> shMemSiguienteBrokerAnillo("Siguiente Broker ShMem");
+    shMemSiguienteBrokerAnillo.getSharedMemory(C_DIRECTORY_BROKER, ID_SIGUIENTE_BROKER + nroGrupo);
+
+    semSiguienteBrokerAnillo.wait(nroGrupo - ID_PRIMER_GRUPO_SHMEM);
+    shMemSiguienteBrokerAnillo.write(&siguiente);
+    semSiguienteBrokerAnillo.signal(nroGrupo - ID_PRIMER_GRUPO_SHMEM);
 
     return siguiente;
 }
