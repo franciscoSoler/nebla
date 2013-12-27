@@ -127,7 +127,7 @@ std::string Cinta<PACKAGE, SIZE>::toString() {
         if (!array_[i].estaVacio()) {
             sprintf(buffer, "posCinta: %d, cantCajas: %d, idProd: %d, ODC: %ld",
                     i, cantidadDePaquetes_, array_[i].idProducto_, array_[i].idOrdenDeCompra_);
-            Logger::logMessage(Logger::ERROR,buffer);
+            Logger::logMessage(Logger::DEBUG, buffer);
         }
     }
 
