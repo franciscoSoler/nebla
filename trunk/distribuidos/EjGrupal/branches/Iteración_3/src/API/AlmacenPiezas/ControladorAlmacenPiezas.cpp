@@ -69,7 +69,7 @@ pedido_fabricacion_t ControladorAlmacenPiezas::recibirPedidoDeFabricacion()
 {
     try {
         mensaje_pedido_fabricacion_t mensajePedido;
-        this->colaReciboOrdenProduccion.recv(1, mensajePedido);
+        this->colaReciboOrdenProduccion.recv(ID_ALMACEN_PIEZAS, mensajePedido);
         return mensajePedido.pedidoFabricacion;
     }
     catch (Exception & e) {
@@ -129,7 +129,7 @@ void ControladorAlmacenPiezas::avisarAAGVQueAgregueCanasto(int numAGV,
 void ControladorAlmacenPiezas::recibirConfirmacionProduccion() {
     try {
         MensajeProximoPedidoProduccion mensajeProximoPedido;
-        colaCambioProducto.recv(ID_ALMACEN_PIEZAS, &mensajeProximoPedido);
+        colaCambioProducto.recv(ID_ALMACEN_PIEZAS, mensajeProximoPedido);
     }
     catch (Exception & e) {
         Logger::logMessage(Logger::ERROR, e.get_error_description());
