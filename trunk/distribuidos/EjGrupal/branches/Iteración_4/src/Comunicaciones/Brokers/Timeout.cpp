@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
             colaLider.getMsgQueue(C_DIRECTORY_BROKER, ID_ALGORITMO_LIDER);
 
             MsgEstadoBrokers mensajeEstadoBrokers;
-            mensajeEstadoBrokers.mtype = 1;
+            mensajeEstadoBrokers.mtype = ID_PRIMER_GRUPO_SHMEM;
             mensajeEstadoBrokers.estado = CAIDO;
             mensajeEstadoBrokers.nroBroker = idBrokerRemoto;
 
